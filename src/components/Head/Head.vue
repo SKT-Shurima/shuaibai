@@ -1,0 +1,159 @@
+<template>
+	<div class="wrap">
+		<div class="head_wrap">
+			<div class="head_box">
+				<div class="h_left">
+					<i></i>
+					<span>收藏帅柏</span>
+				</div>
+				<ul class="h_right">
+					<li>登录</li>
+					<li>注册</li>
+					<li>我的订单<i></i></li>
+					<li>我的收藏<i></i></li>
+					<li>商家后台</li>
+					<li>客户服务<i></i></li>
+				</ul>
+			</div>
+		</div>
+		<div class="head_con_wrap">
+			<div class="head_con_box">
+				<div class="logo">
+					<img src="../../../static/headImg/logo.png" height="39" width="269">
+				</div>
+				<div class="search_box">
+					<div class="search_form">
+						<form id="searchForm" name="searchForm" method="get" action="">
+							<input type="text" name="keywords"  autocomplete="off" id="key" accesskey="s" class="search_text">
+							<input type="submit"  class="search_but" value="搜索">
+	                    </form>
+					</div>
+					<ul class="hot_words">
+						<li>热门搜索</li>
+						<li>热门搜索</li>
+						<li>热门搜索</li>
+						<li>热门搜索</li>
+						<li>热门搜索</li>
+					</ul>
+				</div>
+				 <div class="shopping_cart">
+				 	<img src="">
+					我的购物车
+				 </div> 
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default{
+		
+	}
+</script>
+
+<style scoped lang='scss'>
+$primary:#c71724;
+	.wrap{
+		width: 100%;
+		.head_wrap{
+			width: 100%;
+			height: 30px;
+			line-height: 30px;
+			background: #f7f7f7;
+			border-bottom: #eee solid 1px;
+			line-height: 30px;
+			position: relative;
+			z-index: 99999999;
+			.head_box{
+				width: 1210px;
+				margin:0px auto;
+				
+			    overflow: hidden;
+			    .h_left{
+			    	float: left;
+			    }
+			    .h_right{
+			    	float: right;
+			    	overflow: hidden;
+			    	margin: 0px;
+			    	li{
+			    		float: left;
+			    		padding-left: 30px;
+			    	}
+			    }
+			}
+
+		}
+		.head_con_wrap{
+			width: 100%;
+			.head_con_box{
+				width: 1210px;
+				height: 104px;
+				margin: 0px auto;
+				.logo{
+					width: 270px;
+					margin-top: 32px;
+					float: left;
+					img{
+						width: 100%;
+					}
+				}
+				.search_box{
+					width: 520px;
+					float: left;
+					margin-top: 32px;
+					margin-left: 120px;
+					.search_form{
+						    border: 3px solid #e4393c;
+						    height: 44px;
+						    width: 496px;
+						.search_text{
+							background-color: #fff;
+							background-position: 0 -360px;
+							background-repeat: repeat-x;
+							color: #999;
+						 	font-family: arial,"宋体";
+							font-size: 14px;
+							padding: 5px;
+							width: 409px;
+							height: 38px;
+							line-height: 38px;
+							border: none;
+							outline: none;
+						}
+						.search_but{
+							background: none repeat scroll 0 0 #e4393c;
+						    color: #fff;
+						    font-size: 14px;
+						    font-weight: 700;
+						    width: 78px;
+						    height: 38px;
+						    border: none;
+						    margin: 0px;
+						}
+					}
+					.hot_words{
+						margin: 0px;
+						padding: 6px 0px;
+						overflow: hidden;
+						li{
+							float: left;
+							padding-left: 10px;
+							cursor: pointer;
+						}
+					}
+				}
+				.shopping_cart{
+					width: 150px;
+					height: 36px;
+					line-height: 36px;
+					margin-top: 32px;
+					color: $primary;
+					text-align: center;
+					float: right;
+					border: 1px  solid $primary;
+				}
+			}
+		}
+	}
+</style>
