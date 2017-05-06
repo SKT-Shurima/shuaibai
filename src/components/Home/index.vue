@@ -3,7 +3,7 @@
 		<div class="nav_wrap">
 			<nav class="nav_box">
 				<a href="javascript:void(0)">全部商品分类</a>
-				<a href="">积分半价</a>
+				<a href="integral.html">积分半价</a>
 				<a href="">购物币专区</a>
 				<a href="">百城万店</a>
 				<a href="">
@@ -30,10 +30,14 @@
 					<img src='' alt="">
 				</dt>
 				<dd>
-					<img src="" alt="">
-					<img src="" alt="">
-					<img src="" alt="">
-					<img src="" alt="">
+					<div class="left_btn"></div>
+					<div class="cont">
+						<img src="" alt="">
+						<img src="" alt="">
+						<img src="" alt="">
+						<img src="" alt="">
+					</div>
+					<div class="right_btn"></div>
 				</dd>
 			</dl>
 			<div class="status">
@@ -224,7 +228,7 @@ $text_color: #666;
 			height: 40px;
 			background-color: #c81623;
 			.nav_box{
-				width: 1210px;
+				width: 1250px;
 				margin: 0px auto;
 				a{
 					display: inline-block;
@@ -237,7 +241,7 @@ $text_color: #666;
 				}
 				a:first-child{
 					background-color: #cd2a2c;
-					width: 166px;
+					width: 150px;
 				}
 			}
 		}
@@ -245,16 +249,17 @@ $text_color: #666;
 			width: 100%;
 			background-color: $theme;
 			.con_box{
-				width: 1194px;
+				width: 1250px;
 				margin: 0px auto;
 				overflow: hidden;
 				.con_list{
-					width: 166px;
+					width: 150px;
 					background-color: #c81623;
 					color: #fff;
 					text-align: center;
 					float: left;
 					li{
+						width: 100%;
 						height: 50px;
 						line-height: 50px;
 						font-size: 14px;
@@ -267,7 +272,7 @@ $text_color: #666;
 					}
 				}
 				.slide_show{
-					width: 776px;
+					width: 850px;
 					height: 390px;
 					float: left;
 					dt{
@@ -277,17 +282,42 @@ $text_color: #666;
 						}
 					}
 					dd{
+						width: 100%;
 						height: 110px;
 						overflow: hidden;
-						img{
-							width: 194px;
-							height: 110px;
-							float: left;
+						position: relative;
+						.cont{
+							width: 100%;
+							img{
+								width: 25%;
+								height: 110px;
+								float: left;
+							}
+						}
+						.left_btn,.right_btn{
+							width: 24px;
+							height: 60px;
+							border-radius: 4px;
+							background-color: rgba(0,0,0,.3);
+							margin-top: 25px;
+							color: #fff;
+							position: absolute;
+							top: 0px;
+							bottom: 0px;
+							margin-top: auto;
+							margin-bottom: auto;
+							z-index: 10;
+						}
+						.left_btn{
+							left: 4px;
+						}
+						.right_btn{
+							right: 4px;
 						}
 					}
 				}
 				.status{
-					width: 252px;
+					width: 250px;
 					height: 500px;
 					padding-left: 16px;
 					padding-right: 16px;

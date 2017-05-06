@@ -65,7 +65,7 @@ $primary:#c71724;
 			position: relative;
 			z-index: 99999999;
 			.head_box{
-				width: 1210px;
+				width: 1250px;
 				margin:0px auto;
 				
 			    overflow: hidden;
@@ -87,7 +87,7 @@ $primary:#c71724;
 		.head_con_wrap{
 			width: 100%;
 			.head_con_box{
-				width: 1210px;
+				width: 1250px;
 				height: 104px;
 				margin: 0px auto;
 				.logo{
@@ -115,7 +115,7 @@ $primary:#c71724;
 						 	font-family: arial,"宋体";
 							font-size: 14px;
 							padding: 5px;
-							width: 409px;
+							width: 406px;
 							height: 38px;
 							line-height: 38px;
 							border: none;
