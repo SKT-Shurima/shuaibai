@@ -50,7 +50,7 @@
 							<span>Hi,您好！</span>
 						</dd>
 					</dl>
-					<div class="btnBox" v-if='false'>
+					<div class="btnBox" v-if='true'>
 						<div>
 							<el-button type='text' size='small'>登录</el-button>
 						</div>
@@ -58,7 +58,7 @@
 							<el-button type='text' size='small'>注册新用户</el-button>
 						</div>
 					</div>
-					<div class="info">
+					<div class="info" v-if='false'>
 						<el-row class='info_money'>
 							<el-col :span='8'>
 								<div class="info_num">

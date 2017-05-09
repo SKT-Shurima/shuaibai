@@ -2,17 +2,23 @@
 	<div class="wrap">
 		<div class="head_wrap">
 			<div class="head_box">
-				<div class="h_left">
-					<i></i>
-					<span>收藏帅柏</span>
-				</div>
+				<dl class="h_left">
+					<dt>
+						<i></i>
+						<span>手机帅柏</span>
+					</dt>
+					<dd>
+						<i></i>
+						<span>收藏帅柏</span>
+					</dd>
+				</dl>
 				<ul class="h_right">
-					<li>登录</li>
-					<li>注册</li>
-					<li>我的订单<i></i></li>
-					<li>我的收藏<i></i></li>
-					<li>商家后台</li>
-					<li>客户服务<i></i></li>
+					<li><a href="login.html">登录</a>|</li>
+					<li><a href="reg.html">注册</a>|</li>
+					<li><a href="">我的订单<i></i></a>|</li>
+					<li><a href="">我的收藏<i></i></a>|</li>
+					<li><a href="">商家后台</a>|</li>
+					<li><a href="">客户服务<i></i></a></li>
 				</ul>
 			</div>
 		</div>
@@ -63,7 +69,7 @@ $primary:#c71724;
 			border-bottom: #eee solid 1px;
 			line-height: 30px;
 			position: relative;
-			z-index: 99999999;
+			z-index: 90;
 			.head_box{
 				width: 1250px;
 				margin:0px auto;
@@ -71,6 +77,14 @@ $primary:#c71724;
 			    overflow: hidden;
 			    .h_left{
 			    	float: left;
+			    	overflow: hidden;
+			    	dt,dd{
+			    		float: left;
+			    		overflow: hidden;
+			    	}
+			    	dd{
+			    		margin-left: 16px;
+			    	}
 			    }
 			    .h_right{
 			    	float: right;
@@ -78,7 +92,12 @@ $primary:#c71724;
 			    	margin: 0px;
 			    	li{
 			    		float: left;
-			    		padding-left: 30px;
+			    		color: #ccc;
+			    		a{
+			    			color: #000;
+			    			padding-left: 10px;
+			    			padding-right: 10px;
+			    		}
 			    	}
 			    }
 			}

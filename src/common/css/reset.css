@@ -55,7 +55,7 @@ h1,h2,h3,h4,h5,h6 {
 /* 链接样式，颜色可酌情修改 */
 del,ins,a {text-decoration:none;}
 a{
-	color: #fff;
+	color: #000;
 }
 
 /* 鼠标样式 */
