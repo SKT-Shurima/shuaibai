@@ -21,6 +21,8 @@
 					</div>
 				</dt>
 				<dd><a href="index.html">返回首页</a></dd>
+				<dd><a href="index.html">店铺热卖</a></dd>
+				<dd><a href="index.html">掌柜推荐</a></dd>
 			</dl>
 		</div>
 	</div>
@@ -35,7 +37,6 @@
      },
      mounted(){
      	this.$nextTick(()=>{
-     		console.log(this)
      	})
      }
   }

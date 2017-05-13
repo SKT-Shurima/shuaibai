@@ -5,8 +5,8 @@
 			  <el-form-item label="手机号码" prop="phone">
 			    <el-input v-model="ruleForm.phone"></el-input>
 			  </el-form-item>
-			  <el-form-item label="短信验证码" prop="vertify_code">
-			    <el-input v-model="ruleForm.vertify_code" style='width:178px;'></el-input>
+			  <el-form-item label="短信验证码" prop="verify_code">
+			    <el-input v-model="ruleForm.verify_code" style='width:178px;'></el-input>
 			    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
 			  </el-form-item>
 			  <el-form-item label="设置密码" prop="passwd">
@@ -22,10 +22,10 @@
 			  	<el-checkbox v-model='complete'>完善信息加入推荐人，没有可忽略</el-checkbox>
 			  </el-form-item>
 		</div>
-		<div class="referees_box" v-show='complete'>
+		<div class="referees_box" v-if='complete'>
 	  		<div class="title">推荐人会员号</div>
-	  		<el-form-item label="推荐编号" prop="num">
-			    <el-input v-model="ruleForm.num"></el-input>
+	  		<el-form-item label="推荐编号" prop="userid">
+			    <el-input v-model="ruleForm.userid"></el-input>
 			</el-form-item>
 			<el-form-item label="安置编号" >
 			    <el-input v-model="ruleForm.anzhibum"></el-input>
@@ -44,7 +44,8 @@
 				      type="date"
 				      placeholder="选择日期"
 				      :picker-options="pickerOptions"
-				      style='width:100%'>
+				      style='width:100%'
+				      >
 				</el-date-picker>
 			</el-form-item>
 			<el-form-item label="昵称" prop="petname">
@@ -101,6 +102,9 @@
 </template>
 <script>
 import { arrCity } from '../../common/js/city.js'
+import {reg,sendCode} from '../../common/js/api.js'
+import {MessageBox} from  '.1.2.9@element-ui'
+import {hex_md5} from '../../common/js/md5.js'
   export default {
     data() {
     	// 手机验证
@@ -121,7 +125,7 @@ import { arrCity } from '../../common/js/city.js'
 	    	if (value === '') {
 	    		callback(new Error('请输入验证码'));
 	    	} else {
-	    		if (value !== this.ruleForm.vertify_code) {
+	    		if (value !== this.ruleForm.verify_code) {
 		    		callback(new Error('请输入正确验证码'));
 		    	} else {
 		    		callback();
@@ -130,21 +134,26 @@ import { arrCity } from '../../common/js/city.js'
 	    	
 	    };
 	    // 密码验证
-        var validatePass = (rule, value, callback) => {
+	      var validatePass = (rule, value, callback) => {
+	        if (value === '') {
+	          callback(new Error('请输入密码'));
+	        } else {
 	          if (this.ruleForm.confirm_passwd !== '') {
 	            this.$refs.ruleForm.validateField('confirm_passwd');
-	          } else {
-	          	 callback();
 	          }
+	          callback();
+	        }
 	      };
 	      // 确认密码验证
-	     var validatePass2 = (rule, value, callback) => {
-	      if (value !== this.ruleForm.passwd) {
+	      var validatePass2 = (rule, value, callback) => {
+	        if (value === '') {
+	          callback(new Error('请再次输入密码'));
+	        } else if (value !== this.ruleForm.passwd) {
 	          callback(new Error('两次输入密码不一致!'));
 	        } else {
 	          callback();
 	        }
-	     };
+	      };
 	     // 地区选择
 	     var checkArea = (rule,value,callback) => {
 	     	if (this.ruleForm.province === "") {
@@ -190,12 +199,12 @@ import { arrCity } from '../../common/js/city.js'
         areaIndex: 0,
         ruleForm: {
             phone: '',
-            vertify_code: '',
+            verify_code: '',
             passwd: '',
             confirm_passwd: "",
             email: '',
             papernumber: '',
-	        num: '',
+	        userid: '',
 	        anzhinum: '',
 	        name: '',
 	        sex: '1',
@@ -212,12 +221,11 @@ import { arrCity } from '../../common/js/city.js'
           phone: [
             { required:true, validator: checkPhone, trigger: 'blur' }
           ],
-          vertify_code: [
+          verify_code: [
             { required: true, validator: checkCode, trigger: 'blur' }
           ],
           passwd: [
-            { required: true, message: '请设置密码', trigger: 'blur' },
-            { validator: validatePass, trigger: 'blur' }
+            { required: true, validator: validatePass, trigger: 'blur' }
           ],
           confirm_passwd: [
             { required: true, validator: validatePass2, trigger: 'blur' }
@@ -225,14 +233,17 @@ import { arrCity } from '../../common/js/city.js'
           email: [
             { type: 'email', message: '请输入正确邮箱', trigger: 'blur' }
           ],
-          num: [
+          userid: [
             { required: true, message: '请输入推荐编号', trigger: 'blur' }
           ],
           name: [
             { required: true, message: '请输入姓名', trigger: 'blur' }
           ],
+          sex: [
+          	{ required: true }
+          ],
           birthday: [
-            { required: true, message: '请输入出生日期', trigger: 'blur' }
+            {  type: 'date', required: true, message: '请输入出生日期', trigger: 'blur' }
           ],
           petname: [
             { required: true, message: '请输入昵称', trigger: 'blur' }
@@ -254,23 +265,55 @@ import { arrCity } from '../../common/js/city.js'
         },
         time: -1 ,
         total_time: 5, 
-        send_btn: '发送验证码'
+        send_btn: '发送验证码',
+        recommend: ''
       };
     },
     methods: {
     	send_code(){
 	      	let _this = this ;
-	      	_this.time = _this.total_time ;
-	      	let timer = setInterval(()=>{
-	      		_this.time--;
-	      		_this.send_btn = _this.time + 's后重新发送';
-	      		if (_this.time < 0) {
-	      			_this.time = -1;
-	      			_this.send_btn = '发送验证码';
-	      			clearInterval(timer);
-	      		}
-	      		
-	      	},1000)
+	      	if (_this.ruleForm.phone === '') {
+	      		MessageBox.alert('请输入手机号', '提示', {
+		          confirmButtonText: '确定'
+		        });
+	      	} else {
+	      		let params = {
+		      		param: _this.ruleForm.phone,
+		      		type: '0'
+		      	};
+		      	sendCode(params).then( res=>{
+		      		let {errcode,message} = res ;
+		      		if (errcode !== 0) {
+		      		    MessageBox.alert(message, '提示', {
+				          confirmButtonText: '确定'
+					    });
+		      		} else {
+		      			_this.time = _this.total_time ;
+		      			let timer = setInterval(()=>{
+				      		_this.time--;
+				      		_this.send_btn = _this.time + 's后重新发送';
+				      		if (_this.time < 0) {
+				      			_this.time = -1;
+				      			_this.send_btn = '发送验证码';
+				      			clearInterval(timer);
+				      		}
+				      	},1000)
+		      		}
+		      	})
+	      	}
+	      },
+	      transDate(time){
+	      	var newDate = new Date(time);
+		    let {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
+		    m = trans(m);
+		    d = trans(d);
+		    function trans (val){
+		      		if (val < 10) {
+		      			val = "0" + val ;
+		      		}
+		      		return val ;
+		      };
+		       return y +'-' + m + "-" + d ;
 	      },
     	setOption(type,event){
              if(type === 'proIndex'){
@@ -286,9 +329,54 @@ import { arrCity } from '../../common/js/city.js'
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            let params = {
+            	oauth: 'Web',
+            	phone: this.ruleForm.phone,
+            	verify_code: this.ruleForm.verify_code,
+            	passwd: hex_md5(this.ruleForm.passwd),
+            	confirm_passwd: hex_md5(this.ruleForm.confirm_passwd),
+            	email: this.ruleForm.email
+            };
+            // 获取推荐人信息
+            if(this.complete) {
+            	this.recommend = {
+            		userid: this.ruleForm.userid,
+					tuijian: '',
+					anzhi: '',
+					name: this.ruleForm.name,
+					petname: this.ruleForm.petname, 
+					loginpass: '',
+					birthday: this.transDate(this.ruleForm.birthday),
+					sex: this.ruleForm.sex -0, 
+					mobiletele: this.ruleForm.mobiletele,
+					country: '中国',
+					province: this.ruleForm.province,
+					city: this.ruleForm.city,
+					xian: this.ruleForm.xian,
+					address: this.ruleForm.address,
+					papernumber: this.ruleForm.papernumber
+            	};
+            	params.recommend = this.recommend ;
+            }
+            reg(params).then(res=>{
+            	let {errcode,message} = res ;
+            	if (errcode !== 0 ) {
+            		MessageBox.alert(message, '提示', {
+			          	confirmButtonText: '确定'
+				    });
+            	} else {
+            		// 注册成功之后判断是否已经绑定了邮箱
+            		if (this.ruleForm.email) {
+            			this.$emit('regSuccess',1) ;
+            		} else {
+            			this.$emit('regSuccess',0) ;
+            		}
+            	}
+            })
           } else {
-            console.log('error submit!!');
+            MessageBox.alert('请完成必填信息', '提示', {
+		          confirmButtonText: '确定'
+		        });
             return false;
           }
         });

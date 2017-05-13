@@ -2,9 +2,7 @@
 	<div class="wrap">
 		<div class="bg">
 			<div class="content_layout">
-				<reg-info ></reg-info>
-				<bind-email v-show='false'></bind-email>
-				<v-success v-if='false'> </v-success>
+			    <component :is="currentView" keep-alive @regSuccess='regFn'></component>
 			</div>
 		</div>
 	</div>
@@ -13,12 +11,28 @@
 	import regInfo from './regInfo'
 	import bindEmail from './bindEmail'
 	import vSuccess from './success'
+	
 
 	export default {
+		data() {
+		   return {
+		   	  showBol: 0,
+		   	  currentView: 'view0'
+		   }
+		},
 		components: {
-	      regInfo,
-	      bindEmail,
-	      vSuccess
+	      'view0': regInfo,
+	      'view1': bindEmail,
+	      'view2': vSuccess
+	    },
+	    methods: {
+	    	regFn(mark){
+	    		if(mark){
+	    			this.currentView = 'view2' ;
+	    		} else {
+	    			this.currentView = 'view1' ;
+	    		}
+	    	}
 	    }
 	}
 </script>

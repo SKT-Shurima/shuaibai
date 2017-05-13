@@ -8,8 +8,8 @@
 						  <el-form-item label="手机号码" prop="phone">
 						    <el-input v-model="ruleForm.phone"></el-input>
 						  </el-form-item>
-						  <el-form-item label="短信验证码" prop="vertify_code">
-						    <el-input v-model="ruleForm.vertify_code" style='width:178px;'></el-input>
+						  <el-form-item label="短信验证码" prop="verify">
+						    <el-input v-model="ruleForm.verify" style='width:178px;'></el-input>
 						    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
 						  </el-form-item>
 						  <el-form-item label="设置密码" prop="passwd">
@@ -20,7 +20,7 @@
 						  </el-form-item>
 					</div>
 					<div style="width:500px;margin:50px auto;padding-left:154px;">
-						    <el-button type="primary" @click="submitForm('ruleForm')" style='width:214px;'  :disabled='!(ruleForm.phone!=""&&ruleForm.vertify_code!=""&&ruleForm.passwd!=""&&ruleForm.confirm_passwd!="")'>重置密码并重新登录</el-button>
+						    <el-button type="primary" @click="submitForm('ruleForm')" style='width:214px;'  :disabled='!(ruleForm.phone!=""&&ruleForm.verify!=""&&ruleForm.passwd!=""&&ruleForm.confirm_passwd!="")'>重置密码并重新登录</el-button>
 					</div>	  
 				</el-form>
 			</div>
@@ -28,6 +28,9 @@
 	</div>
 </template>
 <script>
+import {resetPasswd,sendCode} from '../../common/js/api.js' 
+import {MessageBox} from  '.1.2.9@element-ui'
+import {hex_md5} from '../../common/js/md5.js'
   export default {
     data() {
     	// 手机验证
@@ -48,7 +51,7 @@
 	    	if (value === '') {
 	    		callback(new Error('请输入验证码'));
 	    	} else {
-	    		if (value !== this.ruleForm.vertify_code) {
+	    		if (value !== this.ruleForm.verify) {
 		    		callback(new Error('请输入正确验证码'));
 		    	} else {
 		    		callback();
@@ -58,15 +61,20 @@
 	    };
 	    // 密码验证
         var validatePass = (rule, value, callback) => {
-	          if (this.ruleForm.confirm_passwd !== '') {
-	            this.$refs.ruleForm.validateField('confirm_passwd');
-	          } else {
-	          	 callback();
-	          }
+	          if (value === '') {
+		          callback(new Error('请输入密码'));
+		        } else {
+		          if (this.ruleForm.confirm_passwd !== '') {
+		            this.$refs.ruleForm.validateField('confirm_passwd');
+		          }
+		          callback();
+		        }
 	      };
 	      // 确认密码验证
 	     var validatePass2 = (rule, value, callback) => {
-	      if (value !== this.ruleForm.passwd) {
+	       if (value === '') {
+	          callback(new Error('请再次输入密码'));
+	        } else if (value !== this.ruleForm.passwd) {
 	          callback(new Error('两次输入密码不一致!'));
 	        } else {
 	          callback();
@@ -86,7 +94,7 @@
         areaIndex: 0,
         ruleForm: {
             phone: '',
-            vertify_code: '',
+            verify: '',
             passwd: '',
             confirm_passwd: ""
         },
@@ -94,7 +102,7 @@
           phone: [
             { required:true, validator: checkPhone, trigger: 'blur' }
           ],
-          vertify_code: [
+          verify: [
             { required: true, validator: checkCode, trigger: 'blur' }
           ],
           passwd: [
@@ -110,24 +118,57 @@
       };
     },
     methods: {
-      send_code(){
-      	let _this = this ;
-      	_this.time = _this.total_time ;
-      	let timer = setInterval(()=>{
-      		_this.time--;
-      		_this.send_btn = _this.time + 's后重新发送';
-      		if (_this.time < 0) {
-      			_this.time = -1;
-      			_this.send_btn = '发送验证码';
-      			clearInterval(timer);
-      		}
-      		
-      	},1000)
-      },
+	     send_code(){
+		      	let _this = this ;
+		      	if (_this.ruleForm.phone === '') {
+		      		MessageBox.alert('请输入手机号', '提示', {
+			          confirmButtonText: '确定'
+			        });
+		      	} else {
+		      		let params = {
+			      		param: _this.ruleForm.phone,
+			      		type: '1'
+			      	};
+			      	sendCode(params).then( res=>{
+			      		let {errcode,message} = res ;
+			      		if (errcode !== 0) {
+			      		    MessageBox.alert(message, '提示', {
+					          confirmButtonText: '确定'
+						    });
+			      		} else {
+			      			_this.time = _this.total_time ;
+			      			let timer = setInterval(()=>{
+					      		_this.time--;
+					      		_this.send_btn = _this.time + 's后重新发送';
+					      		if (_this.time < 0) {
+					      			_this.time = -1;
+					      			_this.send_btn = '发送验证码';
+					      			clearInterval(timer);
+					      		}
+					      	},1000)
+			      		}
+			      	})
+		      	}
+		      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            let params = {
+            	param: this.ruleForm.phone,
+            	verify: this.ruleForm.verify,
+            	passwd: hex_md5(this.ruleForm.passwd),
+            	confirm_passwd: hex_md5(this.ruleForm.confirm_passwd)
+            };
+            resetPasswd(params).then(res=>{
+            	let {errcode,message} = res;
+            	if (errcode !== 0) {
+            		MessageBox.alert(message,'提示',{
+            			confirmButtonText: '确定'
+            		});
+            	} else {
+            		window.location.href = 'login.html' ;
+            	}
+            })
           } else {
             console.log('error submit!!');
             return false;

@@ -6,7 +6,7 @@ form,fieldset,input,textarea,p,blockquote,th,td {
 body {
     background:#fff;color:#333;font-size:12px; margin-top:5px;font-family:"SimSun","宋体","Arial Narrow";
 }
-body,div,dl,dt,dd,ul,li{
+body,div,dl,dt,dd,ul,li,p{
   margin: 0px;
   padding: 0px;
 }

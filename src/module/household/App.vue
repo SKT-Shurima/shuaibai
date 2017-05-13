@@ -4,7 +4,6 @@
     <v-nav></v-nav>
     <v-slider></v-slider>
     <v-con></v-con>
-    <v-back></v-back>
     <v-foot></v-foot>
   </div>
 </template>
@@ -15,7 +14,6 @@
   import vNav from 'components/Head/Nav'
   import vSlider from 'components/Slider/Slider'
   import vCon from 'components/Snapup/content'
-  import vBack from 'components/Slider/Back_top'
   import vFoot from 'components/Foot/Foot'
 
   export default {
@@ -25,7 +23,6 @@
       vSlider,
       vNav,
       vCon,
-      vBack,
       vFoot
     }
   }

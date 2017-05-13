@@ -4,11 +4,11 @@
 			<div class="head_box">
 				<dl class="h_left">
 					<dt>
-						<i></i>
+						<img src="../../../static/headImg/sbPhone.png" height="14" width="14">
 						<span>手机帅柏</span>
 					</dt>
 					<dd>
-						<i></i>
+						<img src="../../../static/headImg/sbCollection.png" height="14" width="14">
 						<span>收藏帅柏</span>
 					</dd>
 				</dl>

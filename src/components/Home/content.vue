@@ -5,27 +5,27 @@
 		 		<el-col :span='7'>
 		 			<div class="slider"></div>
 		 		</el-col>
-		 		<el-col :span='8' :offset='1'>
+		 		<el-col :span='10'>
 		 			<div class="text">
 		 				<img src="">
 		 				每日上新
 		 			</div>
 		 		</el-col>
-		 		<el-col :span='7' :offset='1'>
+		 		<el-col :span='7'>
 		 			<div class="slider"></div>
 		 		</el-col>
 		 	</el-row>
 		 	<el-row class='update_list'>
-		 		<el-col :span='4' v-for='item in 6'>
-		 			<dl>
+		 		<el-col :span='4' v-for='item in newGoods' >
+		 			<dl  @click='detail(item)'>
 		 				<dt>
-		 					<img src="">
+		 					<img :src="item.cover">
 		 				</dt>
 		 				<dd>
-		 					<div class="show_info">我会像奥德修斯一样朝着心中的方向哪怕众神会在彼</div>
+		 					<div class="show_info" v-text='item.name'></div>
 		 					<div class="sell_info">
-		 						<span>{{168.00|currency}}</span>
-		 						<em>2017人付款</em>
+		 						<span>{{item.shop_price|currency}}</span>
+		 						<em>{{item.sale_count}}人付款</em>
 		 					</div>
 		 				</dd>
 		 			</dl>
@@ -225,15 +225,32 @@
 </template>
 
 <script>
+	import {getNewGoods,getCategory} from "../../common/js/api.js"
  	import {currency} from '../../common/js/filter.js'
 	export default{
 		data(){
 			return {
-
+				newGoods: [],
+				classArr: []
 			}
 		},
 		filters: {
 			currency
+		},
+		methods: {
+			detail(){
+				window.location.href = 'detail.html';
+			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				getNewGoods().then(res=>{
+					let { errcode ,content} = res ;
+					if(errcode === 0 ){
+						this.newGoods = content;
+					}
+				});
+			})
 		}
 	}
 </script>
@@ -305,10 +322,12 @@ $end_bg: #f13f4c;
   		width: 1242px;
   		margin: 0px auto;
   		.title{
-	  		width: 348px;
+	  		width: 352px;
 	  		height: 24px;
 	  		margin: 0px auto;
+	  		overflow: hidden;
 	  		.el-col-7{
+	  			float: left;
 	  			.slider{
 	  				width: 100%;
 	  				height: 1px;
@@ -317,7 +336,8 @@ $end_bg: #f13f4c;
 	  			}
 	  			
 	  		}
-	  		.el-col-8{
+	  		.el-col-10{
+	  			float: left;
 	  			text-align: center;
 	  			.text{
 	  				color: #656565;
@@ -333,6 +353,7 @@ $end_bg: #f13f4c;
 	  	}
 	  	.update_list{
 	  		width: 100%;
+	  		margin-top: 10px;
 	  		.el-col-4{
 	  			border-top: 1px solid $border_list;
 	  			border-left: 1px solid $border_list;
@@ -340,7 +361,8 @@ $end_bg: #f13f4c;
 	  			dl{
 	  				padding: 12px;
 	  				dt{
-						width: 100%;
+						width: 180px;
+						height: 180px;
 						img{
 							width: 100%;
 						}
@@ -359,6 +381,11 @@ $end_bg: #f13f4c;
 			width: 612px;
 			float: left;
 			margin-top: 22px;
+			em{
+				a{
+					color: #fff;
+				}
+			}
 		}
 		.title{
 				width: 100%;

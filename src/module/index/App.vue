@@ -5,7 +5,6 @@
     <v-index></v-index>
     <v-content></v-content>
     <v-recommend></v-recommend>
-    <v-back></v-back>
     <v-foot></v-foot>
   </div>
 </template>
@@ -17,7 +16,6 @@
   import vIndex from 'components/Home/index'
   import vContent from 'components/Home/content'
   import vRecommend from 'components/Home/recommend'
-  import vBack from 'components/Slider/Back_top'
   import vFoot from 'components/Foot/Foot'
 
   export default {
@@ -28,7 +26,6 @@
       vIndex,
       vContent,
       vRecommend,
-      vBack,
       vFoot
     }
   }

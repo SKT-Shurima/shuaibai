@@ -6,36 +6,52 @@
 				<a href="integral.html">积分半价</a>
 				<a href="">购物币专区</a>
 				<a href="">百城万店</a>
-				<a href="">
-					世尊印
-				</a>
 			</nav>
 		</div>
 		<div class="con_wrap">
 		<div class="con_box">
-			<ul class="con_list">
-				<li>居家百货</li>
-				<li>食品特产</li>
-				<li>世尊生活</li>
-				<li>滋补保健</li>
-				<li>个护美妆</li>
-				<li>成人用品</li>
-				<li>茶油生鲜</li>
-				<li>男女服饰</li>
-				<li>手机数码</li>
-				<li>腕表首饰</li>
+			<ul class="con_list" @mouseenter='listBol=true'>
+				<li v-for='(item,index) in category' :key='item' v-text='item.name' @mouseenter='thislist(index)'></li>
 			</ul>
+			<div class="content" >
+			<!-- v-show='listBol' @mouseleave='listBol=false' -->
+				<div class="detail_list">
+					<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
+						<el-col :span='4'>
+						    <span v-text='item2.name'></span>
+						    <em>></em>
+						</el-col>
+						<el-col :span='16' :offset="1">
+							<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
+						</el-col>
+					</el-row>
+				</div>
+				<div class="img_box">
+					 <ul class="small_img">
+					 	<li v-for='(j,index) in 4' :class='{"margin_left":index%2}'>
+					 		<img src="">
+					 	</li>
+					 </ul>
+					 <ul class="big_img">
+					 	<li v-for= '(k,index) in 2'>
+					 		<img src="">
+					 	</li>
+					 </ul>
+
+				</div>
+			</div>
 			<dl class="slide_show">
 				<dt>
-					<img src='' alt="">
+					<el-carousel height="390px">
+				      <el-carousel-item v-for="item in banners" :key="item">
+				        <img :src="item.image">
+				      </el-carousel-item>
+				    </el-carousel>
 				</dt>
 				<dd>
-					<div class="left_btn"></div>
+					<div class="left_btn"></div>   
 					<div class="cont">
-						<img src="" alt="">
-						<img src="" alt="">
-						<img src="" alt="">
-						<img src="" alt="">
+						<img :src="item.image" alt="" v-for='item in banners' :key='item'>
 					</div>
 					<div class="right_btn"></div>
 				</dd>
@@ -44,41 +60,42 @@
 				<div class="info_box">
 					<dl>
 						<dt>
-							<img src="">
+							<img :src="userInfo.avater">
 						</dt>
 						<dd>
-							<span>Hi,您好！</span>
+							<span>Hi,您好！{{userInfo.nickname}}</span>
 						</dd>
 					</dl>
-					<div class="btnBox" v-if='true'>
+					<div class="btnBox" v-if='!hasUser'>
 						<div>
-							<el-button type='text' size='small'>登录</el-button>
+							<a href="login.html">
+								<el-button type='text' size='small'>登录</el-button>
+							</a>
 						</div>
 						<div>
-							<el-button type='text' size='small'>注册新用户</el-button>
+							<a href="reg.html">
+								<el-button type='text' size='small'>注册新用户</el-button>
+							</a>
 						</div>
 					</div>
-					<div class="info" v-if='false'>
+					<div class="info" v-if='hasUser'>
 						<el-row class='info_money'>
 							<el-col :span='8'>
-								<div class="info_num">
-									200.00
+								<div class="info_num" v-text='userInfo.account'>
 								</div>
 								<div>
 									余额
 								</div>
 							</el-col>
 							<el-col :span='8'>
-								<div class="info_num">
-									107
+								<div class="info_num" v-text='userInfo.shopping_coin'>
 								</div>
 								<div>
 									购物币
 								</div>
 							</el-col>
 							<el-col :span='8'>
-								<div class="info_num">
-									3000.0
+								<div class="info_num" v-text='userInfo.integration'>
 								</div>
 								<div>
 								    积分
@@ -174,33 +191,43 @@
 </template>
 
 <script>
+import {getHomePage,getCategory} from '../../common/js/api.js'
 import {num_filter,currency} from '../../common/js/filter.js'
 	export default{
 		data(){
 			return{
+			   listBol: false,
 			   userInfo:{
-			   		name: '',
-			   		avatar:''
+			   		nickname: '',
+			   		avater:'',
+			   		account: '',
+			   		integration: '',
+			   		shopping_coin: ''
 			   },
+			   banners: [],
+			   category: [{name:''}],
+			   fIndex: 0,
+			   sIndex: 0,
 			   recharge_bol: true,
 			   recharge_val: '',
 			   options: [{
-		          value: '选项1',
-		          label: '黄金糕'
+		          value: '额度1',
+		          label: '10.00'
 		        }, {
-		          value: '选项2',
-		          label: '双皮奶'
+		          value: '额度2',
+		          label: '20.00'
 		        }, {
-		          value: '选项3',
-		          label: '蚵仔煎'
+		          value: '额度3',
+		          label: '30.00'
 		        }, {
-		          value: '选项4',
-		          label: '龙须面'
+		          value: '额度4',
+		          label: '40.00'
 		        }, {
-		          value: '选项5',
-		          label: '北京烤鸭'
+		          value: '额度5',
+		          label: '50.00'
 		        }],
-        		value: ''
+        		value: '',
+        		hasUser: false
 			}
 		},
 		filters:{
@@ -208,9 +235,38 @@ import {num_filter,currency} from '../../common/js/filter.js'
 			currency
 		},
 		methods:{
-			clickme(){
-				alert(12)
+			thislist(index){
+				this.fIndex = index;
+				console.log(this.category[this.fIndex].child_category);
+			},
+			homePage(){
+				let params = {
+					t: '5-web',
+					postion: '0'
+				};
+				getHomePage(params).then(res=>{
+					let {content} = res;
+					this.banners = content.banners ;
+ 				});
+			},
+			categoryList(){
+				getCategory().then(res=>{
+					let {errcode,content} = res ;
+					if (errcode === 0 ) {
+						this.category = content;
+					}
+				})
 			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				if (sessionStorage.userInfo) {
+					this.hasUser = true;
+					this.userInfo = JSON.parse(sessionStorage.userInfo);
+				}
+				this.homePage();
+				this.categoryList();
+			})
 		}
 	}
 </script>
@@ -247,11 +303,11 @@ $text_color: #666;
 		}
 		.con_wrap{
 			width: 100%;
-			background-color: $theme;
 			.con_box{
 				width: 1250px;
 				margin: 0px auto;
 				overflow: hidden;
+				position: relative;
 				.con_list{
 					width: 150px;
 					background-color: #c81623;
@@ -269,6 +325,81 @@ $text_color: #666;
 					li:hover{
 						background-color: #fff;
 						color: #c81623;
+					}
+				}
+				.content{
+					position: absolute;
+					top: 0px;
+					left: 150px;
+					width: 850px;
+					height: 500px;
+					overflow: hidden;
+					background-color: #fff;
+					z-index: 99;
+					.detail_list{
+						width: 600px;
+						height: 500px;
+						overflow-y: auto;
+						overflow-x: hidden;
+						padding-left: 20px;
+						padding-top: 28px;
+						float: left;
+						.el-row{
+							margin-bottom: 22px;
+							.el-col-4{
+								span{
+									display: inline-block;
+									width: 72px;
+									text-align-last: justify;
+								}
+								em{
+									margin-left: 6px;
+								}
+								
+							}
+							.el-col-16{
+								overflow: hidden;
+								padding-left: 6px;
+								padding-bottom: 10px;
+								border-bottom:  1px dashed #dcdcdc;
+								span{
+									float: left;
+									margin-right: 16px;
+									margin-bottom: 20px;
+								}
+							}
+						}
+					}
+					.img_box{
+						float: left;
+						width: 250px;
+						height: 500px;
+						padding: 10px;
+						background-color: #f2f2f2;
+						img{
+							width: 100%;
+							height: 110px;
+						}
+						.small_img{
+							border-bottom: 1px solid $border_color;
+							overflow: hidden;
+							li{
+								float: left;
+								width: 110px;
+								margin-bottom: 10px;
+								
+							}
+							.margin_left{
+								margin-left: 10px;
+							}
+						}
+						.big_img{
+							width: 100%;
+							li{
+								width: 100%;
+							    margin-top: 10px;
+							}
+						}
 					}
 				}
 				.slide_show{

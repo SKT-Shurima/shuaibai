@@ -4,11 +4,11 @@
 			<div class="head_box">
 				<dl class="h_left">
 					<dt>
-						<i></i>
+						<img src="../../../static/headImg/sbPhone.png" height="14" width="14">
 						<span>手机帅柏</span>
 					</dt>
 					<dd>
-						<i></i>
+						<img src="../../../static/headImg/sbCollection.png" height="14" width="14">
 						<span>收藏帅柏</span>
 					</dd>
 				</dl>
@@ -35,16 +35,13 @@
 	                    </form>
 					</div>
 					<ul class="hot_words">
-						<li>热门搜索</li>
-						<li>热门搜索</li>
-						<li>热门搜索</li>
-						<li>热门搜索</li>
-						<li>热门搜索</li>
+						<li v-for='item in keyWordsArr'  :key='item' v-text='item.keyword'></li>
 					</ul>
 				</div>
 				 <div class="shopping_cart">
-				 	<img src="">
+				 	<img src="../../../static/headImg/shopCar.png" height="16" width="16">
 					我的购物车
+					<span v-text='userInfo.cart_num?userInfo.cart_num:0'></span>
 				 </div> 
 			</div>
 		</div>
@@ -52,13 +49,43 @@
 </template>
 
 <script>
+    import {getKeyWord} from "../../common/js/api.js"
 	export default{
-		
+		data(){
+			return{
+				userInfo: {
+					cart_num: ''
+				},
+				keyWordsArr: [{
+			   	   keyword:''
+			   }]
+			}
+		},
+		methods:{
+			keyWords(){
+				getKeyWord().then(res=>{
+					let {errcode,content } =res;
+					if (errcode ===0 ) {
+						this.keyWordsArr = content;
+					}
+				})
+			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				if (sessionStorage.userInfo) {
+					this.hasUser = true;
+					this.userInfo = JSON.parse(sessionStorage.userInfo);
+				}
+				this.keyWords();
+			})
+		}
 	}
 </script>
 
 <style scoped lang='scss'>
 $primary:#c71724;
+$red_color: #f24450;
 	.wrap{
 		width: 100%;
 		.head_wrap{
@@ -165,12 +192,20 @@ $primary:#c71724;
 				.shopping_cart{
 					width: 150px;
 					height: 36px;
-					line-height: 36px;
 					margin-top: 32px;
+					padding-top: 6px;
 					color: $primary;
 					text-align: center;
 					float: right;
 					border: 1px  solid $primary;
+					span{
+						vertical-align: super;
+					    border-radius: 6px;
+					    padding: 0px 3px;
+						color: #fff;
+						background-color: $red_color;
+
+					}
 				}
 			}
 		}

@@ -7,31 +7,32 @@
 			<div class="login_box">
 				<dl class="border_input margin_bottom">
 					<dt>
-						<i>u</i>
+						<img src="../../module/login/images/usname.jpg" height="16" width="14" alt="username">
 					</dt>
 					<dd>
-						<input type="text" name="username" v-model='login_info.username'/>
+						<input type="text" name="username" v-model='username'/>
 					</dd>
 				</dl>
 				<dl class="border_input margin_bottom">
 					<dt>
-						<i>u</i>
+						<img src="../../module/login/images/pw.jpg" height="16" width="14" alt="password">
 					</dt>
 					<dd>
-						<input type="password" name="password" v-model='login_info.password'/>
+						<input type="password" name="passwd" v-model='passwd'/>
 					</dd>
 				</dl>
-				<div class="margin_bottom" style="overflow:hidden">
+				<div style="overflow:hidden;padding-bottom: 30px;">
 					<dl class="border_input" style="width:180px;float:left;">
 						<dt>
-							<i>u</i>
+							<img src="../../module/login/images/code.jpg" height="16" width="14" alt="verify_code">
 						</dt>
 						<dd>
-							<input type="password" name="password" v-model='login_info.password'/>
+							<input type="text" name="verify_code" v-model='verify_code'/>
 						</dd>
 					</dl>
 					<div class="vertify_box">
-						
+						<img :src="imgSrc">
+						<el-button type='text' size='mini' @click='initToken'>看不清楚？换一张</el-button>
 					</div>
 				</div>
 				<div class="select_box">
@@ -42,7 +43,7 @@
 					</div>
 				</div>
 				<div class="login_btn">
-					<el-button type='primary'>登录</el-button>
+					<el-button type='primary' @click='loginFn' :disabled='!(username&&passwd&&verify_code)'>登录</el-button>
 				</div>
 				<div class="cooperation">
 					<div class="title">
@@ -51,10 +52,8 @@
 						<div class="slider"></div>
 					</div>
 					<div class="icon">
-						<img src="" alt="">
-						<img src="" alt="">
-						<img src="" alt="">
-						<img src="" alt="">
+						<img src='../../module/login/images/qq.png' height="20" width="20" alt="QQ">
+						<img src="../../module/login/images/wexin.png" height="20" width="20" alt="wexin">
 					</div>
 				</div>
 			</div>
@@ -62,21 +61,67 @@
 	</div>
 </template>
 <script>
-	export default {
-		data(){
-			return {
-				login_info: {
-					username: '',
-					password: '',
-					verity_num: ''
-				},
-				remmerber: true
-			}
+import {createToken,login} from '../../common/js/api.js' 
+import {MessageBox} from  '.1.2.9@element-ui'
+import {hex_md5} from '../../common/js/md5.js'
+export default {
+	data(){
+		return {
+			username: '',
+			passwd: '',
+			verify_code: '',
+			remmerber: true,
+			token: '',
+			imgSrc: ""
 		}
+	},
+	methods:{
+		loginFn(){
+			let params = {
+				oauth: 'Web',
+				param: this.username,
+				passwd: hex_md5(this.passwd),
+				verify_code: this.verify_code,
+				token: this.token
+			};
+			login(params).then(res=>{
+				let {errcode,msg,content} = res;
+				if (errcode !== 0) {
+					MessageBox.alert(message, '提示', {
+		          	confirmButtonText: '确定'
+		        });
+				} else {
+					content  = JSON.stringify(content);
+					if(sessionStorage.userInfo) {
+						sessionStorage.removeItem('userInfo');
+					}
+					sessionStorage.setItem('userInfo',content);
+					window.location.href = 'index.html' ;
+				}
+			})
+		},
+		initToken(){
+			createToken().then(res=>{
+				let {errcode,message,content} = res;
+				if (errcode !== 0) {
+
+				} else {
+					this.token = content.token;
+					this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
+				}
+			})
+		}
+	},
+	mounted(){
+		this.$nextTick(()=>{
+			this.initToken();
+		})
 	}
+}
 </script>
 <style lang='scss' scoped>
 $primary:#c71724;
+$red_color: #f24450;
 	.wrap{
 		width: 100%;
 		position: relative;
@@ -91,7 +136,7 @@ $primary:#c71724;
 		    background-position: center center;
 		    width: 100%;
 		    height: 600px;
-		    background-image: url(https://aecpm.alicdn.com/simba/img/TB1YpDwQVXXXXaPXVXXSutbFXXX.jpg);
+		    background-image: url('../../module/login/images/bg.jpg');
 		}
 		.content_layout{
 		    width: 1200px;
@@ -126,7 +171,8 @@ $primary:#c71724;
 			    	dt{
 						width: 32px;
 						height: 36px;
-						line-height: 36px;
+						text-align: center;
+						line-height: 34px;
 						position: absolute;
 						left: 0px;
 						top: 0px;
@@ -151,8 +197,18 @@ $primary:#c71724;
 			    	width: 108px;
 			    	height: 36px;
 			    	float: right;
-			    	background-color: red;
-			    	border-radius: 4px;
+			    	position: relative;
+			    	img{
+			    		width: 106px;
+			    		height: 34px;
+			    		border: 1px solid #ccc;
+			    		border-radius: 4px;
+			    	}
+			    	.el-button{
+			    		position: absolute;
+			    		top: 36px;
+			    		line-height: 20px;
+			    	}
 			    }
 			    .select_box{
 			    	width: 100%;
@@ -196,15 +252,13 @@ $primary:#c71724;
 					}
 					.icon{
 						width: 152px;
-						height: 18px;
+						height: 20px;
 						margin: 16px auto 0px;
 						overflow: hidden;
+						text-align: center;
 						img{
-							width: 18px;
-							height: 18px;
 							padding-left: 10px;
 							padding-right: 10px;
-							float: left;
 						}
 					}
 				}	
