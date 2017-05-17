@@ -12,10 +12,10 @@
 						    <el-input v-model="ruleForm.verify" style='width:178px;'></el-input>
 						    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
 						  </el-form-item>
-						  <el-form-item label="设置密码" prop="passwd">
+						  <el-form-item label="设置新密码" prop="passwd">
 						    <el-input v-model="ruleForm.passwd" type="password"></el-input>
 						  </el-form-item>
-						  <el-form-item label="确认密码" prop="confirm_passwd">
+						  <el-form-item label="确认新密码" prop="confirm_passwd">
 						    <el-input v-model="ruleForm.confirm_passwd" type='password'></el-input>
 						  </el-form-item>
 					</div>
@@ -29,7 +29,7 @@
 </template>
 <script>
 import {resetPasswd,sendCode} from '../../common/js/api.js' 
-import {MessageBox} from  '.1.2.9@element-ui'
+import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5.js'
   export default {
     data() {

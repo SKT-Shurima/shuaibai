@@ -1,0 +1,171 @@
+<template>
+	<div class="wrap">
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view12")'>手机绑定</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view120")'>添加绑定</span></h4>
+		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" label-position='left'>
+			<div class="reg_box">
+				<el-form-item label="绑定手机号" prop="phone">
+				    <el-input v-model="ruleForm.phone" type="text"></el-input>
+				</el-form-item>
+				<el-form-item label="短信验证码 " prop="code">
+				    <el-input v-model="ruleForm.code" style='width:178px;'></el-input>
+				    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
+				</el-form-item>
+				  
+			</div>
+			<div style="width:500px;margin:50px 100px;">
+			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.phone&&ruleForm.code)'>确认添加</el-button>
+			</div>	  
+		</el-form>
+	</div>
+</template>
+<script>
+import {phoneBind,sendCode} from '../../common/js/api.js'
+import {MessageBox} from  'element-ui'
+import {hex_md5} from '../../common/js/md5.js'
+  export default {
+    data() {
+    	// 手机验证
+    	 var checkPhone = (rule, value, callback) => {
+    	 	if (value === ''){
+    	 		callback(new Error('请输入手机号'));
+    	 	} else {
+    	 		let reg = /^1[3|4|5|7|8][0-9]\d{4,8}$/ ;
+		        if ( !reg.test(value)) {
+		          callback(new Error('请输入正确手机号'));
+		        } else{
+		        	callback();
+		        }
+    	 	}
+	      };
+	      // 验证码验证
+	    var checkCode = (rule, value, callback) => {
+	    	if (value === '') {
+	    		callback(new Error('请输入验证码'));
+	    	} else {
+	    		if (value !== this.ruleForm.code) {
+		    		callback(new Error('请输入正确验证码'));
+		    	} else {
+		    		callback();
+		    	}
+	    	}
+	    	
+	    };
+      return {
+      	userInfo:{
+
+      	},
+        ruleForm: {
+            phone: '',
+            code: '',
+        },
+        rules: {
+          phone: [
+            { required: true, validator: checkPhone, trigger: 'blur' }
+          ],
+          code: [
+            { required: true, validator: checkCode, trigger: 'blur' }
+          ]
+        },
+        time: -1 ,
+        total_time: 5, 
+        send_btn: '发送验证码'
+      };
+    },
+    methods: {
+    	send_code(){
+	      	let _this = this ;
+      		let params = {
+	      		param: _this.ruleForm.phone,
+	      		type: '8'
+	      	};
+	      	sendCode(params).then( res=>{
+	      		let {errcode,message} = res ;
+	      		if (errcode !== 0) {
+	      		    MessageBox.alert(message, '提示', {
+			          confirmButtonText: '确定'
+				    });
+	      		} else {
+	      			_this.time = _this.total_time ;
+	      			let timer = setInterval(()=>{
+			      		_this.time--;
+			      		_this.send_btn = _this.time + 's后重新发送';
+			      		if (_this.time < 0) {
+			      			_this.time = -1;
+			      			_this.send_btn = '发送验证码';
+			      			clearInterval(timer);
+			      		}
+			      	},1000)
+	      		}
+	      	});
+	    },
+	    changeView(view){
+	      	 this.$store.commit('switchView',view);
+	      	 sessionStorage.currentView = view ;
+	    },
+      	submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let params = {
+            	access_token: this.userInfo.access_token,
+            	phone: this.ruleForm.phone,
+            	code: this.ruleForm.code,
+            	type: "3"
+            };
+            phoneBind(params).then(res=>{
+            	let {errcode,message} = res ;
+            	if (errcode !== 0 ) {
+            		MessageBox.alert(message, '提示', {
+			          	confirmButtonText: '确定'
+				    });
+            	} else {
+            		MessageBox.alert(message, '提示', {
+			          	confirmButtonText: '确定',
+			          	callback: action => {
+				            this.$store.commit('switchView','view10');
+				            sessionStorage.currentView = 'view10';
+				        }
+				    });
+            	}
+            })
+          } else {
+            MessageBox.alert('请完成必填信息', '提示', {
+		          confirmButtonText: '确定'
+		        });
+            return false;
+          }
+        });
+      }
+    },
+    created(){
+        this.$nextTick(()=>{
+        	if (sessionStorage.userInfo) {
+				this.hasUser = true;
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
+			}
+        })
+    }
+  }
+</script>
+<style lang='scss' scoped>
+$border_color: #ccc;
+$text_color: #666;
+	.wrap{
+		width: 100%;
+		h4{
+			line-height: 40px;
+			font-weight: 400;
+			border-bottom: 1px solid $border_color;
+			color: $text_color;
+			span{
+				cursor: pointer;
+			}
+			i{
+				color: #b0b0b0;
+			}
+		}
+		.el-form{
+			width: 400px;
+			margin-top: 40px;
+		}
+	}
+</style>

@@ -103,7 +103,7 @@
 <script>
 import { arrCity } from '../../common/js/city.js'
 import {reg,sendCode} from '../../common/js/api.js'
-import {MessageBox} from  '.1.2.9@element-ui'
+import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5.js'
   export default {
     data() {

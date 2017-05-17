@@ -10,10 +10,10 @@
 		</div>
 		<div class="con_wrap">
 		<div class="con_box">
-			<ul class="con_list" @mouseenter='listBol=true'>
-				<li v-for='(item,index) in category' :key='item' v-text='item.name' @mouseenter='thislist(index)'></li>
+			<ul class="con_list" @mouseenter='listBol=true' @mouseleave='listBol=false'>
+				<li v-for='(item,index) in category' :key='item' v-text='item.name'></li>
 			</ul>
-			<div class="content" >
+			<div class="content" v-show='listBol'  @mouseleave='listBol=false' @mouseenter='listBol=true'>
 			<!-- v-show='listBol' @mouseleave='listBol=false' -->
 				<div class="detail_list">
 					<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
@@ -235,10 +235,6 @@ import {num_filter,currency} from '../../common/js/filter.js'
 			currency
 		},
 		methods:{
-			thislist(index){
-				this.fIndex = index;
-				console.log(this.category[this.fIndex].child_category);
-			},
 			homePage(){
 				let params = {
 					t: '5-web',

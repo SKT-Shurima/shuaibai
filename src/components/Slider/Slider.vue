@@ -150,6 +150,7 @@
 			ul{
 				margin:200px 6px 0px;
 				li{
+					cursor: pointer;
 					padding: 16px 2px;
 					border-bottom: 1px solid #555;
 				}
@@ -161,6 +162,7 @@
 				width: 100%;
 				height: 100px;
 				padding-top: 10px;
+				cursor: pointer;
 				background-color: #c81623;
 			}
 		}

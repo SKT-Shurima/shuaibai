@@ -3,7 +3,6 @@ import axios from '.0.16.1@axios'
 
 let base = '/shuaibo' ;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-// axios.defaults.headers.get['Accept'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
 
@@ -59,8 +58,42 @@ export const getHomePage = params => {
 // 每日上新
 export const getNewGoods = () => {
     return axios.get(`${base}/initAction/getNewGoods`).then(res=> res.data);
-} 
+}
 // 分类
 export const getCategory = () => {
 	return axios.get(`${base}/initAction/getCategory`).then(res=> res.data);
+}
+
+
+
+// 个人中心
+// 修改密码
+export const modifyPassword = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/modifyPassword`,params).then(res=>res.data);
+}
+// 添加绑定手机
+export const phoneBind = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/phoneBind`,params).then(res => res.data);
+}
+// 更改绑定手机号
+export const changePhoneBind = params =>{
+	params =trans(params);
+	return axios.post(`${base}/userAction/changePhoneBind`,params).then(res=> res.data);
+}
+// 设置用户名
+export const changeUsername = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/changeUsername`,params).then(res=>res.data);
+}
+// 设置出生日期
+export const changeBirthday = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/changeBirthday`,params).then(res=>res.data);
+}
+// 设置性别
+export const changeSex = params => {
+	params = trans(params);
+	return axios.post(`${base}/userAction/changeSex`,params).then(res=>res.data);
 }

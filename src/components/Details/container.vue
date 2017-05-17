@@ -11,17 +11,23 @@
 					<li><div class="title">查看全部分类</div></li>
 					<li><div class="title">店铺热卖</div></li>
 					<li><div class="title">掌柜推荐</div></li>
-					<li><div class="title">护肤品</div>
+					<li><div class="title">护肤品 
+						<img src="../../module/detail/images/close.png" height="14" width="14">
+					</div>
 						<ul>
 							<li v-for='item in 4'>面膜</li>
 						</ul>
 					</li>
-					<li><div class="title">护肤品</div>
+					<li><div class="title">护肤品
+							<img src="../../module/detail/images/close.png" height="14" width="14">
+						</div>
 						<ul>
 							<li v-for='item in 4'>面膜</li>
 						</ul>
 					</li>
-					<li><div class="title">护肤品</div>
+					<li><div class="title">护肤品
+							<img src="../../module/detail/images/close.png" height="14" width="14">
+						</div>
 						<ul>
 							<li v-for='item in 4'>面膜</li>
 						</ul>
@@ -210,40 +216,13 @@
 				 	</ul>
 				 </div>         
 			</div>
-			 <div class="recommend" style="margin-top:60px;">
-			 	<div class="title">
-			 		<i class="icon"></i>
-			 		<span>店内推荐</span>
-			 		<strong>换一组<i></i></strong>
-			 	</div>
-			 	<ul class="youLove">
-			 		<li class="infoList" v-for='item in 6'>
-			 			<dl>
-							<dt>
-								<img src="">
-							</dt>
-							<dd>
-								<div class="sellInfo">
-									9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮
-								</div>
-								<div class="priceInfo">
-									<span>
-										{{168.00|currency}}
-									</span>
-									<em>
-										{{2017}}人付款
-									</em>
-								</div>
-							</dd>
-						</dl>
-			 		</li>
-			 	</ul>
-			 </div>
+			 <you-love></you-love>
 		</div>
 	</div>
 </template>
 <script>
 	import {currency} from '../../common/js/filter.js'
+	import youLove from '../../components/Guess/content.vue'
 	export default {
 		data(){
 			return {
@@ -253,6 +232,9 @@
 		},
 		filters:{
 			currency
+		},
+		components:{
+			youLove
 		}
 	}
 </script>
@@ -323,12 +305,21 @@ $bg_title: #f5f5f5;
 				border-right: 1px solid $border_color;
 				border-top: 1px solid $border_color;
 				.title{
+					position: relative;
 					background-color: $bg_title;
 					padding-left: 16px;
 					line-height: 40px;
 					font-weight: 600;
 					font-size: 14px;
 					border-bottom: 1px solid $border_color;
+					img{
+						position: absolute;
+						top: 0px;
+						bottom: 0px;
+						right: 10px;
+						margin: auto;
+
+					}
 				}
 				ul{
 					border-bottom: 1px solid $border_color;
@@ -613,15 +604,6 @@ $bg_title: #f5f5f5;
 		.youLove{
 			width: 100%;
 			overflow: hidden;
-			.infoList{
-				float: left;
-				width: 208.33px;
-				padding: 15px;
-				dt{
-					width: 180px;
-					height: 180px;
-				}
-			}
 		}
  }
 } 

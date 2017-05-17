@@ -62,7 +62,7 @@
 </template>
 <script>
 import {createToken,login} from '../../common/js/api.js' 
-import {MessageBox} from  '.1.2.9@element-ui'
+import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5.js'
 export default {
 	data(){
@@ -85,7 +85,7 @@ export default {
 				token: this.token
 			};
 			login(params).then(res=>{
-				let {errcode,msg,content} = res;
+				let {errcode,message,content} = res;
 				if (errcode !== 0) {
 					MessageBox.alert(message, '提示', {
 		          	confirmButtonText: '确定'

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App'
 
-import {Button,Row,Col,Rate} from  '.1.2.9@element-ui'
-import '.1.2.9@element-ui/lib/theme-default/index.css'
+import {Button,Row,Col,Rate} from  'element-ui'
+import 'element-ui/lib/theme-default/index.css'
 import '../../../theme/index.css'
 
 

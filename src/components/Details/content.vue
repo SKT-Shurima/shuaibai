@@ -93,7 +93,6 @@
 									<span>快递</span>
 									<em>免运费</em>
 								</div>
-
 							</el-col>
 						</el-row>
 						<el-row>
@@ -101,7 +100,9 @@
 								规格
 							</el-col>
 							<el-col :span='20' class='chooseBtn'>
-								<button v-for='(item,index) in 2' :index='index' @click='version=index' :class='{"checkedBorder": version===index}'>常规版</button>
+								<button v-for='(item,index) in 2' :index='index' @click='version=index' :class='{"checkedBorder": version===index}'>常规版
+								<img src="../../module/detail/images/checked.png" height="16" width="16" v-show='version===index'>
+								</button>
 							</el-col>
 						</el-row>
 						<el-row>
@@ -109,7 +110,8 @@
 								规格
 							</el-col>
 							<el-col :span='20' class='chooseBtn'>
-								<button v-for='(item,index) in 2' :index='index' @click='combo=index' :class='{"checkedBorder": combo===index}'>套餐一</button>
+								<button v-for='(item,index) in 2' :index='index' @click='combo=index' :class='{"checkedBorder": combo===index}'>套餐一
+								<img src="../../module/detail/images/checked.png" height="16" width="16" v-show='combo===index'></button>
 							</el-col>
 						</el-row>
 						<el-row>
@@ -161,22 +163,23 @@
 					<dl class="online">
 						<dt>在线客服</dt>
 						<dd>
-							<img src="">
+							<img src ="../../module/detail/images/qq.png" height="14" width="12">
 							客服天天
 						</dd>
 					</dl>
 					<div class="collectBtn">
-						<el-button type='text' size='small'>
-							<img src="">
-							收藏店铺
+						<el-button type='text' size='small' @click='colStoreBol=!colStoreBol' :class='{"isView":colStoreBol}'>
+							<img src="../../module/detail/images/viewStoreOn.png" v-show='!colStoreBol'  height="14" width="14">
+							<img src="../../module/detail/images/viewStoreOff.png" v-show='colStoreBol' height="14" width="14">
+							{{colStoreBol?'取消关注':'关注店铺'}}
 						</el-button>
-						<el-button type='text' style='margin-left:10px;' size='small'>
-							<img src="">
-							收藏商品
+						<el-button type='text'  size='small' style='margin-left:0px;' @click='colGoodsBol=!colGoodsBol' :class='{"isView":colGoodsBol}'>
+							<img src="../../module/detail/images/colGoodOn.png" v-show='!colGoodsBol' height="14" width="14">
+							<img src="../../module/detail/images/colGoodOff.png" v-show='colGoodsBol' height="14" width="14">
+							{{colGoodsBol?'取消收藏':'收藏商品'}}
 						</el-button>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</div>
@@ -203,7 +206,9 @@
 		        areaIndex: 0,
 		        proName: '浙江',
 		        cityName: '杭州',
-		        addressBol: false
+		        addressBol: false,
+		        colStoreBol: false,
+		        colGoodsBol: false,
 			}
 		},
 		filters: {
@@ -414,6 +419,12 @@ $title_color: #333;
       					padding: 0px 20px;
       					line-height: 26px;
       					margin-right: 10px;
+      					position: relative;
+      					img{
+      						position: absolute;
+      						right: 0px;
+      						bottom: 0px;
+      					}
       				}
       				.checkedBorder{
       					border:2px solid $primary;
@@ -542,7 +553,10 @@ $title_color: #333;
       				text-align: center;
       				.el-button{
       					border: 1px solid $red_color;
-      					padding: 6px 10px;
+      					padding: 6px;
+      				}
+      				.isView{
+      					color: #666;
       				}
       			}
       		}
