@@ -1,4 +1,4 @@
-import axios from '.0.16.1@axios'
+import axios from 'axios'
 
 
 let base = '/shuaibo' ;
