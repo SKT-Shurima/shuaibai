@@ -79,33 +79,38 @@ $red_color: #f24450;
 				margin-top: 32px;
 				margin-left: 120px;
 				.search_form{
-					    border: 3px solid #e4393c;
-					    height: 44px;
-					    width: 496px;
-					.search_text{
-						background-color: #fff;
-						background-position: 0 -360px;
-						background-repeat: repeat-x;
-						color: #999;
-					 	font-family: arial,"宋体";
-						font-size: 14px;
-						padding: 5px;
-						width: 406px;
-						height: 38px;
-						line-height: 38px;
-						border: none;
-						outline: none;
-					}
-					.search_but{
-						background: none repeat scroll 0 0 #e4393c;
-					    color: #fff;
-					    font-size: 14px;
-					    font-weight: 700;
-					    width: 78px;
-					    height: 38px;
-					    border: none;
-					    margin: 0px;
-					}
+				    border: 3px solid #e4393c;
+				    height: 44px;
+				    width: 496px;
+				    #searchForm{
+				    	overflow: hidden;
+				    	.search_text{
+							float: left;
+							background-color: #fff;
+							background-position: 0 -360px;
+							background-repeat: repeat-x;
+							color: #999;
+						 	font-family: arial,"宋体";
+							font-size: 14px;
+							padding: 5px;
+							width: 412px;
+							height: 38px;
+							line-height: 38px;
+							border: none;
+							outline: none;
+						}
+						.search_but{
+							float: left;
+							background: none repeat scroll 0 0 #e4393c;
+						    color: #fff;
+						    font-size: 14px;
+						    font-weight: 700;
+						    width: 78px;
+						    height: 38px;
+						    border: none;
+						    margin: 0px;
+						}
+				    }
 				}
 				.hot_words{
 					margin: 0px;

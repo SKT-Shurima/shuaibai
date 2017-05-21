@@ -5,7 +5,6 @@
 				<div class="logo" @click='currentView="view10"'>
 					我的帅柏
 				</div>
-
 				<div class="navTitle">
 					<ul class="navList">
 						<li><a href="index.html">帅柏首页</a></li>
@@ -43,48 +42,27 @@
 					会员中心
 				</div>
 				<ul>
-					<li>
-						<i></i>个人信息
-					</li>
-					<li>
-						<i></i>商品收藏
-					</li>
-					<li>
-						<i></i>店铺关注
-					</li>
-					<li>
-						<i></i>我的购物车
-					</li>
-					<li>
-						<i></i>我的足迹
-					</li>
-					<li>
-						<i></i>我的优惠券
-					</li>
-					<li>
-						<i></i>投诉
-					</li>
-					<li>
-						<i></i>资金
-					</li>
-					<li>
-						<i></i>商家入驻
+					<li @click='vipView(index)' :class='{"isClick":currentVipView===index}' v-for='(item,index) in  vipCenterList'>
+						<i></i>{{item.name}}
 					</li>
 				</ul>
 			</div>
 			<div class="container">
 				<div class="orderList">
-					<component :is='currentView'></component>
+					<keep-alive>
+						<component :is='currentView' @hasGuess='hasGuess(msg)'></component>
+					</keep-alive>
 				</div>
 			</div>
 		</div>
-		<div class="guess">
+		<div class="guess" v-show='guessBol'>
 			<you-like></you-like>
 		</div>
 	</div>
 </template>
 <script>
 	import personalCenter from './personalCenter' ;
+	import address from './address'
 	import modidfyPw from './modidyPw'
 	import phoneBind from './phoneBind'
 	import addPhoneBind from './addPhoneBind'
@@ -93,11 +71,37 @@
 	import addEmailBind from './addEmailBind'
 	import unbindEmail from './unbindEmail'
 	import message from "./message"
+	import personalInfo from './personalInfo'
+	import colGoods from './colGoods'
+	import viewStore from "./viewStore"
+	import myShopCar from "./myShopCar"
+	import footmark from './footmark'
+	import coupons from './coupons'
+	import complaints from './complaints'
+	import money from './money'
+	import recharge from './recharge'
+	import withdraw from './withdraw'
+	import shopCoin from './shopCoin'
+	import integral from './integral'
+	import tenants from './tenants'
 	import youLike from '../../components/Guess/content'
 	export default {
 		data() {
 		    return {
-		        accountListBol: false
+		    	guessBol: true,
+		        accountListBol: false,
+		        currentVipView: '',
+		        vipCenterList: [
+		        	{name: '个人中心'},
+		        	{name: '商品收藏'},
+		        	{name: '店铺关注'},
+		        	{name: '我的购物车'},
+		        	{name: '我的足迹'},
+		        	{name: '我的优惠券'},
+		        	{name: '投诉'},
+		        	{name: '资金'},
+		        	{name: '商家入驻'}
+		        ]
 		    };
 		},
 		computed:{
@@ -108,6 +112,7 @@
 		components:{
 			youLike,
 			"view10": personalCenter,
+			"view100": address,
 			"view11": modidfyPw,
 			"view12": phoneBind,
 			"view120": addPhoneBind,
@@ -115,24 +120,49 @@
 			"view13": emailBind,
 			"view130": addEmailBind,
 			"view131": unbindEmail,
-			"view20": message
+			"view20": message,
+			"view30": personalInfo,
+			"view31": colGoods,
+			"view32": viewStore,
+			"view33": myShopCar,
+			"view34": footmark,
+			"view35": coupons,
+			"view36": complaints,
+			"view37": money,
+			"view370": recharge,
+			"view371": withdraw,
+			"view372": shopCoin,
+			"view373": integral,
+			"view38": tenants
 		},
 	    methods: {
 	      handleSelect(key, keyPath) {
 	        console.log(key, keyPath);
-	      },changeView(view){
+	      },
+	      hasGuess(msg){
+	      	this.guessBol = msg;
+	      },
+	      changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = this.currentView ;
+	      	 sessionStorage.currentVipListView = this.currentView ;
+	      },
+	      vipView(index){
+	      	this.currentVipView = index;
+	      	sessionStorage.setItem('currentVipView',index);
+	      	let view = 'view3' ;
+	        view += index ;
+	        this.changeView(view);
 	      }
 	      
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.currentView) {
-					let currentView = sessionStorage.currentView;
+				if (sessionStorage.currentVipListView) {
+					let currentView = sessionStorage.currentVipListView;
+					this.currentVipView = sessionStorage.currentVipView - 0;
 					this.changeView(currentView);
 				}else{
-					sessionStorage.setItem('currentView',this.currentView);
+					sessionStorage.setItem('currentVipListView',this.currentView);
 				}
 			});
 		}
@@ -180,9 +210,9 @@
 							ul{
 								position: absolute;
 								left: 0px; 
+								z-index: 10;
 								overflow: hidden;
 								background-color: #bd2f30;
-								
 								li{
 									height: 40px;
 									line-height: 40px;
@@ -242,6 +272,7 @@
 				}
 				li{
 					padding-left: 16px;
+					cursor: pointer;
 					color: $text_color;
 					i{
 						display: inline-block;
@@ -250,6 +281,12 @@
 						border-radius: 50%;
 						margin-right: 10px;
 						background-color: #aaa ;
+					}
+				}
+				.isClick{
+					color: $primary;
+					i{
+						background-color: $primary;
 					}
 				}
 			}

@@ -24,7 +24,7 @@
 						<span>{{userInfo.integration}}</span>
 					</li>
 				</ul>
-				<div class="address">
+				<div class="address" @click='changeView("view100")'>
 					我的收货地址
 				</div>
 			</div>
@@ -60,6 +60,12 @@ import orderList from './orderList.vue'
 		},
 		components:{
 			orderList
+		},
+		methods:{
+			changeView(view){
+		      	 this.$store.commit('switchView',view);
+		      	 sessionStorage.currentView = view ;
+		    }
 		},
 		mounted(){
 			this.$nextTick(()=>{
@@ -155,6 +161,7 @@ import orderList from './orderList.vue'
 			float: right;
 		}
 		.address{
+			cursor: pointer;
 			color: $primary;
 		}
 		.lastLogin{

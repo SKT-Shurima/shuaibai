@@ -80,7 +80,7 @@
 		                 </select>
 					</el-col>
 					<el-col style='margin-left: 8px;'>
-						<select v-model="ruleForm.xian" >
+						<select v-model="ruleForm.xian" @change='setOption("areaIndex",$event)'>
 						<option value='' disabled selected style='display:none;'>区</option>
 		                    <option
 		                      v-for="(item3,index3) in cityArr[proIndex].sub[cityIndex].sub"
@@ -320,10 +320,16 @@ import {hex_md5} from '../../common/js/md5.js'
              	this.proIndex = event.target.selectedIndex -1;
                 this.cityIndex = 0;
                 this.areaIndex = 0;
+                this.ruleForm.city = '';
+	    		this.ruleForm.xian= '';
             }
             if(type === 'cityIndex'){
             	this.cityIndex = event.target.selectedIndex -1;
                 this.areaIndex = 0;
+                this.ruleForm.xian= '';
+            }
+            if(type === 'areaIndex'){
+            	this.areaIndex = event.target.selectedIndex -1;
             }
         },
       submitForm(formName) {
@@ -350,9 +356,9 @@ import {hex_md5} from '../../common/js/md5.js'
 					sex: this.ruleForm.sex -0, 
 					mobiletele: this.ruleForm.mobiletele,
 					country: '中国',
-					province: this.ruleForm.province,
-					city: this.ruleForm.city,
-					xian: this.ruleForm.xian,
+					province: this.cityArr[this.proIndex].name,
+					city: this.cityArr[this.proIndex].sub[this.cityIndex].name,
+					xian: this.cityArr[this.proIndex].sub[this.cityIndex].sub?this.cityArr[this.proIndex].sub[this.cityIndex].sub[this.areaIndex].name:"",
 					address: this.ruleForm.address,
 					papernumber: this.ruleForm.papernumber
             	};

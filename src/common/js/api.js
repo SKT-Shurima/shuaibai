@@ -67,6 +67,36 @@ export const getCategory = () => {
 
 
 // 个人中心
+// 获取用户信息
+export const getUserInfo = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/getUserInfo`,params).then(res=>res.data);
+}
+// 保存地址
+export const saveAddress = params =>{
+	params = trans(params);
+	return axios.post(`${base}/addressAction/saveAddress`,params).then(res=>res.data);
+}
+// 获取地址列表
+export const getAddress = params =>{
+	params = trans(params);
+	return axios.post(`${base}/addressAction/getAddress`,params).then(res=>res.data);
+}
+// 删除地址
+export const delAddress = params =>{
+	params = trans(params);
+	return axios.post(`${base}/addressAction/delAddress`,params).then(res=>res.data);
+}
+// 设置默认地址
+export const defaultAddress = params =>{
+	params = trans(params);
+	return axios.post(`${base}/addressAction/defaultAddress`,params).then(res=>res.data);
+}
+// 获取单个地址
+export const getOneAddress = params =>{
+	params = trans(params);
+	return axios.post(`${base}/addressAction/getOneAddress`,params).then(res=>res.data);
+}
 // 修改密码
 export const modifyPassword = params =>{
 	params = trans(params) ;
