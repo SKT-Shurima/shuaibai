@@ -22,6 +22,13 @@
       vHead,
       vContent,
       vFoot
+    },
+    mounted(){
+        this.$nextTick(()=>{
+           if(!sessionStorage.access_token){
+               window.location.href = 'login.html';
+           }
+        })
     }
   }
 </script>

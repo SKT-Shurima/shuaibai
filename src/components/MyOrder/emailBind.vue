@@ -8,7 +8,7 @@
 			<el-col :span='10' v-text='this.userInfo.has_email?this.userInfo.email:"无"'>
 			</el-col>
 			<el-col :span='6'>
-				<el-button type='primary' size='mini' v-text='!this.userInfo.has_email?"解绑":"绑定"' @click='clickBtn'></el-button>
+				<el-button type='primary' size='mini' v-text='this.userInfo.has_email?"解绑":"绑定"' @click='clickBtn'></el-button>
 			</el-col>
 		</el-row>
 	</div>
@@ -29,7 +29,7 @@
 		      	 sessionStorage.currentView = view;
 		    },
 		    clickBtn(){
-		    	if (!this.userInfo.has_email) {
+		    	if (this.userInfo.has_email) {
 		    		this.changeView("view131");
 		    	}else{
 		    		this.changeView("view130");

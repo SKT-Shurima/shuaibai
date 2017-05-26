@@ -83,16 +83,36 @@
 	</div>
 </template>
 <script>
-
+import {getOrders} from '../../common/js/api.js'
 import {currency} from '../../common/js/filter.js'
 	export default {
 		filters: {
 			currency
 		},
 	    methods: {
+
 	      handleSelect(key, keyPath) {
 	        console.log(key, keyPath);
-	      }
+	      },
+	      getOrderList(state,page){
+		    	let params = {
+		    		access_token: sessionStorage.access_token,
+		    		state: state,
+		    		page: page
+		    	};
+		    	getOrders(params).then(res=>{
+		    		let {errcode,content} = res;
+		    		if(errcode===0){
+		    			console.log(content)
+		    		}
+		    	})
+		    }
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				// 获取订单列表
+				this.getOrderList("0","0")
+			})
 		}
 	}
 </script>
@@ -106,7 +126,7 @@ import {currency} from '../../common/js/filter.js'
 		.shopInfoHead{
 			line-height: 40px;
 			text-align: center;
-			margin: 30px 0px 20px;
+			margin: 0px 0px 20px;
 			border: 1px solid $border_color;
 			background-color: $bg_color;
 			.el-col-2{

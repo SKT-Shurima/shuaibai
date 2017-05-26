@@ -7,6 +7,7 @@
 				  class="avatar-uploader"
 				  action="http://shuaibo.zertone1.com/web/userAction/changeAvater"
 				  :headers='headers'
+				  :data='params'
 				  :show-file-list="false"
 				  :on-success="handleAvatarSuccess"
 				  :before-upload="beforeAvatarUpload">
@@ -28,7 +29,8 @@
 			      v-model="userInfo.birthday"
 			      type="date"
 			      placeholder="选择日期"
-			      :picker-options="pickerOptions" size='small' style='width:100%'>
+			      :picker-options="pickerOptions" size='small' style='width:100%'
+			      @change='userInfo.birthday=userInfo.birthday'>
 			    </el-date-picker>
 			</el-col>
 		</el-row>
@@ -48,7 +50,8 @@
 	</div>
 </template>
 <script>
-import {getUserInfo} from '../../common/js/api.js'
+import {changeUsername,changeBirthday,changeSex} from '../../common/js/api.js'
+import {MessageBox} from  'element-ui'
  export  default{
  	data(){
  		return{
@@ -65,7 +68,8 @@ import {getUserInfo} from '../../common/js/api.js'
 	        },
  			radio: '',
  			imageUrl: null,
- 			headers: {}
+ 			headers: {},
+ 			params: {}
  		}
  	},
  	methods:{
@@ -73,7 +77,7 @@ import {getUserInfo} from '../../common/js/api.js'
 	       this.imageUrl = URL.createObjectURL(file.raw);
 	    },
 	    beforeAvatarUpload(file) {
-	    	this.getToken();
+	    	this.getHeaders();
 	        const isJPG = file.type === 'image/jpeg'||'image.png';
 	        const isLt2M = file.size / 1024 / 1024 < 2;
 	        if (!isJPG) {
@@ -84,38 +88,115 @@ import {getUserInfo} from '../../common/js/api.js'
 	        }
 	        return isJPG && isLt2M;
 	    },
-	    save(){
-
+	    getBirthday(birthday){
+	    	let _this = this ;
+	    	_this.userInfo.birthday= birthday;
+	    	console.log(_this.userInfo.birthday)
 	    },
- 		getToken(){
- 			console.log(this.userInfo)
- 			this.headers= {
- 				'Content-Type': 'application/x-www-form-urlencoded',
- 				'access_token' : sessionStorage.access_token 
+	    save(){
+	    	let _this = this ;
+	    	if (_this.userInfo.nickname==='') {
+	    		MessageBox.alert('请输入昵称', '提示', {
+		          	confirmButtonText: '确定'
+			    });
+	    	}else if(_this.userInfo.birthday===''){
+	    		MessageBox.alert('请选择您的出生日期', '提示', {
+		          	confirmButtonText: '确定'
+			    });
+	    	}else {
+	    		let access_token = sessionStorage.access_token ;
+	    		// 修改用户名
+		    	let paramsName = {
+		    		access_token: access_token,
+		    		nickname: _this.userInfo.nickname
+		    	}
+		    	changeUsername(paramsName).then(res=>{
+		    		let {errcode,message,content} = res;
+		    		if (errcode!==0) {
+		    			 if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+		    		}else{
+		    			_this.userInfo.nickname = content ;
+		    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
+		    		} 
+		    	});
+		    	// 修改出生日期
+		    	let paramsBirth = {
+		    		access_token: access_token,
+		    		birthday: _this.userInfo.birthday.getTime()
+		    	}
+		    	changeBirthday(paramsBirth).then(res=>{
+		    		let {errcode,message,content} = res;
+		    		if (errcode!==0) {
+		    			 if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+		    		}else{
+		    			_this.userInfo.birthday = content ;
+		    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
+		    		} 
+		    	});
+		    	// 修改性别
+		    	let paramsSex = {
+		    		access_token: access_token,
+		    		type: _this.radio
+		    	}
+		    	changeSex(paramsName).then(res=>{
+		    		let {errcode,message,content} = res;
+		    		if (errcode!==0) {
+		    			 if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+		    		}else{
+		    			_this.userInfo.sex = content ;
+		    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
+		    		} 
+		    	})
+	    	} 
+	    },
+ 		getHeaders(){
+ 			let _this = this ;
+ 			_this.headers= {
+ 				'Content-Type': 'application/x-www-form-urlencoded'
  			}
- 		},
- 		getUserInfoFn(){
- 			let params = {
- 				access_token: this.userInfo.access_token
- 			};
- 			getUserInfo(params).then(res=>{
- 				let {errcode,content} = res;
- 				if (errcode===0) {
- 				    sessionStorage.removeItem("userInfo");
- 				    content = JSON.stringify(content);
- 				    sessionStorage.setItem('userInfo',content);
- 				    this.userInfo = JSON.parse(sessionStorage.userInfo);
- 				    this.radio = this.userInfo.sex==="男"?"1":this.userInfo.sex==="女"?"2":"";
- 				}
- 			})
+ 			_this.params = {
+ 				access_token: sessionStorage.access_token
+ 			}
  		}
 	},
  	mounted(){
  		this.$nextTick(()=>{
  			if (sessionStorage.userInfo) {
-				this.hasUser = true;
 				this.userInfo = JSON.parse(sessionStorage.userInfo);
-				this.getUserInfoFn();
+				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
 			}else{
 				window.location.href = "login.html";
 			}

@@ -36,7 +36,7 @@
 					</div>
 				</div>
 				<div class="select_box">
-					<el-checkbox  v-model='remmerber'>记住密码</el-checkbox>
+					<el-checkbox  v-model='remember'>记住密码</el-checkbox>
 					<div style="float: right;">
 						<a href="rePassword.html" style="color:#000;">忘记密码</a>
 						<a href="reg.html" style="color: #f24450;margin-left:10px;">免费注册</a>
@@ -70,7 +70,7 @@ export default {
 			username: '',
 			passwd: '',
 			verify_code: '',
-			remmerber: true,
+			remember: true,
 			token: '',
 			imgSrc: ""
 		}
@@ -91,15 +91,31 @@ export default {
 		          	confirmButtonText: '确定'
 		        });
 				} else {
-					content  = JSON.stringify(content);
+					//  判断是否记住密码
+					let accountInfo ;
+					if(this.remember){
+						accountInfo = this.username + "&" + this.passwd;  
+						this.setCookie('accountInfo',accountInfo,1440*3);  
+					}else {
+						let hasUserInfo = this.getCookie('accountInfo');
+						if (hasUserInfo) {
+							this.delCookie('accountInfo');
+						}
+					}
+					// 本地存储登录后返回信息
 					if(sessionStorage.userInfo) {
 						sessionStorage.removeItem('userInfo');
+						sessionStorage.removeItem('access_token');
+					}else {
+						sessionStorage.setItem('access_token',content.access_token);
+						content  = JSON.stringify(content);
+						sessionStorage.setItem('userInfo',content);
 					}
-					sessionStorage.setItem('userInfo',content);
 					window.location.href = 'index.html' ;
 				}
 			})
 		},
+		// 看不清，点击之后换一张
 		initToken(){
 			createToken().then(res=>{
 				let {errcode,message,content} = res;
@@ -110,11 +126,46 @@ export default {
 					this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
 				}
 			})
-		}
+		},
+		// 设置cookie  
+		setCookie(c_name,value,expTime){  
+		    var exdate = new Date();  
+		    exdate.setTime(exdate.getTime() + expTime *24 *60 * 60 * 1000);  
+		    document.cookie= c_name + "=" + escape(value)+((expTime==null) ? "" : ";expires="+exdate.toGMTString());  
+		},
+		// 读取cookie  
+		getCookie(c_name){  
+		    if (document.cookie.length>0)  
+		    {  
+		        var c_start=document.cookie.indexOf(c_name + "=");  
+		        if (c_start!=-1)  
+		        {   
+		        c_start=c_start + c_name.length+1;  
+		        var c_end=document.cookie.indexOf(";",c_start);  
+		        if (c_end==-1)   
+		            c_end = document.cookie.length  
+		            return unescape(document.cookie.substring(c_start, c_end))  
+		        }  
+		    }  
+		    return ""     
+		},
+		// 删除cookie  
+		delCookie(c_name){  
+		    var exp = new Date();  
+		    exp.setTime(exp.getTime() - 1);  
+		    var cval = this.getCookie(c_name);  
+		    if(cval!=null){  
+		        document.cookie = c_name + "=" + cval + ";expires=" + exp.toGMTString();  
+		    }  
+		}, 
 	},
 	mounted(){
 		this.$nextTick(()=>{
 			this.initToken();
+			let accountInfo = this.getCookie('accountInfo');
+			accountInfo = accountInfo.split("&");
+			this.username = accountInfo[0];
+			this.passwd = accountInfo[1];
 		})
 	}
 }

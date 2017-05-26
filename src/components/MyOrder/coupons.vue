@@ -3,22 +3,22 @@
 		<h4 class="title">
 			我的优惠券
 		</h4>
-		<ul class="couponsListBox">
-			<li v-for='(item,index) in 8' :class='{"noMarginRight":(index+1)%3===0}' class="couponsList">
+		<ul class="couponsListBox" v-if='couponsList'>
+			<li v-for='(item,index) in couponsList' :class='{"noMarginRight":(index+1)%3===0}' class="couponsList">
 				<div class="info">
 					<div class="limit">
 						<dl>
 							<dt>￥</dt>
-							<dd>100</dd>
+							<dd v-text='item.amount'>100</dd>
 						</dl>
 						<div>
-							满1000可用
+							满{{item.limit}}可用
 						</div>
 					</div>
 					<ul>
 						<li>使用范围：电脑</li>
-						<li>发行店铺：帅柏直营店</li>
-						<li>有效时间：2017.01.02-2017.12.31</li>
+						<li>发行店铺：{{item.name}}</li>
+						<li>有效时间：{{item.date_start|dateStylePoint}}-{{item.date_end|dateStylePoint}}</li>
 					</ul>
 				</div>
 				<div class="opera">
@@ -30,18 +30,43 @@
 	</div>
 </template>
 <script >
-import {currency} from '../../common/js/filter.js'
+import {currency,dateStylePoint} from '../../common/js/filter.js'
+import {getCoupons} from '../../common/js/api.js'
 	export default{
 		data(){
 			return{
-
+				couponsList: null
 			}
 		},
 		filters:{
-			currency
+			currency,
+			dateStylePoint
 		},
 		mounted(){
-
+			this.$nextTick(()=>{
+				let params  ={
+					access_token : sessionStorage.access_token
+				}
+				getCoupons().then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.couponsList = content;
+					}
+				})
+			})
 		}
 	}
 </script>

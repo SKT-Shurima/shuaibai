@@ -7,7 +7,7 @@
 		 		</el-col>
 		 		<el-col :span='10'>
 		 			<div class="text">
-		 				<img src="">
+		 				<img src="../../module/index/images/newDay.png" height="24" width="24">
 		 				每日上新
 		 			</div>
 		 		</el-col>
@@ -32,36 +32,35 @@
 		 		</el-col>
 		 	</el-row>
 		</div>
-		<div class="theme_box">
+		<div class="theme_box" v-if='theme'>
 				<div class="theme_0">
-					<div class="title">
-						<span>
-							<img src="">
-							一元抢购
-						</span>
-						<em>
-							<a href="snap.html">更多精品好货<i></i></a>
-						</em>
-					</div>
+					<div class="title" :style='{background: `url(${theme[0].img.img})`}'></div>
 					<el-row>
 						<el-col :span='12' class='snapup_left'>
 							<dl>
-								<dt>
-									<img src="">
+								<dt style="width:270px;height:270px;">
+									<img :src="theme[0].goods.goods[0].cover" width="100%" height="100%">
 								</dt>
 								<dd>
-									<div class="show_info">我会像奥德修斯一样朝着心中的方向哪怕众神会在彼</div>
+									<div class="show_info" v-text='theme[0].goods.goods[0].name' style='margin-top:8px;'></div>
 				 					<div class="sell_info">
-				 						<span>{{168.00|currency}}</span>
-				 						<em>{{1288.00 | currency }}</em>
+				 						<span>￥1.00</span>
+				 						<em>{{theme[0].goods.goods[0].shop_price|currency}}</em>
 				 					</div>
-				 					<div class="snapup_btn_box">
-				 						<div class="snapup_time">
-				 							<span>12:02:23</span>
+				 					<div class="snapup_btn_box" :class='theme[0].goods.goods[0].date_start*1000-nowTime >= 0?"start":theme[0].goods.goods[0].date_end*1000-nowTime >= 0?"end":"over"'>
+				 						<div class="snapup_time" v-if='theme[0].goods.goods[0].date_start*1000-nowTime>=0'>
+				 							<span>{{theme[0].goods.goods[0].date_start*1000-nowTime|timeStyle}}</span>
+				 							<em>后开始</em>
+				 						</div>
+				 						<div class="snapup_time" v-else-if='theme[0].goods.goods[0].date_end*1000-nowTime>= 0'>
+				 							<span>{{theme[0].goods.goods[0].date_end*1000-nowTime|timeStyle}}</span>
 				 							<em>后结束</em>
 				 						</div>
+				 						<div class="snapup_time" v-else>
+				 							<span>已结束</span>
+				 						</div>
 				 						<div class="snapup_btn">
-				 							立即抢购
+				 							<el-button type='text' :disabled='theme[0].goods.goods[0].date_end*1000-nowTime<0'>立即抢购</el-button>
 				 						</div>
 				 					</div>
 								</dd>
@@ -72,20 +71,20 @@
 							<li v-for='item in 3'>
 								<dl class="goods_info">
 									<dt>
-										<img src="">
+										<img :src="theme[0].goods.goods[1].cover">
 									</dt>
 									<dd>
-										<div class="show_info">我会像奥德修斯一样朝着心中的方向哪怕众神会在彼</div>
+										<div class="show_info" v-text='theme[0].goods.goods[1].name'></div>
 										<div class="sell_info">
-										<span>{{1.00|currency}}</span>
+										<span>￥1.00</span>
 										</div>
-										<div class="goods_preprice">{{128.0|currency}}</div>
+										<div class="goods_preprice">{{theme[0].goods.goods[1].shop_price|currency}}</div>
 									</dd>
 								</dl>
-								<dl class="start">
+								<dl class="start" v-if='theme[0].goods.goods[0].date_start*1000-nowTime>=0'>
 									<dt>
 										<span>
-										08:08:08
+										{{theme[0].goods.goods[1].date_start*1000-nowTime|timeStyle}}
 										</span>
 										<em>
 											后开始
@@ -95,10 +94,10 @@
 										立即前往
 									</dd>
 								</dl>
-								<dl class="end" v-show='false'>
+								<dl class="end" v-else-if='theme[0].goods.goods[0].date_end*1000-nowTime>=0'>
 									<dt>
 										<span>
-										08:08:08
+										{{theme[0].goods.goods[0].date_end*1000-nowTime|timeStyle}}
 										</span>
 										<em>
 											后结束
@@ -108,88 +107,75 @@
 										立即抢购
 									</dd>
 								</dl>
+								<dl class="over" v-else>
+									<dt>
+										<span>
+										   已结束
+										</span>
+									</dt>
+									<dd disabled>
+										立即抢购
+									</dd>
+								</dl>
 							</li>
 						</ul>
 						</el-col>
 					</el-row>
 				</div>
 				<div class="theme_1">
-					<div class="title">
-						<span>
-							<img src="">
-							舌尖美食
-						</span>
-						<em>
-							<a href="food.html">
-								中国美食聚汇<i></i>
-							</a>
-						</em>
-					</div>
+					<div class="title" :style='{background: `url(${theme[1].img.img})`}'></div>
 					<ul>
-						<li v-for='item in 6'>
+						<li v-for='item in theme[1].goods.goods'>
 							<dl>
 								<dt>
-									<img src="">
+									<img :src="item.cover">
 								</dt>
-								<dd class="show_info">
-									我会像奥德修斯一样朝着心中的方向哪怕众神会在彼
+								<dd class="show_info" v-text='item.name'>
 								</dd>
 							</dl>
 						</li>
 					</ul>
 				</div>
 				<div class="theme_2">
-					<div class="title">
-						<span>
-							<img src="">
-							中国智造
-						</span>
-						<em>
-							<a href="smart.html">好货中国造<i></i></a>
-						</em>
-					</div>
+					<div class="title" :style='{background: `url(${theme[2].img.img})`}'></div>
 				    <el-row>
 						<el-col :span='12' class='make_left'>
 							<dl>
-								<dt class="make_img">
-									<img src="">
+								<dt style="width:270px;height: 270px;margin-bottom: 8px;">
+									<img :src="theme[2].goods.goods[0].cover" width="100%" height="100%">
 								</dt>
 								<dd>
-									<div class="show_info">我会像奥德修斯一样朝着心中的方向哪怕众神会在彼</div>
+									<div class="show_info" v-text='theme[2].goods.goods[0].name'></div>
 				 					<div class="sell_info">
-				 						<span>{{168.00|currency}}</span>
-				 						<em>200人付款</em>
+				 						<span>{{theme[2].goods.goods[0].shop_price|currency}}</span>
+				 						<em>{{theme[2].goods.goods[0].sale_count}}人付款</em>
 				 					</div>
 								</dd>
 								<dl class="goods_info">
 									<dt>
-										<img src="">
+										<img :src="theme[2].goods.goods[1].cover">
 									</dt>
 									<dd>
-										<div class="show_info">我会像奥德修斯一样朝着心中的方向哪怕众神会在彼</div>
+										<div class="show_info" v-text='theme[2].goods.goods[1].name' style="min-height: 58px;"></div>
 										<div class="sell_info">
-										<span>{{1.00|currency}}</span>
+											<span>{{theme[2].goods.goods[1].shop_price|currency}}</span><em>{{theme[2].goods.goods[1].sale_count}}人付款</em>
 										</div>
-										<div class="goods_preprice">{{128.0|currency}}</div>
 									</dd>
 								</dl>
 							</dl>
 						</el-col>
 						<el-col :span='12' class='make_right'>
 						<ul>
-							<li v-for='item in 4'>
+							<li v-for='(item,index) in theme[2].goods.goods' v-if='index>1'>
 								<dl class="goods_info">
 									<dt>
-										<img src="">
+										<img :src="item.cover">
 									</dt>
 									<dd>
-										<div class="show_info">我会像奥德修斯一样朝着心中的方向哪怕众神会在彼</div>
+										<div class="show_info" v-text='item.name'></div>
 										<div class="sell_info">
-											<span>
-												{{1.00|currency}}
-											</span>
+											<span>{{item.shop_price|currency}}</span><em>{{item.sale_count}}人付款</em>
 										</div>
-										<div class="goods_preprice">{{128.0|currency}}</div>
 									</dd>
 								</dl>
 							</li>
@@ -198,24 +184,15 @@
 					</el-row>
 				</div>
 				<div class="theme_3">
-					<div class="title">
-						<span>
-							<img src="">
-							家居百货
-						</span>
-						<em>
-							<a href="household.html">帅柏品质生活<i></i></a>
-						</em>
+					<div class="title" :style='{background: `url(${theme[3].img.img})`}'>
 					</div>
 					<ul>
-						<li v-for='item in 6'>
+						<li v-for='item in theme[3].goods.goods'>
 							<dl>
 								<dt>
-									<img src="">
+									<img :src="item.cover">
 								</dt>
-								<dd class="show_info">
-									我会像奥德修斯一样朝着心中的方向哪怕众神会在彼
-								</dd>
+								<dd class="show_info" v-text='item.name'></dd>
 							</dl>
 						</li>
 					</ul>
@@ -225,21 +202,35 @@
 </template>
 
 <script>
-	import {getNewGoods,getCategory} from "../../common/js/api.js"
- 	import {currency} from '../../common/js/filter.js'
+	import {getNewGoods,getActivity} from "../../common/js/api.js"
+ 	import {currency,timeStyle,dateStyle} from '../../common/js/filter.js'
 	export default{
 		data(){
 			return {
 				newGoods: [],
-				classArr: []
+				classArr: [],
+				theme: null,
+				nowTime: 0
 			}
 		},
 		filters: {
-			currency
+			currency,
+			dateStyle,
+			timeStyle
 		},
 		methods: {
 			detail(){
 				window.location.href = 'detail.html';
+			},
+			getTheme() {
+				getActivity().then(res=>{
+					this.theme = res;
+				})
+			},
+			init(){
+				setInterval(()=>{
+					this.nowTime = new Date().getTime();
+				},1000)
 			}
 		},
 		mounted(){
@@ -250,6 +241,8 @@
 						this.newGoods = content;
 					}
 				});
+				this.getTheme();
+				this.init();
 			})
 		}
 	}
@@ -264,15 +257,14 @@ $red_color: #f24450;
 $btn_bg: #fff882;
 $start_bg: #00bf8b;
 $end_bg: #f13f4c;
+$over_bg: #aaa;
   .wrap{
   	width: 1250px;
   	margin: 20px auto 0px;
   	.show_info{
 		width: 100%;
-		padding-top: 8px;
-		padding-bottom: 8px;
-		line-height: 20px;
-		font-size: 14px;
+		line-height: 18px;
+		min-height: 36px;
 		color: #333;
 		overflow : hidden;
 	  	text-overflow: ellipsis;
@@ -282,10 +274,12 @@ $end_bg: #f13f4c;
 	}
 	.sell_info{
 		overflow: hidden;
+		padding: 8px 0px;
 		span{
 			float: left;
 			color: $primary;
 			font-size: 16px;
+			font-weight: 600;
 		}
 		em{
 			line-height: 20px;
@@ -405,8 +399,14 @@ $end_bg: #f13f4c;
 				}
 			}
 		.theme_0{
-			.title{
-				background: -webkit-linear-gradient(left,#f13f4c,#f65661) ;
+			.start{
+				background-color: $start_bg;
+			}
+			.end{
+				background-color: $end_bg;
+			}
+			.over{
+				background-color: $over_bg;
 			}
 			.el-row{
 				width: 100%;
@@ -433,7 +433,6 @@ $end_bg: #f13f4c;
 		  						width: 100%;
 		  						height: 100px;
 		  						border-radius: 4px;
-		  						background-color: $red_color;
 		  						padding: 10px;
 		  						margin-top: 16px;
 		  		 				.snapup_time{
@@ -453,12 +452,16 @@ $end_bg: #f13f4c;
 		  							width: 100%;
 		  							height: 32px;
 		  							line-height: 32px;
-		  							border-radius: 16px;
-		  							margin: 0px auto;
+		  							margin: 4px auto;
 		  							font-size: 16px;
-		  							background-color: $btn_bg;
-		  							color: $primary;
+		  							font-weight: 600;
 		  							text-align: center;
+		  							.el-button{
+		  								width: 120px;
+		  								height: 32px;
+		  								border-radius: 16px;
+		  								background-color: $btn_bg;
+		  							}
 		  						}
 		  					}
 						}
@@ -510,20 +513,9 @@ $end_bg: #f13f4c;
 									cursor: pointer;
 								}
 							}
-							.start{
-								background-color: $start_bg;
-							}
-							.end{
-								background-color: $end_bg;
-							}
 						}
 					}
 				}
-			}
-		}
-		.theme_1{
-			.title{
-				background: -webkit-linear-gradient(left,#ff7f0c,#ff9f22) ;
 			}
 		}
 		.theme_1,.theme_3{
@@ -541,27 +533,31 @@ $end_bg: #f13f4c;
 					border-bottom: 1px solid $border_list;
 					dl{
 						width: 100%;
+						padding: 10px;
 						dt{
-							width: 100%;
+							width: 180px;
+							height: 180px;
 							img{
 								width: 100%;
+								height: 100%;
 							}
 						}
 						dd{
-
+							margin-top: 8px;
+							line-height: 18px;
 						}
 					}
 				}
 			}
 		}
 		.theme_2{
-			.title{
-				background: -webkit-linear-gradient(left,#0d7bd8,#309afe) ;
-			}
 			.el-row{
 				width: 100%;
 				height: 498px;
 				margin-top: 10px;
+				.show_info{
+					line-height: 18px;
+				}
 				.make_left{
 					padding: 20px;
 					height: 100%;
@@ -577,6 +573,7 @@ $end_bg: #f13f4c;
 					}
 					.goods_info{
 						padding: 0px;
+						padding-top: 20px;
 						border-top: 1px solid $border_list;
 					}
 				}
@@ -592,14 +589,12 @@ $end_bg: #f13f4c;
 							padding: 10px;
 							height: 25%;
 							border-top: 1px solid $border_list;
+							.show_info{
+								min-height: 58px;
+							}
 						}
 					}
 				}
-			}
-		}
-		.theme_3{
-			.title{
-				background: -webkit-linear-gradient(left,#01b556,#23cd56) ;
 			}
 		}
 	}

@@ -28,12 +28,12 @@
 				</div>
 				<div class="img_box">
 					 <ul class="small_img">
-					 	<li v-for='(j,index) in 4' :class='{"margin_left":index%2}'>
+					 	<li v-for='(sItem,index) in youLike' :class='{"margin_left":index%2}' v-if='index<4'>
 					 		<img src="">
 					 	</li>
 					 </ul>
 					 <ul class="big_img">
-					 	<li v-for= '(k,index) in 2'>
+					 	<li v-for= '(bItem,index) in youLike' v-if='index>=4'>
 					 		<img src="">
 					 	</li>
 					 </ul>
@@ -115,20 +115,20 @@
 							</div>
 							<el-row class='order_menu'>
 								<el-col :span='6'>
-									待付款
-									<i>{{10 | num_filter}}</i>
+								    <span>待付款</span>
+									<i v-show='order.wait_pay_count'>{{order.wait_pay_count | num_filter}}</i>
 								</el-col>
 								<el-col :span='6'>
-									待发货
-									<i>1</i>
+									<span>待发货</span>
+									<i v-show='order.wait_delivery_count'>{{order.wait_delivery_count | num_filter}}</i>
 								</el-col>
 								<el-col :span='6'>
-									待收货
-									<i>1</i>
+									<span>待收货</span>
+									<i v-show='order.wait_receive_count'>{{order.wait_receive_count | num_filter}}</i>
 								</el-col>
 								<el-col :span='6'>
-									待评价
-									<i>1</i>
+									<span>待评价</span>
+									<i v-show='order.wait_comment_count'>{{ order.wait_comment_count | num_filter}}</i>
 								</el-col>
 							</el-row>
 						</el-row>
@@ -166,7 +166,7 @@
 					<el-row>
 						<el-col :span='4'>数额</el-col>
 						<el-col :span='10'>
-							<el-select v-model="value" placeholder="请选择" size='mini'>
+							<el-select v-model="recharge_num" placeholder="请选择" size='mini'>
 							    <el-option
 							      v-for="item in options"
 							      :key="item.value"
@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import {getHomePage,getCategory} from '../../common/js/api.js'
+import {getHomePage,getCategory,getGuessLike} from '../../common/js/api.js'
 import {num_filter,currency} from '../../common/js/filter.js'
 	export default{
 		data(){
@@ -208,6 +208,12 @@ import {num_filter,currency} from '../../common/js/filter.js'
 			   category: [{name:''}],
 			   fIndex: 0,
 			   sIndex: 0,
+			   order: {
+			   		wait_comment_count: null,
+			   		wait_delivery_count: null,
+					wait_pay_count: null,
+					wait_receive_count: null
+			   },
 			   recharge_bol: true,
 			   recharge_val: '',
 			   options: [{
@@ -226,8 +232,9 @@ import {num_filter,currency} from '../../common/js/filter.js'
 		          value: '额度5',
 		          label: '50.00'
 		        }],
-        		value: '',
-        		hasUser: false
+        		recharge_num: '',
+        		hasUser: false,
+        		youLike: null
 			}
 		},
 		filters:{
@@ -252,15 +259,31 @@ import {num_filter,currency} from '../../common/js/filter.js'
 						this.category = content;
 					}
 				})
+			},
+			guessLike(){
+				let params = {
+					category_id: 1
+				}
+				getGuessLike(params).then(res=>{
+					let {errcode,content} = res;
+					if (errcode===0) {
+						this.youLike = content;
+					}
+				})
 			}
 		},
 		mounted(){
 			this.$nextTick(()=>{
 				if (sessionStorage.userInfo) {
 					this.hasUser = true;
+					// 读取用户信息
 					this.userInfo = JSON.parse(sessionStorage.userInfo);
+					// 获取购物信息
+					this.order = this.userInfo.order;
 				}
+				// 获取轮播图
 				this.homePage();
+				//  获取分类
 				this.categoryList();
 			})
 		}
@@ -507,13 +530,15 @@ $text_color: #666;
 								width: 100%;
 								.order_menu{
 									width: 100%;
-									height: 32px;
+									span{
+										float: left;
+									}
 									i{
-										display: inline-block;
-										width: 12px;
+										float: left;
 										height: 12px;
-										border-radius: 50%;
-										vertical-align: middle;
+										padding: 0px 3px;
+										border-radius: 6px;
+										margin-top: 2px;
 										text-align: center;
 										color: #fff;
 										background-color: $primary;

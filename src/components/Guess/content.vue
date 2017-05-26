@@ -5,22 +5,21 @@
 	 		<span style="vertical-align: 4px;">猜你喜欢</span>
 	 		<strong>换一组<i></i></strong>
 	 	</div>
-	 	<ul class="youLove">
-	 		<li class="infoList" v-for='item in 6'>
+	 	<ul class="youLove" v-if= 'loveList'>
+	 		<li class="infoList" v-for='item in loveList'>
 	 			<dl>
 					<dt>
-						<img src="">
+						<img :src="item.cover">
 					</dt>
 					<dd>
-						<div class="sellInfo">
-							9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮
+						<div class="sellInfo" v-text='item.name'>
 						</div>
 						<div class="priceInfo">
 							<span>
-								{{168.00|currency}}
+								{{item.shop_price|currency}}
 							</span>
 							<em>
-								{{2017}}人付款
+								{{item.sale_count}}人付款
 							</em>
 						</div>
 					</dd>
@@ -31,18 +30,24 @@
 </template>
 <script>
 	import {currency} from '../../common/js/filter.js'
+	import {getGuessLike} from '../../common/js/api.js'
 	export default {
+		data(){
+			return {
+				loveList: ''
+			}
+		},
 		filters:{
 			currency
 		},
-		methods:{
-			init(){
-
-			}
-		},
 		mounted(){
 			this.$nextTick(()=>{
-
+				let params = {
+					category_id: 1
+				};
+				getGuessLike(params).then(res=>{
+					this.loveList = res.content ;
+				})
 			})
 		}
 	}

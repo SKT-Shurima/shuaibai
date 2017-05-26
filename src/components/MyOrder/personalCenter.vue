@@ -13,7 +13,7 @@
 				<ul>
 					<li>
 						<em>余额</em>
-						<span>{{userInfo.unread_count}}</span>
+						<span>{{userInfo.account}}</span>
 					</li>
 					<li>
 						<em>购物币</em>
@@ -30,14 +30,14 @@
 			</div>
 			<div class="shopInfo">
 				 <ul>
-				 	<li>待付款<i>1</i></li>
-				 	<li>待发货<i>1</i></li>
-				 	<li>待收货<i>1</i></li>
-				 	<li>待评价<i>1</i></li>
+				 	<li>待付款<i>{{order.wait_pay_count | num_filter}}</i></li>
+				 	<li>待发货<i>{{order.wait_delivery_count | num_filter}}</i></li>
+				 	<li>待收货<i>{{order.wait_receive_count | num_filter}}</i></li>
+				 	<li>待评价<i>{{order.wait_comment_count | num_filter}}</i></li>
 				 	<li>退款/售后</li>
 				 </ul>
 				 <div class="lastLogin">
-				 	上次登录时间：{{'2017年5月16号 12:00'}}
+				 	上次登录时间：{{userInfo.last_check_date|dateStyleCh}}&nbsp;{{userInfo.last_check_date*1000 | timeStyle}}
 				 </div>             
 			</div>
 		</div>
@@ -45,7 +45,9 @@
 	</div>
 </template>
 <script>
-import orderList from './orderList.vue'
+import {num_filter,dateStyleCh,timeStyle} from '../../common/js/filter.js'
+import {getOrders} from '../../common/js/api.js'
+import orderList from './orderList'
 	export default {
 		data() {
 		    return {
@@ -54,12 +56,24 @@ import orderList from './orderList.vue'
 		        	integration: '',
 		        	nickname: '',
 		        	real_phone: '',
-		        	unread_count: ''
+		        	unread_count: '',
+		        	last_check_date: 0
+		        },
+		        order:{
+		        	wait_comment_count: '',
+		        	wait_delivery_count: '',
+		        	wait_pay_count: '',
+		        	wait_receive_count: ''
 		        }
 		    };
 		},
 		components:{
 			orderList
+		},
+		filters: {
+			num_filter,
+			dateStyleCh,
+			timeStyle
 		},
 		methods:{
 			changeView(view){
@@ -71,7 +85,10 @@ import orderList from './orderList.vue'
 			this.$nextTick(()=>{
 				if (sessionStorage.userInfo) {
 					this.hasUser = true;
+					// 读取用户信息
 					this.userInfo = JSON.parse(sessionStorage.userInfo);
+					// 获取订单信息
+					this.order = this.userInfo.order;
 				}
 			})
 		}
@@ -84,6 +101,7 @@ import orderList from './orderList.vue'
 	$bg_color: #f5f5f5;
 	.userInfo{
 		width: 100%;
+		margin-bottom: 30px;
 		border: 1px solid $border_color;
 		.title{
 			padding: 14px 40px 16px 22px;

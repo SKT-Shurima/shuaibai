@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<div class="navBox">
 			<div class="container">
-				<div class="logo" @click='currentView="view10"'>
+				<div class="logo" @click='changeView("view10")'>
 					我的帅柏
 				</div>
 				<div class="navTitle">
@@ -31,12 +31,7 @@
 					订单中心
 				</div>
 				<ul>
-					<li><i></i>全部订单</li>
-					<li><i></i>待付款订单</li>
-					<li><i></i>待发货订单</li>
-					<li><i></i>待收货订单</li>
-					<li><i></i>待评价订单</li>
-					<li><i></i>退款/售后</li>
+					<li @click='getOrder(index)' v-for='(item,index) in orderList' :class='{"isClick":orderView===index}'><i></i>{{item.name}}</li>
 				</ul>
 				<div class="title">
 					会员中心
@@ -61,6 +56,7 @@
 	</div>
 </template>
 <script>
+    import orderList from './orderList'
 	import personalCenter from './personalCenter' ;
 	import address from './address'
 	import modidfyPw from './modidyPw'
@@ -101,6 +97,15 @@
 		        	{name: '投诉'},
 		        	{name: '资金'},
 		        	{name: '商家入驻'}
+		        ],
+		        orderView: '',
+		        orderList: [
+		        	{name: '全部订单'},
+		        	{name: '待付款订单'},
+		        	{name: '待发货订单'},
+		        	{name: '待收货订单'},
+		        	{name: '待评价订单'},
+		        	{name: '退款/售后'}
 		        ]
 		    };
 		},
@@ -111,6 +116,7 @@
 		},
 		components:{
 			youLike,
+			"view0": orderList,
 			"view10": personalCenter,
 			"view100": address,
 			"view11": modidfyPw,
@@ -140,23 +146,41 @@
 	        console.log(key, keyPath);
 	      },
 	      hasGuess(msg){
-	      	this.guessBol = msg;
+	      	let _this = this ;
+	      	_this.guessBol = msg;
 	      },
 	      changeView(view){
-	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentVipListView = this.currentView ;
+	      	let _this = this ;
+	      	_this.$store.commit('switchView',view);
+	      	sessionStorage.currentVipListView = _this.currentView ;
 	      },
 	      vipView(index){
-	      	this.currentVipView = index;
+	      	let _this = this ;
+	      	_this.orderView = '';
+	      	_this.currentVipView = index;
 	      	sessionStorage.setItem('currentVipView',index);
 	      	let view = 'view3' ;
 	        view += index ;
-	        this.changeView(view);
+	        _this.changeView(view);
+	      },
+	      getOrder(index){
+	      	let _this = this ;
+	      	// 切换当前视图
+	      	_this.changeView('view0');
+	      	// 改变点击后的列表效果
+	      	_this.orderView = index ;
+	      	_this.currentVipView = '';
+	      	sessionStorage.removeItem('currentVipView');
+	      	// 调用子组件的方法获取相应的列表
+	      	if (index<5) {
+	      		_this.$children[0].$children[0].getOrderList(index);
+	      	}
 	      }
 	      
 		},
 		mounted(){
 			this.$nextTick(()=>{
+				console.log(this)
 				if (sessionStorage.currentVipListView) {
 					let currentView = sessionStorage.currentVipListView;
 					this.currentVipView = sessionStorage.currentVipView - 0;

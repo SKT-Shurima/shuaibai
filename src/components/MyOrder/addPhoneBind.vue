@@ -81,9 +81,18 @@ import {hex_md5} from '../../common/js/md5.js'
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
 	      		if (errcode !== 0) {
-	      		    MessageBox.alert(message, '提示', {
-			          confirmButtonText: '确定'
-				    });
+	      		    if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
 	      		} else {
 	      			_this.time = _this.total_time ;
 	      			let timer = setInterval(()=>{
@@ -106,7 +115,7 @@ import {hex_md5} from '../../common/js/md5.js'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: this.userInfo.access_token,
+            	access_token: sessionStorage.access_token,
             	phone: this.ruleForm.phone,
             	code: this.ruleForm.code,
             	type: "3"
@@ -114,9 +123,18 @@ import {hex_md5} from '../../common/js/md5.js'
             phoneBind(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		MessageBox.alert(message, '提示', {
-			          	confirmButtonText: '确定'
-				    });
+            		if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
             	} else {
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',

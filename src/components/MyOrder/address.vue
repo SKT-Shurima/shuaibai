@@ -204,9 +204,18 @@ import {MessageBox} from  'element-ui'
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
 	      		if (errcode !== 0) {
-	      		    MessageBox.alert(message, '提示', {
-			          confirmButtonText: '确定'
-				    });
+	      		    if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
 	      		} else {
 	      			_this.time = _this.total_time ;
 	      			let timer = setInterval(()=>{
@@ -261,9 +270,18 @@ import {MessageBox} from  'element-ui'
             saveAddress(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		MessageBox.alert(message, '提示', {
-			          	confirmButtonText: '确定'
-				    });
+            		if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
             	} else {
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
@@ -290,7 +308,6 @@ import {MessageBox} from  'element-ui'
       	 	let {errcode,content} = res;
       	 	if (errcode===0) {
       	 		this.addressList = content;
-      	 		console.log(this.addressList)
       	 	}
       	 })
       }

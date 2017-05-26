@@ -63,7 +63,19 @@ export const getNewGoods = () => {
 export const getCategory = () => {
 	return axios.get(`${base}/initAction/getCategory`).then(res=> res.data);
 }
-
+// 专题活动
+export const  getActivity = ()=>{
+	return axios.get(`${base}/initAction/getActivity`).then(res=>res.data);
+}
+// 获取首页分类商品
+export const getCategoryGoods = ()=>{
+	return axios.post(`${base}/initAction/getCategoryGoods`,{}).then(res=>res.data);
+}
+// 猜你喜欢
+export const getGuessLike = params =>{
+	params = trans(params);
+	return axios.get(`${base}/goodsAction/getGuessLike?${params}`).then(res=>res.data);
+}
 
 
 // 个人中心
@@ -112,6 +124,11 @@ export const changePhoneBind = params =>{
 	params =trans(params);
 	return axios.post(`${base}/userAction/changePhoneBind`,params).then(res=> res.data);
 }
+// 添加绑定邮箱
+export const bindEamil = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/customerAction/bindEmail`,params).then(res=>res.data);
+}
 // 设置用户名
 export const changeUsername = params =>{
 	params = trans(params);
@@ -126,4 +143,35 @@ export const changeBirthday = params =>{
 export const changeSex = params => {
 	params = trans(params);
 	return axios.post(`${base}/userAction/changeSex`,params).then(res=>res.data);
+}
+// 订单列表
+export const getOrders = params => {
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getOrders`,params).then(res=>res.data); 
+} 
+// 获取优惠券
+export const getCoupons = () => {
+	return axios.post(`${base}/userAction/getCoupons`,{}).then(res=>res.data);
+}
+
+// 购物车相关
+// 添加购物车
+export const addCart = params=>{
+	params = trans(params);
+	return axios.post(`${base}/cartAction/addCart`,params).then(res=>res.data)
+}
+// 获取购物车列表
+export const getCarts= params=>{
+	params = trans(params);
+	return axios.post(`${base}/cartAction/getCarts`,params).then(res=>res.data);
+}
+// 删除
+export const removeCart = params=>{
+	params = trans(params);
+	return axios.post(`${base}/cartAction/removeCart`,params).then(res=>res.data);
+}
+// 数量编辑
+export const editCart= params=>{
+	params = trans(params);
+	return axios.post(`${base}/cartAction/editCart`,params).then(res=>res.data);
 }

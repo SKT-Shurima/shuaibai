@@ -35,7 +35,7 @@ import vHeadsearch from './headSearch.vue'
 			position: relative;
 			z-index: 90;
 			.headTop{
-				width: 1080px;
+				width: 1250px;
 				margin: 0px auto;
 			}
 		}

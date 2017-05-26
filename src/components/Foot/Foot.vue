@@ -4,28 +4,28 @@
 			<ul>
 				<li>
 					<a href="javascript:void(0);">
-						<img src="" alt=""/>
+						<img src="../../../static/footImg/icon_1.png" alt="" height="66" width="66"/>
 						<h4>正品保障</h4>
 						<span>正品行货 放心选购</span>
 					</a>
 				</li>
 				<li>
 					<a href="javascript:void(0);">
-						<img src="" alt="" />
+						<img src="../../../static/footImg/icon_2.png" alt=""  height="66" width="66"/>
 						<h4>专业快递</h4>
 						<span>优质服务，快速收货</span>
 					</a>
 				</li>
 				<li>
 					<a href="javascript:void(0);">
-						<img src="" alt=""  />
+						<img src="../../../static/footImg/icon_3.png" alt=""  height="66" width="66"/>
 						<h4>售后无忧</h4>
 						<span>7天无理由退货</span>
 					</a>
 				</li>
 				<li>
 					<a href="javascript:void(0);">
-						<img src="" alt=""/>
+						<img src="../../../static/footImg/icon_4.png" alt="" height="66" width="66"/>
 						<h4>准时送达</h4>
 						<span>收货时间由你做主</span>
 					</a>
@@ -121,6 +121,7 @@
 
 <style scoped lang='scss'>
 	.wrap{
+		margin-top: 50px;
 		.express_box{
 			margin: 0px auto;
 		    padding: 30px 0px;

@@ -13,15 +13,14 @@
 				<li class="normalCol">操作</li>
 			</ul>
 		</div>
-		<ul class="shopList">
-			<li>
+		<ul class="shopList" v-if='shopList'>
+			<li v-for='item in shopList' :key='item'>
 				<div class="title">
 					<div class="checkAll">
 				    	<el-checkbox size='small'></el-checkbox>
 				    </div>
 				    <div class="shopName">
-				    	<span>
-				    		帅柏商城直营店
+				    	<span v-text='item.shop_name'>
 				    	</span>
 				    	<button>
 				    		<img src="../../module/myOrder/images/qq.png" height="14" width="12">
@@ -30,32 +29,31 @@
 				    </div>
 				</div>
 				<ul class="goodsList">
-					<li>
+					<li v-for='goodItem in  item.goods' :key='goodItem'>
 						<div class="checkAll">
 					    	<el-checkbox></el-checkbox>
 					    </div>
 					    <div class="goodsInfo">
 					    	<dl class="goodsMsg">
 								<dt class="titleCol">
-									<img src="">
+									<img :src="goodItem.cover">
 								</dt>
 								<dd class="infoCol">
-									<div class="goodsName">
-										买不买买不买买不买买不买买不买不买不买不买绑定手机号发布觉得不
+									<div class="goodsName" v-text='goodItem.name'>
 									</div>
 									<div class="goodsType">
-										<span>规格:精装品</span>
-										<span>套餐:套餐一</span>
+										<span>规格:{{goodItem.option_name}}</span>
+										<!-- <span>套餐:套餐一</span> -->
 									</div>
 								</dd>
 							</dl>
 							<div class='normalCol'>
 								<dl class="vMiddle" v-show='false' style="height: 20px;">
 									<dt style="color:#666;text-decoration: line-through;">
-										{{299.00|currency}}
+										{{goodItem.market_price|currency}}
 									</dt>
 									<dd>
-										{{299.00|currency}}
+										{{goodItem.sale_price|currency}}
 									</dd>
 								</dl>
 								<dl class="vMiddle" v-show='true' style="height: 20px;">
@@ -66,9 +64,9 @@
 							</div>
 							<div style='padding-top:30px;' class="normalCol">
 								<div class="numBtn">
-									<button>减</button>
-									<input type="" name="">
-									<button>加</button>
+									<button>-</button>
+									<input type="number" name="" v-model='goodItem.on_sale'>
+									<button>+</button>
 								</div>
 							</div>
 							<div class="normalCol totalAmount">
@@ -80,7 +78,7 @@
 										<button>移入收藏夹</button>
 									</dt>
 									<dd>
-										<button>删除</button>
+										<button @click='remove(goodItem.cart_id)'>删除</button>
 									</dd>
 								</dl>
 							</div>
@@ -115,20 +113,71 @@
 </template>
 <script>
 import {currency} from "../../common/js/filter.js"
+import {getCarts,removeCart}  from '../../common/js/api.js'
 	export default{
 		data(){
 			return{
-
+				shopList: null
 			}
 		},
 		filters: {
 			currency
 		},
 		methods:{
-
+		 remove(cart_id){
+		 	let params ={
+		 		access_token: sessionStorage.access_token,
+		 		cart_ids: cart_id
+		 	}
+		 	removeCart(params).then(res=>{
+		 		let {errcode,message,content} = res;
+		 		if(errcode!==0) {
+					if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+				}else{
+					this.initList();
+				}
+		 	})
+		 },
+		 initList(){
+		 	let params = {
+				access_token: sessionStorage.access_token
+			};
+			getCarts(params).then(res=>{
+				let {errcode,message,content} = res ;
+				if(errcode!==0) {
+					if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+				}else{
+					this.shopList = content ;
+				}
+			})
+		 }
 		},
 		mounted(){
-
+			this.$nextTick(()=>{
+				this.initList();
+			})
 		}
 	}
 </script>

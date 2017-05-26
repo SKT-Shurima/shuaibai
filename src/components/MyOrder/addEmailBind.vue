@@ -18,7 +18,7 @@
 	</div>
 </template>
 <script>
-import {emailBind,sendCode} from '../../common/js/api.js'
+import {bindEamil,sendCode} from '../../common/js/api.js'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -46,7 +46,7 @@ import {MessageBox} from  'element-ui'
         rules: {
           email: [
 		      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-		      { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
+		      { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
           ],
           code: [
             { required: true, validator: checkCode, trigger: 'blur' }
@@ -67,9 +67,18 @@ import {MessageBox} from  'element-ui'
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
 	      		if (errcode !== 0) {
-	      		    MessageBox.alert(message, '提示', {
-			          confirmButtonText: '确定'
-				    });
+	      		    if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
 	      		} else {
 	      			_this.time = _this.total_time ;
 	      			let timer = setInterval(()=>{
@@ -92,17 +101,25 @@ import {MessageBox} from  'element-ui'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: this.userInfo.access_token,
+            	access_token:  sessionStorage.access_token,
             	email: this.ruleForm.email,
-            	code: this.ruleForm.code,
-            	type: "3"
+            	verify: this.ruleForm.code
             };
-            emailBind(params).then(res=>{
+            bindEamil(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		MessageBox.alert(message, '提示', {
-			          	confirmButtonText: '确定'
-				    });
+            		if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
             	} else {
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
