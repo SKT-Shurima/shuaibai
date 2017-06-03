@@ -23,7 +23,7 @@
 				    	<span v-text='item.shop_name'>
 				    	</span>
 				    	<button>
-				    		<img src="../../module/myOrder/images/qq.png" height="14" width="12">
+				    		<img src="../../../static/commonImg/qq.png" height="14" width="12">
 				    		联系客服
 				    	</button>
 				    </div>

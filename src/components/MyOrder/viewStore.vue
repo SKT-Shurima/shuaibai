@@ -1,17 +1,17 @@
 <template>
 	<div class="wrap">
-		<ul class="viewBox">
-			<li class="viewList" v-for='item in 5'>
+		<ul class="viewBox" v-if='viewList'>
+			<li class="viewList" v-for='item in viewList'>
 				<div class="storeInfo">
 					<dl>
 						<dt>
-							<img src="">
+							<img :src="item.cover">
 						</dt>
 						<dd class="name">
-							旗舰店
+						      {{item.shop_name}}
 						</dd>
 						<dd class="btn">
-							<button>取消关注</button>
+							<button @click='escView(attention_id)'>取消关注</button>
 						</dd>
 						<dd class="storeEval">
 							<dl>
@@ -31,7 +31,7 @@
 				</div>
 				<div class="goodsInfo">
 					<nav class="title">
-						<div>本周上新（20）</div>
+						<div>本周上新（{{item.new_count}}）</div>
 						<div>优惠（20）</div>
 						<div>热销（20）</div>
 					</nav>
@@ -57,18 +57,70 @@
 </template>
 <script>
 	import {currency} from "../../common/js/filter"
+	import {attention,cancelAttentions} from '../../common/js/api.js'
 	export default {
 		data(){
 			return {
-
+			 	viewList: null
 			}
 		},
 		filters:{
 			currency
 		},
 		methods:{
-
-		}
+			escView(id){
+				let params = {
+					access_token : sessionStorage.access_token,
+					ids: id
+				};
+				cancelAttentions(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.viewList = content;
+					}
+				})
+			}
+		},
+		 mounted(){
+	    	this.$nextTick(()=>{
+	    		let params  ={
+					access_token : sessionStorage.access_token,
+					page: "0"
+				}
+				attention(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.viewList = content;
+					}
+				})
+	    	})
+    	}
 	}
 </script>
 <style lang='scss' scoped>

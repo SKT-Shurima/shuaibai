@@ -40,7 +40,6 @@
 			this.$nextTick(()=>{
 				getCategoryGoods().then(res=>{
 					this.theme = res;
-					console.log(res,this.theme)
 				})
 			})
 		}

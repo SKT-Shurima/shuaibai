@@ -14,7 +14,6 @@
 				<li v-for='(item,index) in category' :key='item' v-text='item.name'></li>
 			</ul>
 			<div class="content" v-show='listBol'  @mouseleave='listBol=false' @mouseenter='listBol=true'>
-			<!-- v-show='listBol' @mouseleave='listBol=false' -->
 				<div class="detail_list">
 					<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
 						<el-col :span='4'>
@@ -51,7 +50,7 @@
 				<dd>
 					<div class="left_btn"></div>   
 					<div class="cont">
-						<img :src="item.image" alt="" v-for='item in banners' :key='item'>
+						<img :src="item.image" alt="" v-for='item in banners' :key='item' @click='goodDetail(item)'>
 					</div>
 					<div class="right_btn"></div>
 				</dd>
@@ -191,7 +190,7 @@
 </template>
 
 <script>
-import {getHomePage,getCategory,getGuessLike} from '../../common/js/api.js'
+import {getHomePage,getCategory,getGuessLike,getActualFee} from '../../common/js/api.js'
 import {num_filter,currency} from '../../common/js/filter.js'
 	export default{
 		data(){
@@ -242,6 +241,10 @@ import {num_filter,currency} from '../../common/js/filter.js'
 			currency
 		},
 		methods:{
+			goodDetail(item){
+				let id = item.action.params[1].value;
+				window.location.href = `detail.html?goods_id=${id}`;
+			},
 			homePage(){
 				let params = {
 					t: '5-web',
@@ -270,6 +273,17 @@ import {num_filter,currency} from '../../common/js/filter.js'
 						this.youLike = content;
 					}
 				})
+			},
+			getActualFee(){
+				let params ={
+					type: 1
+				}
+				getActualFee(params).then(res=>{
+					let {errcode,content} = res;
+					if (errcode===0) {
+						
+					}
+				})
 			}
 		},
 		mounted(){
@@ -285,6 +299,8 @@ import {num_filter,currency} from '../../common/js/filter.js'
 				this.homePage();
 				//  获取分类
 				this.categoryList();
+				// 获取手机充值面额
+				this.getActualFee();
 			})
 		}
 	}
@@ -327,6 +343,9 @@ $text_color: #666;
 				margin: 0px auto;
 				overflow: hidden;
 				position: relative;
+				img{
+					cursor: pointer;
+				}
 				.con_list{
 					width: 150px;
 					background-color: #c81623;

@@ -1,11 +1,11 @@
 <template>	
 	 <div class="wrap">
-	 	<ul>
-	 		<li v-for='(item,index) in 16'>
+	 	<ul v-if='colList'>
+	 		<li v-for='(item,index) in colList'>
 	 			<dl>
 					<dt>
 						<div class="imgBox">
-							<img src="">
+							<img :src="item.cover">
 						</div>
 						<div class="editBox">
 							<div class="edit">加入购物车</div>
@@ -14,14 +14,14 @@
 					</dt>
 					<dd>
 						<div class="sellInfo">
-							9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮
+							{{item.name}}
 						</div>
 						<div class="priceInfo" v-show='index%4===0'>
 							<span>
-								{{168.00|currency}}
+								{{item.price|currency}}
 							</span>
 							<em>
-								{{2017}}人付款
+								{{item.sale_count}}人付款
 							</em>
 						</div>
 						<div class="update" v-show='index%4!==0'>
@@ -37,7 +37,13 @@
 </template>
 <script>
 	import {currency} from '../../common/js/filter.js'
+	import {collection} from '../../common/js/api.js'
 	export default {
+		data(){
+			return{
+				colList: null
+			}
+		},
 		filters:{
 			currency
 		},
@@ -48,7 +54,29 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-
+				let params  ={
+					access_token : sessionStorage.access_token,
+					page: "0"
+				}
+				collection(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.colList = content;
+					}
+				})
 			})
 		}
 	}

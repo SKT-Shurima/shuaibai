@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view37")'>资金管理</span></h4>
 		<dl class="amountInfo">
-			<dt><span>账户余额</span><em>{{200.00|currency}}</em>
+			<dt><span>账户余额</span><em>{{userInfo.account|currency}}</em>
 			</dt>
 			<dd>
 				<el-button type='text' size='small' style='width:90px;' @click='changeView("view370")'>充值</el-button>
@@ -15,17 +15,17 @@
 	 		<i class="icon"></i>
 	 		<span style="vertical-align: 4px;">资金明细</span>
 	 	</div>
-	 	<ul class="moneyList">
-	 		<li v-for='item in 20'>
+	 	<ul class="moneyList" v-if='financeList'>
+	 		<li v-for='item in financeList'>
 	 			<el-row>
 	 				<el-col :span='4'>
-	 					2017-01-01
+	 					{{item.date_add*1000 | dateStyle}}
 	 				</el-col>
 	 				<el-col :span='4'>
-	 					<span>+10000.00</span>
+	 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
 	 				</el-col>
 	 				<el-col :span='16'>
-	 					信息
+	 					{{item.comments}}
 	 				</el-col>
 	 			</el-row>
 	 		</li>
@@ -33,16 +33,21 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter.js'
-import {} from '../../common/js/api.js'
+import {currency,dateStyle} from '../../common/js/filter.js'
+import {finance} from '../../common/js/api.js'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
       return {
+      	userInfo: {
+      		account: ''
+      	},
+      	financeList: null
       };
     },
     filters:{
-    	currency
+    	currency,
+    	dateStyle
     },
     methods: {
     	changeView(view){
@@ -61,7 +66,33 @@ import {MessageBox} from  'element-ui'
         })
     },
     mounted(){
-    	this.$emit('hasGuess',false);
+    	this.$nextTick(()=>{
+    		// 是否含有‘猜你喜欢’
+    		this.$emit('hasGuess',false);
+    		let params  ={
+				access_token : sessionStorage.access_token,
+				page: "0"
+			}
+			finance(params).then(res=>{
+				let {errcode,message,content} = res ;
+				if(errcode !== 0){
+					if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+				}else {
+					this.financeList = content;
+				}
+			})
+    	})
     }
   }
 </script>
@@ -147,8 +178,10 @@ $bg_title: #f5f5f5;
 				.el-col-4{
 					span{
 						font-weight: 600;
-						/*color: $primary;*/
 						color: #008903;
+					}
+					.expent{
+						color: $primary;
 					}
 				}
 			}

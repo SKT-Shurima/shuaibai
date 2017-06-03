@@ -25,7 +25,7 @@
 					<div class="storeInfo">
 						<div class="storeName">
 							<span>帅柏商城直营店</span>
-							<button><img src="../../module/afterSale/images/qq.png" height="14" width="12">联系客服</button>
+							<button><img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服</button>
 						</div>
 						<ul>
 							<li>

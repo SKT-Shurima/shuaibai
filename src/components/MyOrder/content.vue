@@ -180,7 +180,6 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				console.log(this)
 				if (sessionStorage.currentVipListView) {
 					let currentView = sessionStorage.currentVipListView;
 					this.currentVipView = sessionStorage.currentVipView - 0;

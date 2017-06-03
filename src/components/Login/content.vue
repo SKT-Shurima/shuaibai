@@ -7,7 +7,7 @@
 			<div class="login_box">
 				<dl class="border_input margin_bottom">
 					<dt>
-						<img src="../../module/login/images/usname.jpg" height="16" width="14" alt="username">
+						<img src="../../../static/loginImg/usname.jpg" height="16" width="14" alt="username">
 					</dt>
 					<dd>
 						<input type="text" name="username" v-model='username'/>
@@ -15,7 +15,7 @@
 				</dl>
 				<dl class="border_input margin_bottom">
 					<dt>
-						<img src="../../module/login/images/pw.jpg" height="16" width="14" alt="password">
+						<img src="../../../static/loginImg/pw.jpg" height="16" width="14" alt="password">
 					</dt>
 					<dd>
 						<input type="password" name="passwd" v-model='passwd'/>
@@ -24,7 +24,7 @@
 				<div style="overflow:hidden;padding-bottom: 30px;">
 					<dl class="border_input" style="width:180px;float:left;">
 						<dt>
-							<img src="../../module/login/images/code.jpg" height="16" width="14" alt="verify_code">
+							<img src="../../../static/loginImg/code.jpg" height="16" width="14" alt="verify_code">
 						</dt>
 						<dd>
 							<input type="text" name="verify_code" v-model='verify_code'/>
@@ -52,8 +52,8 @@
 						<div class="slider"></div>
 					</div>
 					<div class="icon">
-						<img src='../../module/login/images/qq.png' height="20" width="20" alt="QQ">
-						<img src="../../module/login/images/wexin.png" height="20" width="20" alt="wexin">
+						<img src='../../../static/loginImg/qq.png' height="20" width="20" alt="QQ">
+						<img src="../../../static/loginImg/wexin.png" height="20" width="20" alt="wexin">
 					</div>
 				</div>
 			</div>
@@ -187,7 +187,7 @@ $red_color: #f24450;
 		    background-position: center center;
 		    width: 100%;
 		    height: 600px;
-		    background-image: url('../../module/login/images/bg.jpg');
+		    background-image: url('../../../static/loginImg/bg.jpg');
 		}
 		.content_layout{
 		    width: 1200px;

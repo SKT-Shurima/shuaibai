@@ -7,7 +7,7 @@
 		 		</el-col>
 		 		<el-col :span='10'>
 		 			<div class="text">
-		 				<img src="../../module/index/images/newDay.png" height="24" width="24">
+		 				<img src="../../../static/indexImg/newDay.png" height="24" width="24">
 		 				每日上新
 		 			</div>
 		 		</el-col>
@@ -15,7 +15,7 @@
 		 			<div class="slider"></div>
 		 		</el-col>
 		 	</el-row>
-		 	<el-row class='update_list'>
+		 	<el-row class='update_list' v-if='newGoods'>
 		 		<el-col :span='4' v-for='item in newGoods' >
 		 			<dl  @click='detail(item)'>
 		 				<dt>
@@ -207,8 +207,8 @@
 	export default{
 		data(){
 			return {
-				newGoods: [],
-				classArr: [],
+				newGoods: null,
+				classArr: null,
 				theme: null,
 				nowTime: 0
 			}

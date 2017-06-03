@@ -42,18 +42,21 @@
 						</li>
 					</ul>
 				</div>
-				
+				<pagination></pagination>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
 import {currency} from '../../common/js/filter.js'
+import pagination from '../../components/Common/pagination'
 	export default {
 	filters:{
-			currency
-		}
-		
+		currency
+	},
+	components:{
+		pagination
+	}
   }
 </script>
 <style scoped lang='scss'>
@@ -173,7 +176,9 @@ $text_color: #ffd3d8;
 						}
 					}
 				}
+				
 			}
 		}
 	}
+
 </style>

@@ -29,6 +29,8 @@ export const dateStyle  = time =>{
 }
 //时间日期格式转换
 export const timeStyle  = time =>{
+    time -= 0;
+    time *=1000; 
     var newDate = new Date(time);
     let {h,m,s}={h:newDate.getHours(),m:newDate.getMinutes(),s:newDate.getSeconds()};
     h = trans(h);
@@ -45,6 +47,7 @@ export const timeStyle  = time =>{
 
 // 日期格式转成中文
 export const dateStyleCh  = time =>{
+    time -= 0;
     time *= 1000 
     var newDate = new Date(time);
     let {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};

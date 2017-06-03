@@ -1,21 +1,23 @@
 <template>
-	<div class="wrap">
+	<div class="wrap" v-if='goodsInfo'>
 		<div class="storeLogoWrap">
 			<div class="storeLogoBox">
-				<img src="">
+				<img :src="goodsInfo.goods.shop_logo">
 			</div>
 		</div>
 		<v-nav></v-nav>
-		<div class="content">
+		<div class="content" >
 			<dl class="goodsInfo">
 				<dt>
-					<img src="">
+					<img :src="goodsInfo.goods.cover">
 				</dt>
 				<dd>
 					<div class="leftBtn"></div>
 					<div class="imgList">
 						<ul>
-							<li v-for='item in 5'></li>
+							<li v-for='item in goodsInfo.goods.images'>
+								<img :src="item">
+							</li>
 						</ul>
 					</div>
 					<div class="rightBtn"></div>
@@ -23,7 +25,7 @@
 			</dl>
 			<div class="shopInfo">
 				<div class="title">
-					韩束乳液满119减120韩束乳液满119减120韩束乳液满119减120韩束乳液满119减120韩束乳液满119减120韩束乳液满119减120
+					{{goodsInfo.goods.name}}
 				</div>
 				<dl  class="priceInfo">
 					<dt class="price">
@@ -32,19 +34,19 @@
 								原价
 							</el-col>
 							<el-col :span='20' style='text-decoration: line-through'>
-								{{399.00 |currency}}
+								{{goodsInfo.goods.market_price |currency}}
 							</el-col>
 						</el-row>
 						<div class="totalEval">
 							<span>累计评价</span>
-							<em>1925</em>
+							<em>{{goodsInfo.goods.sale_count}}</em>
 						</div>
 						<el-row>
 							<el-col :span='4' style='padding-top: 16px;'>
 							     帅柏价
 							</el-col>
 							<el-col :span='20' style='color: #f24450;'>
-								￥<span style="font-size:30px;">299.00</span>
+								￥<span style="font-size:30px;">{{goodsInfo.goods.shop_price}}</span>
 							</el-col>
 						</el-row>
 						<el-row>
@@ -53,9 +55,9 @@
 							</el-col>
 							<el-col :span='20'>
 								<ul>
-									<li>可使用&nbsp;{{0}}&nbsp;积分</li>
-									<li>可使用&nbsp;{{0}}&nbsp;购物币</li>
-									<li>可使用&nbsp;{{0}}&nbsp;PV</li>
+									<li>可使用&nbsp;{{goodsInfo.goods.max_integration}}&nbsp;积分</li>
+									<li>可使用&nbsp;{{goodsInfo.goods.max_shopping_coin}}&nbsp;购物币</li>
+									<li>可使用&nbsp;{{goodsInfo.goods.pv}}&nbsp;PV</li>
 								</ul>
 							</el-col>
 						</el-row>
@@ -64,7 +66,7 @@
 								促销
 							</el-col>
 							<el-col :span='20'>
-								满599减100
+								<span  class="full">满&nbsp;减</span>满&nbsp;{{goodsInfo.full[0].limit}}&nbsp;减&nbsp;{{goodsInfo.full[0].amount}}
 							</el-col>
 						</el-row>
 					</dt>
@@ -95,23 +97,14 @@
 								</div>
 							</el-col>
 						</el-row>
-						<el-row>
+						<el-row v-for='items in goodsInfo.goods.specs'>
 							<el-col :span='4'>
-								规格
+								{{items.name}}
 							</el-col>
 							<el-col :span='20' class='chooseBtn'>
-								<button v-for='(item,index) in 2' :index='index' @click='version=index' :class='{"checkedBorder": version===index}'>常规版
-								<img src="../../module/detail/images/checked.png" height="16" width="16" v-show='version===index'>
+								<button :index='index' @click='items.select=index' :class='{"checkedBorder": items.select===index}' v-for='(item,index) in items.items'>{{item.name}}
+								<img src="../../../static/detailImg/checked.png" height="16" width="16" v-show='items.select===index'>
 								</button>
-							</el-col>
-						</el-row>
-						<el-row>
-							<el-col :span='4'>
-								规格
-							</el-col>
-							<el-col :span='20' class='chooseBtn'>
-								<button v-for='(item,index) in 2' :index='index' @click='combo=index' :class='{"checkedBorder": combo===index}'>套餐一
-								<img src="../../module/detail/images/checked.png" height="16" width="16" v-show='combo===index'></button>
 							</el-col>
 						</el-row>
 						<el-row>
@@ -119,11 +112,11 @@
 								数量
 							</el-col>
 							<el-col :span='20' class='chooseNum'>
-								<button>减</button>
-								<input type="text" name="">
-								<button>加</button>
+								<button @click='changeNum(0)'><i class="el-icon-minus"></i></button>
+									<input type="text" name="" v-model='numInput'>
+								<button @click='changeNum(1)'><i class="el-icon-plus"></i></button>
 								<em style="line-height:28px;margin-left:10px;">件</em>
-								<span style="line-height: 28px;margin-left: 20px;">(库存122件)</span>
+								<span style="line-height: 28px;margin-left: 20px;">(库存{{stockNum}}件)</span>
 							</el-col>
 						</el-row>
 						<div class='buyBtn'>
@@ -138,45 +131,45 @@
 				<div class="title">
 					<div class="titleContent">
 						<div class="slider"></div>
-						<div class="name">帅柏直营</div>
+						<div class="name">{{goodsInfo.goods.shop_name}}</div>
 						<div class="slider"></div>
 					</div>
 				</div>
 				<div class="storeContent">
 					<div class="storeName">
-						帅柏商城直营店
+						{{goodsInfo.goods.name}}
 					</div>
 					<div class="eval">
 						<dl>
 							<dt>商品</dt>
-							<dd>4.5</dd>
+							<dd>{{goodsInfo.goods.comment.goods_comment}}</dd>
 						</dl>
 						<dl>
 							<dt>服务</dt>
-							<dd>4.9</dd>
+							<dd>{{goodsInfo.goods.comment.service_comment}}</dd>
 						</dl>
 						<dl>
 							<dt>物流</dt>
-							<dd>4.1</dd>
+							<dd>{{goodsInfo.goods.comment.logistics_comment}}</dd>
 						</dl>
 					</div>
 					<dl class="online">
 						<dt>在线客服</dt>
 						<dd>
-							<img src ="../../module/detail/images/qq.png" height="14" width="12">
+							<img src ="../../../static/commonImg/qq.png" height="14" width="12">
 							客服天天
 						</dd>
 					</dl>
 					<div class="collectBtn">
-						<el-button type='text' size='small' @click='colStoreBol=!colStoreBol' :class='{"isView":colStoreBol}'>
-							<img src="../../module/detail/images/viewStoreOn.png" v-show='!colStoreBol'  height="14" width="14">
-							<img src="../../module/detail/images/viewStoreOff.png" v-show='colStoreBol' height="14" width="14">
-							{{colStoreBol?'取消关注':'关注店铺'}}
+						<el-button type='text' size='small' @click='goodsInfo.goods.is_seller_collection=!goodsInfo.goods.is_seller_collection' :class='{"isView":goodsInfo.goods.is_seller_collection}'>
+							<img src="../../../static/detailImg/viewStoreOn.png" v-show='!goodsInfo.goods.is_seller_collection'  height="14" width="14">
+							<img src="../../../static/detailImg/viewStoreOff.png" v-show='goodsInfo.goods.is_seller_collection' height="14" width="14">
+							{{goodsInfo.goods.is_seller_collection?'取消关注':'关注店铺'}}
 						</el-button>
-						<el-button type='text'  size='small' style='margin-left:0px;' @click='colGoodsBol=!colGoodsBol' :class='{"isView":colGoodsBol}'>
-							<img src="../../module/detail/images/colGoodOn.png" v-show='!colGoodsBol' height="14" width="14">
-							<img src="../../module/detail/images/colGoodOff.png" v-show='colGoodsBol' height="14" width="14">
-							{{colGoodsBol?'取消收藏':'收藏商品'}}
+						<el-button type='text'  size='small' style='margin-left:0px;' @click='goodsInfo.goods.is_collection=!goodsInfo.goods.is_collection' :class='{"isView":goodsInfo.goods.is_collection}'>
+							<img src="../../../static/detailImg/colGoodOn.png" v-show='!goodsInfo.goods.is_collection' height="14" width="14">
+							<img src="../../../static/detailImg/colGoodOff.png" v-show='goodsInfo.goods.is_collection' height="14" width="14">
+							{{goodsInfo.goods.is_collection?'取消收藏':'收藏商品'}}
 						</el-button>
 					</div>
 				</div>
@@ -188,10 +181,12 @@
 <script>
 	import { arrCity } from '../../common/js/city.js'
  	import {currency} from '../../common/js/filter.js'
+ 	import {goodsDetail} from '../../common/js/api.js'
  	import vNav from './nav.vue'
 	export default{
 		data(){
 			return {
+				goodsInfo: null,
 				version: '',
 				combo: '',
 				cityArr: [{
@@ -207,8 +202,9 @@
 		        proName: '浙江',
 		        cityName: '杭州',
 		        addressBol: false,
-		        colStoreBol: false,
-		        colGoodsBol: false,
+		        params: '',
+		        numInput: 1,
+		        stockNum: 0
 			}
 		},
 		filters: {
@@ -235,12 +231,67 @@
 	            _this.proName = _this.cityArr[_this.proIndex].name;
 	            _this.cityName = _this.cityArr[_this.proIndex].sub[_this.cityIndex].name;
 	            _this.addressBol = false;
-	        }
+	        },
+	        getRequest() {
+			 var url = location.search; //获取url中"?"符后的字串
+			 var theRequest = new Object();
+			 if (url.indexOf("?") != -1) {
+			  let  str = url.substr(1);
+			  let strs = str.split("&");
+			  for(var i = 0; i < strs.length; i ++) {
+			   theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
+			  }
+			 }
+			 return theRequest;
+			},
+			changeNum(mask){
+				let _this = this ;
+				if (mask) {
+					_this.numInput++;
+					if (_this.numInput>_this.stockNum) {
+							_this.numInput = _this.stockNum;
+					}
+				}else {
+					_this.numInput-- ;
+					if (_this.numInput<1) {
+						_this.numInput=1;
+					}
+				}
+			}
 		},
 		created() {
 			this.$nextTick(()=>{
 	            this.cityArr = arrCity;
 	        })
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				this.params = this.getRequest();
+				let params = {
+					access_token : sessionStorage.access_token,
+					goods_id: this.params.goods_id
+				}
+				goodsDetail(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.goodsInfo = content ;
+						this.stockNum = this.goodsInfo.goods.stock ;
+					}
+				})
+			})
 		}
 	}
 </script>
@@ -337,6 +388,15 @@ $title_color: #333;
       					font-weight: 600;
       					color: $red_color;
       				}
+      			}
+      			.full{
+      				width: 40px;
+      				padding: 3px 6px;
+      				text-align: center;	
+      				border: 1px solid $primary;
+      				border-radius: 2px;
+      				margin-right: 16px;
+      				color: $primary;
       			}
       		}
       		.delivery{
@@ -442,6 +502,7 @@ $title_color: #333;
 				     	float: left;
 				     	width: 50px;
 				     	height: 28px;
+				     	text-align: center;
 				     	margin-left:-1px;
 				     }
       				}

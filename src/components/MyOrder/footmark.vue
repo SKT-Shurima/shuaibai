@@ -3,14 +3,14 @@
 		<h4 class="title">
 			以下是您最近30天的浏览记录
 		</h4>
-		<ul class="recordList">
-			<li v-for='item in 3'>
+		<ul class="recordList" v-if='markList'>
+			<li v-for='item in markList'>
 				<dl class="time">
 					<dt>
-						2017-04-13
+						{{markList.date_add*1000|dateStyle}}
 					</dt>
 					<dd>
-						今天
+					   {{markList.date_add > todayTime?"今天":markList.date_add>todayTime-86400?'昨天':markList.date_add>todayTime-86400*2?'前天':""}}
 					</dd>
 				</dl>
 				<dl class="progress">
@@ -35,18 +35,79 @@
 	</div>
 </template>
 <script >
-import {currency} from '../../common/js/filter.js'
+import {currency,dateStyle} from '../../common/js/filter.js'
+import {footmark,delFoots} from '../../common/js/api.js'
 	export default{
 		data(){
 			return{
-
+				markList: null,
+				todayTime: 0
 			}
 		},
 		filters:{
-			currency
+			currency,dateStyle
+		},
+		mothods:{
+			deleteFoots(id){
+				MessageBox.confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消',
+		          type: 'warning'
+		        }).then(() => {
+		        	let params = {
+						access_token : sessionStorage.access_token,
+						ids: id
+					};
+		         	delFoots(params).then(res=>{
+						let {errcode,message,content} = res ;
+						if(errcode !== 0){
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		window.location.href = 'login.html';
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else {
+							
+						}
+					})
+		        }).catch(() => {          
+   				});
+			}
 		},
 		mounted(){
-
+			this.$nextTick(()=>{
+				this.todayTime =  new Date(new Date().setHours(0, 0, 0, 0)) / 1000;;
+	    		let params  ={
+					access_token : sessionStorage.access_token,
+					page: "0"
+				}
+				footmark(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.markList = content;
+					}
+				})
+    	})
 		}
 	}
 </script>

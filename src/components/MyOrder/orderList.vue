@@ -21,7 +21,7 @@
 					<el-col :span='10'>
 						<span>帅柏</span>
 						<button>
-							<img src="../../module/myOrder/images/qq.png" height="14" width="12">联系客服
+							<img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服
 						</button>
 					</el-col>
 				</el-row>
@@ -103,7 +103,7 @@ import {currency} from '../../common/js/filter.js'
 		    	getOrders(params).then(res=>{
 		    		let {errcode,content} = res;
 		    		if(errcode===0){
-		    			console.log(content)
+		    			
 		    		}
 		    	})
 		    }

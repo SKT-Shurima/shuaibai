@@ -2,24 +2,24 @@
 	<div class="wrap">
 		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view37")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view373")'>积分</span></h4>
 		<dl class="amountInfo">
-			<dt><span>当前积分</span><em>200</em>
+			<dt><span>当前积分</span><em>{{inteInfo.integration}}</em>
 			</dt>
 		</dl>
 		<div class="title">
 	 		<i class="icon"></i>
 	 		<span style="vertical-align: 4px;">积分明细</span>
 	 	</div>
-	 	<ul class="moneyList">
-	 		<li v-for='item in 20'>
+	 	<ul class="moneyList" v-if='integrationList'>
+	 		<li v-for='item in integrationList'>
 	 			<el-row>
 	 				<el-col :span='4'>
-	 					2017-01-01
+	 					{{item.date_add*1000 | dateStyle}}
 	 				</el-col>
 	 				<el-col :span='4'>
-	 					<span>+10000.00</span>
+	 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
 	 				</el-col>
 	 				<el-col :span='16'>
-	 					信息
+	 					{{item.comments}}
 	 				</el-col>
 	 			</el-row>
 	 		</li>
@@ -28,11 +28,15 @@
 </template>
 <script>
 import {currency} from '../../common/js/filter.js'
-import {} from '../../common/js/api.js'
+import {integration,integrationDetail} from '../../common/js/api.js'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
       return {
+      	inteInfo: {
+      		integration: ''
+      	},
+      	integrationList: null
       };
     },
     filters:{
@@ -46,12 +50,28 @@ import {MessageBox} from  'element-ui'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}else{
-				window.location.href = "login.html";
-			}
+        	let params = {
+        		access_token : sessionStorage.access_token
+        	}
+        	integration(params).then(res=>{
+        		let {errcode,message,content} = res;
+        		if (errcode !== 0) {
+        			if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+        		}else {
+        			this.inteInfo = content ;
+        		}
+        	})
         })
     },
     mounted(){
@@ -128,8 +148,10 @@ $bg_title: #f5f5f5;
 				.el-col-4{
 					span{
 						font-weight: 600;
-						/*color: $primary;*/
 						color: #008903;
+					}
+					.expent{
+						color: $primary;
 					}
 				}
 			}

@@ -15,7 +15,7 @@
 						下单时间：204515611316
 					</el-col>
 					<el-col :span='8'>
-						帅柏商城直营店 <button><img src="../../module/confirmOrder/images/qq.png" height="14" width="12">联系客服</button>
+						帅柏商城直营店 <button><img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服</button>
 					</el-col>
 				</el-row>
 				<el-row>

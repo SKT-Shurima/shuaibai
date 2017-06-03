@@ -47,7 +47,7 @@ import {getCoupons} from '../../common/js/api.js'
 				let params  ={
 					access_token : sessionStorage.access_token
 				}
-				getCoupons().then(res=>{
+				getCoupons(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
 						if (errcode === 99) {

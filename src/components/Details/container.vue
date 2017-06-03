@@ -1,38 +1,42 @@
 <template>
 	<div class="wrap">
-		<div class="container">
+		<div class="container" v-if='goodsInfo'>
+			<!-- 店铺小信息列表 -->
 			<div class="sliderBox">
+			<!-- 优惠券 -->
 				<ul class="coupons">
 					<li v-for='item in 3'>
 						
 					</li>
 				</ul>
+				<!-- 分类 -->
 				<ul class="navList">
 					<li><div class="title">查看全部分类</div></li>
 					<li><div class="title">店铺热卖</div></li>
 					<li><div class="title">掌柜推荐</div></li>
 					<li><div class="title">护肤品 
-						<img src="../../module/detail/images/close.png" height="14" width="14">
+						<img src="../../../static/detailImg/close.png" height="14" width="14">
 					</div>
 						<ul>
 							<li v-for='item in 4'>面膜</li>
 						</ul>
 					</li>
 					<li><div class="title">护肤品
-							<img src="../../module/detail/images/close.png" height="14" width="14">
+							<img src="../../../static/detailImg/close.png" height="14" width="14">
 						</div>
 						<ul>
 							<li v-for='item in 4'>面膜</li>
 						</ul>
 					</li>
 					<li><div class="title">护肤品
-							<img src="../../module/detail/images/close.png" height="14" width="14">
+							<img src="../../../static/detailImg/close.png" height="14" width="14">
 						</div>
 						<ul>
 							<li v-for='item in 4'>面膜</li>
 						</ul>
 					</li> 
 				</ul> 
+				<!-- 热销排行 -->
 				<div class="hotSell">
 					<div class="title">
 						<div class="slider"></div>
@@ -63,20 +67,25 @@
 					</ul>
 				</div>
 			</div>
+			<!-- 内容 -->
 			<div class="contentBox">
 				 <dl class="infoBox">
 				 	<dt>
 				 		<button @click='infoTabIndex=1' :class='{"infoTabChecked":infoTabIndex===1}' >商品详情</button>
-				 		<button @click='infoTabIndex=2' :class='{"infoTabChecked":infoTabIndex===2}'>评价（{{1212}}）</button>
+				 		<button @click='infoTabIndex=2' :class='{"infoTabChecked":infoTabIndex===2}'>评价（{{goodsInfo.goods.comment.total}}）</button>
 				 	</dt>
 				 	<dd>
+				 		<!-- 产品参数 -->
 				 		<div class="detailsCon" v-show='infoTabIndex===1'>
-				 			<div>
+				 			<div class="detailTitle">
 					 			产品参数
 					 		</div>
 					 		<ul class="productInfo">
-					 			<li v-for='item in 10'>
-					 				浙江省杭州市滨江区滨兴路建业路华盛达广场
+					 			<li v-for='item in goodsInfo.goods.params'>
+					 				<el-row>
+					 					<el-col :span='6' v-text='item.name'></el-col>
+					 					<el-col :span='18' v-text='item.value'></el-col>
+					 				</el-row>
 					 			</li>
 					 		</ul>
 				 		</div>
@@ -85,16 +94,16 @@
 				 				好评率
 				 			</div>
 				 			<div style="font-size:60px;font-weight:600;color:#c71724;" class="evalRate">
-				 				90%
+				 				{{goodsInfo.goods.comment.praise_rate*100}}%
 				 			</div>
 				 			<div class="evalInfo">
 				 				<el-row>
 				 				   		<el-col :span='10'>
-				 				   			商品评价（{{4.5}}）
+				 				   			商品评价（{{goodsInfo.goods.comment.goods_comment.toFixed(1)}}）
 				 				   		</el-col>
 				 				   		<el-col :span='14'>
 				 				   			<el-rate
-											  v-model="value5"
+											  v-model="goodsInfo.goods.comment.goods_comment"
 											  disabled
 											  text-color="#ff9900">
 											</el-rate>
@@ -102,11 +111,11 @@
 				 				   </el-row>
 				 				   <el-row>
 				 				   		<el-col :span='10'>
-				 				   			服务评价（{{4.5}}）
+				 				   			服务评价（{{goodsInfo.goods.comment.service_comment.toFixed(1)}}）
 				 				   		</el-col>
 				 				   		<el-col :span='14'>
 				 				   			<el-rate
-											  v-model="value5"
+											  v-model="goodsInfo.goods.comment.service_comment"
 											  disabled
 											  text-color="#ff9900">
 											</el-rate>
@@ -114,11 +123,11 @@
 				 				   </el-row>
 				 				   <el-row>
 				 				   		<el-col :span='10'>
-				 				   			物流评价（{{4.5}}）
+				 				   			物流评价（{{goodsInfo.goods.comment.logistics_comment.toFixed(1)}}）
 				 				   		</el-col>
 				 				   		<el-col :span='14'>
 				 				   			<el-rate
-											  v-model="value5"
+											  v-model="goodsInfo.goods.comment.logistics_comment"
 											  disabled
 											  text-color="#ff9900">
 											</el-rate>
@@ -130,84 +139,103 @@
 				 </dl>
 				 <div class="detailsList" v-show='infoTabIndex===1'>
 				 	<ul class="storeImg">
-					 	<li v-for='item in 5'>
-					 		<img src="">
+					 	<li>
+					 		{{goodsInfo.goods.description}}
 					 	</li>
 					 </ul>
 				 </div>
+				 <!-- 评论区域 -->
 				 <div class="evalList" v-show='infoTabIndex===2'>
 				 	<div class="title">
-				 		<button :class='{"evalTabChecked":evalTabIndex===1}' @click='evalTabIndex=1'>全部评论</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===2}' @click='evalTabIndex=2'>好评（{{1081}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===3}' @click='evalTabIndex=3'>中评（{{96}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===4}' @click='evalTabIndex=4'>差评（{{24}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===5}' @click='evalTabIndex=5'>有图（{{296}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===0}' @click='getComment(0)'>全部评论</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===1}' @click='getComment(1)'>好评（{{goodsInfo.goods.comment.praise}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===2}' @click='getComment(2)'>中评（{{goodsInfo.goods.comment.common}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===3}' @click='getComment(3)'>差评（{{goodsInfo.goods.comment.bad}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===4}' @click='getComment(0)'>有图（{{goodsInfo.goods.comment.have_picture}}）</button>
 				 	</div>
-				 	<ul>
-				 		<li v-for='item in 12'>
+				 	<!-- 初次评论列表 -->
+				 	<ul v-if='commentList' class="evalWrap">
+				 		<li v-for='(item,index) in commentList.content' class="evalBox">
 				 			<dl>
 				 				<dt>
 				 					<div class="avatar">
-				 						<img src="">
+				 						<img :src="item.image">
 				 					</div>
-				 					<div>
-				 						刘女士
-				 					</div>
+				 					<div v-text='item.nickName'></div>
 				 				</dt>
 				 				<dd>
-				 					<p>
-				 						用着感觉好好哦用着感觉好好哦用着感觉好好哦用着感觉好好哦用着感觉好好哦用着感觉好好哦用着感觉好好哦用着感觉好好哦用着感觉好好哦用着感觉好好哦
-				 					</p>
+				 					<p v-text='item.content' class="evalContent"></p>
 				 					<ul class="evalImgList">
-				 						<li v-for='item in 3'>
-				 							<img src="">
+				 						<li v-for='item in images'>
+				 							<img :src="item">
 				 						</li>
 				 					</ul>
-				 					<div class="evalBigImg">
-				 						<img src="">
+				 					<div class="evalBigImg" v-show='item.current_img'>
+				 						<img :src="item.current_img">
 				 					</div>
 				 					<div class="evalMsg">
 				 						<div class="time">
 				 							<span>
-					 							2017年1月1日  12:21
+					 							{{item.date|dateStyleCh}}&nbsp;{{item.date|timeStyle}}
 					 						</span>
 					 						<strong>
-					 							颜色分类：常规版/套餐一
+					 							颜色分类：{{item.option_name}}
 					 						</strong>
 					 					</div>
 					 					<div class="more">
-					 						<button>有用（{{12}}）</button>
-					 						<button>回复（{{10}}）</button>
-					 						<button>展开<i></i></button>
+					 						<button>有用（{{item.useful}}）</button>
+					 						<button>回复（{{item.reply_count}}）</button>
+					 						<button @click='getAddReply(index)'>{{replyList[index].bol?'收起':'展开'}}<img src="../../../static/detailImg/replayOpen.png" height="11" width="10" v-show='!replyList[index].bol'><img src="../../../static/detailImg/replayClose.png" v-show='replyList[index].bol'></button>
 					 					</div>
 				 					</div>
+				 					<!-- 追加评论列表 -->
+				 					<div class="addEval" v-show='replyList[index].bol'>
+				 						<ul v-if='replyList[index].replyList'> 
+					 						<li v-for='replyItem in replyList[index].replyList'>
+					 							<p class="addContent">
+					 								sajdjashdasb
+					 							</p>
+					 							<div class="addTime">
+					 								<span>2017年12月12日 12：21</span>
+					 							</div>
+					 						</li>
+					 					</ul>
+					 					<div class="packUp">
+						 					<span @click='replyList[index].bol=false'>
+						 						收起<img src="../../../static/detailImg/replayClose.png" height="11" width="10" alt="">
+						 					</span>
+					 						
+					 					</div>
+				 					</div>
+				 					
 				 				</dd>
 				 			</dl>
 				 		</li>
 				 	</ul>
 				 </div>
+				 <!-- 推荐 -->
 				 <div class="recommend">
 				 	<div class="title">
 				 		<i class="icon"></i>
 				 		<span>店内推荐</span>
-				 		<strong>换一组<i></i></strong>
+				 		<strong>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
 				 	</div>
-				 	<ul>
-				 		<li class="infoList" v-for='item in 12'>
+				 	<ul v-if='storeRecommend'>
+				 		<li class="infoList" v-for='item in storeRecommend'>
 				 			<dl>
 								<dt>
-									<img src="">
+									<img :src="item.cover">
 								</dt>
 								<dd>
 									<div class="sellInfo">
-										9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮
+										{{item.name}}
 									</div>
 									<div class="priceInfo">
 										<span>
-											{{168.00|currency}}
+											{{item.shop_price|currency}}
 										</span>
 										<em>
-											{{2017}}人付款
+											{{item.sale_count}}人付款
 										</em>
 									</div>
 								</dd>
@@ -216,25 +244,153 @@
 				 	</ul>
 				 </div>         
 			</div>
+			<!-- 猜你喜欢 -->
 			 <you-love></you-love>
 		</div>
 	</div>
 </template>
 <script>
-	import {currency} from '../../common/js/filter.js'
+	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter.js'
+	import {getHighGoods,goodsDetail,getComments} from '../../common/js/api.js'
+	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content.vue'
 	export default {
 		data(){
 			return {
 				infoTabIndex: 1,
-				evalTabIndex: 1
+				evalTabIndex: 1,
+				goodsInfo: null,
+				storeRecommend: null,
+				commentList: null,
+				replyList:[]
 			}
 		},
 		filters:{
-			currency
+			currency,dateStyleCh,timeStyle
 		},
 		components:{
 			youLove
+		},
+		methods:{
+			getRequest() {
+				 var url = location.search; //获取url中"?"符后的字串
+				 var theRequest = new Object();
+				 if (url.indexOf("?") != -1) {
+				  let  str = url.substr(1);
+				  let strs = str.split("&");
+				  for(var i = 0; i < strs.length; i ++) {
+				   theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
+				  }
+				 }
+				 return theRequest;
+			},
+			// 获取评价列表
+			getComment(mask){
+				let _this = this ;
+				_this.evalTabIndex = mask;
+				let params = {
+					goods_id: _this.params.goods_id,
+					type: mask
+				}
+				getComments(params).then(res=>{
+					let {errcode,message,content} = res ;
+						if(errcode !== 0){
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		window.location.href = 'login.html';
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else {
+							this.commentList = content ;
+							this.initAddReply(this.commentList.content.length);
+						}
+				})
+			},
+			// 格式化追加回复列表
+			initAddReply(len){
+				let _this = this ;
+				_this.replyList = [];
+				for (let i = 0; i < len; i++) {
+					let obj = new Object();
+					obj.replyList = null;
+					obj.bol=false;
+					_this.replyList.push(obj);
+				}
+			},
+			// 展开对应的追加回复
+			getAddReply(index){
+				let _this =this ;
+				_this.replyList[index].bol = !_this.replyList[index].bol ;
+			},
+			// 获取店铺推荐
+			getRecomment(){
+				let params ={
+						seller_id: this.goodsInfo.goods.seller_id
+					}
+					getHighGoods(params).then(res=>{
+						let {errcode,message,content} = res ;
+						if(errcode !== 0){
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		window.location.href = 'login.html';
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else {
+							this.storeRecommend = content ;
+						}
+					})
+			},
+			// 初始化获取商品详情
+			init(){
+				this.params = this.getRequest();
+				let params = {
+					access_token : sessionStorage.access_token,
+					goods_id: this.params.goods_id
+				}
+				goodsDetail(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						content.goods.comment.goods_comment -= 0;
+						content.goods.comment.logistics_comment -= 0;
+						content.goods.comment.service_comment -= 0;
+						this.goodsInfo = content ;
+						this.getRecomment();
+						this.getComment(0);
+					}
+				})
+			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				this.init();
+			})
 		}
 	}
 </script>
@@ -250,6 +406,7 @@ $bg_title: #f5f5f5;
 			width: 1250px;
 			margin: 0px auto;
 			overflow: hidden;
+			/*商品信息*/
 			.infoList{
 				dl{
 					dt{
@@ -268,6 +425,7 @@ $bg_title: #f5f5f5;
 							font-weight: 600;
 							margin-top: 10px;
 						}
+						/*价格信息*/
 						.priceInfo{
 							margin-top: 6px;
 							span{
@@ -284,14 +442,14 @@ $bg_title: #f5f5f5;
 					}	 
 				}
 			}
+			/*店铺小信息*/
 			.sliderBox{
 				float: left; 
-				width: 240px;
-				margin-left: 10px;
+				width: 250px;
 				.coupons{
 					width: 100%;
-					padding-right: 20px;
-					padding-bottom: 14px;
+					margin-left: 10px;
+					margin-bottom: 14px;
 					li{
 						width: 220px;
 						height: 116px;
@@ -301,6 +459,7 @@ $bg_title: #f5f5f5;
 			}
 			.navList{
 				width: 220px;
+				margin-left: 10px;
 				border-left: 1px solid $border_color;
 				border-right: 1px solid $border_color;
 				border-top: 1px solid $border_color;
@@ -331,6 +490,7 @@ $bg_title: #f5f5f5;
 					}
 				}
 			}
+			/*热销*/
 			.hotSell{
 				.title {
 					width: 192px;
@@ -368,6 +528,7 @@ $bg_title: #f5f5f5;
 			}
 		}
 	}
+	/*内容区域*/
 	.contentBox{
 		width: 1000px;
 		float: left;
@@ -401,9 +562,9 @@ $bg_title: #f5f5f5;
 			dd{
 				padding: 10px;
 				.detailsCon{
-					div{
+					color: $text_color;
+					.detailTitle{
 						line-height: 24px;
-						color: $text_color;
 						font-weight: 600;
 						padding-left: 12px;
 						margin-bottom: 10px;
@@ -417,9 +578,10 @@ $bg_title: #f5f5f5;
 							line-height: 30px;
 							width: 210px;
 							margin-right: 10px;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-							overflow: hidden;
+							.el-row{
+								margin: 0px;
+
+							}
 						}
 					}
 				}
@@ -456,6 +618,7 @@ $bg_title: #f5f5f5;
 				}
 			}
 		}
+		/*评论列表*/
 		.evalList{
 			margin-top: 10px;
 			.title{
@@ -477,9 +640,11 @@ $bg_title: #f5f5f5;
 					border-bottom: 4px solid $primary;
 				}
 			}
-			ul{
-				li{
+			/*评论*/
+			.evalWrap{
+				.evalBox{
 					padding: 26px 0px;
+					border-bottom: 1px solid $border_color;
 					dl{
 						overflow: hidden;
 						dt{
@@ -500,7 +665,7 @@ $bg_title: #f5f5f5;
 						dd{
 							float: left;
 							width: 870px;
-							p{
+							.evalContent{
 								font-size: 14px;
 								line-height: 20px;
 							}
@@ -537,6 +702,7 @@ $bg_title: #f5f5f5;
 									float: left;
 									strong{
 										font-weight: 400;
+										margin-left: 30px;
 									}
 								}
 								.more{
@@ -548,9 +714,50 @@ $bg_title: #f5f5f5;
 										background-color: transparent;
 										outline: none;
 										border: none;
+										img{
+											vertical-align: -2px;
+										}
 									}
 									button:last-child{
 										color: $text_color;
+									}
+								}
+							}
+							/*追加评论*/
+							.addEval{
+								margin-top: 24px;
+								ul{
+									border-bottom: 1px dashed $border_color;
+									li{
+										padding: 18px 38px 10px 12px;
+										border-top: 1px dashed $border_color;
+										.addContent{
+											font-size: 14px;
+											line-height: 20px;
+										}
+										.sellerReply{
+											color: $primary;
+										}
+										.addTime{
+											overflow: hidden;
+											span{
+												float: right;
+												line-height: 36px;
+												color: $text_color;
+											}
+										}
+									}
+								}
+								.packUp{
+									text-align: center;
+									margin-top: 14px;
+									color: $text_color;
+									span{
+										cursor: pointer;
+									}
+									img{
+										margin-left: 12px;
+										vertical-align: -2px;
 									}
 								}
 							}
@@ -576,6 +783,7 @@ $bg_title: #f5f5f5;
 			}
 		}
 	}
+	/*店铺推荐*/
 	 .recommend{
 	 	width: 100%;
 	 	overflow: hidden;

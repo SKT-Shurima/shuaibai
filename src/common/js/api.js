@@ -55,6 +55,11 @@ export const getHomePage = params => {
 	params = trans(params);
 	return axios.post(`${base}/initAction/getHomePage`,params).then( res=> res.data);
 }
+// 手机面额充值
+export const  getActualFee = params =>{
+	params = trans(params);
+	return axios.get(`${base}/MobileRechargeAction/getActualFee?type=${params}`).then(res=>res.data )
+} 
 // 每日上新
 export const getNewGoods = () => {
     return axios.get(`${base}/initAction/getNewGoods`).then(res=> res.data);
@@ -149,10 +154,59 @@ export const getOrders = params => {
 	params = trans(params);
 	return axios.post(`${base}/orderAction/getOrders`,params).then(res=>res.data); 
 } 
+
+// 商品收藏列表
+export const collection = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/collection`,params).then(res=>res.data);
+}
+
+// 我的关注
+export const attention = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/attention`,params).then(res=>res.data);
+}
+// 取消关注
+export const cancelAttentions = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/cancelAttentions`,params).then(res=>res.data);
+}
+
 // 获取优惠券
 export const getCoupons = () => {
 	return axios.post(`${base}/userAction/getCoupons`,{}).then(res=>res.data);
 }
+
+
+// 资金
+// 资金明细
+export const finance= params => {
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/finance`,params).then(res=>res.data);
+}
+// 请求积分
+export const integration = params => {
+	params = trans(params);
+	return axios.post(`${base}/userAction/integration`,params).then(res=>res.data);
+}
+// 积分明细
+export const integrationDetail = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/integrationDetail`,params).then(res=>res.data);
+}
+// 请求购物币
+export const shoppingCoin = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/shoppingCoin`,params).then(res=>res.data);
+} 
+// 购物币明细
+export const shoppingCoinDetail = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/shoppingCoinDetail`,params).then(res=>res.data);
+}
+
+
+
 
 // 购物车相关
 // 添加购物车
@@ -174,4 +228,32 @@ export const removeCart = params=>{
 export const editCart= params=>{
 	params = trans(params);
 	return axios.post(`${base}/cartAction/editCart`,params).then(res=>res.data);
+}
+
+// 我的足迹
+export const footmark = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/footmark`,params).then(res=>res.data); 
+}
+// 删除足迹
+export const delFoots = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/delFoots`,params).then(res=>res.data);
+}
+
+
+// 商品详情
+export const goodsDetail = params =>{
+	params = trans(params);
+	return axios.post(`${base}/goodsAction/goodsDetail`,params).then(res=>res.data);
+}
+// 精品推荐
+export const getHighGoods = params =>{
+	params = trans(params);
+	return axios.post(`${base}/goodsAction/getHighGoods`,params).then(res=>res.data);
+}
+// 获取评价列表
+export const getComments = params=>{
+	params = trans(params);
+	return axios.get(`${base}/goodsAction/getComments?${params}`).then(res=>res.data)
 }
