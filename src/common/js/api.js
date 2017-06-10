@@ -94,6 +94,11 @@ export const saveAddress = params =>{
 	params = trans(params);
 	return axios.post(`${base}/addressAction/saveAddress`,params).then(res=>res.data);
 }
+// 获取地址选择列表
+export const linkage = params =>{
+	params = trans(params);
+	return axios.post(`${base}/addressAction/getAddressList`,params).then(res=>res.data);
+}
 // 获取地址列表
 export const getAddress = params =>{
 	params = trans(params);
@@ -173,8 +178,9 @@ export const cancelAttentions = params =>{
 }
 
 // 获取优惠券
-export const getCoupons = () => {
-	return axios.post(`${base}/userAction/getCoupons`,{}).then(res=>res.data);
+export const getCoupons = params => {
+	params = trans(params);
+	return axios.post(`${base}/userAction/getCoupons`,params).then(res=>res.data);
 }
 
 
@@ -229,6 +235,12 @@ export const editCart= params=>{
 	params = trans(params);
 	return axios.post(`${base}/cartAction/editCart`,params).then(res=>res.data);
 }
+// 立即购买、结算
+export const buy = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/buy`,params).then(res=>res.data)
+}
+
 
 // 我的足迹
 export const footmark = params =>{
@@ -252,8 +264,48 @@ export const getHighGoods = params =>{
 	params = trans(params);
 	return axios.post(`${base}/goodsAction/getHighGoods`,params).then(res=>res.data);
 }
+// 热销排行
+export const getHotGoods = params =>{
+	params = trans(params);
+	return axios.get(`${base}/sellerAction/getHotGoods?${params}`).then(res=>res.data);
+}
+// 获取店铺推荐
+export const getRecommend = params =>{
+	params = trans(params);
+	return axios.get(`${base}/goodsAction/getRecommend?${params}`).then(res=>res.data);
+}
 // 获取评价列表
 export const getComments = params=>{
 	params = trans(params);
-	return axios.get(`${base}/goodsAction/getComments?${params}`).then(res=>res.data)
+	return axios.get(`${base}/goodsAction/getComments?${params}`).then(res=>res.data);
+}
+// 获取回复
+export const replyContent = params =>{
+	params = trans(params);
+	return axios.get(`${base}/goodsAction/replyContent?${params}`).then(res=>res.data);
+}
+// 有用
+export const usefulComment = params =>{
+	params= trans(params);
+	return axios.post(`${base}/goodsAction/usefulComment`,params).then(res=>res.data);
+}
+// 回复
+export const replyComment = params=>{
+	params = trans(params);
+	return axios.post(`${base}/goodsAction/replyComment`,params).then(res=>res.data);
+}
+// 收藏、取消收藏
+export const collectionGoods = params=>{
+	params = trans(params);
+	return axios.post(`${base}/goodsAction/collection`,params).then(res=>res.data);
+}
+// 关注店铺
+export const addFollow= params=>{
+	params =trans(params);
+	return axios.post(`${base}/shopAction/addFollow`,params).then(res=>res.data);
+}
+// 取消关注
+export const cancelFollow= params=>{
+	params =trans(params);
+	return axios.post(`${base}/shopAction/cancelFollow`,params).then(res=>res.data);
 }

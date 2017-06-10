@@ -5,15 +5,27 @@ import {Row,Col,Button,Input,Checkbox,Radio} from  'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import '../../../theme/index.css'
 
+// import closeOrder from '../../components/ConfirmOrder/closeOrder'
+
+
+
+
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Button)
 Vue.use(Input)
 Vue.use(Checkbox)
 Vue.use(Radio)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  data: {
+  	
+  },
+  
   template: '<App/>',
-  components: { App }
+  components: { App },
+  
 })
+

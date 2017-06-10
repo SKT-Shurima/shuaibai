@@ -10,7 +10,7 @@
 							<select v-model="ruleForm.province" @change='setOption("proIndex",$event)'>
 							<option value='' disabled selected style='display:none;'>省</option>
 			                    <option
-			                      v-for="(item,index) in cityArr"
+			                      v-for="(item,index) in proArr"
 			                      :label="item.name"
 			                      :value="index" :key='index'>
 			                    </option>
@@ -20,7 +20,7 @@
 							<select v-model="ruleForm.city" @change='setOption("cityIndex",$event)'>
 							<option value='' disabled selected style='display:none;'>市</option>
 			                    <option
-			                      v-for="(item2,index2) in cityArr[proIndex].sub"
+			                      v-for="(item2,index2) in cityArr"
 			                      :label="item2.name"
 			                      :value="index2" :key='index2'>
 			                    </option>
@@ -30,7 +30,7 @@
 							<select v-model="ruleForm.district" @change='setOption("areaIndex",$event)'>
 							<option value='' disabled selected style='display:none;'>区</option>
 			                    <option
-			                      v-for="(item3,index3) in cityArr[proIndex].sub[cityIndex].sub"
+			                      v-for="(item3,index3) in areaArr"
 			                      :label="item3.name"
 			                      :value="index3" :key='index3'>
 			                    </option>
@@ -58,41 +58,42 @@
 				</el-form-item>
 			</div>
 			<div style="width:300px;margin:20px 100px 70px;">
-			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.province&&ruleForm.city&&ruleForm.address&&ruleForm.name&&ruleForm.phone)'>保存</el-button>
+			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.province!==""&&ruleForm.city!==""&&ruleForm.address&&ruleForm.name&&ruleForm.phone)'>保存</el-button>
 			</div>	  
 		</el-form>
 		<div class="addressList">
 			<div class="title" style="margin-bottom:20px;">
 				已经保存了{{addressList.length}}条地址，还可以保存{{20-addressList.length}}条地址
 			</div>
-			<ul>
-				<li v-for= '(item,index) in addressList' :class='{"isDefault":addressList.status==="1"}' :key='item'>
+			<ul v-if='addressList'>
+				<li v-for= '(item,index) in addressList' :class='{"isDefault":item.status==="1"}' :key='item'>
 					<dl>
 						<dt>
-							<span v-text='addressList.name'>
+							<span v-text='item.name'>
 							</span>
-							<strong v-text='addressList.phone'>
+							<strong v-text='item.phone'>
 							</strong>
-							<em v-show='addressList.status==="1"'>
+							<em v-show='item.status==="1"'>
 								默认地址
 							</em>
 						</dt>
 						<dd class="addressInfo">
-							{{addressList.province}}{{addressList.city}}{{addressList.district}}{{addressList.address}}
+						    {{item.province===item.city?item.province:item.province+item.city}}{{item.district}}{{item.address}}
+						    
 						</dd>
 						<dd>
 							<em>
-								邮编：{{addressList.postcode}}
+								邮编：{{item.postcode}}
 							</em>
 							<strong>
-								电话：{{addressList.phone}}
+								电话：{{item.phone}}
 							</strong>
 							<span class="edit">
 								<el-button type='text' size='mini'>
 									修改
 								</el-button>
 								<i style='color:#ccc;'>|</i>
-								<el-button type='text' size='mini'>
+								<el-button type='text' size='mini' @click='removeAddress(item.address_id)'>
 									删除
 								</el-button>
 							</span>
@@ -104,9 +105,8 @@
 	</div>
 </template>
 <script>
-import { arrCity } from '../../common/js/city.js'
-import {saveAddress,getAddress,delAddress,defaultAddress} from '../../common/js/api.js'
-import {MessageBox} from  'element-ui'
+import {saveAddress,getAddress,delAddress,defaultAddress,linkage} from '../../common/js/api'
+import {MessageBox,Message} from  'element-ui'
   export default {
     data() {
     	// 地区选择
@@ -116,7 +116,7 @@ import {MessageBox} from  'element-ui'
 	     	} else if (this.ruleForm.city === '') {
 	     		callback(new Error('请选择地级市或地区'));
 	     	} else {
-	     		if (this.cityArr[this.proIndex].sub[this.cityIndex].sub) {
+	     		if (this.areaArr.length) {
 	     			if (this.ruleForm.district === "") {
 	     				callback(new Error('请选择地区'));
 	     			} else {
@@ -146,13 +146,9 @@ import {MessageBox} from  'element-ui'
       	proIndex: 0,
         cityIndex: 0,
         areaIndex: 0,
-      	cityArr: [{
-      		name: '',
-      		sub: [{
-      			name: '',
-      			sub: ''
-      		}]
-      	}],
+      	proArr: [],
+      	cityArr: [],
+      	areaArr: [],
        	ruleForm: {
 	        province: '',
 	        city: '',
@@ -180,21 +176,44 @@ import {MessageBox} from  'element-ui'
         time: -1 ,
         total_time: 5, 
         send_btn: '发送验证码',
-        addressList: {
-        	name: '',
-        	phone: '',
-        	province: '',
-        	city: '',
-        	district: '',
-        	address: '',
-        	postcode: '',
-        	tel: '',
-        	status: '',
-        	length: 0
-        }
+        addressList: null
       };
     },
     methods: {
+    	getLinkage(mask,id){
+    		let params = {
+    			pid: id
+    		}
+    		linkage(params).then(res=>{
+    			let {errcode,message,content} = res ;
+            	if (errcode !== 0 ) {
+            		if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+            	} else {
+            		if (mask==='pro') {
+            			this.proArr = content ;
+            			this.cityArr= [];
+            			this.areaArr = [];
+            		}else if (mask==='city'){
+            			this.cityArr = [] ;
+            			this.cityArr = content; 
+            		}else if (mask=== 'area'){
+            			this.areaArr = [] ;
+            			this.areaArr = content;
+            		}
+            	}
+    		})
+    	},
     	send_code(){
 	      	let _this = this ;
       		let params = {
@@ -241,11 +260,13 @@ import {MessageBox} from  'element-ui'
                 this.areaIndex = 0;
                 this.ruleForm.city = '';
 	    		this.ruleForm.district= '';
+	    		this.getLinkage('city',this.proArr[this.proIndex].zone_id);
             }
             if(type === 'cityIndex'){
             	this.cityIndex = event.target.selectedIndex-1;
                 this.areaIndex = 0;
                 this.ruleForm.district= '';
+                this.getLinkage('area',this.cityArr[this.cityIndex].zone_id);
             }
             if(type === 'areaIndex'){
             	this.areaIndex = event.target.selectedIndex -1;
@@ -256,10 +277,10 @@ import {MessageBox} from  'element-ui'
           if (valid) {
             let params = {
             	access_token: this.userInfo.access_token,
-            	access_id: '',
-            	province: this.cityArr[this.proIndex].name,
-            	city: this.cityArr[this.proIndex].sub[this.cityIndex].name,
-            	district: this.cityArr[this.proIndex].sub[this.cityIndex].sub?this.cityArr[this.proIndex].sub[this.cityIndex].sub[this.areaIndex].name:" ",
+            	address_id: '',
+            	province: this.proArr[this.proIndex].name,
+            	city: this.cityArr[this.cityIndex].name,
+            	district: this.areaArr[this.areaIndex].name,
             	name: this.ruleForm.name,
             	phone: this.ruleForm.phone,
             	status:this.setDefault?"1":"0",
@@ -283,13 +304,22 @@ import {MessageBox} from  'element-ui'
 					    });
             		}
             	} else {
-            		MessageBox.alert(message, '提示', {
-			          	confirmButtonText: '确定',
-			          	callback: action => {
-				            this.$store.commit('switchView','view10');
-				            sessionStorage.currentView = 'view10';
-				        }
-				    });
+            		  Message.success({
+				          message: '新增地址添加成功',
+				          type: 'success'
+				        });
+            		  this.getAddressList();
+            		  // 初始化表单信息
+            		  this.getLinkage('pro');
+            		  this.ruleForm.province = '';
+            		  this.ruleForm.city = '';
+            		  this.ruleForm.district = '';
+            		  this.ruleForm.name = '';
+            		  this.ruleForm.phone='';
+            		  this.ruleForm.address='';
+            		  this.ruleForm.postcode ='';
+            	      this.ruleForm.tel ='';
+
             	}
             })
           } else {
@@ -305,11 +335,57 @@ import {MessageBox} from  'element-ui'
       	 	access_token: this.userInfo.access_token
       	 };
       	 getAddress(params).then(res=>{
-      	 	let {errcode,content} = res;
-      	 	if (errcode===0) {
-      	 		this.addressList = content;
-      	 	}
+      	 	let {errcode,message,content} = res ;
+            	if (errcode !== 0 ) {
+            		if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+            	} else {
+	        		this.addressList = content;
+            	}
       	 })
+      },
+      removeAddress(id){
+      	MessageBox.confirm('此操作将永久删除该地址, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let params = {
+      	 	access_token: this.userInfo.access_token,
+      	 	address_id: id
+      	 };
+      	 delAddress(params).then(res=>{
+      	 	let {errcode,message} = res ;
+            	if (errcode !== 0 ) {
+            		if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		window.location.href = 'login.html';
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+            	} else {
+	        		this.getAddressList();
+            	}
+      	 })
+        }).catch(() => {
+                   
+        });
       }
     },
     created(){
@@ -317,8 +393,8 @@ import {MessageBox} from  'element-ui'
         	if (sessionStorage.userInfo) {
 				this.hasUser = true;
 				this.userInfo = JSON.parse(sessionStorage.userInfo);
-				this.cityArr = arrCity;
 				this.getAddressList();
+				this.getLinkage('pro');
 			}else{
 				window.location.href = "login.html";
 			}

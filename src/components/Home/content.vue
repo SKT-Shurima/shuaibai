@@ -16,7 +16,7 @@
 		 		</el-col>
 		 	</el-row>
 		 	<el-row class='update_list' v-if='newGoods'>
-		 		<el-col :span='4' v-for='item in newGoods' >
+		 		<el-col :span='4' v-for='item in newGoods.goods' >
 		 			<dl  @click='detail(item)'>
 		 				<dt>
 		 					<img :src="item.cover">
@@ -67,6 +67,7 @@
 							</dl>
 						</el-col>
 						<el-col :span='12' class='snapup_right'>
+						<!-- 主题 一元抢购 -->
 						<ul>
 							<li v-for='item in 3'>
 								<dl class="goods_info">

@@ -1,12 +1,13 @@
 <template>
-	<div class="wrap">
+	<content class="wrap">
 		<pay></pay>
-		<order-status></order-status>
+		<!-- <order-status></order-status>
 		<logistics-info></logistics-info>
-		<order-info></order-info>
-	</div>
+		<order-info></order-info> -->
+	</content>
 </template>
 <script>
+	import content  from './content'
 	import pay from './pay'
 	import  orderStatus from './orderStatus'
 	import  logisticsInfo from './logisticsInfo'

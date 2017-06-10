@@ -18,6 +18,8 @@
       vHead,
       vCon,
       vFoot
+    },
+    mounted(){
     }
   }
 </script>

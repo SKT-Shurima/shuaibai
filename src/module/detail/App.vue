@@ -2,7 +2,6 @@
   <div class="wrap">
     <v-head></v-head>
     <v-content></v-content>
-    <v-container></v-container>
     <v-slider></v-slider>
     <v-foot></v-foot>
   </div>
@@ -13,7 +12,6 @@
   import vHead from 'components/Head/Head'
   import vSlider from 'components/Slider/Slider'
   import vContent from 'components/Details/content'
-  import vContainer from 'components/Details/container'
   import vFoot from 'components/Foot/Foot'
 
   export default {
@@ -22,7 +20,6 @@
       vHead,
       vSlider,
       vContent,
-      vContainer,
       vFoot
     }
   }

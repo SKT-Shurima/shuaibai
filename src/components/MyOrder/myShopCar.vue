@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<div class="title">
 		    <div class="checkAll">
-	    		<el-checkbox  size='small'></el-checkbox>
+	    		<el-checkbox  v-model='allCheck'></el-checkbox>
 		    </div>
 			<ul class="topNav">
 				<li class="titleCol" style="text-align:left;">全选</li>
@@ -13,11 +13,12 @@
 				<li class="normalCol">操作</li>
 			</ul>
 		</div>
-		<ul class="shopList" v-if='shopList'>
-			<li v-for='item in shopList' :key='item'>
+		<ul class="shopList" v-if='shopList&&checkList.length>0'  >
+			<li v-for='(item,sellerIndex) in shopList' :key='item'>
+
 				<div class="title">
 					<div class="checkAll">
-				    	<el-checkbox size='small'></el-checkbox>
+				    	<el-checkbox v-model='checkList[sellerIndex].sellerBol'></el-checkbox>
 				    </div>
 				    <div class="shopName">
 				    	<span v-text='item.shop_name'>
@@ -29,9 +30,10 @@
 				    </div>
 				</div>
 				<ul class="goodsList">
-					<li v-for='goodItem in  item.goods' :key='goodItem'>
+					<li v-for='(goodItem,goodsIndex) in  item.goods' :key='goodItem'>
 						<div class="checkAll">
-					    	<el-checkbox></el-checkbox>
+					    	<el-checkbox v-model='checkList[sellerIndex].goods[goodsIndex].goodsBol'></el-checkbox>
+
 					    </div>
 					    <div class="goodsInfo">
 					    	<dl class="goodsMsg">
@@ -48,7 +50,7 @@
 								</dd>
 							</dl>
 							<div class='normalCol'>
-								<dl class="vMiddle" v-show='false' style="height: 20px;">
+								<dl class="vMiddle" v-if='goodItem.market_price' style="height: 20px;">
 									<dt style="color:#666;text-decoration: line-through;">
 										{{goodItem.market_price|currency}}
 									</dt>
@@ -56,21 +58,21 @@
 										{{goodItem.sale_price|currency}}
 									</dd>
 								</dl>
-								<dl class="vMiddle" v-show='true' style="height: 20px;">
+								<dl class="vMiddle" v-else style="height: 20px;">
 									<dd>
-										{{299.00|currency}}
+										{{goodItem.sale_price|currency}}
 									</dd>
 								</dl>
 							</div>
 							<div style='padding-top:30px;' class="normalCol">
 								<div class="numBtn">
-									<button>-</button>
-									<input type="number" name="" v-model='goodItem.on_sale'>
-									<button>+</button>
+									<button @click='editNum(goodItem,0)'><i class="el-icon-minus"></i></button>
+										<input type="text" v-model='goodItem.quantity' @change='editNum(goodItem)'>
+									<button @click='editNum(goodItem,1)'><i class="el-icon-plus"></i></button>
 								</div>
 							</div>
 							<div class="normalCol totalAmount">
-								{{299.00|currency}}
+								{{goodItem.sale_price * goodItem.quantity|currency}}
 							</div>
 							<div class="normalCol">
 								<dl class="vMiddle">
@@ -78,7 +80,7 @@
 										<button>移入收藏夹</button>
 									</dt>
 									<dd>
-										<button @click='remove(goodItem.cart_id)'>删除</button>
+										<button @click='remove(goodItem.cart_id,false,sellerIndex,goodsIndex)'>删除</button>
 									</dd>
 								</dl>
 							</div>
@@ -89,22 +91,22 @@
 		</ul>
 		<div class="title" style="margin-top:20px;padding-right: 0px;">
 			<div class="checkAll">
-	    		<el-checkbox  size='small'></el-checkbox>
+	    		<el-checkbox  v-model='allCheck'></el-checkbox>
 		    </div>
 			<ul class="footOpera">
 				<li>全选</li>
-				<li>删除</li>
-				<li>清除失效商品</li>
-				<li>移入收藏夹</li>
+				<li class="pointer" @click='remove("",true)'>删除</li>
+				<li class="pointer">清除失效商品</li>
+				<li class="pointer">移入收藏夹</li>
 			</ul>
 			<div class="shopInfo">
 				<div class="checkNum">
-					<span>已选商品<em>2</em>件</span>
+					<span>已选商品<em>{{checkNum}}</em>件</span>
 				</div>
 				<div class="checkAmount">
-					<span>合计（不含运费）：<em>{{595.00|currency}}</em></span>
+					<span>合计（不含运费）：<em>{{totalPrice|currency}}</em></span>
 				</div>
-				<div class="settlement">
+				<div class="settlement" @click='settlement'>
 					结算
 				</div>
 			</div>
@@ -113,43 +115,331 @@
 </template>
 <script>
 import {currency} from "../../common/js/filter.js"
-import {getCarts,removeCart}  from '../../common/js/api.js'
+import {getCarts,removeCart,editCart,buy}  from '../../common/js/api'
+import {MessageBox} from  'element-ui'
 	export default{
 		data(){
 			return{
-				shopList: null
+				shopList: null,
+				totalPrice: 0,
+				checkList: [],
+				allCheck: false,
+				checkNum: 0,
 			}
 		},
 		filters: {
 			currency
 		},
-		methods:{
-		 remove(cart_id){
-		 	let params ={
-		 		access_token: sessionStorage.access_token,
-		 		cart_ids: cart_id
-		 	}
-		 	removeCart(params).then(res=>{
-		 		let {errcode,message,content} = res;
-		 		if(errcode!==0) {
-					if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+		watch: {
+			checkList: {
+				handler(){
+					let _this = this ;
+					let totaIndex = 0 ;
+					let totalCheck = 0;
+					// 选择框布尔值
+					for(let i = 0;i<_this.checkList.length;i++){
+						// 如果商品全选 ->店铺选中
+						let index =0 ;
+						for(let j =_this.checkList[i].goods.length-1;j>=0;j--){
+							if (_this.checkList[i].goods[j].goodsBol) {
+								index++;
+								if(index === _this.checkList[i].goods.length){
+									if (!_this.checkList[i].sellerBol) {
+										if (_this.checkList[i].maskBol) {
+											_this.checkList[i].sellerBol = false;
+										}else{
+											_this.checkList[i].sellerBol = true;
+										}
+									}
+								}
+							}
+							if (j===0) {
+								// 半选
+								if (index>0&&index<_this.checkList[i].goods.length) {
+									if (_this.checkList[i].sellerBol&&_this.checkList[i].maskBol) {
+										_this.checkList[i].sellerBol = false;
+									}	
+									
+								}
+							}
+						}
+						// 店铺选中->商品全选
+						if (_this.checkList[i].sellerBol) {
+							//  商品全选
+							for(let k =0;k<_this.checkList[i].goods.length;k++){
+								_this.checkList[i].goods[k].goodsBol = true;
+							}
+						}else {
+							// 店铺取消选中->商品取消全选
+							let index =0 ;
+							for(let l =_this.checkList[i].goods.length-1;l>=0;l--){
+								if (_this.checkList[i].goods[l].goodsBol) {
+									index++;
+									if(index === _this.checkList[i].goods.length){
+										for(let m = 0; m<_this.checkList[i].goods.length;m++){
+											_this.checkList[i].goods[m].goodsBol = false;
+										}
+									}
+								}
+							}
+						}
+						// 记录上次的店铺选择框
+						if (_this.checkList[i].sellerBol) {
+							_this.checkList[i].maskBol  =  true;
+						}else{
+							_this.checkList[i].maskBol  =  false;
+						}
+						
+
+
+						let price = 0;
+						_this.totalPrice = 0;
+						
+						// 查询勾选项
+						for(let n = 0 ; n< _this.checkList[i].goods.length ; n++){
+							totaIndex++;
+							if (_this.checkList[i].goods[n].goodsBol) {
+								totalCheck++;
+								price+=(_this.shopList[i].goods[n].sale_price-0)*(_this.shopList[i].goods[n].quantity-0);
+							}
+						}
+						_this.totalPrice = price;
+					}
+					_this.checkNum = totalCheck ;
+					if (totaIndex===totalCheck&&totalCheck!==0) {
+						_this.allCheck = true ;
+					}else{
+						_this.allCheck = false;
+					}
+				},
+				deep: true,
+			},
+			allCheck(){
+				let _this = this ;
+				if (_this.allCheck) {
+					for(let i = 0;i<_this.checkList.length;i++){
+						_this.checkList[i].sellerBol = true;
+						for(let j =0;j<_this.checkList[i].goods.length;j++){
+							_this.checkList[i].goods[j].goodsBol = true;
+						}
+					}
 				}else{
-					this.initList();
+					let totalCheck = 0;
+					let totalIndex = 0;
+					for(let i = 0 ; i<_this.checkList.length;i++){
+						for(let j =0;j<_this.checkList[i].goods.length;j++){
+							totalIndex++;
+							if (_this.checkList[i].goods[j].goodsBol) {
+								totalCheck++;
+							}
+						}
+					}
+					if (totalIndex===totalCheck) {
+						for(let i = 0;i<_this.checkList.length;i++){
+							_this.checkList[i].sellerBol = false;
+							for(let j =0;j<_this.checkList[i].goods.length;j++){
+								_this.checkList[i].goods[j].goodsBol = false ;
+							}
+						}
+					}
 				}
-		 	})
+			}
+		},
+		methods:{
+			editNum(item,mask){
+				if(mask===1){
+					item.quantity++;
+					
+				}else if(mask===0){
+					item.quantity--;
+					
+				}
+				if ((item.quantity-0)>(item.max_once_buy-0)) {
+					item.quantity = item.max_once_buy ;
+				}else if ((item.quantity-0)<1) {
+					item.quantity = 1 ;
+				}
+				let data = {
+					cart_id: item.cart_id,
+					quantity: item.quantity
+				}
+				let arr = [];
+				arr.push(data);
+				let params = {
+					access_token: sessionStorage.access_token,
+					data: JSON.stringify(arr),
+				}
+				editCart(params).then(res=>{
+					let {errcode,message,content} = res;
+			 		if(errcode!==0) {
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		if (action==='confirm') {
+					          			window.location.href = 'login.html';
+					          		}
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else{
+						this.initList(false);
+					}
+				})
+			},
+		removeAPI(params,removeIndex){
+			MessageBox.confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+	          confirmButtonText: '确定',
+	          cancelButtonText: '取消',
+	          type: 'warning'
+	        }).then(() => {
+		          removeCart(params).then(res=>{
+			 		let {errcode,message,content} = res;
+			 		if(errcode!==0) {
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		if (action==='confirm') {
+					          			window.location.href = 'login.html';
+					          		}
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else{
+						if (removeIndex) {
+							this.initList(false,removeIndex);
+						}else{
+							this.initList(true);
+						}
+						
+					}
+			 	})
+	        }).catch(() => {
+	            return false;          
+	        });
+		},
+		 remove(cart_id,batch,sellerIndex,goodsIndex){
+		 	let _this = this ;
+		 	let params = {
+		 		access_token: sessionStorage.access_token
+		 	} ;
+		 	if (batch) {
+		 		let id = '' ;
+		 		let checkIndex = 0 ;
+		 		for(let i =0; i <_this.checkList.length;i++){
+ 		 			for(let j =0 ;j <_this.checkList[i].goods.length;j++){
+		 				if (_this.checkList[i].goods[j].goodsBol) {
+		 					checkIndex++;
+		 					id += _this.shopList[i].goods[j].cart_id + ',' ;
+		 				}
+		 			}
+		 		}
+		 		params.cart_ids = id;
+		 		if(checkIndex){
+		 			_this.removeAPI(params,false);
+		 		}
+		 	}else {
+		 		let removeIndex = {
+		 			sellerIndex: sellerIndex,
+		 			goodsIndex: goodsIndex
+		 		}
+		 		params.cart_ids = cart_id ;
+		 		_this.removeAPI(params,removeIndex);
+		 	}
 		 },
-		 initList(){
+		 settlement(){
+		 	let _this = this ;
+		 	let totalCheck = 0 ;
+		 	let params = {
+		 		access_token: sessionStorage.access_token,
+		 		data: new Array
+		 	}
+		 	for(let i = 0 ;i <_this.checkList.length;i++){
+		 		let checkIndex = 0 ;
+		 		let sellerObj = {
+		 			seller_id: _this.shopList[i].seller_id,
+		 			goods: new Array 
+		 		};
+		 		for(let j = 0 ; j<_this.checkList[i].goods.length;j++){
+		 			if (_this.checkList[i].goods[j].goodsBol) {
+		 				checkIndex++;
+		 				totalCheck++;
+		 				let goodObj = {
+		 					cart_id: _this.shopList[i].goods[j].cart_id,
+							goods_id: _this.shopList[i].goods[j].goods_id,
+							option_id: _this.shopList[i].goods[j].option_id,
+							quantity: _this.shopList[i].goods[j].quantity + ''
+		 				}
+		 				sellerObj.goods.push(goodObj);
+		 			}
+		 		}
+		 		if (checkIndex) {
+		 			params.data.push(sellerObj);
+		 		}
+		 	}
+		 	if (totalCheck) {
+		 		params.data = JSON.stringify(params.data);
+			 	buy(params).then(res=>{
+			 		let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		if (action==='confirm') {
+					          			window.location.href = 'login.html';
+					          		}
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else{
+						if(sessionStorage.orderInfo){
+							sessionStorage.removeItem('orderInfo');
+						}
+						content = JSON.stringify(content);
+						sessionStorage.setItem('orderInfo',content)
+						window.open('confirmOrder.html#/')
+					}
+			 	})
+		 	}else{
+		 		MessageBox.alert('请选择商品', '提示', {
+		          	confirmButtonText: '确定'
+			    });
+		 	}
+		 	
+		 },
+		 initCheckList(arr){
+		 	let _this = this ;
+		 	_this.checkList = new Array ;
+		 	for(let i = 0 ;i<arr.length; i++){
+		 		let sellerObj = {
+		 			sellerBol: false,
+		 			maskBol: false,
+		 			goods: []
+		 		};
+		 		for(let j = 0; j<arr[i].goods.length;j++){
+		 			let goodsObj = {
+		 				goodsBol: false
+		 			}
+		 			sellerObj.goods.push(goodsObj);
+		 		}
+		 		_this.checkList.push(sellerObj);
+		 	}
+		 },
+		 initList(mask,removeIndex){
 		 	let params = {
 				access_token: sessionStorage.access_token
 			};
@@ -160,7 +450,9 @@ import {getCarts,removeCart}  from '../../common/js/api.js'
             			MessageBox.alert(message, '提示', {
 				          	confirmButtonText: '确定',
 				          	callback: action => {
-				          		window.location.href = 'login.html';
+				          		if (action==='confirm') {
+				          			window.location.href = 'login.html';
+				          		}
 				          	}
 					    });
             		}else{
@@ -170,13 +462,20 @@ import {getCarts,removeCart}  from '../../common/js/api.js'
             		}
 				}else{
 					this.shopList = content ;
+					//  刷新初始化选择列表
+					if(mask){
+						this.initCheckList(this.shopList);
+					}else if(removeIndex){
+						this.checkList[removeIndex.sellerIndex].goods.splice(removeIndex.goodsIndex,1);
+					}
+
 				}
-			})
+			});
 		 }
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				this.initList();
+				this.initList(true);
 			})
 		}
 	}
@@ -239,6 +538,9 @@ $bg_color: #f5f5f5;
 				line-height: 40px;
 				margin-right: 42px;
 			}
+			.pointer{
+				cursor: pointer;
+			}
 		}
 		.shopInfo{
 			float: left;
@@ -271,6 +573,7 @@ $bg_color: #f5f5f5;
 				font-size: 20px;
 				font-weight: 600;
 				text-align: center;
+				cursor: pointer;
 				color: #fff;
 				background-color: $primary;
 			}
@@ -358,6 +661,7 @@ $bg_color: #f5f5f5;
 								float: left;
 								width: 22px;
 								height: 22px;
+								padding: 6px 0px;
 								outline: none;
 								border: none;
 								background-color: $bg_color;
@@ -366,6 +670,7 @@ $bg_color: #f5f5f5;
 								float: left;
 								width: 40px;
 								height: 22px;
+								text-align: center;
 								border-left: 1px solid  $border_color;
 								border-right: 1px solid $border_color;
 								border-top: none;

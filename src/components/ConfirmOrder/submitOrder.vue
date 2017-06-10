@@ -3,27 +3,27 @@
 		<h4>
 			选择收货地址
 		</h4>
-		<ul class="addressList">
-			<li v-for= '(item,index) in addressList' :class='{"isDefault":addressList.status==="1"}' :key='item'>
+		<ul class="addressList" v-if='addressList'>
+			<li v-for= '(item,index) in addressList' :class='{"isDefault":item.status==="1"}' :key='item'>
 				<dl>
 					<dt>
-						<span v-text='addressList.name'>
+						<span v-text='item.name'>
 						</span>
-						<strong v-text='addressList.phone'>
+						<strong v-text='item.phone'>
 						</strong>
-						<em v-show='addressList.status==="1"'>
+						<em v-show='item.status==="1"'>
 							默认地址
 						</em>
 					</dt>
 					<dd class="addressInfo">
-						{{addressList.province}}{{addressList.city}}{{addressList.district}}{{addressList.address}}
+						{{item.province}}{{item.city}}{{item.district}}{{item.address}}
 					</dd>
 					<dd>
 						<em>
-							邮编：{{addressList.postcode}}
+							邮编：{{item.postcode}}
 						</em>
 						<strong>
-							电话：{{addressList.phone}}
+							电话：{{item.phone}}
 						</strong>
 					</dd>
 				</dl>
@@ -44,27 +44,24 @@
 				<div class="numCol">数量</div>
 				<div class="totalCol">小计</div>
 			</div>
-			<ul class="orderInfoList">
-				<li>
+			<ul class="orderInfoList" v-if='orderInfo'>
+				<li v-for='(item,index) in orderInfo.shop[0].goods'>
 				    <div class="goodsInfo">
 				    	<dl class="goodsMsg infoCol">
 							<dt class="titleCol">
-								<img src="">
+								<img :src="item.cover">
 							</dt>
 							<dd>
-								<div class="goodsName">
-									买不买买不买买不买买不买买不买不买不买不买绑定手机号发布觉得不
-								</div>
+								<div class="goodsName" v-text='item.goods_name'></div>
 								<div class="goodsType">
-									<span>规格:精装品</span>
-									<span>套餐:套餐一</span>
+									<span>规格:{{item.option_name}}</span>
 								</div>
 							</dd>
 						</dl>
 						<div class="priceCol">
 							<dl class="vMiddle" v-show='false' style="height: 20px;">
 								<dt style="color:#666;text-decoration: line-through;">
-									{{299.00|currency}}
+									{{|currency}}
 								</dt>
 								<dd>
 									{{299.00|currency}}
@@ -72,19 +69,19 @@
 							</dl>
 							<dl class="vMiddle" v-show='true' style="height: 20px;">
 								<dd>
-									{{299.00|currency}}
+									{{(item.price-0)|currency}}
 								</dd>
 							</dl>
 						</div>
 						<div style='padding-top:16px;' class="numCol">
 							<div class="numBtn">
-								<button>减</button>
-								<input type="" name="">
-								<button>加</button>
+								<button><i class="el-icon-minus"></i></button>
+								<input type="text" name="" v-model='item.quantity'>
+								<button><i class="el-icon-plus"></i></button>
 							</div>
 						</div>
 						<div class="totalCol totalAmount">
-							{{299.00|currency}}
+							{{(item.quantity-0)*(item.price-0)|currency}}
 						</div>
 				    </div>
 				</li>
@@ -172,18 +169,8 @@ import {currency} from '../../common/js/filter.js'
 			return {
 				radio: '1',
 				userInfo: '',
-				addressList: {
-		        	name: '',
-		        	phone: '',
-		        	province: '',
-		        	city: '',
-		        	district: '',
-		        	address: '',
-		        	postcode: '',
-		        	tel: '',
-		        	status: '',
-		        	length: 0
-		        }
+				addressList: null,
+				orderInfo: null
 			} 
 		},
 		filters:{
@@ -198,7 +185,6 @@ import {currency} from '../../common/js/filter.js'
 		      	 	let {errcode,content} = res;
 		      	 	if (errcode===0) {
 		      	 		this.addressList = content;
-		      	 		console.log(this.addressList)
 		      	 	}
 		       })
 		    }
@@ -208,6 +194,9 @@ import {currency} from '../../common/js/filter.js'
 	        	if (sessionStorage.userInfo) {
 					this.userInfo = JSON.parse(sessionStorage.userInfo);
 					this.getAddressList();
+					if (sessionStorage.orderInfo) {
+						this.orderInfo = JSON.parse(sessionStorage.orderInfo);
+					}
 				}else{
 					window.location.href = "login.html";
 				}

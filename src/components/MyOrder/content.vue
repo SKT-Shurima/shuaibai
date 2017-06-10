@@ -37,7 +37,7 @@
 					会员中心
 				</div>
 				<ul>
-					<li @click='vipView(index)' :class='{"isClick":currentVipView===index}' v-for='(item,index) in  vipCenterList'>
+					<li @click='vipView(index)' :class='{"isClick":currentVipIndex===index}' v-for='(item,index) in  vipCenterList'>
 						<i></i>{{item.name}}
 					</li>
 				</ul>
@@ -56,6 +56,7 @@
 	</div>
 </template>
 <script>
+	import {getRequest} from '../../common/js/common'
     import orderList from './orderList'
 	import personalCenter from './personalCenter' ;
 	import address from './address'
@@ -86,7 +87,7 @@
 		    return {
 		    	guessBol: true,
 		        accountListBol: false,
-		        currentVipView: '',
+		        currentVipIndex: '',
 		        vipCenterList: [
 		        	{name: '个人中心'},
 		        	{name: '商品收藏'},
@@ -111,7 +112,13 @@
 		},
 		computed:{
 			currentView(){
-				return this.$store.state.view;
+				let view = this.$store.state.view;
+				switch (view){
+					case 'view33':
+						this.currentVipIndex = 3 ;
+					break;
+				}
+				return view;;
 			}
 		},
 		components:{
@@ -152,13 +159,13 @@
 	      changeView(view){
 	      	let _this = this ;
 	      	_this.$store.commit('switchView',view);
-	      	sessionStorage.currentVipListView = _this.currentView ;
+	      	sessionStorage.currentVipView = _this.currentView ;
 	      },
 	      vipView(index){
 	      	let _this = this ;
 	      	_this.orderView = '';
-	      	_this.currentVipView = index;
-	      	sessionStorage.setItem('currentVipView',index);
+	      	_this.currentVipIndex = index;
+	      	sessionStorage.setItem('currentVipIndex',index);
 	      	let view = 'view3' ;
 	        view += index ;
 	        _this.changeView(view);
@@ -169,8 +176,8 @@
 	      	_this.changeView('view0');
 	      	// 改变点击后的列表效果
 	      	_this.orderView = index ;
-	      	_this.currentVipView = '';
-	      	sessionStorage.removeItem('currentVipView');
+	      	_this.currentVipIndex = '';
+	      	sessionStorage.removeItem('currentVipIndex');
 	      	// 调用子组件的方法获取相应的列表
 	      	if (index<5) {
 	      		_this.$children[0].$children[0].getOrderList(index);
@@ -180,12 +187,18 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.currentVipListView) {
-					let currentView = sessionStorage.currentVipListView;
-					this.currentVipView = sessionStorage.currentVipView - 0;
-					this.changeView(currentView);
-				}else{
-					sessionStorage.setItem('currentVipListView',this.currentView);
+				// 获取传递参数
+				let params = getRequest();
+				if (params.currentView) {
+					this.$store.commit('switchView',params.currentView);
+				}else {
+					if (sessionStorage.currentVipView) {
+						let currentView = sessionStorage.currentVipView;
+						this.currentVipIndex = sessionStorage.currentVipIndex - 0;
+						this.changeView(currentView);
+					}else{
+						sessionStorage.setItem('currentVipView',this.currentView);
+					}
 				}
 			});
 		}

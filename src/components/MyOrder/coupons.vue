@@ -9,16 +9,16 @@
 					<div class="limit">
 						<dl>
 							<dt>￥</dt>
-							<dd v-text='item.amount'>100</dd>
+							<dd v-text='Math.floor(item.amount-0)'></dd>
 						</dl>
 						<div>
-							满{{item.limit}}可用
+							满{{Math.floor(item.limit-0)}}可用
 						</div>
 					</div>
 					<ul>
 						<li>使用范围：电脑</li>
 						<li>发行店铺：{{item.name}}</li>
-						<li>有效时间：{{item.date_start|dateStylePoint}}-{{item.date_end|dateStylePoint}}</li>
+						<li>有效时间：{{(item.date_start-0)*1000|dateStylePoint}}-{{(item.date_end-0)*1000|dateStylePoint}}</li>
 					</ul>
 				</div>
 				<div class="opera">

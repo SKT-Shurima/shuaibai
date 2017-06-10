@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<div class="container" v-if='goodsInfo'>
+		<div class="container" v-if='deliveryInfo.goodsInfo'>
 			<!-- 店铺小信息列表 -->
 			<div class="sliderBox">
 			<!-- 优惠券 -->
@@ -37,42 +37,14 @@
 					</li> 
 				</ul> 
 				<!-- 热销排行 -->
-				<div class="hotSell">
-					<div class="title">
-						<div class="slider"></div>
-						<div class="text">热销排行</div>
-						<div class='slider'></div>
-					</div>
-					<ul>
-						<li v-for='item in 3' class="infoList">
-							<dl>
-								<dt>
-									<img src="">
-								</dt>
-								<dd>
-									<div class="sellInfo">
-										9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮9.9包邮
-									</div>
-									<div class="priceInfo">
-										<span>
-											{{168.00|currency}}
-										</span>
-										<em>
-											{{2017}}人付款
-										</em>
-									</div>
-								</dd>
-							</dl>
-						</li>
-					</ul>
-				</div>
+				<hot-sell :seller-id='deliveryInfo.goodsInfo.goods.seller_id'></hot-sell>
 			</div>
 			<!-- 内容 -->
 			<div class="contentBox">
 				 <dl class="infoBox">
 				 	<dt>
 				 		<button @click='infoTabIndex=1' :class='{"infoTabChecked":infoTabIndex===1}' >商品详情</button>
-				 		<button @click='infoTabIndex=2' :class='{"infoTabChecked":infoTabIndex===2}'>评价（{{goodsInfo.goods.comment.total}}）</button>
+				 		<button @click='infoTabIndex=2' :class='{"infoTabChecked":infoTabIndex===2}'>评价（{{deliveryInfo.goodsInfo.goods.comment.total}}）</button>
 				 	</dt>
 				 	<dd>
 				 		<!-- 产品参数 -->
@@ -81,7 +53,7 @@
 					 			产品参数
 					 		</div>
 					 		<ul class="productInfo">
-					 			<li v-for='item in goodsInfo.goods.params'>
+					 			<li v-for='item in deliveryInfo.goodsInfo.goods.params'>
 					 				<el-row>
 					 					<el-col :span='6' v-text='item.name'></el-col>
 					 					<el-col :span='18' v-text='item.value'></el-col>
@@ -94,16 +66,16 @@
 				 				好评率
 				 			</div>
 				 			<div style="font-size:60px;font-weight:600;color:#c71724;" class="evalRate">
-				 				{{goodsInfo.goods.comment.praise_rate*100}}%
+				 				{{deliveryInfo.goodsInfo.goods.comment.praise_rate*100}}%
 				 			</div>
 				 			<div class="evalInfo">
 				 				<el-row>
 				 				   		<el-col :span='10'>
-				 				   			商品评价（{{goodsInfo.goods.comment.goods_comment.toFixed(1)}}）
+				 				   			商品评价（{{deliveryInfo.goodsInfo.goods.comment.goods_comment.toFixed(1)}}）
 				 				   		</el-col>
 				 				   		<el-col :span='14'>
 				 				   			<el-rate
-											  v-model="goodsInfo.goods.comment.goods_comment"
+											  v-model="deliveryInfo.goodsInfo.goods.comment.goods_comment"
 											  disabled
 											  text-color="#ff9900">
 											</el-rate>
@@ -111,11 +83,11 @@
 				 				   </el-row>
 				 				   <el-row>
 				 				   		<el-col :span='10'>
-				 				   			服务评价（{{goodsInfo.goods.comment.service_comment.toFixed(1)}}）
+				 				   			服务评价（{{deliveryInfo.goodsInfo.goods.comment.service_comment.toFixed(1)}}）
 				 				   		</el-col>
 				 				   		<el-col :span='14'>
 				 				   			<el-rate
-											  v-model="goodsInfo.goods.comment.service_comment"
+											  v-model="deliveryInfo.goodsInfo.goods.comment.service_comment"
 											  disabled
 											  text-color="#ff9900">
 											</el-rate>
@@ -123,11 +95,11 @@
 				 				   </el-row>
 				 				   <el-row>
 				 				   		<el-col :span='10'>
-				 				   			物流评价（{{goodsInfo.goods.comment.logistics_comment.toFixed(1)}}）
+				 				   			物流评价（{{deliveryInfo.goodsInfo.goods.comment.logistics_comment.toFixed(1)}}）
 				 				   		</el-col>
 				 				   		<el-col :span='14'>
 				 				   			<el-rate
-											  v-model="goodsInfo.goods.comment.logistics_comment"
+											  v-model="deliveryInfo.goodsInfo.goods.comment.logistics_comment"
 											  disabled
 											  text-color="#ff9900">
 											</el-rate>
@@ -140,7 +112,7 @@
 				 <div class="detailsList" v-show='infoTabIndex===1'>
 				 	<ul class="storeImg">
 					 	<li>
-					 		{{goodsInfo.goods.description}}
+					 		{{deliveryInfo.goodsInfo.goods.description}}
 					 	</li>
 					 </ul>
 				 </div>
@@ -148,10 +120,10 @@
 				 <div class="evalList" v-show='infoTabIndex===2'>
 				 	<div class="title">
 				 		<button :class='{"evalTabChecked":evalTabIndex===0}' @click='getComment(0)'>全部评论</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===1}' @click='getComment(1)'>好评（{{goodsInfo.goods.comment.praise}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===2}' @click='getComment(2)'>中评（{{goodsInfo.goods.comment.common}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===3}' @click='getComment(3)'>差评（{{goodsInfo.goods.comment.bad}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===4}' @click='getComment(0)'>有图（{{goodsInfo.goods.comment.have_picture}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===1}' @click='getComment(1)'>好评（{{deliveryInfo.goodsInfo.goods.comment.praise}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===2}' @click='getComment(2)'>中评（{{deliveryInfo.goodsInfo.goods.comment.common}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===3}' @click='getComment(3)'>差评（{{deliveryInfo.goodsInfo.goods.comment.bad}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===4}' @click='getComment(0)'>有图（{{deliveryInfo.goodsInfo.goods.comment.have_picture}}）</button>
 				 	</div>
 				 	<!-- 初次评论列表 -->
 				 	<ul v-if='commentList' class="evalWrap">
@@ -182,21 +154,36 @@
 					 							颜色分类：{{item.option_name}}
 					 						</strong>
 					 					</div>
-					 					<div class="more">
+					 					<!-- 已经登录显示状态 -->
+					 					<div class="more" v-if='hasLogin'>
+					 						<button :class="item.is_useful==='0'?'isUserful':'canscelUserful'" @click='isUseful(item.id)'>{{item.is_useful==='0'?'有用':'取消有用'}}（{{item.useful}}）</button>
+					 						<button @click='replyInfo.replyId=item.id;replyInfo.replyBol=true;replyInfo.replyIndex=index;'>回复（{{item.reply_count}}）</button>
+					 						<button @click='getAddReply(item.id,index)'>{{replyList[index].bol?'收起':'展开'}}<img src="../../../static/detailImg/replayOpen.png" height="11" width="10" v-show='!replyList[index].bol'><img src="../../../static/detailImg/replayClose.png" v-show='replyList[index].bol'></button>
+					 					</div>
+					 					<!-- 没有登录显示状态 -->
+					 					<div class="more" v-else>
 					 						<button>有用（{{item.useful}}）</button>
 					 						<button>回复（{{item.reply_count}}）</button>
-					 						<button @click='getAddReply(index)'>{{replyList[index].bol?'收起':'展开'}}<img src="../../../static/detailImg/replayOpen.png" height="11" width="10" v-show='!replyList[index].bol'><img src="../../../static/detailImg/replayClose.png" v-show='replyList[index].bol'></button>
+					 						<button @click='getAddReply(item.id,index)'>{{replyList[index].bol?'收起':'展开'}}<img src="../../../static/detailImg/replayOpen.png" height="11" width="10" v-show='!replyList[index].bol'><img src="../../../static/detailImg/replayClose.png" v-show='replyList[index].bol'></button>
 					 					</div>
+					 					<!-- 回复组件 -->
+					 					<reply :reply-info='replyInfo' @reply-success='refresh'></reply>
 				 					</div>
 				 					<!-- 追加评论列表 -->
 				 					<div class="addEval" v-show='replyList[index].bol'>
-				 						<ul v-if='replyList[index].replyList'> 
-					 						<li v-for='replyItem in replyList[index].replyList'>
+				 						<ul v-if='replyList[index].replyList'>
+				 							<li v-if='replyList[index].replyList.seller_reply.reply_content'>
+				 								<p class="addContent sellerReply">【店家回复】{{replyList[index].replyList.seller_reply.reply_content}}</p>
+				 								<div class="addTime">
+				 									{{(replyList[index].replyList.seller_reply.date_content-0)*1000|dateStyleCh}}&nbsp;{{(replyList[index].replyList.seller_reply.date_content-0)|timeStyle}}
+				 								</div>
+				 							</li> 
+					 						<li v-for='replyItem in replyList[index].replyList.reply'>
 					 							<p class="addContent">
-					 								sajdjashdasb
+					 								<span>{{replyItem.nickname}}：</span>{{replyItem.content}}
 					 							</p>
 					 							<div class="addTime">
-					 								<span>2017年12月12日 12：21</span>
+					 								<span>{{(replyItem.reply_date-0)|dateStyleCh}}&nbsp;{{(replyItem.reply_date-0)|timeStyle}}</span>
 					 							</div>
 					 						</li>
 					 					</ul>
@@ -212,13 +199,14 @@
 				 			</dl>
 				 		</li>
 				 	</ul>
+				 	<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 				 </div>
 				 <!-- 推荐 -->
 				 <div class="recommend">
 				 	<div class="title">
 				 		<i class="icon"></i>
 				 		<span>店内推荐</span>
-				 		<strong>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
+				 		<strong @clikc='getRecomment'>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
 				 	</div>
 				 	<ul v-if='storeRecommend'>
 				 		<li class="infoList" v-for='item in storeRecommend'>
@@ -244,53 +232,69 @@
 				 	</ul>
 				 </div>         
 			</div>
-			<!-- 猜你喜欢 -->
-			 <you-love></you-love>
 		</div>
+		<!-- 猜你喜欢 -->
+		 <you-love></you-love>
 	</div>
 </template>
 <script>
-	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter.js'
-	import {getHighGoods,goodsDetail,getComments} from '../../common/js/api.js'
+	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter'
+	import {getRecommend,getComments,replyContent,usefulComment} from '../../common/js/api'
 	import {MessageBox} from  'element-ui'
-	import youLove from '../../components/Guess/content.vue'
+	import youLove from '../../components/Guess/content'
+	import hotSell from '../../components/Details/hotSell'
+	import reply from '../../components/Details/reply'
+	import pagination from '../../components/Common/pagination'
 	export default {
 		data(){
 			return {
-				infoTabIndex: 1,
-				evalTabIndex: 1,
-				goodsInfo: null,
-				storeRecommend: null,
-				commentList: null,
-				replyList:[]
+				infoTabIndex: 1,  // 切换商品详情和评价 初始加载商品详情
+				evalTabIndex: null, // 评论分类标识
+				storeRecommend: null, // 店铺推荐
+				commentList: null, // 评价列表
+				replyList:[], // 获取回复列表
+				params: "",
+				hasLogin: sessionStorage.access_token, // 判断是否登录
+				replyInfo: {
+					replyId: '',
+					replyIndex: 0,
+					replyBol: false
+				},
+				pagesize: 1 // 总页数 
+			}
+		},
+		props:{
+			deliveryInfo: {
+				type: Object,
+				require: true
 			}
 		},
 		filters:{
 			currency,dateStyleCh,timeStyle
 		},
 		components:{
-			youLove
+			youLove,hotSell,reply,pagination
+		},
+		watch: {
+			deliveryInfo: {
+				handler(newVal,oldVal){
+					if (newVal.goodsInfo) {
+						this.getComment(0,1);
+						this.getRecomment();
+					}
+				},
+				deep: true
+			}
 		},
 		methods:{
-			getRequest() {
-				 var url = location.search; //获取url中"?"符后的字串
-				 var theRequest = new Object();
-				 if (url.indexOf("?") != -1) {
-				  let  str = url.substr(1);
-				  let strs = str.split("&");
-				  for(var i = 0; i < strs.length; i ++) {
-				   theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
-				  }
-				 }
-				 return theRequest;
-			},
 			// 获取评价列表
-			getComment(mask){
+			getComment(mask,page){
 				let _this = this ;
-				_this.evalTabIndex = mask;
 				let params = {
-					goods_id: _this.params.goods_id,
-					type: mask
+					access_token: sessionStorage.access_token?sessionStorage.access_token:"",
+					goods_id: _this.deliveryInfo.params.goods_id,
+					type: mask,
+					page: page
 				}
 				getComments(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -309,7 +313,11 @@
 		            		}
 						}else {
 							this.commentList = content ;
-							this.initAddReply(this.commentList.content.length);
+							this.pagesize = content.pagesize;
+							if (this.evalTabIndex!==mask) {
+								this.initAddReply(this.commentList.content.length);
+							}
+							_this.evalTabIndex = mask;
 						}
 				})
 			},
@@ -325,16 +333,73 @@
 				}
 			},
 			// 展开对应的追加回复
-			getAddReply(index){
+			getAddReply(id,index,bol){
 				let _this =this ;
-				_this.replyList[index].bol = !_this.replyList[index].bol ;
+				if (!bol) {
+					_this.replyList[index].bol = !_this.replyList[index].bol ;
+				}
+				let params = {
+					id: id
+				}
+				replyContent(params).then(res=>{
+					let {errcode,message,content} = res ;
+						if(errcode !== 0){
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		window.location.href = 'login.html';
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else {
+							this.replyList[index].replyList = content ;
+						}
+				})
+
+			},
+			// 有用
+			isUseful(id){
+				let params = {
+					access_token: sessionStorage.access_token,
+					id: id
+				}
+				usefulComment(params).then(res=>{
+					let {errcode,message,content} = res ;
+						if(errcode !== 0){
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		window.location.href = 'login.html';
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else {
+							this.getComment(this.evalTabIndex,1);
+						}
+				})
+			},
+			// 回复成功之后重新刷新回复列表
+			refresh(mask){
+				let _this = this ;
+				_this.getAddReply(_this.replyInfo.replyId,_this.replyInfo.replyIndex,mask);
+				_this.getComment(_this.evalTabIndex,1);
 			},
 			// 获取店铺推荐
 			getRecomment(){
 				let params ={
-						seller_id: this.goodsInfo.goods.seller_id
+						seller_id: this.deliveryInfo.goodsInfo.goods.seller_id
 					}
-					getHighGoods(params).then(res=>{
+					getRecommend(params).then(res=>{
 						let {errcode,message,content} = res ;
 						if(errcode !== 0){
 							if (errcode === 99) {
@@ -354,42 +419,15 @@
 						}
 					})
 			},
-			// 初始化获取商品详情
-			init(){
-				this.params = this.getRequest();
-				let params = {
-					access_token : sessionStorage.access_token,
-					goods_id: this.params.goods_id
-				}
-				goodsDetail(params).then(res=>{
-					let {errcode,message,content} = res ;
-					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
-					}else {
-						content.goods.comment.goods_comment -= 0;
-						content.goods.comment.logistics_comment -= 0;
-						content.goods.comment.service_comment -= 0;
-						this.goodsInfo = content ;
-						this.getRecomment();
-						this.getComment(0);
-					}
-				})
+			// 改变页数
+			changePage(page){
+				let _this = this ;
+				_this.getComment(_this.evalTabIndex,page);
 			}
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				this.init();
+				this.getComment(0,1);
 			})
 		}
 	}
@@ -400,11 +438,11 @@ $border_color: #ccc;
 $primary:#c71724;
 $bg_title: #f5f5f5;
 	.wrap{
-		width: 100%;
+		width: 1250px;
+		margin: 0px auto;
 		margin-top: 70px;
 		.container{
-			width: 1250px;
-			margin: 0px auto;
+			width: 100%;
 			overflow: hidden;
 			/*商品信息*/
 			.infoList{
@@ -424,6 +462,13 @@ $bg_title: #f5f5f5;
 							line-height: 18px;
 							font-weight: 600;
 							margin-top: 10px;
+							height: 36px;
+							width: 100%;
+							overflow:hidden; 
+							text-overflow:ellipsis;
+							display:-webkit-box; 
+							-webkit-box-orient:vertical;
+							-webkit-line-clamp:2; 
 						}
 						/*价格信息*/
 						.priceInfo{
@@ -487,42 +532,6 @@ $bg_title: #f5f5f5;
 						line-height: 36px;
 						padding-left: 10px;
 						font-weight: 400;
-					}
-				}
-			}
-			/*热销*/
-			.hotSell{
-				.title {
-					width: 192px;
-					overflow: hidden;
-					margin: 72px auto 12px;
-					.slider,.text{
-						float: left;
-					}
-					.slider{
-						width: 46px;
-						height: 1px;
-						margin-top: 6px;
-						background-color: $border_color;
-					}
-					.text{
-						width: 100px;
-						text-align: center;
-						font-size: 16px;
-						color: $text_color;
-					}
-				}
-				ul{
-					width: 240px;
-					border: 1px solid $border_color;
-					li{
-						width: 100%;
-						height: 310px;
-						padding: 15px;
-						border-bottom: 1px solid $border_color;
-					}
-					li:last-child{
-						   border-bottom: none; 
 					}
 				}
 			}
@@ -707,10 +716,19 @@ $bg_title: #f5f5f5;
 								}
 								.more{
 									float: right;
+									.isUserful{
+										color: $primary;
+										border: 1px solid $primary;
+										border-radius: 4px;
+									}
+									.canscelUserful{
+										color: $text_color;
+										border: 1px solid $text_color;
+										border-radius: 4px;
+									}
 									button{
-										width: 80px;
 										color: #2c82d3;
-										padding: 0px;
+										padding: 2px 6px;
 										background-color: transparent;
 										outline: none;
 										border: none;
@@ -734,6 +752,9 @@ $bg_title: #f5f5f5;
 										.addContent{
 											font-size: 14px;
 											line-height: 20px;
+											span{
+												color: #0176ac;
+											}
 										}
 										.sellerReply{
 											color: $primary;
@@ -773,6 +794,7 @@ $bg_title: #f5f5f5;
 				overflow: hidden;
 				.infoList{
 					width: 25%;
+					height: 320px;
 					float: left;
 					padding: 15px;
 					dt{
@@ -803,10 +825,16 @@ $bg_title: #f5f5f5;
 			span{
 				font-size: 16px;
 				font-weight: 600;
+				vertical-align: 4px;
 			}
 			strong{
 				float: right;
 				font-size: 14px;
+				cursor: pointer;
+			}
+			img{
+				vertical-align: -2px;
+				margin-left: 10px;
 			}
 		}
 		.youLove{
@@ -815,4 +843,7 @@ $bg_title: #f5f5f5;
 		}
  }
 } 
+.el-dialog .el-dialog--small{
+	width: 360px;
+}
 </style>

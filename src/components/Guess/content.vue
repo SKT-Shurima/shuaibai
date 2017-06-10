@@ -3,7 +3,7 @@
 	 	<div class="title">
 	 		<i class="icon"></i>
 	 		<span style="vertical-align: 4px;">猜你喜欢</span>
-	 		<strong>换一组<i></i></strong>
+	 		<strong @click='init'>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
 	 	</div>
 	 	<ul class="youLove" v-if= 'loveList'>
 	 		<li class="infoList" v-for='item in loveList'>
@@ -40,14 +40,35 @@
 		filters:{
 			currency
 		},
-		mounted(){
-			this.$nextTick(()=>{
+		methods: {
+			init(){
 				let params = {
 					category_id: 1
 				};
 				getGuessLike(params).then(res=>{
-					this.loveList = res.content ;
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.loveList = res.content ;
+					}
 				})
+			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				this.init();
 			})
 		}
 	}
@@ -80,6 +101,11 @@ $bg_title: #f5f5f5;
 			strong{
 				float: right;
 				font-size: 14px;
+				cursor: pointer;
+			}
+			img{
+				vertical-align: -2px;
+				margin-left: 10px;
 			}
 		}
 		.youLove{

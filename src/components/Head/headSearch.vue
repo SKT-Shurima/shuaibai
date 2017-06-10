@@ -16,15 +16,17 @@
 				</ul>
 			</div>
 			 <div class="shopping_cart">
-			 	<img src="../../../static/headImg/shopCarRed.png" height="14" width="14" style="vertical-align:-2px;">
-				我的购物车
-				<span v-text='userInfo.cart_num?userInfo.cart_num:0'></span>
+				<a href="myOrder.html?currentView=view33">
+					<img src="../../../static/headImg/shopCarRed.png" height="14" width="14" style="vertical-align:-2px;">
+					我的购物车
+					<span v-text='userInfo.cart_num-0?userInfo.cart_num:0'></span>
+				</a>
 			 </div> 
 		</div>
 	</div>
 </template>
 <script>
-    import {getKeyWord} from "../../common/js/api.js"
+    import {getKeyWord} from "../../common/js/api"
 	export default{
 		data(){
 			return{

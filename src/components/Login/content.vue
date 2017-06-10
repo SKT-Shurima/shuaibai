@@ -106,12 +106,14 @@ export default {
 					if(sessionStorage.userInfo) {
 						sessionStorage.removeItem('userInfo');
 						sessionStorage.removeItem('access_token');
+						window.location.href = 'index.html' ;
 					}else {
 						sessionStorage.setItem('access_token',content.access_token);
 						content  = JSON.stringify(content);
 						sessionStorage.setItem('userInfo',content);
+						window.location.href = 'index.html' ;
 					}
-					window.location.href = 'index.html' ;
+					
 				}
 			})
 		},
@@ -310,6 +312,7 @@ $red_color: #f24450;
 						img{
 							padding-left: 10px;
 							padding-right: 10px;
+							cursor: pointer;
 						}
 					}
 				}	
