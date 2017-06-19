@@ -14,47 +14,128 @@
 </template>
 <script>
 import submitOrder from './submitOrder'
-import closeOrder from './closeOrder'
-import Vue from 'vue'
-const routes = {
-  '#/': 'submitOrder'
-}
-
+import payfor from  './payfor'
+import payResult from './payResult'
+import waitShipments from '../OrderStatus/waitShipments'
+import confirmGet from '../OrderStatus/confirmGet'
+import evaluation from '../OrderStatus/evaluation'
+import tradeOver from '../OrderStatus/tradeOver'
+import {getOrderDetail} from '../../common/js/api'
+import {MessageBox} from  'element-ui'
+import {getHashReq} from '../../common/js/common'
+window.onpopstate = function() {  
+       location.reload() ;
+ }; 
 	export default{
 		 data(){
 			return {
-				currentIndex: 0,
+				currentIndex: "",
 				listTitle: [
-					{name:'1.提交订单'},
+					{name:'1.确认订单信息'},
 					{name:'2.付款'},
-					{name:'3.卖家发货'},
-					{name:'4.确认收货'}
+					{name:'3.确认收货'},
+					{name:'4.评价晒单'}
 				],
 				orderInfo: null,
-				currentRoute: window.location.hash
+				reqParams: null,
 			}
 		},
 		components:{
-			submitOrder,closeOrder
+			submitOrder,
+			payfor,
+			payResult,
+			waitShipments,
+			confirmGet,
+			evaluation,
+			tradeOver
 		},
 		computed: {
 		  	currentView () {
-		      return routes[this.currentRoute]
+		      return this.$store.state.view;
 		    }
+		},
+		methods: {
+			init(){
+				let _this = this ;
+				let hash = location.hash.split("?")[0] ;
+				_this.reqParams = getHashReq() ;
+				let order_sn = 	_this.reqParams.order_sn;
+				if (order_sn) {
+					let params = {
+						access_token: sessionStorage.access_token,
+						order_sn: order_sn
+					}
+					getOrderDetail(params).then(res=>{
+						let {errcode,message,content} = res ;
+						if(errcode!==0) {
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		if (action==='confirm') {
+						          			window.location.href = 'login.html';
+						          		}
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else{
+							let state = content.order.order_state;
+							let view = '';
+							if (hash) {
+								view = hash.slice(1) ;
+								this.$store.commit('switchView',view);
+							}else{
+								
+							}
+							switch (state){
+								case '1': 
+									this.currentIndex = 1;
+									if (view!=='payfor') {
+										location.hash = `payfor?order_sn=${order_sn}`
+									}
+								break;
+								case '2': 
+									this.currentIndex = 1;
+									if (view!=='waitShipments'&&view!=='payResult') {
+										location.hash = `waitShipments?order_sn=${order_sn}`
+									}
+								break;
+								case '3': 
+									this.currentIndex = 2;
+									if (view!=='confirmGet') {
+										location.hash = `confirmGet?order_sn=${order_sn}`
+									}
+								break;
+								case '4': 
+									this.currentIndex = 3;
+									if (view!=='evaluation') {
+										location.hash = `evaluation?order_sn=${order_sn}`
+									}
+								break;
+								case '5': 
+									this.currentIndex = 3;
+									if (view!=='tradeOver') {
+										location.hash = `tradeOver?order_sn=${order_sn}`
+									}
+								break;
+							}
+						}
+					})
+				}else{
+					location.href='myOrder.html#view10'
+				}
+			}
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if(sessionStorage.orderInfo){
-					this.orderInfo = sessionStorage.orderInfo;
-				} else{
-					window.history.go(-1);
-				}
+				this.init();
 			})
 		}
 	}
-	window.addEventListener('popstate',()=>{
-		app.currentRoute = window.location.hash
-	})
 </script>
 <style lang='scss' scoped>
 $primary:#c71724;

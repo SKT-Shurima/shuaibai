@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" id='wrap'>
     <div class="head_wrap">
       <div class="headTop">
         <v-head></v-head>

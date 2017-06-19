@@ -26,7 +26,7 @@
 		methods:{
 			changeView(view){
 		      	 this.$store.commit('switchView',view);
-		      	 sessionStorage.currentView = view;
+		      	 location.hash = view ;
 		    },
 		    clickBtn(){
 		    	if (this.userInfo.has_phone) {

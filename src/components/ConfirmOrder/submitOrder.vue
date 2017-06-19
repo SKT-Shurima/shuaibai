@@ -1,10 +1,10 @@
 <template>
-	<div class="wrap">
+	<div class="wrap" v-if='orderInfo'>
 		<h4>
 			选择收货地址
 		</h4>
 		<ul class="addressList" v-if='addressList'>
-			<li v-for= '(item,index) in addressList' :class='{"isDefault":item.status==="1"}' :key='item'>
+			<li v-for= '(item,index) in addressList' :class='{"isAddress":addressIndex===index}' :key='item' @click='addressIndex=index' v-if='index<entries'>
 				<dl>
 					<dt>
 						<span v-text='item.name'>
@@ -17,6 +17,7 @@
 					</dt>
 					<dd class="addressInfo">
 						{{item.province}}{{item.city}}{{item.district}}{{item.address}}
+					    }
 					</dd>
 					<dd>
 						<em>
@@ -27,12 +28,15 @@
 						</strong>
 					</dd>
 				</dl>
+				<div class="icon" v-show='addressIndex===index'>
+					<img src="../../../static/commonImg/checked.png" height="32" width="32">
+				</div>
 			</li>
 		</ul>
 		<div class="opera">
-			<el-button type='text' size='small'>显示全部地址</el-button>
-			<el-button type='text' size='small'>管理收货地址</el-button>
-			<el-button type='text' size='small' style='border:1px solid #ccc;'>使用新地址</el-button>
+			<el-button type='text' size='small' @click='entries=addressList.length'>显示全部地址</el-button>
+			<el-button type='text' size='small' @click='addressView'>管理收货地址</el-button>
+			<el-button type='text' size='small' style='border:1px solid #ccc;' @click='addressView'>使用新地址</el-button>
 		</div>
 		<h4>
 			订单信息
@@ -44,8 +48,8 @@
 				<div class="numCol">数量</div>
 				<div class="totalCol">小计</div>
 			</div>
-			<ul class="orderInfoList" v-if='orderInfo'>
-				<li v-for='(item,index) in orderInfo.shop[0].goods'>
+			<ul class="orderInfoList">
+				<li v-for='(item,index) in goodsList'>
 				    <div class="goodsInfo">
 				    	<dl class="goodsMsg infoCol">
 							<dt class="titleCol">
@@ -75,9 +79,9 @@
 						</div>
 						<div style='padding-top:16px;' class="numCol">
 							<div class="numBtn">
-								<button><i class="el-icon-minus"></i></button>
-								<input type="text" name="" v-model='item.quantity'>
-								<button><i class="el-icon-plus"></i></button>
+								<button @click='editGoods(item,-1)'><i class="el-icon-minus"></i></button>
+								<input type="text" name="" v-model='item.quantity' @change='editGoods(item,0)'>
+								<button @click='editGoods(item,1)'><i class="el-icon-plus"></i></button>
 							</div>
 						</div>
 						<div class="totalCol totalAmount">
@@ -110,10 +114,10 @@
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<el-checkbox size='small'><span>使用优惠券</span></el-checkbox>
+							<el-checkbox size='small' v-model='checkbox'><span>使用优惠券</span></el-checkbox>
 						</el-col>
 						<el-col :span='5'>
-							{{20|currency}}
+							{{0|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
@@ -121,10 +125,10 @@
 							<el-radio class="radio" v-model="radio" label="1">
 							<span>购物币抵扣</span>
 							</el-radio>
-							<span><input type="" name=""><em>剩余购物币5.0，当前可用5.0</em></span>
+							<span><em>剩余购物币{{userInfo.shopping_coin}}，当前可用{{orderInfo.shop[0].max_shopping_coin}}</em></span>
 						</el-col>
 						<el-col :span='5'>
-							{{0|currency}}
+							{{radio==="1"?orderInfo.shop[0].max_shopping_coin-0:0|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
@@ -132,28 +136,28 @@
 							<el-radio class="radio" v-model="radio" label="2">
 							<span>积分抵扣</span>
 							</el-radio>
-							<span><input type="" name=""><em>剩余购物币5.0，当前可用5.0</em></span>
+							<span><em>剩余积分{{userInfo.integration}}，当前可用{{orderInfo.shop[0].max_integration}}</em></span>
 						</el-col>
 						<el-col :span='5'>
-							{{0|currency}}
+							{{radio==='2'?orderInfo.shop[0].max_integration-0:0|currency}}
 						</el-col>
 					</el-row>
 				</div>
 			</div>
 		</div>
-		<div class="payWrap">
+		<div class="payWrap" v-if='addressList'>
 			<div class="payBox">
 				<el-row style='padding: 36px 40px;'>
-					<strong>实付款：</strong><i>￥</i><em>512.00</em>
+					<strong>实付款：</strong><i>￥</i><em v-text='orderInfo.total_fee'></em>
 				</el-row>
 				<el-row>
-					<strong>收货地：</strong><span>杭州市</span>
+					<strong>收货地：</strong><span>{{addressList[addressIndex].province}}{{addressList[addressIndex].city}}{{addressList[addressIndex].district}}</span>
 				</el-row>
 				<el-row>
-					<strong>收货人：</strong><span>李达康</span><span>1008611</span>
+					<strong>收货人：</strong><span v-text='addressList[addressIndex].name'></span><span v-text='addressList[addressIndex].postcode'></span>
 				</el-row>
 				<el-row style='padding: 12px 30px;'>
-					<el-button type='primary' style='width:190px;height: 50px;font-size:20px;'>
+					<el-button type='primary' style='width:190px;height: 50px;font-size:20px;' @click='submitOrder'>
 						提交订单
 					</el-button>
 				</el-row>
@@ -162,21 +166,30 @@
 	</div>
 </template>
 <script>
-import {getAddress} from '../../common/js/api.js'
-import {currency} from '../../common/js/filter.js'
+import {getAddress,buy,generate} from '../../common/js/api'
+import {currency} from '../../common/js/filter'
+import {MessageBox} from  'element-ui'
 	export default{
 		data(){
 			return {
-				radio: '1',
 				userInfo: '',
 				addressList: null,
-				orderInfo: null
+				orderInfo: null,
+				addressIndex: "",
+				entries: 4,
+				goodsList: null,
+				remark: '',
+				radio: '0',
+				checkbox: ""
 			} 
 		},
 		filters:{
 			currency
 		},
 		methods:{
+			addressView(){
+				location.href = 'myOrder.html#view100'
+			},
 			getAddressList(){
 		      	let params = {
 		      	 	access_token: this.userInfo.access_token
@@ -185,8 +198,123 @@ import {currency} from '../../common/js/filter.js'
 		      	 	let {errcode,content} = res;
 		      	 	if (errcode===0) {
 		      	 		this.addressList = content;
+		      	 		for(let i = 0;i<this.addressList.length;i++){
+		      	 			if (this.addressList[i].status === '1') {
+		      	 				this.addressIndex = i ;
+		      	 			}
+		      	 		}
 		      	 	}
 		       })
+		    },
+		    editGoods(item,mask){
+		    	let _this  = this ;
+		    	if(mask>0){
+		    		item.quantity++;
+		    	}else if(mask<0){
+		    		item.quantity--;
+		    	}else {
+		    		let reg = /^\d+$/g; 
+		    		if (!reg.test(item.quantity)) {
+		    			item.quantity = "1" ;
+		    		}
+		    	}
+		    	item.quantity = item.quantity-0>item.stock-0?itwm.stock:item.quantity-0<1?"1":item.quantity ;
+		    	let params = {
+		    		access_token: sessionStorage.access_token
+		    	}
+		    	let data =[{
+		    		seller_id: _this.orderInfo.shop[0].seller_id,
+		    		goods: []
+		    	}]
+		    	for(let i = 0 ; i<_this.goodsList.length;i++){
+		 			let goodObj = {
+	 					cart_id: _this.goodsList[i].cart_id,
+						goods_id: _this.goodsList[i].goods_id,
+						option_id: _this.goodsList[i].option_id,
+						quantity: _this.goodsList[i].quantity + ''
+					}
+					data[0].goods.push(goodObj);
+		 		}
+		    	params.data = JSON.stringify(data);
+		    	buy(params).then(res=>{
+			 		let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		if (action==='confirm') {
+					          			window.location.href = 'login.html';
+					          		}
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else{
+						if(sessionStorage.orderInfo){
+							sessionStorage.removeItem('orderInfo');
+						}
+						this.orderInfo = content ;
+						this.goodsList = this.orderInfo.shop[0].goods ;
+						content = JSON.stringify(content);
+						sessionStorage.setItem('orderInfo',content)
+					}
+			 	})
+		    },
+		    submitOrder(){
+		    	let _this = this ; 
+		    	let params = {
+		    		access_token: sessionStorage.access_token,
+		    		address_id: _this.addressList[_this.addressIndex].address_id
+		    	}
+		    	let  data = [{
+		    		remark: _this.remark,
+		    		seller_id: _this.orderInfo.shop[0].seller_id,
+		    		use_type: _this.radio,
+		    		coupon: ''
+		    	}]
+		    	let goods = [];
+		    	for(let i = 0;i<_this.orderInfo.shop[0].goods.length;i++){
+		    		let goodsObj = {
+		    			cart_id: _this.orderInfo.shop[0].goods[i].cart_id,
+						goods_id: _this.orderInfo.shop[0].goods[i].goods_id,
+						option_id: _this.orderInfo.shop[0].goods[i].option_id,
+						quantity: _this.orderInfo.shop[0].goods[i].quantity
+		    		}
+		    		goods.push(goodsObj); 
+		    	}
+		    	data[0].goods  = goods ;
+		    	data = JSON.stringify(data);
+		    	params.data = data ;
+		    	generate(params).then(res=>{
+		    		let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		if (action==='confirm') {
+					          			window.location.href = 'login.html';
+					          		}
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else{
+						let order_sn = sessionStorage.order_sn;
+						if (order_sn) {
+							sessionStorage.removeItem('order_sn');
+						}
+						sessionStorage.order_sn = content.order_sn[0] ;
+						location.hash = '#successSubmit'
+					}
+		    	})
 		    }
 		},
 		created(){
@@ -196,6 +324,7 @@ import {currency} from '../../common/js/filter.js'
 					this.getAddressList();
 					if (sessionStorage.orderInfo) {
 						this.orderInfo = JSON.parse(sessionStorage.orderInfo);
+						this.goodsList = this.orderInfo.shop[0].goods ;
 					}
 				}else{
 					window.location.href = "login.html";
@@ -221,11 +350,13 @@ $bg_color: #f5f5f5;
 			overflow: hidden;
 			width: 1012px;
 			li{
+				position: relative;
 				float: left;
 				width: 490px;
 				padding: 20px;
 				margin-right: 14px;
 				margin-bottom: 16px;
+				cursor: pointer;
 				border: 1px solid $border_color;
 				dl{
 					dt{
@@ -251,8 +382,16 @@ $bg_color: #f5f5f5;
 						}
 					}
 				}
+				.icon{
+				    position: absolute;
+				    bottom: 0px;
+				    right: 0px;
+				}
 			}
-			.isDefault{
+			.icon{
+				
+			}
+			.isAddress{
 				border: 1px solid $primary;
 			}
 		}
@@ -371,6 +510,7 @@ $bg_color: #f5f5f5;
 									float: left;
 									width: 40px;
 									height: 22px;
+									text-align: center;
 									border-left: 1px solid  $border_color;
 									border-right: 1px solid $border_color;
 									border-top: none;
@@ -414,6 +554,7 @@ $bg_color: #f5f5f5;
 						}
 						input{
 							width: 60px;
+							text-align: center;
 							margin: 0px 10px;
 						}
 						em{

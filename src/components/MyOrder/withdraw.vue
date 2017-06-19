@@ -1,17 +1,17 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view37")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view371")'>提现</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip71")'>提现</span></h4>
 		<el-row>
 			<el-col :span='4'>
 				提现金额
 			</el-col>
 			<el-col :span='19' :offset="1">
-				<el-input size='small' style='width:200px;'></el-input>&nbsp;元&nbsp;人民币
+				<el-input size='small' style='width:200px;' v-model='money'></el-input>&nbsp;元&nbsp;人民币
 			</el-col>
 		</el-row>
 		<el-row>
 			<el-col :span='19' :offset='5' style='color:#666;'>
-				当前可提现金额{{200|currency}}
+				当前可提现金额{{userInfo.account|currency}}
 			</el-col>
 		</el-row>
 		<el-row>
@@ -21,16 +21,22 @@
 		</el-row>
 		<el-row style='margin-top: 30px;'>
 			<el-col :span='19' :offset='5'>
-				<el-button type='primary' size='small' style='width:94px;'>确认提现</el-button>
+				<el-button type='primary' size='small' style='width:94px;' @click='submitWithdraw'>确认提现</el-button>
 			</el-col>
 		</el-row>
 	</div>
 </template>
 <script >
-import {currency} from '../../common/js/filter.js'
+import {currency} from '../../common/js/filter'
+import {MessageBox} from  'element-ui'
+import {withdraw} from '../../common/js/api'
 	export default{
 		data(){
-			return{
+			return {
+				money: "",
+				userInfo: {
+					account: ""
+				}
 			}
 		},
 		filters:{
@@ -39,11 +45,47 @@ import {currency} from '../../common/js/filter.js'
 		methods:{
 			changeView(view){
 		      	this.$store.commit('switchView',view);
-		      	sessionStorage.currentView = this.currentView ;
+		      	location.hash = view ;
+		    },
+		    submitWithdraw(){
+		    	let _this = this ;
+		    	let params = {
+		    		accsess_token : sessionStorag.accsess_token,
+		    		account: "",
+		    		realname: "",
+		    		money: _this.money,
+		    		type: "1"
+		    	}
+		    	withdraw(params).then(res=>{
+		    		let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						Message.success({
+				            message: '投诉成功',
+				            type: 'success'
+				        });
+					}
+		    	})
 		    }
 		},
 		mounted(){
-
+			this.$nextTick(()=>{
+				if (sessionStorage.userInfo) {
+					this.userInfo = JSON.parse(sessionStorage.userInfo) ;
+				}
+			})
 		}
 	}
 </script>

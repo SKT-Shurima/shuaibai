@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<div class="box">
+		<div class="box" v-if='expressInfo'>
 			<h4>
 				<div class="title">
 					物流信息
@@ -13,33 +13,34 @@
 							发货方式：快递
 						</el-col>
 						<el-col :span='6'>
-							物流公司：圆通速递
+							物流公司：{{expressInfo.type}}
 						</el-col>
 						<el-col :span='6'>
-							运单编号：154651546431654
+							运单编号：{{expressInfo.number}}
 						</el-col>
 						<el-col :span='6'>
-							客服电话：16546131646164
+							客服电话：
 						</el-col>
 					</el-row>
 				</div>
 				<div class="logisticsInfoDetails">
 					<el-row>
-						<el-col :span='2'>
+						<el-col :span='2' style='line-height:40px'>
 							物流跟踪：
 						</el-col>
 						<el-col :span='22'>
 							<ul>
-								<li v-for='(item,index) in  5'>
+								<li v-for='(item,index) in  expressInfo.list' :class='{"moveHere":index===expressInfo.list.length-1}'>
 									<div class="timeCol">
-										2017-05-03 18:38:34
+										{{item.time}}
 									</div>
 									<dl class="sliderCol">
+										<dd :style='{opacity: index===0?0:1}'></dd>
 										<dt></dt>
-										<dd></dd>
+										<dd :style='{opacity: index===expressInfo.list.length-1?0:1}'></dd>
 									</dl>
 									<div class="infoCol">
-										杭州圆周率已收
+										{{item.status}}
 									</div>
 								</li>
 							</ul> 
@@ -51,13 +52,61 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter.js'
+import {currency} from '../../common/js/filter'
+import {express} from '../../common/js/api'
+import {MessageBox} from  'element-ui'
 	export default{
 		data(){
 			return{
-
+				expressInfo: null
 			}
 		},
+		 props:{
+	    	orderInfo: {
+	    		type: Object,
+	    		required: true
+	    	}
+	    },
+	     watch: {
+	   	  orderInfo :{
+	   	  	handler(newVal,oldVal){
+	   	  		let _this = this ;
+	   	  		_this.getEpress();
+	   	  	}
+	   	  }
+	   }, 
+	   methods:{
+	   		getEpress(){
+	   			let _this = this ;
+	   			let params = {
+	   				access_token: sessionStorage.access_token,
+	   				type: "",
+	   				number: _this.orderInfo.order.express_sn
+	   			}
+	   			express(params).then(res=>{
+	   				let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		if (action==='confirm') {
+					          			window.location.href = 'login.html';
+					          		}
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else{
+						content.list = content.list.reverse();
+						this.expressInfo = content ;
+					}
+	   			})
+	   		}	
+	   },	
 		filters:{
 			currency
 		}
@@ -111,25 +160,28 @@ import {currency} from '../../common/js/filter.js'
 							height: 100%;
 							.timeCol,.sliderCol,.infoCol{
 								float: left;
+								line-height: 40px;
 							}
 							.timeCol{
 								width: 194px;
-								padding-bottom: 22px;
 							}
 							.sliderCol{
-								width: 6px;
+								position: relative;
+								width: 8px;
 								height: 40px;
 								dt{
-									width: 6px;
-									height: 6px;
-									margin-top: 4px;
+									position: absolute;
+									top: 0px;
+									bottom: 0px;
+									margin: auto;
+									width: 8px;
+									height: 8px;
 									border-radius: 50%;
 									background-color: $border_color;
 								}
 								dd{
 									width: 1px;
-									height: 30px;
-									height: 100%;
+									height: 20px;
 									margin: 0px auto;
 									background-color: $border_color;
 								}
@@ -137,7 +189,17 @@ import {currency} from '../../common/js/filter.js'
 							.infoCol{
 								width: 556px;
 								margin-left: 36px;
-								padding-bottom: 22px;
+							}
+						}
+						.moveHere {
+							color: $primary;
+							.sliderCol{
+								dt{
+									width: 10px;
+									height: 10px;
+									left: -1px;
+									background-color: $primary;
+								}
 							}
 						}
 					}

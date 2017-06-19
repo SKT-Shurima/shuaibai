@@ -27,20 +27,35 @@
 				</div>
 			</li>
 		</ul>
+		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 	</div>
 </template>
 <script >
-import {currency,dateStylePoint} from '../../common/js/filter.js'
-import {getCoupons} from '../../common/js/api.js'
+import {currency,dateStylePoint} from '../../common/js/filter'
+import {getCoupons} from '../../common/js/api'
+import pagination from '../Common/pagination'
 	export default{
 		data(){
 			return{
-				couponsList: null
+				couponsList: null,
+				pagesize: 1 ,// 总页数
+				page: "1"
 			}
 		},
 		filters:{
 			currency,
 			dateStylePoint
+		},
+		components: {
+			pagination
+		},
+		methods:{
+			// 改变页数
+			changePage(page){
+				let _this = this ;
+				_this.page = page ;
+				_this.getList();
+			}
 		},
 		mounted(){
 			this.$nextTick(()=>{

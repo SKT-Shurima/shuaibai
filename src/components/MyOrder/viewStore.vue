@@ -57,7 +57,7 @@
 </template>
 <script>
 	import {currency} from "../../common/js/filter"
-	import {attention,cancelAttentions} from '../../common/js/api.js'
+	import {attention,cancelAttentions} from '../../common/js/api'
 	export default {
 		data(){
 			return {

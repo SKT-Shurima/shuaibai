@@ -30,10 +30,10 @@
 			</div>
 			<div class="shopInfo">
 				 <ul>
-				 	<li>待付款<i>{{order.wait_pay_count | num_filter}}</i></li>
-				 	<li>待发货<i>{{order.wait_delivery_count | num_filter}}</i></li>
-				 	<li>待收货<i>{{order.wait_receive_count | num_filter}}</i></li>
-				 	<li>待评价<i>{{order.wait_comment_count | num_filter}}</i></li>
+				 	<li @click='getOrders(1)'>待付款<i>{{order.wait_pay_count | num_filter}}</i></li>
+				 	<li @click='getOrders(2)'>待发货<i>{{order.wait_delivery_count | num_filter}}</i></li>
+				 	<li @click='getOrders(3)'>待收货<i>{{order.wait_receive_count | num_filter}}</i></li>
+				 	<li @click='getOrders(4)'>待评价<i>{{order.wait_comment_count | num_filter}}</i></li>
 				 	<li>退款/售后</li>
 				 </ul>
 				 <div class="lastLogin">
@@ -41,7 +41,7 @@
 				 </div>             
 			</div>
 		</div>
-		<order-list></order-list>
+		<order-list ref='orderList'></order-list>
 	</div>
 </template>
 <script>
@@ -78,7 +78,10 @@ import orderList from './orderList'
 		methods:{
 			changeView(view){
 		      	 this.$store.commit('switchView',view);
-		      	 sessionStorage.currentView = view ;
+		      	 location.hash = view;
+		    },
+		    getOrders(index){
+		    	this.$refs.orderList.getOrderList(index,"1");
 		    }
 		},
 		mounted(){
@@ -160,6 +163,7 @@ import orderList from './orderList'
 				li{
 					float: left;
 					width: 130px;
+					cursor: pointer;
 					border-right: 1px solid $border_color; 
 					i{
 						margin-left: 4px;

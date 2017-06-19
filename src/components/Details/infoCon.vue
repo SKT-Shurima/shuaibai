@@ -103,7 +103,7 @@
 							</el-col>
 							<el-col :span='20' class='chooseBtn'>
 								<button :index='index' @click='items.select=index' :class='{"checkedBorder": items.select===index}' v-for='(item,index) in items.items'>{{item.name}}
-								<img src="../../../static/detailImg/checked.png" height="16" width="16" v-show='items.select===index'>
+								<img src="../../../static/commonImg/checked.png" height="12" width="12" v-show='items.select===index'>
 								</button>
 							</el-col>
 						</el-row>

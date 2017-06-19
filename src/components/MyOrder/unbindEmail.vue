@@ -83,7 +83,7 @@ import {MessageBox} from  'element-ui'
 	    },
 	    changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
+	      	 location.hash = view ;
 	    },
       	submitForm(formName) {
         this.$refs[formName].validate((valid) => {

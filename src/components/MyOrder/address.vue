@@ -61,7 +61,7 @@
 			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.province!==""&&ruleForm.city!==""&&ruleForm.address&&ruleForm.name&&ruleForm.phone)'>保存</el-button>
 			</div>	  
 		</el-form>
-		<div class="addressList">
+		<div class="addressList" v-if='addressList'>
 			<div class="title" style="margin-bottom:20px;">
 				已经保存了{{addressList.length}}条地址，还可以保存{{20-addressList.length}}条地址
 			</div>
@@ -251,7 +251,7 @@ import {MessageBox,Message} from  'element-ui'
 	    },
 	    changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
+	      	 location.hash = view ;
 	    },
 	    setOption(type,event){
              if(type === 'proIndex'){

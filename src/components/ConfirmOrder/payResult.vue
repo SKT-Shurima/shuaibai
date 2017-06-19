@@ -1,0 +1,92 @@
+<template>
+	<div class="wrap">
+		<dl>	
+			<dt>
+				<img src="../../../static/orderImg/paySuccess.png" height="153" width="153" v-if='status===0'>
+				<img src="../../../static/orderImg/payFail.png" v-else>
+			</dt>
+			<dd>
+				<div v-if='status===0'>您已成功付款&nbsp;<em v-text='payInfo.count'></em>&nbsp;元</div>
+				<div v-if='status===1'>支付失败，请重试</div>
+				<div v-if='status===2'>您的余额不足，支付失败，请选择其他支付方式</div>
+			</dd>
+			<dd>
+				<el-button type='primary' @click='checkOrder'>查看订单</el-button>
+				<el-button type='primary' style='margin-left: 20px;' @click='backHome'>帅柏首页</el-button>
+			</dd>
+		</dl>
+	</div>
+</template>
+<script>
+import {getHashReq} from '../../common/js/common'
+	export default {
+		data(){
+			return {
+				payInfo: null,
+				status: "",
+				reqParams: null
+			}
+		},
+		methods:{
+			checkOrder(){
+				window.open("myOrder.html#view10");
+			},
+			backHome(){
+				location.href = 'index.html'
+			}
+		},
+		created(){
+			this.$nextTick(()=>{
+				this.reqParams = getHashReq() ;
+				let order_sn = 	this.reqParams.order_sn;
+				if (sessionStorage.payResult) {
+					let payResult = JSON.parse(sessionStorage.payResult);
+					this.payInfo = payResult.payInfo ;
+					this.status = payResult.status ;
+				}else {
+					location.hash=`payfor?order_sn=${order_sn}`;
+				}
+				sessionStorage.removeItem('payResult');
+			})
+		
+		}
+	}
+</script>
+<style lang='scss' scoped>
+$primary:#c71724;
+$border_color: #ddd;
+	.wrap{
+		width: 346px;
+		margin: 100px auto;
+		dl{
+			padding-top: 30px;
+			dt{
+				width: 154px;
+				height: 154px;
+				margin: 0px auto 70px;
+				img{
+					width: 100%;
+					height: 100%;
+				}
+			}
+			dd{
+				width: 100%;
+				text-align: center;
+				margin-bottom: 56px;
+				font-weight: 600;
+				div{
+					font-size: 14px;
+					em{
+						margin:0px auto; 
+						font-size: 28px;
+						color: $primary;
+					}
+				}
+				.el-button{
+					width: 160px;
+					font-size: 20px;
+				}
+			}
+		}
+	}
+</style>

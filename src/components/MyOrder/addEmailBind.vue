@@ -94,8 +94,8 @@ import {MessageBox} from  'element-ui'
 	      	});
 	    },
 	    changeView(view){
-	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
+	      	this.$store.commit('switchView',view);
+	      	location.hash = view ;
 	    },
       	submitForm(formName) {
         this.$refs[formName].validate((valid) => {

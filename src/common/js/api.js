@@ -139,6 +139,11 @@ export const bindEamil = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/customerAction/bindEmail`,params).then(res=>res.data);
 }
+// 设置头像
+export const changeAvater = params =>{
+	params = trans(params);
+	return  axios.post(`${base}/userAction/changeAvater`,params).then(res=>res.data);
+}
 // 设置用户名
 export const changeUsername = params =>{
 	params = trans(params);
@@ -165,7 +170,11 @@ export const collection = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/userAction/collection`,params).then(res=>res.data);
 }
-
+// 取消收藏
+export const cancelCollections = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/cancelCollections`,params).then(res=>res.data);
+}
 // 我的关注
 export const attention = params =>{
 	params = trans(params);
@@ -177,6 +186,20 @@ export const cancelAttentions = params =>{
 	return axios.post(`${base}/userAction/cancelAttentions`,params).then(res=>res.data);
 }
 
+
+// 我的足迹
+export const footmark = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/footmark`,params).then(res=>res.data); 
+}
+// 删除足迹
+export const delFoots = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/delFoots`,params).then(res=>res.data);
+}
+
+
+// 优惠券
 // 获取优惠券
 export const getCoupons = params => {
 	params = trans(params);
@@ -184,7 +207,14 @@ export const getCoupons = params => {
 }
 
 
+
+
 // 资金
+// 充值
+export const recharge = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/recharge`,params).then(res=>res.data);
+}
 // 资金明细
 export const finance= params => {
 	params = trans(params) ;
@@ -210,8 +240,6 @@ export const shoppingCoinDetail = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/userAction/shoppingCoinDetail`,params).then(res=>res.data);
 }
-
-
 
 
 // 购物车相关
@@ -241,17 +269,13 @@ export const buy = params =>{
 	return axios.post(`${base}/orderAction/buy`,params).then(res=>res.data)
 }
 
+// 投诉
+export const  complain = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/complain`,params).then(res=>res.data);
+}
 
-// 我的足迹
-export const footmark = params =>{
-	params = trans(params);
-	return axios.post(`${base}/userAction/footmark`,params).then(res=>res.data); 
-}
-// 删除足迹
-export const delFoots = params =>{
-	params = trans(params);
-	return axios.post(`${base}/userAction/delFoots`,params).then(res=>res.data);
-}
+
 
 
 // 商品详情
@@ -308,4 +332,47 @@ export const addFollow= params=>{
 export const cancelFollow= params=>{
 	params =trans(params);
 	return axios.post(`${base}/shopAction/cancelFollow`,params).then(res=>res.data);
+}
+
+
+// 订单相关
+// 确认订单
+export const generate = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/generate`,params).then(res=>res.data);
+}
+// 订单详情
+export const getOrderDetail = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getOrderDetail`,params).then(res=>res.data);
+}
+//  取消订单
+export const cancelOrder = params =>{
+	params = trans(params);
+	return  axios.post(`${base}/orderAction/cancelOrder`,params).then(res=>res.data);
+}
+// 支付
+export const pay = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/pay`,params).then(res=>res.data);
+}
+// 催一催(提醒发货)
+export const orderRemind = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/orderRemind`,params).then(res=>res.data); 
+}
+// 获取物流信息
+export const express = params =>{
+	params =  trans(params);
+	return axios.post(`${base}/orderAction/express`,params).then(res=>res.data);
+}
+// 确认收货
+export const  delivery = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/delivery`,params).then(res=>res.data);
+}
+// 删除订单
+export const delOrder = params => {
+	params = trans(params);
+	return axios.post(`${base}/orderAction/delOrder`,params).then(res=>res.data);
 }

@@ -8,15 +8,15 @@
 							<img :src="item.cover">
 						</div>
 						<div class="editBox">
-							<div class="edit">加入购物车</div>
-							<div class="edit" style="margin-left: 1px;margin-right:-1px;">删除</div>
+							<div class="delColGood(item.collection_id)">
+							<i class="el-icon-delete"></i>删除</div>
 						</div>
 					</dt>
 					<dd>
 						<div class="sellInfo">
 							{{item.name}}
 						</div>
-						<div class="priceInfo" v-show='index%4===0'>
+						<div class="priceInfo" >
 							<span>
 								{{item.price|currency}}
 							</span>
@@ -24,7 +24,7 @@
 								{{item.sale_count}}人付款
 							</em>
 						</div>
-						<div class="update" v-show='index%4!==0'>
+						<div class="update" v-show='false'>
 							<div>
 								<img src="" alt="">商品已失效
 							</div>
@@ -33,33 +33,77 @@
 				</dl>
 	 		</li>
 	 	</ul>
+		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 	 </div>
 </template>
 <script>
-	import {currency} from '../../common/js/filter.js'
-	import {collection} from '../../common/js/api.js'
+	import {currency} from '../../common/js/filter'
+	import {collection,cancelCollections} from '../../common/js/api'
+	import {MessageBox} from  'element-ui'
+	import pagination from '../Common/pagination'
 	export default {
 		data(){
 			return{
-				colList: null
+				colList: null,
+				pagesize: 1 ,// 总页数
+				page: "1"
 			}
 		},
 		filters:{
 			currency
 		},
-		methods:{
-			init(){
-
-			}
+		components: {
+			pagination
 		},
-		mounted(){
-			this.$nextTick(()=>{
+		methods:{
+			// 取消收藏
+			delColGood(ids){
+				MessageBox.confirm('此操作将永久删除该收藏, 是否继续?', '提示', {
+		            confirmButtonText: '确定',
+		            cancelButtonText: '取消',
+		            type: 'warning'
+		        }).then(() => {
+			        let params = {
+			        	access_token: sessionStorage.access_token,
+			        	ids: ids
+			        }
+			        cancelCollections(params).then(res=>{
+			        	let {errcode,message,content} = res ;
+						if(errcode !== 0){
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		window.location.href = 'login.html';
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else {
+							this.initList();
+						}
+			        })
+		        }).catch(() => {
+		            return false;          
+		        });
+
+			},
+			// 改变页数
+			changePage(page){
+				let _this = this ;
+				_this.page = page ;
+				_this.initList();
+			},
+			initList(){
 				let params  ={
 					access_token : sessionStorage.access_token,
-					page: "0"
+					page: this.page
 				}
 				collection(params).then(res=>{
-					let {errcode,message,content} = res ;
+					let {errcode,message,content,pageSize} = res ;
 					if(errcode !== 0){
 						if (errcode === 99) {
 	            			MessageBox.alert(message, '提示', {
@@ -75,8 +119,14 @@
 	            		}
 					}else {
 						this.colList = content;
+						this.pagesize = pageSize ;
 					}
 				})
+			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				this.initList();
 			})
 		}
 	}
@@ -121,14 +171,17 @@ $primary:#c71724;
 						text-align: center;
 						overflow: hidden;
 						transition: all .3s;
-						.edit{
-							float: left;
+						color: #fff;
+						background-color: rgba(205,42,44,0.5);
+						div{
+							float: right;
 							width: 50%;
 							line-height: 30px;
 							cursor: pointer;
 							margin: 0px;
-							color: #fff;
-							background-color: rgba(205,42,44,0.5);
+						}
+						.el-icon-delete{
+							margin-right: 10px;
 						}
 					}
 				}
@@ -142,7 +195,8 @@ $primary:#c71724;
 					width: 100%;
 					overflow: hidden;
 					.sellInfo{
-						line-height: 16px;
+						height: 36px;
+						line-height: 18px;
 						margin: 8px 0px;
 					}
 					.priceInfo{

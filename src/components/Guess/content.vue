@@ -131,6 +131,7 @@ $bg_title: #f5f5f5;
 						width: 100%;
 						overflow: hidden;
 						.sellInfo{
+							height: 36px;
 							line-height: 18px;
 							font-weight: 600;
 							margin-top: 10px;

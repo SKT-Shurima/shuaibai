@@ -1,11 +1,11 @@
 <template>
 	<div class="wrap">
 		<h4 class="title">
-			投诉
+			商家入驻
 		</h4>
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px"  label-position='right'>
 			<div class="addInfo">
-				填写投诉信息
+				公司信息
 			</div>
 		    <el-form-item label="合伙人编号">
 		      	<el-input v-model="ruleForm.num" size='small'></el-input>
@@ -13,6 +13,40 @@
 		    <el-form-item label="公司名称" prop="companyName">
 		        <el-input v-model="ruleForm.companyName" size='small'></el-input>
 		    </el-form-item>
+		    <el-form-item label="所在地区" prop='area'>
+					<el-row class="area">
+						<el-col >
+							<select v-model="ruleForm.province" @change='setOption("proIndex",$event)'>
+							<option value='' disabled selected style='display:none;'>省</option>
+			                    <option
+			                      v-for="(item,index) in proArr"
+			                      :label="item.name"
+			                      :value="index" :key='index'>
+			                    </option>
+			                 </select>
+						</el-col>
+						<el-col style='margin-left: 14px;'>
+							<select v-model="ruleForm.city" @change='setOption("cityIndex",$event)'>
+							<option value='' disabled selected style='display:none;'>市</option>
+			                    <option
+			                      v-for="(item2,index2) in cityArr"
+			                      :label="item2.name"
+			                      :value="index2" :key='index2'>
+			                    </option>
+			                 </select>
+						</el-col>
+						<el-col style='margin-left: 14px;'>
+							<select v-model="ruleForm.district" @change='setOption("areaIndex",$event)'>
+							<option value='' disabled selected style='display:none;'>区</option>
+			                    <option
+			                      v-for="(item3,index3) in areaArr"
+			                      :label="item3.name"
+			                      :value="index3" :key='index3'>
+			                    </option>
+			                 </select>
+						</el-col>
+					</el-row>
+				</el-form-item>
 		    <el-form-item label="公司详细地址" prop="address">
 		        <el-input v-model="ruleForm.address" size='small'></el-input>
 		    </el-form-item>
@@ -91,13 +125,42 @@
 	</div>
 </template>
 <script >
+import {shopJoin,linkage} from '../../common/js/api'
 	export default{
 		data(){
+			// 地区选择
+		     var checkArea = (rule,value,callback) => {
+		     	if (this.ruleForm.province === "") {
+		     		callback(new Error('请选择省份或直辖市'));
+		     	} else if (this.ruleForm.city === '') {
+		     		callback(new Error('请选择地级市或地区'));
+		     	} else {
+		     		if (this.areaArr.length) {
+		     			if (this.ruleForm.district === "") {
+		     				callback(new Error('请选择地区'));
+		     			} else {
+		     				callback();
+		     			}
+		     		} else {
+		     			callback();
+		     		}
+		     	} 
+		     };
 			return{
 				haveRead: true,
+				proIndex: 0,
+		        cityIndex: 0,
+		        areaIndex: 0,
+		      	proArr: [],
+		      	cityArr: [],
+		      	areaArr: [],
+		      	addressList: null,
 				ruleForm: {
 		            num: '',
 		            companyName: '',
+		            province: '',
+			        city: '',
+			        district: '',
 		            address: '',
 		            companyTel: "",
 		            license: '',
@@ -111,6 +174,9 @@
 		        rules: {
 		        	companyName: [
 			            { required: true, message: '请输入公司名称', trigger: 'blur' }
+			        ],
+			        area: [
+			            { required: true, validator: checkArea, trigger: 'blur' }
 			        ],
 			        address: [
 			        	{ required: true, message: '请输入公司地址', trigger: 'blur' }
@@ -148,10 +214,91 @@
 		      },
 		      handlePreview(file) {
 		        console.log(file);
-		      }
+		      },
+		      setOption(type,event){
+	             if(type === 'proIndex'){
+	             	this.proIndex = event.target.selectedIndex-1;
+	                this.cityIndex = 0;
+	                this.areaIndex = 0;
+	                this.ruleForm.city = '';
+		    		this.ruleForm.district= '';
+		    		this.getLinkage('city',this.proArr[this.proIndex].zone_id);
+	            }
+	            if(type === 'cityIndex'){
+	            	this.cityIndex = event.target.selectedIndex-1;
+	                this.areaIndex = 0;
+	                this.ruleForm.district= '';
+	                this.getLinkage('area',this.cityArr[this.cityIndex].zone_id);
+	            }
+	            if(type === 'areaIndex'){
+	            	this.areaIndex = event.target.selectedIndex -1;
+	            }
+	        },
+		      getLinkage(mask,id){
+	    		let params = {
+	    			pid: id
+	    		}
+	    		linkage(params).then(res=>{
+	    			let {errcode,message,content} = res ;
+	            	if (errcode !== 0 ) {
+	            		if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+	            	} else {
+	            		if (mask==='pro') {
+	            			this.proArr = content ;
+	            			this.cityArr= [];
+	            			this.areaArr = [];
+	            		}else if (mask==='city'){
+	            			this.cityArr = [] ;
+	            			this.cityArr = content; 
+	            		}else if (mask=== 'area'){
+	            			this.areaArr = [] ;
+	            			this.areaArr = content;
+	            		}
+	            	}
+	    		})
+	    	},
+		      submitForm(formName) {
+		        this.$refs[formName].validate((valid) => {
+		          if (valid) {
+		             let params = {
+						access_token: sessionStorage.access_token,
+						company: _this.ruleForm.companyName,
+						province: "",
+						city: "",
+						district: "",
+						address: "",
+						licence: "",
+						name: "",	
+						phone: "",	
+						shop_nam: "",
+						wx_qq: "",	
+						card_f:"",	
+						card_b: ""
+		             }
+		          } else {
+		            console.log('error submit!!');
+		            return false;
+		          }
+		        });
+		      },
 		},
-		mounted(){
-			this.$emit('hasGuess',false);
+		created(){
+			this.$nextTick(()=>{
+				this.$emit('hasGuess',false);
+				this.getLinkage('pro');
+			})
+			
 		}
 	}
 </script>
@@ -179,12 +326,35 @@ $bg_color: #e84848;
 		.el-form{
 			width: 420px;
 			.el-row{
-				width: 360px;
-				margin-bottom: 22px;
+				width: 300px;
 				.el-col-8{
 					padding-right: 12px;
 					color: $text_color;
 					text-align: right;
+				}
+			}
+			.area{
+				overflow: hidden;
+				padding-top: 4px;
+				.el-col{
+					float: left;
+					width: 90px;
+				    select{
+				    	background-color: #fff;
+					    background-image: none;
+					    border-radius: 4px;
+					    border: 1px solid rgb(217, 193, 191);
+					    box-sizing: border-box;
+					    color: rgb(61, 33, 31);
+					    display: block;
+					    font-size: inherit;
+					    height: 30px;
+					    line-height: 1;
+					    outline: none;
+					    padding: 3px 10px;
+					    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+					    width: 100%;
+				    }
 				}
 			}
 		}

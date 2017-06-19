@@ -11,15 +11,15 @@
 				<el-col :span='3'>交易操作</el-col>
 			</el-row>
 		</div>
-		<div class="shopInfoList">
+		<div class="shopInfoList" v-for='(shopItem,index) in order' v-if='order'>
 			<div class="title">
 				<el-row>
 					<el-col :span='9'>
-						<em style='margin-left:24px;font-weight: 600;'>2017-01-01</em>
-						<span style='margin-left:26px'>订单号：{{20170516}}</span>
+						<em style='margin-left:24px;font-weight: 600;'>{{shopItem.date_add*1000|dateStyle}}</em>
+						<span style='margin-left:26px'>订单号：{{shopItem.order_sn}}</span>
 					</el-col>
 					<el-col :span='10'>
-						<span>帅柏</span>
+						<span v-text='shopItem.shop_name'></span>
 						<button>
 							<img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服
 						</button>
@@ -29,86 +29,260 @@
 			<div class="list">
 				<div class='listContent'>
 				 	<div class="goodsListBox">
-				 		<div v-for='item in 5' class="goodsList">
+				 		<div v-for='(item,index) in shopItem.goods' :key='item' class="goodsList">
 					 		<dl class="goodsMsg">
 								<dt>
-									<img src="">
+									<img :src="item.image">
 								</dt>
 								<dd>
-									<div class="goodsName">
-										买不买买不买买不买买不买买不买不买不买不买绑定手机号发布觉得不
-									</div>
+									<div class="goodsName" v-text='item.name'></div>
 									<div class="goodsType">
-										<span>规格:精装品</span>
-										<span>套餐:套餐一</span>
+										<span>规格:{{item.option_name}}</span>
+										<span>套餐:{{item.goods_type}}</span>
 									</div>
 								</dd>
 							</dl>
-							<dl style='line-height:18px;' class='goodsPrice'>
-								<dt style="color:#666;text-decoration: line-through;margin-top: 24px;">
+							<div class='goodsPrice'>
+								<!-- <dt style="color:#666;text-decoration: line-through;margin-top: 24px;">
 									{{299.00|currency}}
-								</dt>
+								</dt> -->
 								<dd>
-									{{299.00|currency}}
+									{{item.price|currency}}
 								</dd>
-							</dl>
-							<div style='padding-top:30px;' class="goodsPrice">
-								1
 							</div>
-							<div style='padding-top:30px;' class="goodsPrice">
+							<div class="goodsPrice" v-text='item.quantity'></div>
+							<div class="goodsPrice">
 								申请售后
 							</div>
 						</div>
 				 	</div>
-					<div class="goodsInfo" :style="{height:130*5+'px'}" :class='{"multiple":true}'>
+					<div class="goodsInfo" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":true}'>
 						<el-row>
 							<el-col :span='8'>
-								<div style="line-height:26px;font-size:14px;font-weight:600;">{{179.00|currency}}</div>
-								<div style="color:#666;">含运费:{{0.00|currency}}</div>
-								<div style='color:#666;'>优惠券:{{20.00|currency}}</div>
+								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount|currency}}</div>
+								<div style="color:#666;line-height:20px;">含运费:{{shopItem.express_amount|currency}}</div>
+								<div style='color:#666;line-height:20px;'>优惠券:{{shopItem.goods_count|currency}}</div>
 							</el-col>
-							<el-col :span='8' style='line-height:20px;'>
-								<div>物流运输中</div>
-								<div>订单详情</div>
-								<div>查看物流</div>
+							<el-col :span='8' style='line-height:20px;padding-top: 4px;'>
+								<!-- 待付款 待发货 待评价 -->
+								<ul style='margin-top:10px;' v-if='shopItem.order_state!=="3"'>
+									<li v-text='shopItem.state'></li>
+									<li @click='checkOrder(shopItem.order_sn)' class="opera">订单详情</li>
+								</ul>
+								<!-- 待收货 -->
+								<ul v-else>
+									<li v-text='shopItem.state'></li>
+									<li @click='checkOrder(shopItem.order_sn)' class="opera">订单详情</li>
+									<li @click='checkOrder(shopItem.order_sn)' class="opera" v-show='shopItem.order_state==="3"'>查看物流</li>
+								</ul>
 							</el-col>
-							<el-col :span='8' style='padding-top: 16px;'>
-								<el-button size='small' type='text'>确认收货</el-button>
+							<el-col :span='8'>
+								<!-- 待付款 -->
+								<ul v-show='shopItem.order_state==="1"'   style='margin-top:10px;'>
+									<li>
+										<el-button size='small' type='text' @click='payFor(shopItem.order_sn)'>立即付款</el-button>
+									</li>
+									<li>
+										<span @click='cancel(shopItem.order_sn)'>取消订单</span>
+									</li>
+								</ul>
+								<!-- 待发货 -->
+								<div v-show='shopItem.order_state==="2"' style='padding-top: 16px;'>
+									<span @click='remind(shopItem.order_sn)'>提醒发货</span>
+								</div>
+								<!-- 待收货 -->
+								<div v-show='shopItem.order_state==="3"' style='padding-top: 16px;'>
+									<el-button size='small' type='text' @click='confirmGet(shopItem.order_sn)'>确认收货</el-button>
+								</div>
+								<!-- 待评价 -->
+								<div v-show='shopItem.order_state==="4"' style='padding-top: 16px;'>
+									<el-button size='small' type='text'>评价</el-button>
+								</div>
+								<!-- 追加评价 -->
+								<div v-show='shopItem.order_state==="5"' style='padding-top: 16px;'>
+									<span>追加评价</span>
+								</div>
+								<!-- 催一催 -->
+								<div v-show='false' style='padding-top: 16px;'>
+									<span>催一催</span>
+								</div>
+								<!-- 再次购买 -->
+								<div v-show='shopItem.order_state==="6"' style='padding-top: 8px;'>
+									<ul>
+										<li><span>再次购买</span></li>
+										<li><span @click='del(shopItem.order_sn)'>删除订单</span></li>
+									</ul>
+									
+								</div>
+								<div v-show='shopItem.order_state==="7"' style='padding-top: 16px;'>
+									<span @click='del(shopItem.order_sn)'>删除订单</span>
+								</div>
 							</el-col>
 						</el-row>
 					</div>
 				</div>
 			</div>
 		</div>
+		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 	</div>
 </template>
 <script>
-import {getOrders} from '../../common/js/api.js'
-import {currency} from '../../common/js/filter.js'
+import {getOrders,cancelOrder,orderRemind,delivery,delOrder} from '../../common/js/api'
+import {currency,dateStyle} from '../../common/js/filter'
+import {MessageBox,Message} from  'element-ui'
+import pagination from '../Common/pagination'
 	export default {
+		data(){
+			return {
+				order: null,
+				pagesize: 1 ,// 总页数,
+				state: "0" 
+			}
+		},
 		filters: {
-			currency
+			currency,dateStyle
+		},
+		components:{
+			pagination
 		},
 	    methods: {
-
-	      handleSelect(key, keyPath) {
-	        console.log(key, keyPath);
-	      },
-	      getOrderList(state,page){
+	        handleSelect(key, keyPath) {
+	            console.log(key, keyPath);
+	        },
+	        getOrderList(state,page){
+	        	let _this = this ;
+	        	_this.state = state ;
+		      	state+='';
 		    	let params = {
 		    		access_token: sessionStorage.access_token,
 		    		state: state,
 		    		page: page
 		    	};
 		    	getOrders(params).then(res=>{
-		    		let {errcode,content} = res;
-		    		if(errcode===0){
-		    			
-		    		}
+		    		let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.order = content.orders;
+						this.pagesize = content.pageSize;
+					}
 		    	})
-		    }
+	   	 	},
+	   	 	// 查看订单详情  物流信息
+	   	 	checkOrder(order_sn){
+	   	 		window.open(`orderDetail.html#?order_sn=${order_sn}`);
+	   	 	},
+	   	 	// 立即付款
+	   	 	payFor(order_sn){
+	   	 		window.open(`confirmOrder.html#payfor?order_sn=${order_sn}`)
+	   	 	},
+	   	 	// 提醒发货
+	   	 	remind(order_sn){
+	   	 		let params = {
+	   	 			access_token: sessionStorage.access_token,
+	   	 			order_sn: order_sn
+	   	 		}
+	   	 		orderRemind(params).then(res=>{
+	   	 			let {errcode,message,content} = res ;
+						if(errcode!==0) {
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		if (action==='confirm') {
+						          			window.location.href = 'login.html';
+						          		}
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else{
+							Message.success({
+					            message: message,
+					            type: 'success'
+					        });
+						}
+	   	 		})
+	   	 	},
+	   	 	// 取消订单
+	   	 	cancel(order_sn){
+	   	 		let _this = this ;
+	   	 		let msg  = '是否取消订单?'
+	   	 		_this.commonAPI(msg,cancelOrder,order_sn);
+	   	 	},
+	   	 	// 确认收货
+	   	 	confirmGet(order_sn){
+	   	 		let _this = this ;
+	   	 		let msg  = '确定收货之前确定是否已经收货?'
+	   	 		_this.commonAPI(msg,delivery,order_sn);
+	   	 	},
+	   	 	// 删除订单
+	   	 	del(order_sn){
+	   	 		let _this = this ;
+	   	 		let msg  = '是否确定永久删除订单？'
+	   	 		_this.commonAPI(msg,delOrder,order_sn);
+	   	 	},
+	   	 	commonAPI(msg,api,order_sn){
+	   	 		let _this = this ;
+	   	 		MessageBox.confirm(msg, '提示', {
+		            confirmButtonText: '确定',
+		            cancelButtonText: '取消',
+		            type: 'warning'
+		        }).then(() => {
+		            let params = {
+		   	 			access_token : sessionStorage.access_token,
+		   	 			order_sn: order_sn
+		   	 		}
+		   	 		api(params).then(res=>{
+		   	 			let {errcode,message,content} = res ;
+						if(errcode!==0) {
+							if (errcode === 99) {
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定',
+						          	callback: action => {
+						          		if (action==='confirm') {
+						          			window.location.href = 'login.html';
+						          		}
+						          	}
+							    });
+		            		}else{
+		            			MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+		            		}
+						}else{
+							Message.success({
+					            message: message,
+					            type: 'success'
+					        });
+					        _this.getOrderList(_this.state,'1');
+						}
+		   	 		})
+		        }).catch(() => {
+		                   
+		        });
+	   	 	},
+	   	 	// 改变页数
+			changePage(page){
+				let _this = this ;
+				_this.getOrderList(_this.state,page);
+			}
 		},
-		mounted(){
+		created(){
 			this.$nextTick(()=>{
 				// 获取订单列表
 				this.getOrderList("0","0")
@@ -129,11 +303,9 @@ import {currency} from '../../common/js/filter.js'
 			margin: 0px 0px 20px;
 			border: 1px solid $border_color;
 			background-color: $bg_color;
-			.el-col-2{
-				text-align: left;
-			}
 		}
 		.shopInfoList{
+			margin-bottom: 10px;
 			border: 1px solid $border_color;
 			.title{
 				line-height: 40px;
@@ -195,6 +367,8 @@ import {currency} from '../../common/js/filter.js'
 							.goodsPrice{
 								float: left;
 								width: 90px;
+								text-align: center;
+								padding-top: 32px;
 							}
 						}
 					}
@@ -205,7 +379,7 @@ import {currency} from '../../common/js/filter.js'
 						position: relative;
 						.el-row{
 							width: 100%;
-							height: 60px;
+							height: 66px;
 							position: absolute;
 							right: 0px;
 							top: 0px;
@@ -213,9 +387,25 @@ import {currency} from '../../common/js/filter.js'
 							margin: auto;
 							text-align: center;
 							.el-button{
+								width: 62px;
 								padding: 6px;
 								color: #000;
 								border: 1px solid $border_color;
+							}
+							.opera{
+								cursor: pointer;
+							}
+							.opera:hover{
+								color: $primary;
+							}
+							.el-col-8{
+								span{
+									line-height: 26px;
+									cursor: pointer;
+								}
+								span:hover{
+									color: $primary;
+								}
 							}
 						}
 					}

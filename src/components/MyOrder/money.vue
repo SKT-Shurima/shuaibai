@@ -1,14 +1,14 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view37")'>资金管理</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span></h4>
 		<dl class="amountInfo">
 			<dt><span>账户余额</span><em>{{userInfo.account|currency}}</em>
 			</dt>
 			<dd>
-				<el-button type='text' size='small' style='width:90px;' @click='changeView("view370")'>充值</el-button>
-				<el-button type='text' size='small' style='width:90px;' @click='changeView("view371")'>提现</el-button>
-				<el-button type='text' size='small' style='width:108px;' @click='changeView("view372")'>购物币详情</el-button>
-				<el-button type='text' size='small' style='width:92px;' @click='changeView("view373")'>积分详情</el-button>
+				<el-button type='text' size='small' style='width:90px;' @click='changeView("vip70")'>充值</el-button>
+				<el-button type='text' size='small' style='width:90px;' @click='changeView("vip71")'>提现</el-button>
+				<el-button type='text' size='small' style='width:108px;' @click='changeView("vip72")'>购物币详情</el-button>
+				<el-button type='text' size='small' style='width:92px;' @click='changeView("vip73")'>积分详情</el-button>
 			</dd>
 		</dl>
 		<div class="title">
@@ -33,8 +33,8 @@
 	</div>
 </template>
 <script>
-import {currency,dateStyle} from '../../common/js/filter.js'
-import {finance} from '../../common/js/api.js'
+import {currency,dateStyle} from '../../common/js/filter'
+import {finance} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -52,7 +52,7 @@ import {MessageBox} from  'element-ui'
     methods: {
     	changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
+	      	 location.hash = view ;
 	      }
     },
     created(){

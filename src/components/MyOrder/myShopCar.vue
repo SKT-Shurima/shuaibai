@@ -411,7 +411,7 @@ import {MessageBox} from  'element-ui'
 						}
 						content = JSON.stringify(content);
 						sessionStorage.setItem('orderInfo',content)
-						window.open('confirmOrder.html#/')
+						window.open('confirmOrder.html#submitOrder')
 					}
 			 	})
 		 	}else{

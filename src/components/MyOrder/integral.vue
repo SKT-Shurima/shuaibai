@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view37")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view373")'>积分</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip73")'>积分</span></h4>
 		<dl class="amountInfo">
 			<dt><span>当前积分</span><em>{{inteInfo.integration}}</em>
 			</dt>
@@ -45,7 +45,7 @@ import {MessageBox} from  'element-ui'
     methods: {
     	changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
+	      	 location.hash = view ;
 	      }
     },
     created(){

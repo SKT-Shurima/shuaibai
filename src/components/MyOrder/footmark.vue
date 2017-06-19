@@ -1,16 +1,16 @@
 <template>
-	<div class="wrap">
+	<div class="wrap" ref='box'>
 		<h4 class="title">
 			以下是您最近30天的浏览记录
 		</h4>
 		<ul class="recordList" v-if='markList'>
-			<li v-for='item in markList'>
+			<li v-for='(dayItem,index) in markList' :key='item'>
 				<dl class="time">
 					<dt>
-						{{markList.date_add*1000|dateStyle}}
+						{{dayItem[0].date_add*1000|dateStyle}}
 					</dt>
 					<dd>
-					   {{markList.date_add > todayTime?"今天":markList.date_add>todayTime-86400?'昨天':markList.date_add>todayTime-86400*2?'前天':""}}
+					   {{dayItem[0].date_add-0 === todayTime?"今天":dayItem[0].date_add-0 ===todayTime-86400?'昨天':dayItem[0].date_add-0 === todayTime-86400*2?'前天':""}}
 					</dd>
 				</dl>
 				<dl class="progress">
@@ -18,36 +18,43 @@
 					<dd></dd>
 				</dl>
 				<ul>
-					<li v-for="(item,index) in 8"m :class='{"isNoTop":index>4}'>
+					<li v-for="(item,index) in dayItem"m :class='{"isNoTop":index>4}'>
 						<dl>
 							<dt>
-								<img src="">
+								<img :src="item.cover">
 							</dt>
 							<dd>
-								<span>{{98.00|currency}}</span>
-								<em>{{198.00|currency}}</em>
+								<span>{{item.sale_count|currency}}</span>
+								<!-- <em>{{198.00|currency}}</em> -->
 							</dd>
 						</dl>
 					</li>
 				</ul>
 			</li>
 		</ul>
+		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 	</div>
 </template>
 <script >
-import {currency,dateStyle} from '../../common/js/filter.js'
-import {footmark,delFoots} from '../../common/js/api.js'
+import {currency,dateStyle} from '../../common/js/filter'
+import {footmark,delFoots} from '../../common/js/api'
+import pagination from '../Common/pagination'
 	export default{
 		data(){
 			return{
 				markList: null,
-				todayTime: 0
+				todayTime: new Date(new Date().setHours(0, 0, 0, 0)) / 1000,
+				page: "1",
+				pagesize: 1 ,// 总页数
 			}
 		},
 		filters:{
 			currency,dateStyle
 		},
-		mothods:{
+		components: {
+			pagination
+		},
+		methods:{
 			deleteFoots(id){
 				MessageBox.confirm('此操作将永久删除该记录, 是否继续?', '提示', {
 		          confirmButtonText: '确定',
@@ -77,16 +84,52 @@ import {footmark,delFoots} from '../../common/js/api.js'
 							
 						}
 					})
-		        }).catch(() => {          
+		        }).catch(() => {        
+		        	return false   
    				});
-			}
-		},
-		mounted(){
-			this.$nextTick(()=>{
-				this.todayTime =  new Date(new Date().setHours(0, 0, 0, 0)) / 1000;;
-	    		let params  ={
+			},
+			// 改变页数
+			changePage(page){
+				let _this = this ;
+				_this.page = page ;
+				_this.getList();
+			},
+			initList(list){
+				let _this = this ;
+				let oldTime = new Date(new Date(list[0].date_add *1000 ).setHours(0,0,0,0));
+				oldTime  = oldTime.getTime();
+				let j = 0;
+				let dbArr = [];
+				let arr ;
+				for(let i = 0 ;i < list.length ;i++){
+					let time = list[i].date_add *1000;
+					let timer = new Date(new Date(time).setHours(0,0,0,0));
+					timer = timer.getTime();
+					if(i===j){
+						if (i!==0) {
+							dbArr.push(arr);
+						}
+						arr =[];
+					};
+					if (timer == oldTime) {
+						arr.push(list[i]);
+					}else{
+						oldTime = timer;
+						j = i;
+						i--;
+					}
+					if (i===list.length-1) {
+						dbArr.push(arr);
+					}
+				}
+				_this.markList = dbArr;
+				_this.pagesize = parseInt(_this.markList /10 ) +1;
+			},
+			getList(){
+				let _this = this ;
+				let params  ={
 					access_token : sessionStorage.access_token,
-					page: "0"
+					page: _this.page
 				}
 				footmark(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -104,10 +147,15 @@ import {footmark,delFoots} from '../../common/js/api.js'
 						    });
 	            		}
 					}else {
-						this.markList = content;
+						this.initList(content) ;
 					}
 				})
-    	})
+			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+	    		this.getList();
+    		})
 		}
 	}
 </script>
@@ -126,6 +174,7 @@ $text_color: #666;
 			color: $primary;
 		}
 		.recordList{
+			padding-bottom: 2px;
 			li{
 				position: relative;
 				overflow: hidden;
@@ -170,6 +219,7 @@ $text_color: #666;
 					width: 846px;
 					overflow: hidden;
 					margin-left: 56px;
+					padding-bottom: 20px;
 					li{
 						float: left;
 						width: 170px;

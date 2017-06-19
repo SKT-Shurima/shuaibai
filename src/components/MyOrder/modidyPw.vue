@@ -141,7 +141,7 @@ import {hex_md5} from '../../common/js/md5.js'
 	    },
 	    changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
+	      	 location.hash = view ;
 	    },
       	submitForm(formName) {
         this.$refs[formName].validate((valid) => {

@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view37")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view372")'>购物币</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip72")'>购物币</span></h4>
 		<dl class="amountInfo">
 			<dt><span>当前购物币</span><em v-text='shoppingCoinInfo.shopping_coin'></em>
 			</dt>
@@ -46,7 +46,7 @@ import {MessageBox} from  'element-ui'
     methods: {
     	changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
+	      	 location.hash = view ;
 	      }
     },
     created(){

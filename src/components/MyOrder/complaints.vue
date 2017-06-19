@@ -11,14 +11,12 @@
 				投诉类型
 			</el-col>
 			<el-col :span='20'>
-				<el-select v-model="value" placeholder="请选择" style='width:100%;' size='small'>
-				    <el-option
-				      v-for="item in options"
-				      :key="item.value"
-				      :label="item.label"
-				      :value="item.value">
-				    </el-option>
-				  </el-select>
+				<el-input
+				  type="text"
+				  v-model='title'
+				  placeholder="请输入标题"
+				  >
+				</el-input>
 			</el-col>
 		</el-row>
 		<el-row>
@@ -28,6 +26,7 @@
 			<el-col :span='20'>
 				<el-input
 				  type="textarea"
+				  v-model='content'
 				  :autosize="{ minRows: 2, maxRows: 4}"
 				  placeholder="请输入内容"
 				  >
@@ -35,62 +34,55 @@
 			</el-col>
 		</el-row>
 		<el-row>
-			<el-col :span='4'>
-				上传文件
-			</el-col>
-			<el-col :span='20'>
-				<el-upload
-				  class="upload-demo"
-				  action=""
-				  :on-preview="handlePreview"
-				  :on-remove="handleRemove"
-				  :file-list="fileList"
-				  list-type="picture">
-				  <el-button size="small" type="primary">选择文件</el-button>
-				  <div slot="tip" class="el-upload__tip">你可以上传以下格式的文件：gif、jpg、png、word、excel、txt、zip、ppt、pdf</div>
-				</el-upload>
-			</el-col>
-		</el-row>
-		<el-row>
 			<el-col :span='20' :offset='4'>
-				<el-button type='primary' size='small' style='width:94px;'>提交</el-button>
+				<el-button type='primary' size='small' style='width:94px;' @click = 'submit'>提交</el-button>
 			</el-col>
 		</el-row>
 	</div>
 </template>
 <script >
+import {complain} from '../../common/js/api'
+import {MessageBox,Message} from  'element-ui'
 	export default{
 		data(){
 			return{
-				options: [{
-		          value: '选项1',
-		          label: '黄金糕'
-		        }, {
-		          value: '选项2',
-		          label: '双皮奶'
-		        }, {
-		          value: '选项3',
-		          label: '蚵仔煎'
-		        }, {
-		          value: '选项4',
-		          label: '龙须面'
-		        }, {
-		          value: '选项5',
-		          label: '北京烤鸭'
-		        }],
-		        value: '',
-		        fileList: [
-		        {name: 'food.jpeg', 
-		         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+		        title: '',
+		        content: ""
 			}
 		},
 		methods:{
-			handleRemove(file, fileList) {
-		        console.log(file, fileList);
-		      },
-		      handlePreview(file) {
-		        console.log(file);
-		      }
+			submit(){
+				let _this = this ;
+				let params = {
+					access_token: sessionStorage.access_token,
+					title : _this.title,
+					content: _this.content
+				}
+				complain(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						 Message.success({
+				            message: '投诉成功',
+				            type: 'success'
+				        });
+						 _this.title = "" ;
+						 _this.content = "";
+					}
+				})
+			}
 		},
 		mounted(){
 

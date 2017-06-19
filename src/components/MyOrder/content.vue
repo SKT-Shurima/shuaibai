@@ -31,13 +31,13 @@
 					订单中心
 				</div>
 				<ul>
-					<li @click='getOrder(index)' v-for='(item,index) in orderList' :class='{"isClick":orderView===index}'><i></i>{{item.name}}</li>
+					<li @click='getOrder(index)' v-for='(item,index) in orderList' :class='{"isClick":orderIndex===index}'><i></i>{{item.name}}</li>
 				</ul>
 				<div class="title">
 					会员中心
 				</div>
 				<ul>
-					<li @click='vipView(index)' :class='{"isClick":currentVipIndex===index}' v-for='(item,index) in  vipCenterList'>
+					<li @click='vipView(index)' :class='{"isClick":vipIndex===index}' v-for='(item,index) in  vipCenterList'>
 						<i></i>{{item.name}}
 					</li>
 				</ul>
@@ -45,7 +45,7 @@
 			<div class="container">
 				<div class="orderList">
 					<keep-alive>
-						<component :is='currentView' @hasGuess='hasGuess(msg)'></component>
+						<component :is='currentView' @hasGuess='hasGuess(msg)' ref='orderList'></component>
 					</keep-alive>
 				</div>
 			</div>
@@ -82,12 +82,18 @@
 	import integral from './integral'
 	import tenants from './tenants'
 	import youLike from '../../components/Guess/content'
-	export default {
+
+	//  监测地址栏的变化
+	 
+	export  default {
 		data() {
+			window.onpopstate = function() {  
+		        // location.reload();
+		 	};
 		    return {
 		    	guessBol: true,
 		        accountListBol: false,
-		        currentVipIndex: '',
+		        vipIndex: '',
 		        vipCenterList: [
 		        	{name: '个人中心'},
 		        	{name: '商品收藏'},
@@ -99,7 +105,7 @@
 		        	{name: '资金'},
 		        	{name: '商家入驻'}
 		        ],
-		        orderView: '',
+		        orderIndex: '',
 		        orderList: [
 		        	{name: '全部订单'},
 		        	{name: '待付款订单'},
@@ -113,11 +119,6 @@
 		computed:{
 			currentView(){
 				let view = this.$store.state.view;
-				switch (view){
-					case 'view33':
-						this.currentVipIndex = 3 ;
-					break;
-				}
 				return view;;
 			}
 		},
@@ -134,19 +135,19 @@
 			"view130": addEmailBind,
 			"view131": unbindEmail,
 			"view20": message,
-			"view30": personalInfo,
-			"view31": colGoods,
-			"view32": viewStore,
-			"view33": myShopCar,
-			"view34": footmark,
-			"view35": coupons,
-			"view36": complaints,
-			"view37": money,
-			"view370": recharge,
-			"view371": withdraw,
-			"view372": shopCoin,
-			"view373": integral,
-			"view38": tenants
+			"vip0": personalInfo,
+			"vip1": colGoods,
+			"vip2": viewStore,
+			"vip3": myShopCar,
+			"vip4": footmark,
+			"vip5": coupons,
+			"vip6": complaints,
+			"vip7": money,
+			"vip70": recharge,
+			"vip71": withdraw,
+			"vip72": shopCoin,
+			"vip73": integral,
+			"vip8": tenants
 		},
 	    methods: {
 	      handleSelect(key, keyPath) {
@@ -159,14 +160,12 @@
 	      changeView(view){
 	      	let _this = this ;
 	      	_this.$store.commit('switchView',view);
-	      	sessionStorage.currentVipView = _this.currentView ;
+	      	location.hash = view ;
 	      },
 	      vipView(index){
 	      	let _this = this ;
-	      	_this.orderView = '';
-	      	_this.currentVipIndex = index;
-	      	sessionStorage.setItem('currentVipIndex',index);
-	      	let view = 'view3' ;
+	      	_this.vipIndex = index;
+	      	let view = 'vip' ;
 	        view += index ;
 	        _this.changeView(view);
 	      },
@@ -175,30 +174,29 @@
 	      	// 切换当前视图
 	      	_this.changeView('view0');
 	      	// 改变点击后的列表效果
-	      	_this.orderView = index ;
-	      	_this.currentVipIndex = '';
-	      	sessionStorage.removeItem('currentVipIndex');
-	      	// 调用子组件的方法获取相应的列表
+	      	_this.orderIndex = index ;
+	      	_this.vipIndex = '';
 	      	if (index<5) {
-	      		_this.$children[0].$children[0].getOrderList(index);
+	      		this.$refs.orderList.getOrderList(index,"1");
 	      	}
 	      }
 	      
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				// 获取传递参数
-				let params = getRequest();
-				if (params.currentView) {
-					this.$store.commit('switchView',params.currentView);
-				}else {
-					if (sessionStorage.currentVipView) {
-						let currentView = sessionStorage.currentVipView;
-						this.currentVipIndex = sessionStorage.currentVipIndex - 0;
-						this.changeView(currentView);
+				let view = location.hash.slice(1) ;
+				if (view) {
+					if(view.indexOf('vip')>=0){
+						this.vipIndex = view[3] - 0;
 					}else{
-						sessionStorage.setItem('currentVipView',this.currentView);
+						this.vipIndex = "" ;
 					}
+					if (view === 'view0') {
+						this.orderIndex = 0;
+					}
+					this.changeView(view);
+				}else {
+					this.changeView('view10');
 				}
 			});
 		}

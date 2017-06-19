@@ -14,7 +14,7 @@
 			<li v-show='!userInfo.nickname'><a href="login.html">登录</a>|</li>
 			<li v-show='!userInfo.nickname'><a href="reg.html">注册</a>|</li>
 			<li v-show='userInfo.nickname'><a href="javascript:void(0)" style='color:#c71724;'>Hi,{{userInfo.nickname}}</a>|</li>
-			<li><a href="myOrder.html">我的订单</a>|</li>
+			<li><a href="myOrder.html#view10">我的订单</a>|</li>
 			<li class="collection"><div class="title" @mouseenter='followBol=true' @mouseleave='followBol=false'>我的收藏<img src="../../../static/headImg/down.png" height="7" width="10"></div>|
 				<div  @mouseenter='followBol=true' @mouseleave='followBol=false' class="collectionBox" v-show='followBol'>
 					<div class="no_collection" v-if='userInfo.collection_count-0===0'>
