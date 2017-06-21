@@ -51,7 +51,7 @@
 								</dd>
 							</div>
 							<div class="goodsPrice" v-text='item.quantity'></div>
-							<div class="goodsPrice">
+							<div class="goodsPrice" style='cursor:pointer;' @click='applyRefund(shopItem.order_sn,item.option_id)'>
 								申请售后
 							</div>
 						</div>
@@ -178,6 +178,10 @@ import pagination from '../Common/pagination'
 						this.pagesize = content.pageSize;
 					}
 		    	})
+	   	 	},
+	   	 	// 申请售后
+	   	 	applyRefund(order_sn,option_id){
+	   	 		window.open(`afterSale.html#applyType?order_sn=${order_sn}&option_id=${option_id}`);
 	   	 	},
 	   	 	// 查看订单详情  物流信息
 	   	 	checkOrder(order_sn){
@@ -368,7 +372,8 @@ import pagination from '../Common/pagination'
 								float: left;
 								width: 90px;
 								text-align: center;
-								padding-top: 32px;
+								margin-top: 32px;
+								line-height: 20px;
 							}
 						}
 					}

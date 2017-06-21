@@ -35,6 +35,7 @@ body{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
+    position: relative;
   }
   @media screen and (min-width: 1250px) {
     #app{

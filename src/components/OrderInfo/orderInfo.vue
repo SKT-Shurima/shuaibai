@@ -96,6 +96,7 @@
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
 import {getOrderDetail} from '../../common/js/api'
+import {getHashReq} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -111,15 +112,7 @@ import {MessageBox} from  'element-ui'
 			orderDetail(){
 	   			let _this = this ;
 				let req = location.hash.split("?")[1];
-				req = req.split('&')
-				for(let i = 0 ;i<req.length;i++){
-					let reqUnit = req[i].split('&');
-					for(let j = 0; j<reqUnit.length;j++){
-						let key = reqUnit[i].split('=')[0];
-						let val = reqUnit[i].split('=')[1];
-						this.reqParams[key] = val;
-					}
-				}
+				_this.reqParams = getHashReq() ;
 				let order_sn = 	_this.reqParams.order_sn;
 	   			let params = {
 	   				access_token: sessionStorage.access_token,

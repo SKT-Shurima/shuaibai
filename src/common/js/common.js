@@ -18,12 +18,10 @@ export const getRequest = ()=>{
 	let req = location.hash.split("?")[1];
 	req = req.split('&')
 	for(let i = 0 ;i<req.length;i++){
-		let reqUnit = req[i].split('&');
-		for(let j = 0; j<reqUnit.length;j++){
-			let key = reqUnit[i].split('=')[0];
-			let val = reqUnit[i].split('=')[1];
-			reqParams[key] = val;
-		}
+		let reqUnit = req[i].split('=');
+		let key = reqUnit[0];
+		let val = reqUnit[1];
+		reqParams[key] = val;
 	}
 	return reqParams ;
  }

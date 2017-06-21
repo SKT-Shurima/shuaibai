@@ -1,14 +1,14 @@
 <template>
 	<div class="wrap">
-		<div class="box" v-if='orderInfo'>
-			<dl class="goodsInfo" v-for='(item,index) in orderInfo.goods' :key='item'>
+		<div class="box" v-if='orderInfo.goods'>
+			<dl class="goodsInfo">
 				<dt>
-					<img :src="item.image">
+					<img :src="orderInfo.goods.image">
 				</dt>
-				<dd class="name" v-text='item.name'></dd>
+				<dd class="name" v-text='orderInfo.goods.name'></dd>
 				<dd class="type">
-					<span>规格：{{item.option_name}}</span>
-					<em>套餐：{{item.goods_type}}</em>
+					<span>规格：{{orderInfo.goods.option_name}}</span>
+					<em>套餐：{{orderInfo.goods.goods_type}}</em>
 				</dd>
 			</dl>
 			<div class="storeInfo">
@@ -20,11 +20,11 @@
 					<li>
 						<el-row>
 							<el-col :span='8'>单价：</el-col>
-							<el-col :span='16'>{{199|currency}}<em>×1</em></el-col>
+							<el-col :span='16'>{{orderInfo.goods.price|currency}} × {{orderInfo.goods.quantity}}<em>×1</em></el-col>
 						</el-row>
 						<el-row>
 							<el-col :span='8'>小计：</el-col>
-							<el-col :span='16'><strong>{{199|currency}}</strong></el-col>
+							<el-col :span='16'><strong>{{orderInfo.goods.price*orderInfo.goods.quantity|currency}}</strong></el-col>
 						</el-row>
 					</li>
 				</ul>
@@ -33,31 +33,31 @@
 				<li>
 					<el-row>
 						<el-col :span='8'>订单号：</el-col>
-						<el-col :span='16'><span>1216551</span></el-col>
+						<el-col :span='16'><span v-text='orderInfo.order_sn'></span></el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>运费：</el-col>
-						<el-col :span='16'>{{165|currency}}</el-col>
+						<el-col :span='16'>{{orderInfo.express_amount|currency}}</el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>总优惠：</el-col>
-						<el-col :span='16'>-{{165|currency}}</el-col>
+						<el-col :span='16'>-{{0|currency}}</el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>合计：</el-col>
-						<el-col :span='16'><strong>1216551</strong></el-col>
+						<el-col :span='16'><strong>{{orderInfo.goods.price*orderInfo.goods.quantity|currency}}</strong></el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>成交时间：</el-col>
-						<el-col :span='16'>2017-01-01 12：:00</el-col>
+						<el-col :span='16'>{{date_pay*1000|dateStyle}}&nbsp;{{date_pay*1000|timeStyle}}</el-col>
 					</el-row>
 				</li>
 			</ul>
@@ -65,45 +65,39 @@
 	</div>
 </template>
 <script>
+import {currency,dateStyle,timeStyle} from '../../common/js/filter'
 import {getOrderDetail} from '../../common/js/api'
+import {MessageBox} from  'element-ui'
 	export default {
 		data(){
 			return {
-				orderInfo: null
 			}
+		},
+		props:{
+			orderInfo:{
+				type: Object,
+				required : true ,
+				default(){
+					return{
+						goods: null
+					}
+				}
+			}
+		},
+		filters:{
+			currency,dateStyle,timeStyle
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				let params = {
-					access_token: sessionStorage.access_token,
-					order_sn: sessionStorage.order_sn
-				}
-				getOrderDetail(params).then(res=>{
-					let {errcode,message,content} = res ;
-					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
-					}else{
-						this.orderInfo = content ;
-					}
-				})
+				
 			})
 		}
 	}
 </script>
 <style lang='scss' scoped>
+$primary:#c71624;
+$border_color: #ddd;
+$text_color: #666;
 	.wrap{
 		.goodsInfo{
 			padding-bottom: 10px;

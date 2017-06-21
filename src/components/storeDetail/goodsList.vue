@@ -145,22 +145,16 @@ import pagination from '../Common/pagination'
 						_this.tabIndex = null ;
 						_this.timeIndex = 0 ;
 						_this.priceIndex++;
-						if (_this.priceIndex===1) {
-							mask += ' asc';
-						}else{
-							mask += ' desc';
-						} 
+						_this.priceIndex = _this.priceIndex > 2 ? 1 : _this.priceIndex ;
+						mask += _this.priceIndex === 1? ' asc' : _this.priceIndex===2 ? ' desc' : '' ;  
 						_this.params['sort'] = mask;
 					break ;
 					case 'date_on_sale': 
 						_this.tabIndex = null ;
 						_this.priceIndex = 0 ;
 						_this.timeIndex++;
-						if (_this.timeIndex===1) {
-							mask += ' asc';
-						}else{
-							mask += ' desc';
-						} 
+						_this.timeIndex = _this.timeIndex > 2 ?1 : _this.timeIndex ;
+						mask += _this.timeIndex === 1 ? ' asc': _this.timeIndex === 2 ?' desc' :"" ; 
 						_this.params['sort'] = mask;
 					break ;
 				}

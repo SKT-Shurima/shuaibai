@@ -1,13 +1,12 @@
 <template>
 	<!-- 热销排行 -->
 		<div class="hotSell">
-			<div class="title">
-				<div class="slider"></div>
-				<div class="text">热销排行</div>
-				<div class='slider'></div>
-			</div>
-			<ul v-if='hotList'>
-				<li v-for='item in hotList' class="infoList">
+		<div class="title">
+	 		<i class="icon"></i>
+	 		<span style="vertical-align: 4px;">精品推荐</span>
+	 	</div>
+			<ul v-if='hightGoods'>
+				<li v-for='(item,index) in hightGoods' class="infoList" :key='item'>
 					<dl>
 						<dt>
 							<img :src="item.cover">
@@ -30,28 +29,26 @@
 </template>
 <script>
 import {currency} from '../../common/js/filter'
-import {goodsDetail,getHotGoods} from '../../common/js/api'
+import {getRequest} from '../../common/js/common'
+import {getHighGoods} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 	export default {
 		data(){
 			return {
-				hotList: null
+				reqParams: null,
+				hightGoods: null
 			}
 		},
 		filters:{
 			currency
 		},
-		props:{
-			sellerId:{
-				type: String
-			}		
-		},
 		mounted(){
 			this.$nextTick(()=>{
+				this.reqParams = getRequest();
 				let params = {
-					seller_id: this.sellerId-0
+					keyword: this.reqParams.keyword ? this.reqParams.keyword : " "
 				}
-				getHotGoods(params).then(res=>{
+				getHighGoods(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
 						if (errcode === 99) {
@@ -67,7 +64,7 @@ import {MessageBox} from  'element-ui'
 						    });
 	            		}
 					}else {
-						this.hotList = content;	
+						this.hightGoods = content;	
 					}
 				})
 			})
@@ -79,6 +76,7 @@ import {MessageBox} from  'element-ui'
 $text_color: #666;
 $border_color: #ccc;
 $primary:#c71724;
+$bg_title: #f5f5f5;
 .infoList{
 	dl{
 		dt{
@@ -117,24 +115,22 @@ $primary:#c71724;
 }
 	/*热销*/
 	.hotSell{
-		.title {
-			width: 192px;
-			overflow: hidden;
-			margin: 72px auto 12px;
-			.slider,.text{
-				float: left;
+		.title{
+			width: 100%;
+			height: 40px;
+			padding: 10px;
+			line-height: 20px;
+			color: $text_color;
+			background-color: $bg_title;
+			.icon{
+				display: inline-block;
+				width: 8px;
+				height: 20px;
+				background-color: $primary;
 			}
-			.slider{
-				width: 46px;
-				height: 1px;
-				margin-top: 6px;
-				background-color: $border_color;
-			}
-			.text{
-				width: 100px;
-				text-align: center;
+			span{
 				font-size: 16px;
-				color: $text_color;
+				font-weight: 600;
 			}
 		}
 		ul{

@@ -41,7 +41,7 @@
 					订单状态：交易成功<em><img src="../../../static/orderImg/clock.png" height="30" width="30">{{evalTime|timeStyleCh}}</em>后自动评价
 				</dt>
 				<dd>
-					<el-button type='primary'>评价</el-button>
+					<el-button type='primary' @click='evaluate'>评价</el-button>
 					<a href="">申请售后</a>
 				</dd>
 			</dl>
@@ -287,6 +287,11 @@ import {getHashReq} from '../../common/js/common'
 		                   
 		        });
 	   	 	},
+	   	 	evaluate(){
+	   	 		let _this = this ;
+	   	 		let order_sn = _this.reqParams.order_sn ;
+	   	 		window.open(`eval.html?order_sn=${order_sn}`);
+	   	 	}
 	   }
 	}
 </script>

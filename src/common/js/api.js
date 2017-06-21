@@ -84,11 +84,8 @@ export const getGuessLike = params =>{
 // 关键词搜索
 export const goodsList = params =>{
 	params = trans(params);
-	console.log(params)
 	return axios.get(`${base}/goodsAction/goodsList?${params}`).then(res=>res.data);
 }
-
-
 
 // 个人中心
 // 获取用户信息
@@ -360,7 +357,6 @@ export const getSellerInfo =  params => {
 	params = trans(params);
 	return axios.get(`${base}/sellerAction/getSellerInfo?${params}`).then(res=>res.data); 
 }
-// seller_id=${params.seller_id}&min_price=${params.min_price}&max_price=${params.max_price}&seller_cat_id='${params.seller_cat_id}&is_recommend=${params.is_recommend}&sort=${params["sort"]}&page=${params.page}
 
 // 订单相关
 // 确认订单
@@ -402,4 +398,22 @@ export const  delivery = params =>{
 export const delOrder = params => {
 	params = trans(params);
 	return axios.post(`${base}/orderAction/delOrder`,params).then(res=>res.data);
+}
+
+
+// 售后
+// 评论
+export const commentGoods =params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/commentGoods`,params).then(res=>res.data);
+}
+// 获取订单评论
+export const getCommnets = params =>{
+	params =  trans(params) ;
+	return axios.post(`${base}/orderAction/getCommnets`,params).then(res=>res.data);
+}
+// 追加评论
+export const addComment = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/addComment`,params).then(res=>res.data);
 }

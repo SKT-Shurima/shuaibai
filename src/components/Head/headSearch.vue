@@ -6,9 +6,9 @@
 			</div>
 			<div class="search_box">
 				<div class="search_form">
-					<form id="searchForm" name="searchForm" method="get" action="">
-						<input type="text" name="keywords"  autocomplete="off" id="key" accesskey="s" class="search_text">
-						<input type="submit"  class="search_but" value="搜索">
+					<form id="searchForm" name="searchForm" method="get" action="relatedGoods.html">
+						<input type="text" name="keyword"  autocomplete="off" id="key" accesskey="s" class="search_text" v-model='searchWord'>
+						<input type='submit' class="search_but" value="搜索" />
                     </form>
 				</div>
 				<ul class="hot_words">
@@ -30,6 +30,7 @@
 	export default{
 		data(){
 			return{
+				searchWord: "",
 				userInfo: {
 					cart_num: ''
 				},
@@ -41,9 +42,22 @@
 		methods:{
 			keyWords(){
 				getKeyWord().then(res=>{
-					let {errcode,content } =res;
-					if (errcode ===0 ) {
-						this.keyWordsArr = content;
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						if (errcode === 99) {
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+					          		window.location.href = 'login.html';
+					          	}
+						    });
+	            		}else{
+	            			MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定'
+						    });
+	            		}
+					}else {
+						this.keyWordsArr = content;	
 					}
 				})
 			}

@@ -6,16 +6,15 @@
 				<goods-list @sendSellerInfo='getSellerInfo'></goods-list>
 			</div>
 			<div class="slider">
-
+				<recommended></recommended>
 			</div>
 		</div>
-		
-
 	</div>
 </template>
 <script>
-import vNav from '../StoreCommon/nav'
+import vNav from '../RelatedGoods/nav'
 import goodsList from '../RelatedGoods/goodsList'
+import recommended from './recommended'
 	export default {
 		data(){
 			return {
@@ -23,7 +22,7 @@ import goodsList from '../RelatedGoods/goodsList'
 			}
 		},
 		components:{
-			vNav,goodsList
+			vNav,goodsList,recommended
 		},
 		methods:{
 			getSellerInfo(info){
@@ -47,7 +46,7 @@ import goodsList from '../RelatedGoods/goodsList'
 			.slider{
 				float: left;
 				width: 230px;
-				margin-right: 18px;
+				margin-left: 18px;
 			}
 			.listWrap{
 				float: left;

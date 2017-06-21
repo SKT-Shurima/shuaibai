@@ -1,24 +1,24 @@
 <template>
 	<div class="wrap">
 		<ul class="opera">
-			<li style="width:100px;" :class='{"isclick":tabIndex===1}' @click='sortType("all")'>综合排序</li>
-			<li style="width: 90px;" :class='{"isclick":tabIndex===2}' @click='sortType("sale_count")'>
+			<li style="width:100px;cursor:pointer;" :class='{"isclick":tabIndex===1}' @click='sortType("all")'>综合排序</li>
+			<li style="width: 90px;cursor:pointer;" :class='{"isclick":tabIndex===2}' @click='sortType("sale_count")'>
 				销量 
 				<img src="../../../static/detailImg/sort1.png" height="14" width="14" v-if='tabIndex!==2'>
 				<img src="../../../static/detailImg/sort2.png" height="14" width="14" v-else>
 			</li>
-			<li style="width: 100px;" :class='{"isclick":tabIndex===3}' @click='sortType("comments_count")'>
+			<li style="width: 100px;cursor:pointer;" :class='{"isclick":tabIndex===3}' @click='sortType("comments_count")'>
 				评论数 
 				<img src="../../../static/detailImg/sort1.png" height="14" width="14" v-if='tabIndex!==3'>
 				<img src="../../../static/detailImg/sort2.png" height="14" width="14" v-else>
 			</li>
-			<li style="width:90px;" :class='{"isclick":priceIndex>0}' @click='sortType("shop_price")'>
+			<li style="width:90px;cursor:pointer;" :class='{"isclick":priceIndex>0}' @click='sortType("shop_price")'>
 				价格 
 				<img src="../../../static/detailImg/sortdown.png" height="14" width="14" v-if='priceIndex===2'>
 				<img src="../../../static/detailImg/soreup.png" height="14" width="14" v-else-if='priceIndex===1'>
 				<img src="../../../static/detailImg/sortDefault.png" height="14" width="14" v-else>
 			</li>
-			<li style="width:110px;" @click='sortType("date_on_sale")'>
+			<li style="width:110px;cursor:pointer;" @click='sortType("date_on_sale")'>
 				上架时间 
 				<img src="../../../static/detailImg/sortdown.png" height="14" width="14" v-if='timeIndex===2'>
 				<img src="../../../static/detailImg/soreup.png" height="14" width="14" v-else-if='timeIndex===1'>
@@ -30,18 +30,18 @@
 				</div>
 			</li>
 			<li class="leftBtn">
-				<el-button :disabled='params.page-0===1' type='text' size='small' @click='page(0)'>
+				<el-button :disabled='params.page-0===1' type='text' size='small' @click='page(1)'>
 					<img src="../../../static/detailImg/right.png" height="10" width="7">
 				</el-button>
 			</li>
 			<li class="rightBtn">
-				<el-button :disabled='params.page-0 === pagesize-0' type='text' size='small' @click='page(1)'>
+				<el-button :disabled='params.page-0 === pagesize-0' type='text' size='small' @click='page(0)'>
 					<img src="../../../static/detailImg/right.png" height="10" width="7">
 				</el-button>
 			</li>
 		</ul>
 		<ul class="goodsList" v-if='goods'>
-			<li v-for='(item,index) in goods.seller_goods' class="infoList">
+			<li v-for='(item,index) in goods' class="infoList">
 				<dl>
 					<dt>
 						<img :src="item.cover">
@@ -97,6 +97,7 @@ import pagination from '../Common/pagination'
 			changePage(page){
 				let _this = this ;
 				_this.params.page = page + "" ;
+				_this.initList();
 			},
 			page(mask){
 				let _this = this;
@@ -126,28 +127,22 @@ import pagination from '../Common/pagination'
 						_this.tabIndex = null ;
 						_this.timeIndex = 0 ;
 						_this.priceIndex++;
-						if (_this.priceIndex===1) {
-							mask += ' asc';
-						}else{
-							mask += ' desc';
-						} 
+						_this.priceIndex = _this.priceIndex > 2 ? 1 : _this.priceIndex ;
+						mask += _this.priceIndex === 1? ' asc' : _this.priceIndex===2 ? ' desc' : '' ; 
 						_this.params['sort'] = mask;
 					break ;
 					case 'date_on_sale': 
 						_this.tabIndex = null ;
 						_this.priceIndex = 0 ;
-						_this.timeIndex++;
-						if (_this.timeIndex===1) {
-							mask += ' asc';
-						}else{
-							mask += ' desc';
-						} 
+						_this.timeIndex++ ; 
+						_this.timeIndex = _this.timeIndex > 2 ?1 : _this.timeIndex ;
+						mask += _this.timeIndex === 1 ? ' asc': _this.timeIndex === 2 ?' desc' :"" ;
 						_this.params['sort'] = mask;
 					break ;
 				}
 				_this.initList();
 			},
-			initList(mask){
+			initList(){
 				let _this = this;
 				goodsList(_this.params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -174,7 +169,7 @@ import pagination from '../Common/pagination'
 		mounted(){
 			this.$nextTick(()=>{
 				this.reqParams = getRequest();
-				this.params.keyword = this.reqParams.keyword ;
+				// this.params.keyword = this.reqParams.keyword ;
 				// this.params.category_id = this.reqParams.category_id ; 
 				this.initList();
 			})
@@ -213,6 +208,7 @@ $bg_color: #f5f5f5;
 			}
 			.leftBtn,.rightBtn{
 				width: 36px;
+				cursor:pointer;
 				.el-button{
 					width: 100%;
 				}
@@ -258,6 +254,11 @@ $bg_color: #f5f5f5;
 							line-height: 18px;
 							font-weight: 600;
 							margin-top: 10px;
+							overflow:hidden; 
+							text-overflow:ellipsis;
+							display:-webkit-box; 
+							-webkit-box-orient:vertical;
+							-webkit-line-clamp:2; 
 						}
 						/*价格信息*/
 						.priceInfo{

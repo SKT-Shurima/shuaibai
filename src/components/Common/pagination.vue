@@ -8,7 +8,7 @@
 	     	     <span style="margin-right:16px;">
 	     	     	前往<input v-model='inputPage'/>页
 	     	     </span>
-		    	 <el-button type='text' style='width:82px;height: 36px;' @click='changPage(0)' :disabled='currentPage===pagesize'>
+		    	 <el-button type='text' style='width:82px;height: 36px;' @click='changePage(0)' :disabled='currentPage===pagesize'>
 			    	下一页<i style="margin-left:6px;">&gt;</i>
 		    	</el-button>
 		    	<el-button type='text' style='width:60px;height:36px;' @click='jumpPage'>
@@ -22,7 +22,7 @@
 			    layout="pager">
 		    </el-pagination>
 		   <div>
-	    		<el-button type='text' style='width:82px;height: 36px;'  @click='changPage(1)' :disabled='currentPage===1'>
+	    		<el-button type='text' style='width:82px;height: 36px;'  @click='changePage(1)' :disabled='currentPage===1'>
 					<i style="margin-right: 6px;">&lt;</i>上一页
 				</el-button>
 	    	</div>
@@ -59,8 +59,9 @@
 	        _this.currentPage = val;
 	        _this.inputPage = val;
 	      },
-	      changPage(mask){
+	      changePage(mask){
 	      	let _this = this ;
+	      	console.log(mask)
 	      	if (mask) {
 	      		_this.currentPage--;
 	      		if (_this.currentPage<1) {

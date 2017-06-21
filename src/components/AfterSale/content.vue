@@ -1,7 +1,9 @@
 <template>
 	<div class="wrap">
 		<div class="title">
-			
+			<ul>
+				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"isTab":currentIndex===index}' :style='{zIndex:index*10,left: (448-16)*index + "px"}'></li>
+			</ul>
 		</div>
 		<div class="container">
 			<dl class="box">
@@ -10,7 +12,7 @@
 			</dl>
 			<dl class="box">
 				<dt class="infoCol" style="min-height: 600px;">
-					
+					<order-info :order-info='orderInfo'></order-info>
 				</dt>
 				<dd class="conCol" style="min-height: 600px;">
 					<keep-alive>
@@ -22,23 +24,88 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter.js'
+import {getHashReq} from '../../common/js/common'
+import {getOrderDetail} from '../../common/js/api'
+import orderInfo from './orderInfo'
+import applyType from './applyType'
 import seller from './seller'
 import moneyReturn from './moneyReturn'
 import goodsReturn from './goodsReturn'
 export default {
 	data() {
+		window.addEventListener("popstate",()=>{
+	 		this.init();
+	 	})
 		return {
-			currentView:"view1"
+			orderInfo: {},
+			currentView:"",
+			currentIndex: "",
+			listTitle: [
+				{name:'1.申请售后'},
+				{name:'2.卖家处理'},
+				{name:'3.确认结果'}
+			],
+			reqParams: null
 		}
 	},
-	filters: {
-		currency
-	},
 	components:{
-		"view0": seller,
-		"view1": moneyReturn,
-		"view2": goodsReturn
+		orderInfo,applyType,seller,moneyReturn, goodsReturn
+	},
+	methods:{
+		orderDetail(){
+			let _this = this ;
+			let params = {
+				access_token: sessionStorage.access_token,
+				order_sn: _this.reqParams.order_sn
+			}
+			getOrderDetail(params).then(res=>{
+				let {errcode,message,content} = res ;
+				if(errcode!==0) {
+					if (errcode === 99) {
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	callback: action => {
+				          		if (action==='confirm') {
+				          			window.location.href = 'login.html';
+				          		}
+				          	}
+					    });
+            		}else{
+            			MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定'
+					    });
+            		}
+				}else{
+					this.orderInfo = content.order ;
+					let goods = this.orderInfo.goods ;
+					let option_id = this.reqParams.option_id ;
+					for(let i = 0; i< goods.length;i++){
+						if (goods[i].option_id === option_id) {
+							this.orderInfo.goods = goods[i] ;
+							return;
+						}
+					}
+				}
+			})
+		},
+		init(){
+			let _this = this;
+	      	let hash = location.hash.split("?")[0] ;
+	      	let view = hash.slice(1) ;
+		    _this.reqParams = getHashReq();
+		    switch (view){
+		    	case 'applyType':
+		    	_this.currentIndex = 0 ;
+ 		    	_this.currentView = view ;
+		    	break;
+		    }
+		    _this.orderDetail();
+	    }
+	},
+	mounted(){
+		this.$nextTick(()=>{
+			this.init();
+		})
 	}
 }
 	
@@ -52,9 +119,38 @@ $bg_color: #f5f5f5;
 		width: 1250px;
 		margin: 0px auto;
 		.title{
+			position: relative;
 			width: 100%;
 			height: 60px;
-			background-color: $primary;
+			overflow: hidden;
+			color: #000;
+			ul{
+				position: absolute;
+				top: 0px;
+				transform: translateX(-30px);
+				height: 60px;
+				line-height: 60px;
+				font-size: 20px;
+				font-weight: 600;
+				text-align: center;
+				li{
+					position: absolute;
+					top: 0px;
+					width: 448px;
+					text-align: center;
+					background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
+					background-size: 100% 100%;
+				}
+				li:last-child{
+					text-align: left;
+					text-indent: 160px;
+				}
+				.isTab{
+					color: #fff;
+					background: url('../../../static/commonImg/progressThis.png')  100% 100%;
+					background-size: 100% 100%;
+				}
+			}
 		}
 		.container{
 			margin-top: 6px;
