@@ -56,17 +56,17 @@
 		    <el-form-item label="营业执照" prop="companyTel">
 		        <el-upload
 					class="upload-demo"
-					action=""
-				    :on-preview="handlePreview"
-					:on-remove="handleRemove"
-					:file-list="fileList"
+					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
+				    :on-success="licenseSuccess"
+					:file-list="fileList1"
+					:data='form1'
 					list-type="picture">
 			    <el-button size="small" type="primary">选择文件</el-button>
 				</el-upload>
 		    </el-form-item>
 		    <el-row>
 		    	<el-col :span='8' style='line-height:230px;'>示例图片</el-col>
-		    	<el-col :span='16'><img src="" width="160" height="230"></el-col>
+		    	<el-col :span='16'><img src="../../../static/centerImg/licence.png" width="160" height="230"></el-col>
 		    </el-row>
 		    <div class="addInfo">
 				联系信息
@@ -86,32 +86,32 @@
 		    <el-form-item label="身份证国徽面" prop="companyTel">
 		        <el-upload
 					class="upload-demo"
-					action=""
-				    :on-preview="handlePreview"
-					:on-remove="handleRemove"
-					:file-list="fileList"
+					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
+				    :on-success="idCardSuccess1"
+					:file-list="fileList2"
+					:data='form2'
 					list-type="picture">
 			    <el-button size="small" type="primary">选择文件</el-button>
 				</el-upload>
 		    </el-form-item>
-		    <el-row>
+		    <el-row style="margin-bottom:20px;">
 		    	<el-col :span='8' style='line-height:102px;'>示例图片</el-col>
-		    	<el-col :span='16'><img src="" width="160" height="102"></el-col>
+		    	<el-col :span='16'><img src="../../../static/centerImg/idCard1.png" width="160" height="102"></el-col>
 		    </el-row>
 		    <el-form-item label="身份证个人面" prop="companyTel">
-		        <el-upload
+		       <el-upload
 					class="upload-demo"
-					action=""
-				    :on-preview="handlePreview"
-					:on-remove="handleRemove"
-					:file-list="fileList"
+					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
+				    :on-success="idCardSuccess2"
+					:file-list="fileList2"
+					:data='form2'
 					list-type="picture">
 			    <el-button size="small" type="primary">选择文件</el-button>
 				</el-upload>
 		    </el-form-item>
 		    <el-row>
 		    	<el-col :span='8' style='line-height:102px;'>示例图片</el-col>
-		    	<el-col :span='16'><img src="" width="160" height="102"></el-col>
+		    	<el-col :span='16'><img src="../../../static/centerImg/idCard2.png" width="160" height="102"></el-col>
 		    </el-row>
 		    <el-form-item style='padding-top: 30px;'>
 		  	    <el-checkbox v-model='complete'>我已阅读并同意<a href="" style="color:#0058b2;">《帅柏商城商家入驻协议》</a></el-checkbox>
@@ -126,6 +126,7 @@
 </template>
 <script >
 import {shopJoin,linkage} from '../../common/js/api'
+import {MessageBox,Message} from  'element-ui'
 	export default{
 		data(){
 			// 地区选择
@@ -146,6 +147,28 @@ import {shopJoin,linkage} from '../../common/js/api'
 		     		}
 		     	} 
 		     };
+		     // 营业执照
+		     var checkLicense = (rule,value,callback) => {
+		     	if (this.fileList1[0].name === "") {
+		     		callback(new Error('请上传营业执照'));
+		     	}else {
+		     		callback();
+		     	} 
+		     };
+		     var checkIdCard1 = (rule,value,callback) => {
+		     	if (this.fileList2[0].name === "") {
+		     		callback(new Error('请上传身份证背面照'));
+		     	}else {
+		     		callback();
+		     	} 
+		     };
+		      var checkIdCard2 = (rule,value,callback) => {
+		     	if (this.fileList3[0].name === "") {
+		     		callback(new Error('请上传身份证正面照'));
+		     	}else {
+		     		callback();
+		     	} 
+		     };
 			return{
 				haveRead: true,
 				proIndex: 0,
@@ -155,6 +178,7 @@ import {shopJoin,linkage} from '../../common/js/api'
 		      	cityArr: [],
 		      	areaArr: [],
 		      	addressList: null,
+		      	complete: true,
 				ruleForm: {
 		            num: '',
 		            companyName: '',
@@ -185,7 +209,7 @@ import {shopJoin,linkage} from '../../common/js/api'
 			        	{ required: true, message: '请输入公司电话', trigger: 'blur' }
 			        ],
 			        license: [
-			        	{ required: true, message: '选择营业执照文件', trigger: 'blur' }
+			        	{ required: true, validator: checkLicense, trigger: 'blur' }
 			        ],
 			        contactName: [
 			        	{ required: true, message: '请输入联系人姓名', trigger: 'blur' }
@@ -197,26 +221,56 @@ import {shopJoin,linkage} from '../../common/js/api'
 			        	{ required: true, message: '请输入店铺名称', trigger: 'blur' }
 			        ],
 			        IdCardFrontage: [
-			        	{ required: true, message: '请上传身份证个人面', trigger: 'blur' }
+			        	{ required: true, validator: checkIdCard1, trigger: 'blur' }
 			        ],
 			        IdCardBack: [
-			        	{ required: true, message: '请上传身份证国徽面', trigger: 'blur' }
+			        	{ required: true, validator: checkIdCard1, trigger: 'blur' }
 			        ]
 		        },
-		        fileList: [
-		        {name: 'food.jpeg', 
-		         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+		        form1: {
+			    	cate : 'license', 
+			    	access_token : sessionStorage.access_token
+			    },
+		        fileList1: [],
+		         form2: {
+			    	cate : 'idCard1', 
+			    	access_token : sessionStorage.access_token
+			    },
+		         fileList2: [],
+		         form3: {
+			    	cate : 'idCard2', 
+			    	access_token : sessionStorage.access_token
+			    },
+		         fileList3: []
 			}
 		},
 		methods:{
-			handleRemove(file, fileList) {
-		        console.log(file, fileList);
-		      },
-		      handlePreview(file) {
-		        console.log(file);
-		      },
-		      setOption(type,event){
-	             if(type === 'proIndex'){
+			licenseSuccess (res, file, fileList) {
+		    	let _this = this ;
+		    	_this.fileList1[0] = new Object ;
+		    	// 获取图片的name
+		    	_this.fileList1[0].name = res.content.name;
+		    	// 获取图片url
+		    	_this.fileList1[0].url = res.content.url;
+	    	},
+	    	idCardSuccess1 (res, file, fileList) {
+		    	let _this = this ;
+		    	_this.fileList2[0] = new Object ;
+		    	// 获取图片的name
+		    	_this.fileList2[0].name = res.content.name;
+		    	// 获取图片url
+		    	_this.fileList2[0].url = res.content.url;
+	    	},
+	    	idCardSuccess2 (res, file, fileList) {
+		    	let _this = this ;
+		    	_this.fileList3[0] = new Object ;
+		    	// 获取图片的name
+		    	_this.fileList3[0].name = res.content.name;
+		    	// 获取图片url
+		    	_this.fileList3[0].url = res.content.url;
+	    	},
+		    setOption(type,event){
+	            if(type === 'proIndex'){
 	             	this.proIndex = event.target.selectedIndex-1;
 	                this.cityIndex = 0;
 	                this.areaIndex = 0;
@@ -234,7 +288,7 @@ import {shopJoin,linkage} from '../../common/js/api'
 	            	this.areaIndex = event.target.selectedIndex -1;
 	            }
 	        },
-		      getLinkage(mask,id){
+		    getLinkage(mask,id){
 	    		let params = {
 	    			pid: id
 	    		}
@@ -268,30 +322,75 @@ import {shopJoin,linkage} from '../../common/js/api'
 	            	}
 	    		})
 	    	},
-		      submitForm(formName) {
-		        this.$refs[formName].validate((valid) => {
-		          if (valid) {
-		             let params = {
-						access_token: sessionStorage.access_token,
-						company: _this.ruleForm.companyName,
-						province: "",
-						city: "",
-						district: "",
-						address: "",
-						licence: "",
-						name: "",	
-						phone: "",	
-						shop_nam: "",
-						wx_qq: "",	
-						card_f:"",	
-						card_b: ""
-		             }
-		          } else {
-		            console.log('error submit!!');
-		            return false;
-		          }
-		        });
-		      },
+		    submitForm(formName) {
+		    	let _this = this ;
+		    	if (_this.complete) {
+		    		this.$refs[formName].validate((valid) => {
+			            if (valid) {
+			                let params = {
+								access_token: sessionStorage.access_token,
+								company: this.ruleForm.companyName,
+								province: this.proArr[this.proIndex].name,
+				            	city: this.cityArr[this.cityIndex].name,
+				            	district: this.areaArr[this.areaIndex].name,
+								address: this.ruleForm.address,
+								licence: this.fileList1[0].name,
+								name: this.ruleForm.contactName,	
+								phone: this.ruleForm.contactTel,	
+								shop_name: this.storeName,
+								wx_qq: this.contactType,	
+								card_f: this.fileList2[0].name,	
+								card_b: this.fileList3[0].name
+				            }
+				            shopJoin(params).then(res=>{
+				            	let {errcode,message,content} = res ;
+				            	if (errcode !== 0 ) {
+				            		if (errcode === 99) {
+				            			MessageBox.alert(message, '提示', {
+								          	confirmButtonText: '确定',
+								          	callback: action => {
+								          		window.location.href = 'login.html';
+								          	}
+									    });
+				            		}else{
+				            			MessageBox.alert(message, '提示', {
+								          	confirmButtonText: '确定'
+									    });
+				            		}
+				            	} else {
+				            		Message.success({
+							            message: '添加成功',
+							            type: 'success'
+							        });
+				            		this.ruleForm = {
+							            num: '',
+							            companyName: '',
+							            province: '',
+								        city: '',
+								        district: '',
+							            address: '',
+							            companyTel: "",
+							            license: '',
+							            contactName: '',
+								        contactTel: '',
+								        contactType: '',
+								        storeName: '',
+								        IdCardFrontage: '',
+								        IdCardBack: ''
+							        }
+			            		}
+				            })
+			            } else {
+				            console.log('error submit!!');
+				            return false;
+			            }
+			        });
+		    	}else {
+		    		MessageBox.alert('请阅读并同意《帅柏商城商家入驻协议》', '提示', {
+			          	confirmButtonText: '确定'
+				    });
+		    	}
+		    }
 		},
 		created(){
 			this.$nextTick(()=>{

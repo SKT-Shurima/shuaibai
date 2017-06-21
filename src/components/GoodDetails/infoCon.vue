@@ -1,10 +1,5 @@
 <template>
 	<div class="wrap" v-if='goodsInfo'>
-		<div class="storeLogoWrap">
-			<div class="storeLogoBox">
-				<img :src="goodsInfo.goods.shop_logo">
-			</div>
-		</div>
 		<v-nav></v-nav>
 		<div class="content" >
 			<dl class="goodsInfo">
@@ -183,7 +178,7 @@
  	import {currency} from '../../common/js/filter'
  	import {goodsDetail,addCart,collectionGoods,addFollow,cancelFollow} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
- 	import vNav from './nav.vue'
+ 	import vNav from '../StoreCommon/nav'
 	export default{
 		data(){
 			return {
@@ -476,18 +471,6 @@ $end_bg: #f13f4c;
 $title_color: #333;
   .wrap{
       width: 100%;
-      .storeLogoWrap{
-      	width: 100%;
-      	background-color: #f2f2f2;
-      	.storeLogoBox{
-      		width: 1250px;
-      		margin: 0px auto;
-      		img{
-      			width: 100%;
-      			height: 150px;
-      		}
-      	}
-      }
       .content{
       	width: 1250px;
       	margin: 20px auto;

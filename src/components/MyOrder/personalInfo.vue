@@ -1,18 +1,11 @@
 <template>
 	<div class="wrap">
+	<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip0")'>个人信息</span></h4>
 		<el-row>
 			<el-col :span='2' style='line-height:180px;'>头像</el-col>
-			<el-col :span='6' :offset="1">
-				<el-upload
-				    class="avatar-uploader"
-				    action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
-				    :show-file-list="false"
-				    :on-success="handleSuccess"
-        			:before-upload="beforeUpload"
-        			:data="form">
-				  <img v-if="userInfo.avater" :src="userInfo.avater" class="avatar">
-				  <i class="el-icon-plus avatar-uploader-icon" v-else></i>
-				</el-upload>
+			<el-col :span='6' :offset="1" @click='changeView("vip01")'>
+				<img v-if="userInfo.avater" :src="userInfo.avater" class="avater" @click='changeView("vip01")'>
+				<img v-else src="../../../static/centerImg/noAvater.png" class="avater" @click='changeView("vip01")'>
 			</el-col>
 		</el-row>
 		<el-row>
@@ -74,52 +67,10 @@ import {MessageBox} from  'element-ui'
  		}
  	},
  	methods:{
-	    handleSuccess (res, file, fileList) {
-	    	let _this = this ;
-	    	// 获取图片的url
-	    	_this.userInfo.avater = res.content.url;
-	    	// 获取图片name
-	    	_this.avater = res.content.name ;
-    	},
-        beforeUpload (file) {
-      	    const isJPG = file.type === 'image/jpeg'||'image.png';
-	        const isLt2M = file.size / 1024 / 1024 < 2;
-	        if (!isJPG) {
-	          this.$message.error('上传头像图片只能是 JPG / PNG格式!');
-	        }
-	        if (!isLt2M) {
-	          this.$message.error('上传头像图片大小不能超过 2MB!');
-	        }
-	        return isJPG && isLt2M;
-    	},
-	    // 修改头像
-	    editAvatar(){
-	    	let _this = this ;
-	    	let paramAvater = {
-	    		access_token: sessionStorage.access_token,
-	    		avater: _this.avater
-	    	}
-	    	changeAvater(paramAvater).then(res=>{
-	    		let {errcode,message,content} = res;
-	    		if (errcode!==0) {
-	    			 if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
-	    		}else{
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
-	    			_this.editUserName();
-	    		} 
-	    	});
-	    },
+ 		changeView(view){
+	      	 this.$store.commit('switchView',view);
+	      	 location.hash = view ;
+	      },
 	    // 修改用户名
 	    editUserName(){
 	    	let _this = this ;
@@ -259,42 +210,34 @@ import {MessageBox} from  'element-ui'
  }
 </script>
 <style lang='scss' scoped>
+$primary:#c71724;
+$border_color: #ccc;
+$text_color: #666;
 .wrap{
 	margin-left: 10px;
-		.el-row{
-			margin-bottom: 20px;
-			.avatar{
-				width:178px;
-				height:178px;
-				border: 1px dashed #ddd;
-				margin-left: 12px;
-			}
+	h4{
+		line-height: 40px;
+		font-weight: 400;
+		margin-bottom: 54px;
+		border-bottom: 1px solid $border_color;
+		color: $text_color;
+		span{
+			cursor: pointer;
 		}
-	  .avatar-uploader .el-upload {
-	    border: 1px dashed #d9d9d9;
-	    border-radius: 6px;
-	    cursor: pointer;
-	    position: relative;
-	    overflow: hidden;
-	  }
-	  .avatar-uploader .el-upload:hover {
-	    border-color: #20a0ff;
-	  }
-	  .avatar-uploader-icon {
-	    font-size: 28px;
-	    color: #8c939d;
-	    width: 178px;
-	    height: 178px;
-	    line-height: 178px;
-	    text-align: center;
-	    border: 1px dashed #ddd;
-	    margin-left: 12px;
-	  }
-	  .avatar {
-	    width: 178px;
-	    height: 178px;
-	    display: block;
-	  }
+		i{
+			color: #b0b0b0;
+		}
+	}
+	.el-row{
+		margin-bottom: 20px;
+		.avater{
+			width:178px;
+			height:178px;
+			cursor: pointer;
+			border: 1px dashed #ddd;
+			margin-left: 12px;
+		}
+	}
 	.el-row{
 		margin-bottom: 20px;
 		.el-col-2{
@@ -306,11 +249,6 @@ import {MessageBox} from  'element-ui'
 		img{
 			width: 120px;
 			height: 120px;
-		}
-		.esc{
-		    color: #000;
-		    background-color: #fff;
-		    border: 1px solid #ddd;
 		}
 		button{
 		    width: 94px;

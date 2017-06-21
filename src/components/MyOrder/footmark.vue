@@ -81,7 +81,10 @@ import pagination from '../Common/pagination'
 							    });
 		            		}
 						}else {
-							
+							 Message.success({
+					            message: '删除成功',
+					            type: 'success'
+					        });
 						}
 					})
 		        }).catch(() => {        

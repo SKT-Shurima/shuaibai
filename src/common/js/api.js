@@ -81,6 +81,13 @@ export const getGuessLike = params =>{
 	params = trans(params);
 	return axios.get(`${base}/goodsAction/getGuessLike?${params}`).then(res=>res.data);
 }
+// 关键词搜索
+export const goodsList = params =>{
+	params = trans(params);
+	console.log(params)
+	return axios.get(`${base}/goodsAction/goodsList?${params}`).then(res=>res.data);
+}
+
 
 
 // 个人中心
@@ -198,16 +205,12 @@ export const delFoots = params =>{
 	return axios.post(`${base}/userAction/delFoots`,params).then(res=>res.data);
 }
 
-
 // 优惠券
 // 获取优惠券
 export const getCoupons = params => {
 	params = trans(params);
 	return axios.post(`${base}/userAction/getCoupons`,params).then(res=>res.data);
 }
-
-
-
 
 // 资金
 // 充值
@@ -275,6 +278,23 @@ export const  complain = params =>{
 	return axios.post(`${base}/userAction/complain`,params).then(res=>res.data);
 }
 
+// 提现
+export const withdraw =params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/withdraw`,params).then(res=>res.data);
+}
+
+// 商家入驻
+export const shopJoin = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/shopJoin`,params).then(res=>res.data);
+} 
+
+// 物流消息
+export const getExpressMessages = params =>{
+	params = trans(params) ; 
+	return axios.post(`${base}/messageAction/getExpressMessages`,params).then(res=>res.data) ;
+}
 
 
 
@@ -334,6 +354,13 @@ export const cancelFollow= params=>{
 	return axios.post(`${base}/shopAction/cancelFollow`,params).then(res=>res.data);
 }
 
+
+// 店铺详情
+export const getSellerInfo =  params => {
+	params = trans(params);
+	return axios.get(`${base}/sellerAction/getSellerInfo?${params}`).then(res=>res.data); 
+}
+// seller_id=${params.seller_id}&min_price=${params.min_price}&max_price=${params.max_price}&seller_cat_id='${params.seller_cat_id}&is_recommend=${params.is_recommend}&sort=${params["sort"]}&page=${params.page}
 
 // 订单相关
 // 确认订单

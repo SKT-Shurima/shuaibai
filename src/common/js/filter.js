@@ -98,3 +98,20 @@ export const timeStyleCh  = time =>{
       };
        return d + h +'小时' + m + "分" + s + "秒" ;
 }
+
+
+// 时间大于一个小时显示多少小时前
+ export const timeTrans  = time =>{
+        time-=0;
+        var date = new Date(time);
+         let {hh,mm} = {hh:date.getHours(),mm:date.getMinutes()};
+         var newDate = new Date(time);
+         let {h,m} = {h:newDate.getHours(),m:newDate.getMinutes()};
+           h=hh-h;
+           m = mm -m ;
+           if (h >= 1) {
+            return `${h}小时前`
+           }else{
+            return m + '分钟前'
+           }
+}

@@ -10,32 +10,7 @@
 					</li>
 				</ul>
 				<!-- 分类 -->
-				<ul class="navList">
-					<li><div class="title">查看全部分类</div></li>
-					<li><div class="title">店铺热卖</div></li>
-					<li><div class="title">掌柜推荐</div></li>
-					<li><div class="title">护肤品 
-						<img src="../../../static/detailImg/close.png" height="14" width="14">
-					</div>
-						<ul>
-							<li v-for='item in 4'>面膜</li>
-						</ul>
-					</li>
-					<li><div class="title">护肤品
-							<img src="../../../static/detailImg/close.png" height="14" width="14">
-						</div>
-						<ul>
-							<li v-for='item in 4'>面膜</li>
-						</ul>
-					</li>
-					<li><div class="title">护肤品
-							<img src="../../../static/detailImg/close.png" height="14" width="14">
-						</div>
-						<ul>
-							<li v-for='item in 4'>面膜</li>
-						</ul>
-					</li> 
-				</ul> 
+				<classify></classify>
 				<!-- 热销排行 -->
 				<hot-sell :seller-id='deliveryInfo.goodsInfo.goods.seller_id'></hot-sell>
 			</div>
@@ -242,8 +217,9 @@
 	import {getRecommend,getComments,replyContent,usefulComment} from '../../common/js/api'
 	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content'
-	import hotSell from '../../components/Details/hotSell'
-	import reply from '../../components/Details/reply'
+	import hotSell from '../StoreCommon/hotSell'
+	import classify from '../StoreCommon/classify'
+	import reply from './reply'
 	import pagination from '../../components/Common/pagination'
 	export default {
 		data(){
@@ -273,7 +249,7 @@
 			currency,dateStyleCh,timeStyle
 		},
 		components:{
-			youLove,hotSell,reply,pagination
+			youLove,hotSell,classify,reply,pagination
 		},
 		watch: {
 			deliveryInfo: {
@@ -501,39 +477,6 @@ $bg_title: #f5f5f5;
 						margin-bottom: 10px;     
 						background-color: #e7354d; 
 					}
-			}
-			.navList{
-				width: 220px;
-				margin-left: 10px;
-				border-left: 1px solid $border_color;
-				border-right: 1px solid $border_color;
-				border-top: 1px solid $border_color;
-				.title{
-					position: relative;
-					background-color: $bg_title;
-					padding-left: 16px;
-					line-height: 40px;
-					font-weight: 600;
-					font-size: 14px;
-					border-bottom: 1px solid $border_color;
-					img{
-						position: absolute;
-						top: 0px;
-						bottom: 0px;
-						right: 10px;
-						margin: auto;
-
-					}
-				}
-				ul{
-					border-bottom: 1px solid $border_color;
-					li{
-						color: $text_color;
-						line-height: 36px;
-						padding-left: 10px;
-						font-weight: 400;
-					}
-				}
 			}
 		}
 	}

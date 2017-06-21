@@ -29,7 +29,7 @@
 		</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter.js'
+import {currency} from '../../common/js/filter'
 import {goodsDetail,getHotGoods} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 	export default {
@@ -94,6 +94,7 @@ $primary:#c71724;
 			width: 100%;
 			overflow: hidden;
 			.sellInfo{
+				height: 36px;
 				line-height: 18px;
 				font-weight: 600;
 				margin-top: 10px;

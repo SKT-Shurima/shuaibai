@@ -69,6 +69,7 @@
 	import unbindEmail from './unbindEmail'
 	import message from "./message"
 	import personalInfo from './personalInfo'
+	import editAvater from './editAvater'
 	import colGoods from './colGoods'
 	import viewStore from "./viewStore"
 	import myShopCar from "./myShopCar"
@@ -87,9 +88,9 @@
 	 
 	export  default {
 		data() {
-			window.onpopstate = function() {  
-		        // location.reload();
-		 	};
+		 	window.addEventListener("popstate",()=>{
+		 		this.init();
+		 	})
 		    return {
 		    	guessBol: true,
 		        accountListBol: false,
@@ -136,6 +137,7 @@
 			"view131": unbindEmail,
 			"view20": message,
 			"vip0": personalInfo,
+			"vip01": editAvater,
 			"vip1": colGoods,
 			"vip2": viewStore,
 			"vip3": myShopCar,
@@ -179,12 +181,9 @@
 	      	if (index<5) {
 	      		this.$refs.orderList.getOrderList(index,"1");
 	      	}
-	      }
-	      
-		},
-		mounted(){
-			this.$nextTick(()=>{
-				let view = location.hash.slice(1) ;
+	      },
+	      init(){
+	      	let view = location.hash.slice(1) ;
 				if (view) {
 					if(view.indexOf('vip')>=0){
 						this.vipIndex = view[3] - 0;
@@ -198,6 +197,11 @@
 				}else {
 					this.changeView('view10');
 				}
+	      }
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				this.init();
 			});
 		}
 	}

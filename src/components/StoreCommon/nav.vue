@@ -1,42 +1,49 @@
 <template>
 	<div class="wrap">
-		<div class="box">
-			<dl>
-				<dt @mouseleave='listBol=false;listConBol=false'>
-					<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
-					<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-						<li v-for='(item,index) in category' :key='item' v-text='item.name'></li>
-					</ul>
-					<div class="content" v-show='listBol'  @mouseleave='listBol=false;listConBol=false' @mouseenter='listBol=true;listConBol=true'>
-						<div class="detail_list">
-							<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
-								<el-col :span='4'>
-								    <span v-text='item2.name'></span>
-								    <em>></em>
-								</el-col>
-								<el-col :span='16' :offset="1">
-									<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
-								</el-col>
-							</el-row>
+		<div class="storeLogoWrap">
+			<div class="storeLogoBox">
+				<img :src="sellerInfo.shop_header">
+			</div>
+		</div>
+		<div class="navWrap">
+			<div class="box">
+				<dl>
+					<dt @mouseleave='listBol=false;listConBol=false'>
+						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
+						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
+							<li v-for='(item,index) in category' :key='item' v-text='item.name'></li>
+						</ul>
+						<div class="content" v-show='listBol'  @mouseleave='listBol=false;listConBol=false' @mouseenter='listBol=true;listConBol=true'>
+							<div class="detail_list">
+								<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
+									<el-col :span='4'>
+									    <span v-text='item2.name'></span>
+									    <em>></em>
+									</el-col>
+									<el-col :span='16' :offset="1">
+										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
+									</el-col>
+								</el-row>
+							</div>
+							<div class="img_box">
+								 <ul class="small_img">
+								 	<li v-for='(sItem,index) in youLike' :class='{"margin_left":index%2}' v-if='index<4'>
+								 		<img src="">
+								 	</li>
+								 </ul>
+								 <ul class="big_img">
+								 	<li v-for= '(bItem,index) in youLike' v-if='index>=4'>
+								 		<img src="">
+								 	</li>
+								 </ul>
+							</div>
 						</div>
-						<div class="img_box">
-							 <ul class="small_img">
-							 	<li v-for='(sItem,index) in youLike' :class='{"margin_left":index%2}' v-if='index<4'>
-							 		<img src="">
-							 	</li>
-							 </ul>
-							 <ul class="big_img">
-							 	<li v-for= '(bItem,index) in youLike' v-if='index>=4'>
-							 		<img src="">
-							 	</li>
-							 </ul>
-						</div>
-					</div>
-				</dt>
-				<dd><a href="index.html">返回首页</a></dd>
-				<dd><a href="index.html">店铺热卖</a></dd>
-				<dd><a href="index.html">掌柜推荐</a></dd>
-			</dl>
+					</dt>
+					<dd><a href="index.html">首页</a></dd>
+					<dd><a href="index.html">店铺热卖</a></dd>
+					<dd><a href="index.html">掌柜推荐</a></dd>
+				</dl>
+			</div>
 		</div>
 	</div>
 </template>
@@ -50,6 +57,17 @@ import {getCategory} from '../../common/js/api.js'
      		category: [{name:''}],
      		fIndex: 0,
 			sIndex: 0,
+     	}
+     },
+     props:{
+     	sellerInfo:{
+     		type: Object,
+     		required: true,
+     		default(){
+     			return {
+     				shop_header: ''
+     			}
+     		}
      	}
      },
      mounted(){
@@ -67,7 +85,21 @@ import {getCategory} from '../../common/js/api.js'
 <style lang='scss' scoped>
 $primary:#c71724;
 $border_color: #ccc;
-	.wrap{
+.wrap{
+	margin-top: 36px;
+	.storeLogoWrap{
+      	width: 100%;
+      	background-color: #f2f2f2;
+      	.storeLogoBox{
+      		width: 1250px;
+      		margin: 0px auto;
+      		img{
+      			width: 100%;
+      			height: 150px;
+      		}
+      	}
+    }
+    .navWrap{
 		width: 100%;
 		height: 40px;
 		background-color: $primary;
@@ -193,4 +225,6 @@ $border_color: #ccc;
 			
 		}
 	}
+}
+	
 </style>

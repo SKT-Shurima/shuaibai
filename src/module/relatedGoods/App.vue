@@ -2,7 +2,6 @@
   <div class="wrap">
     <v-head></v-head>
     <v-content></v-content>
-    <v-slider></v-slider>
     <v-foot></v-foot>
   </div>
 </template>
@@ -10,15 +9,13 @@
 <script>
   import 'common/css/reset.css';
   import vHead from 'components/Head/Head'
-  import vSlider from 'components/Slider/Slider'
-  import vContent from 'components/Details/content'
+  import vContent from 'components/RelatedGoods/content'
   import vFoot from 'components/Foot/Foot'
 
   export default {
     name: 'app',
     components: {
       vHead,
-      vSlider,
       vContent,
       vFoot
     }
