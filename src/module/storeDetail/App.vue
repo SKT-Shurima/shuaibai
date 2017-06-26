@@ -9,7 +9,7 @@
 <script>
   import 'common/css/reset.css';
   import vHead from 'components/Head/Head'
-  import vContent from 'components/storeDetail/content'
+  import vContent from 'components/StoreDetail/content'
   import vFoot from 'components/Foot/Foot'
 
   export default {

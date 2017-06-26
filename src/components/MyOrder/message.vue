@@ -39,7 +39,7 @@
 <script>
 import {timeTrans} from '../../common/js/filter'
 import {getExpressMessages} from '../../common/js/api'
-import {MessageBox} from  'element-ui'
+import {errorInfo} from '../../common/js/common'
 import pagination from '../Common/pagination'
 	export default {
 		data(){
@@ -79,18 +79,7 @@ import pagination from '../Common/pagination'
 				getExpressMessages(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						this.msgList = content.content ;
 						this.pagesize = content.pageSize ;

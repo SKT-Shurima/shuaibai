@@ -27,7 +27,8 @@
 </template>
 <script >
 import {recharge} from '../../common/js/api'
-import {MessageBox,Message} from  'element-ui'
+import {errorInfo} from '../../common/js/common'
+import {Message} from  'element-ui'
 	export default{
 		data(){
 			return{
@@ -57,20 +58,7 @@ import {MessageBox,Message} from  'element-ui'
 		    	recharge(params).then(res=>{
 		    		let {errcode,message,content} = res;
 			 		if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						 Message.success({
 				          message: '充值成功',

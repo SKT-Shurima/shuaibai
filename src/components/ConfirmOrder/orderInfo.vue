@@ -96,6 +96,7 @@
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
 import {getOrderDetail} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -128,20 +129,7 @@ import {MessageBox} from  'element-ui'
 	   			getOrderDetail(params).then(res=>{
 	   				let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						this.order = content.order;
 						this.$emit('getInfo',content);

@@ -42,7 +42,7 @@ export const timeStyle  = time =>{
       		}
       		return val ;
       };
-       return h +':' + m + ":" + s ;
+       return h +':' + m ;
 }
 
 // 日期格式转成中文

@@ -19,7 +19,8 @@
 	</div>
 </template>
 <script>
-import {phoneBind,sendCode} from '../../common/js/api.js'
+import {phoneBind,sendCode} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5.js'
   export default {
@@ -81,18 +82,7 @@ import {hex_md5} from '../../common/js/md5.js'
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
 	      		if (errcode !== 0) {
-	      		    if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+	      		    errorInfo(errcode,message) ;
 	      		} else {
 	      			_this.time = _this.total_time ;
 	      			let timer = setInterval(()=>{
@@ -123,18 +113,7 @@ import {hex_md5} from '../../common/js/md5.js'
             phoneBind(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+            		errorInfo(errcode,message) ;
             	} else {
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',

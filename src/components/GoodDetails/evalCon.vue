@@ -215,6 +215,7 @@
 <script>
 	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter'
 	import {getRecommend,getComments,replyContent,usefulComment} from '../../common/js/api'
+	import {errorInfo} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content'
 	import hotSell from '../StoreCommon/hotSell'
@@ -275,18 +276,7 @@
 				getComments(params).then(res=>{
 					let {errcode,message,content} = res ;
 						if(errcode !== 0){
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		window.location.href = 'login.html';
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else {
 							this.commentList = content ;
 							this.pagesize = content.pagesize;
@@ -320,18 +310,7 @@
 				replyContent(params).then(res=>{
 					let {errcode,message,content} = res ;
 						if(errcode !== 0){
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		window.location.href = 'login.html';
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else {
 							this.replyList[index].replyList = content ;
 						}
@@ -347,18 +326,7 @@
 				usefulComment(params).then(res=>{
 					let {errcode,message,content} = res ;
 						if(errcode !== 0){
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		window.location.href = 'login.html';
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else {
 							this.getComment(this.evalTabIndex,1);
 						}
@@ -378,18 +346,7 @@
 					getRecommend(params).then(res=>{
 						let {errcode,message,content} = res ;
 						if(errcode !== 0){
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		window.location.href = 'login.html';
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else {
 							this.storeRecommend = content ;
 						}

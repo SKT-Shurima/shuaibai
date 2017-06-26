@@ -22,7 +22,7 @@ import evaluation from '../OrderStatus/evaluation'
 import tradeOver from '../OrderStatus/tradeOver'
 import {getOrderDetail} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
-import {getHashReq} from '../../common/js/common'
+import {getHashReq,errorInfo} from '../../common/js/common'
 window.onpopstate = function() {  
        location.reload() ;
  }; 
@@ -68,20 +68,7 @@ window.onpopstate = function() {
 					getOrderDetail(params).then(res=>{
 						let {errcode,message,content} = res ;
 						if(errcode!==0) {
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		if (action==='confirm') {
-						          			window.location.href = 'login.html';
-						          		}
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else{
 							let state = content.order.order_state;
 							let view = '';

@@ -176,6 +176,7 @@
 <script>
 	import { arrCity } from '../../common/js/city'
  	import {currency} from '../../common/js/filter'
+ 	import {getRequest,errorInfo} from '../../common/js/common'
  	import {goodsDetail,addCart,collectionGoods,addFollow,cancelFollow} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import vNav from '../StoreCommon/nav'
@@ -292,18 +293,6 @@
 	            }
 	            _this.addressBol = false;
 	        },
-	        getRequest() {
-			 var url = location.search; //获取url中"?"符后的字串
-			 var theRequest = new Object();
-			 if (url.indexOf("?") != -1) {
-			  let  str = url.substr(1);
-			  let strs = str.split("&");
-			  for(var i = 0; i < strs.length; i ++) {
-			   theRequest[strs[i].split("=")[0]]=(strs[i].split("=")[1]);
-			  }
-			 }
-			 return theRequest;
-			},
 			changeNum(mask){
 				let _this = this ;
 				if (mask) {
@@ -338,18 +327,7 @@
 				addCart(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						Message.success({
 				          message: '成功添加购物车',
@@ -368,18 +346,7 @@
 				collectionGoods(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						this.goodsInfo.goods.is_collection=!this.goodsInfo.goods.is_collection;
 						console.log(content);
@@ -402,18 +369,7 @@
 				fn(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						console.log(content)
 						this.goodsInfo.goods.is_seller_collection=!this.goodsInfo.goods.is_seller_collection
@@ -428,7 +384,7 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				this.params = this.getRequest();
+				this.params = getRequest();
 				let params = {
 					access_token : sessionStorage.access_token,
 					goods_id: this.params.goods_id
@@ -436,18 +392,7 @@
 				goodsDetail(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						this.goodsInfo = content ;
 						// 初始化结构数据

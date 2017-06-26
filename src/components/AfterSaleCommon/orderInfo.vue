@@ -1,63 +1,63 @@
 <template>
 	<div class="wrap">
-		<div class="box" v-if='orderInfo.goods'>
+		<div class="box" v-if='refundInfo'>
 			<dl class="goodsInfo">
 				<dt>
-					<img :src="orderInfo.goods.image">
+					<img :src="refundInfo.cover">
 				</dt>
-				<dd class="name" v-text='orderInfo.goods.name'></dd>
+				<dd class="name" v-text='refundInfo.name'></dd>
 				<dd class="type">
-					<span>规格：{{orderInfo.goods.option_name}}</span>
-					<em>套餐：{{orderInfo.goods.goods_type}}</em>
+					<span>规格：{{refundInfo.option_name}}</span>
+					<!-- <em>套餐：{{refundInfo.goods_type}}</em> -->
 				</dd>
 			</dl>
 			<div class="storeInfo">
 				<div class="storeName">
-					<span v-text='orderInfo.shop_name'></span>
+					<span v-text='refundInfo.shop_name'></span>
 					<button><img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服</button>
 				</div>
 				<ul>
 					<li>
 						<el-row>
 							<el-col :span='8'>单价：</el-col>
-							<el-col :span='16'>{{orderInfo.goods.price|currency}} × {{orderInfo.goods.quantity}}<em>×1</em></el-col>
+							<el-col :span='16'>{{refundInfo.price|currency}} × {{refundInfo.quantity}}</el-col>
 						</el-row>
 						<el-row>
 							<el-col :span='8'>小计：</el-col>
-							<el-col :span='16'><strong>{{orderInfo.goods.price*orderInfo.goods.quantity|currency}}</strong></el-col>
+							<el-col :span='16'><strong>{{refundInfo.price*refundInfo.quantity|currency}}</strong></el-col>
 						</el-row>
 					</li>
 				</ul>
 			</div>
-			<ul class="orderInfo">
+			<ul class="refundInfo">
 				<li>
 					<el-row>
 						<el-col :span='8'>订单号：</el-col>
-						<el-col :span='16'><span v-text='orderInfo.order_sn'></span></el-col>
+						<el-col :span='16'><span v-text='refundInfo.order_sn'></span></el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>运费：</el-col>
-						<el-col :span='16'>{{orderInfo.express_amount|currency}}</el-col>
+						<el-col :span='16'>{{refundInfo.express_amount|currency}}</el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>总优惠：</el-col>
-						<el-col :span='16'>-{{0|currency}}</el-col>
+						<el-col :span='16'>-{{refundInfo.coupon_amount|currency}}</el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>合计：</el-col>
-						<el-col :span='16'><strong>{{orderInfo.goods.price*orderInfo.goods.quantity|currency}}</strong></el-col>
+						<el-col :span='16'><strong>{{refundInfo.price*refundInfo.quantity|currency}}</strong></el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>成交时间：</el-col>
-						<el-col :span='16'>{{date_pay*1000|dateStyle}}&nbsp;{{date_pay*1000|timeStyle}}</el-col>
+						<el-col :span='16'>{{refundInfo.date_add*1000|dateStyle}}&nbsp;{{refundInfo.date_add*1000|timeStyle}}</el-col>
 					</el-row>
 				</li>
 			</ul>
@@ -66,22 +66,14 @@
 </template>
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
-import {getOrderDetail} from '../../common/js/api'
+import {getHashReq,errorInfo} from '../../common/js/common'
+import {refundGoods} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 	export default {
 		data(){
 			return {
-			}
-		},
-		props:{
-			orderInfo:{
-				type: Object,
-				required : true ,
-				default(){
-					return{
-						goods: null
-					}
-				}
+				reqParams: null,
+				refundInfo: null
 			}
 		},
 		filters:{
@@ -89,7 +81,26 @@ import {MessageBox} from  'element-ui'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				
+				this.reqParams = getHashReq();
+				let params = {
+					access_token: sessionStorage.access_token
+				};
+				if (this.reqParams.order_sn) {
+					params.order_sn = this.reqParams.order_sn ;
+					params.goods_id = this.reqParams.goods_id ;
+					params.option_id = this.reqParams.option_id ;
+				}else if(this.reqParams.refund_sn){
+					params.refund_sn = this.reqParams.refund_sn ;
+				}
+				refundGoods(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
+						this.refundInfo = content;
+						this.$emit('sendGoodsInfo',this.refundInfo);
+					}
+				})
 			})
 		}
 	}
@@ -99,6 +110,7 @@ $primary:#c71624;
 $border_color: #ddd;
 $text_color: #666;
 	.wrap{
+		width: 100%;
 		.goodsInfo{
 			padding-bottom: 10px;
 			border-bottom: 1px solid $border_color;
@@ -122,7 +134,8 @@ $text_color: #666;
 					float: left;
 				}
 				em{
-					float: right;
+					float: left;
+					margin-left: 20px;
 				}
 			}
 		}
@@ -132,6 +145,8 @@ $text_color: #666;
 				color: $text_color;
 			}
 			.el-col-16{
+				overflow: hidden;
+    			text-overflow: ellipsis;
 				strong{
 					font-size: 14px;
 					font-weight: 600;

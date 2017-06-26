@@ -29,9 +29,8 @@
 </template>
 <script>
 import {currency} from '../../common/js/filter'
-import {getRequest} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getHighGoods} from '../../common/js/api'
-import {MessageBox} from  'element-ui'
 	export default {
 		data(){
 			return {
@@ -51,18 +50,7 @@ import {MessageBox} from  'element-ui'
 				getHighGoods(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						this.hightGoods = content;	
 					}

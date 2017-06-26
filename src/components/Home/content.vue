@@ -203,8 +203,9 @@
 </template>
 
 <script>
-	import {getNewGoods,getActivity} from "../../common/js/api.js"
- 	import {currency,timeStyle,dateStyle} from '../../common/js/filter.js'
+	import {getNewGoods,getActivity} from "../../common/js/api"
+ 	import {currency,timeStyle,dateStyle} from '../../common/js/filter'
+ 	import {errorInfo} from '../../common/js/common'
 	export default{
 		data(){
 			return {
@@ -221,7 +222,7 @@
 		},
 		methods: {
 			detail(){
-				window.location.href = 'detail.html';
+				location.href = 'detail.html';
 			},
 			getTheme() {
 				getActivity().then(res=>{
@@ -237,8 +238,10 @@
 		mounted(){
 			this.$nextTick(()=>{
 				getNewGoods().then(res=>{
-					let { errcode ,content} = res ;
-					if(errcode === 0 ){
+					let { errcode ,message,content} = res ;
+					if(errcode !== 0 ){
+						errorInfo(errcode,message);
+					}else{
 						this.newGoods = content;
 					}
 				});

@@ -43,6 +43,7 @@
 </template>
 <script>
 import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
  export  default{
  	data(){
@@ -81,18 +82,7 @@ import {MessageBox} from  'element-ui'
 	    	changeUsername(paramsName).then(res=>{
 	    		let {errcode,message,content} = res;
 	    		if (errcode!==0) {
-	    			 if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.nickname = content ;
 	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
@@ -110,18 +100,7 @@ import {MessageBox} from  'element-ui'
 	    	changeBirthday(paramsBirth).then(res=>{
 	    		let {errcode,message,content} = res;
 	    		if (errcode!==0) {
-	    			 if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.birthday = content ;
 	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
@@ -139,18 +118,7 @@ import {MessageBox} from  'element-ui'
 	    	changeSex(paramsSex).then(res=>{
 	    		let {errcode,message,content} = res;
 	    		if (errcode!==0) {
-	    			 if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.sex = content ;
 	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
@@ -184,16 +152,7 @@ import {MessageBox} from  'element-ui'
 	    		
 		    	
 	    	} 
-	    },
- 		getHeaders(){
- 			let _this = this ;
- 			_this.headers= {
- 				'Content-Type': 'application/x-www-form-urlencoded'
- 			}
- 			_this.params = {
- 				access_token: sessionStorage.access_token
- 			}
- 		}
+	    }
 	},
  	mounted(){
  		this.$nextTick(()=>{
@@ -202,7 +161,7 @@ import {MessageBox} from  'element-ui'
 				this.userInfo.birthday-=0;
 				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
 			}else{
-				window.location.href = "login.html";
+			    location.href = "login.html";
 			}
  		})
  	}

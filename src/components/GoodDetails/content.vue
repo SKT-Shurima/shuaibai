@@ -8,7 +8,7 @@
 import infoCon from './infoCon'
 import evalCon from './evalCon'
 import {goodsDetail} from '../../common/js/api'
-import {getRequest} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default {
 		data() {
@@ -33,18 +33,7 @@ import {MessageBox} from  'element-ui'
 				goodsDetail(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						content.goods.comment.goods_comment -= 0;
 						content.goods.comment.logistics_comment -= 0;

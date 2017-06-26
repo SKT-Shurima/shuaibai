@@ -106,6 +106,7 @@
 </template>
 <script>
 import {saveAddress,getAddress,delAddress,defaultAddress,linkage} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
   export default {
     data() {
@@ -187,18 +188,7 @@ import {MessageBox,Message} from  'element-ui'
     		linkage(params).then(res=>{
     			let {errcode,message,content} = res ;
             	if (errcode !== 0 ) {
-            		if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+            		errorInfo(errcode,message) ;
             	} else {
             		if (mask==='pro') {
             			this.proArr = content ;
@@ -223,18 +213,7 @@ import {MessageBox,Message} from  'element-ui'
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
 	      		if (errcode !== 0) {
-	      		    if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+	      		   errorInfo(errcode,message) ;
 	      		} else {
 	      			_this.time = _this.total_time ;
 	      			let timer = setInterval(()=>{
@@ -291,18 +270,7 @@ import {MessageBox,Message} from  'element-ui'
             saveAddress(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+            		errorInfo(errcode,message) ;
             	} else {
             		  Message.success({
 				          message: '新增地址添加成功',
@@ -337,18 +305,7 @@ import {MessageBox,Message} from  'element-ui'
       	 getAddress(params).then(res=>{
       	 	let {errcode,message,content} = res ;
             	if (errcode !== 0 ) {
-            		if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+            		errorInfo(errcode,message) ;
             	} else {
 	        		this.addressList = content;
             	}
@@ -367,18 +324,7 @@ import {MessageBox,Message} from  'element-ui'
       	 delAddress(params).then(res=>{
       	 	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+            		errorInfo(errcode,message) ;
             	} else {
 	        		this.getAddressList();
             	}

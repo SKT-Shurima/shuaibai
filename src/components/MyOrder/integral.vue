@@ -27,8 +27,9 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter.js'
-import {integration,integrationDetail} from '../../common/js/api.js'
+import {currency} from '../../common/js/filter'
+import {integration,integrationDetail} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -44,9 +45,9 @@ import {MessageBox} from  'element-ui'
     },
     methods: {
     	changeView(view){
-	      	 this.$store.commit('switchView',view);
-	      	 location.hash = view ;
-	      }
+	      	this.$store.commit('switchView',view);
+	      	location.hash = view ;
+	    }
     },
     created(){
         this.$nextTick(()=>{
@@ -56,18 +57,7 @@ import {MessageBox} from  'element-ui'
         	integration(params).then(res=>{
         		let {errcode,message,content} = res;
         		if (errcode !== 0) {
-        			if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+        			errorInfo(errcode,message) ;
         		}else {
         			this.inteInfo = content ;
         		}

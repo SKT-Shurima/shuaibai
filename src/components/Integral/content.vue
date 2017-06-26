@@ -42,21 +42,33 @@
 						</li>
 					</ul>
 				</div>
-				<pagination></pagination>
+				<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter.js'
+import {currency} from '../../common/js/filter'
 import pagination from '../../components/Common/pagination'
 	export default {
-	filters:{
-		currency
-	},
-	components:{
-		pagination
-	}
+		data(){
+			return {
+				pagesize: 1
+			}
+		},
+		filters:{
+			currency
+		},
+		components:{
+			pagination
+		},
+		methods: {
+			// 改变页数
+			changePage(page){
+				let _this = this ;
+				_this.getOrderList(_this.state,page);
+			}
+		}
   }
 </script>
 <style scoped lang='scss'>

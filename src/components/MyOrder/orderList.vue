@@ -51,12 +51,12 @@
 								</dd>
 							</div>
 							<div class="goodsPrice" v-text='item.quantity'></div>
-							<div class="goodsPrice" style='cursor:pointer;' @click='applyRefund(shopItem.order_sn,item.option_id)'>
+							<div class="goodsPrice" style='cursor:pointer;' @click='applyRefund(shopItem.order_sn,item.goods_id,item.option_id)'>
 								申请售后
 							</div>
 						</div>
 				 	</div>
-					<div class="goodsInfo" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":true}'>
+					<div class="goodsInfo" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":shopItem.goods.length>1}'>
 						<el-row>
 							<el-col :span='8'>
 								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount|currency}}</div>
@@ -102,17 +102,12 @@
 								<div v-show='shopItem.order_state==="5"' style='padding-top: 16px;'>
 									<span>追加评价</span>
 								</div>
-								<!-- 催一催 -->
-								<div v-show='false' style='padding-top: 16px;'>
-									<span>催一催</span>
-								</div>
 								<!-- 再次购买 -->
 								<div v-show='shopItem.order_state==="6"' style='padding-top: 8px;'>
 									<ul>
 										<li><span>再次购买</span></li>
 										<li><span @click='del(shopItem.order_sn)'>删除订单</span></li>
 									</ul>
-									
 								</div>
 								<div v-show='shopItem.order_state==="7"' style='padding-top: 16px;'>
 									<span @click='del(shopItem.order_sn)'>删除订单</span>
@@ -129,6 +124,7 @@
 <script>
 import {getOrders,cancelOrder,orderRemind,delivery,delOrder} from '../../common/js/api'
 import {currency,dateStyle} from '../../common/js/filter'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 import pagination from '../Common/pagination'
 	export default {
@@ -161,18 +157,7 @@ import pagination from '../Common/pagination'
 		    	getOrders(params).then(res=>{
 		    		let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						this.order = content.orders;
 						this.pagesize = content.pageSize;
@@ -180,8 +165,8 @@ import pagination from '../Common/pagination'
 		    	})
 	   	 	},
 	   	 	// 申请售后
-	   	 	applyRefund(order_sn,option_id){
-	   	 		window.open(`afterSale.html#applyType?order_sn=${order_sn}&option_id=${option_id}`);
+	   	 	applyRefund(order_sn,goods_id,option_id){
+	   	 		window.open(`afterSale.html#applyType?order_sn=${order_sn}&goods_id=${goods_id}&option_id=${option_id}`);
 	   	 	},
 	   	 	// 查看订单详情  物流信息
 	   	 	checkOrder(order_sn){
@@ -200,20 +185,7 @@ import pagination from '../Common/pagination'
 	   	 		orderRemind(params).then(res=>{
 	   	 			let {errcode,message,content} = res ;
 						if(errcode!==0) {
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		if (action==='confirm') {
-						          			window.location.href = 'login.html';
-						          		}
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else{
 							Message.success({
 					            message: message,
@@ -254,20 +226,7 @@ import pagination from '../Common/pagination'
 		   	 		api(params).then(res=>{
 		   	 			let {errcode,message,content} = res ;
 						if(errcode!==0) {
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		if (action==='confirm') {
-						          			window.location.href = 'login.html';
-						          		}
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else{
 							Message.success({
 					            message: message,
@@ -289,7 +248,7 @@ import pagination from '../Common/pagination'
 		created(){
 			this.$nextTick(()=>{
 				// 获取订单列表
-				this.getOrderList("0","0")
+				this.getOrderList("0","1")
 			})
 		}
 	}

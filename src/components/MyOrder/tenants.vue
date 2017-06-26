@@ -58,9 +58,12 @@
 					class="upload-demo"
 					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
 				    :on-success="licenseSuccess"
-					:file-list="fileList1"
-					:data='form1'
-					list-type="picture">
+				    :before-upload='licenseBeforeUpload'
+					:file-list="licenseList"
+					:on-remove="licenseRemove"
+					:data='licenseForm'
+					list-type="picture"
+					ref='license'>
 			    <el-button size="small" type="primary">选择文件</el-button>
 				</el-upload>
 		    </el-form-item>
@@ -88,9 +91,12 @@
 					class="upload-demo"
 					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
 				    :on-success="idCardSuccess1"
-					:file-list="fileList2"
-					:data='form2'
-					list-type="picture">
+					:before-upload='idCardBeforeUpload1'
+					:file-list="fileList1"
+					:on-remove="idCardRemove1"
+					:data='form1'
+					list-type="picture"
+					ref='idCard1'>
 			    <el-button size="small" type="primary">选择文件</el-button>
 				</el-upload>
 		    </el-form-item>
@@ -103,9 +109,12 @@
 					class="upload-demo"
 					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
 				    :on-success="idCardSuccess2"
+					:before-upload='idCardBeforeUpload2'
 					:file-list="fileList2"
+					:on-remove="idCardRemove2"
 					:data='form2'
-					list-type="picture">
+					list-type="picture"
+					ref='idCard2'>
 			    <el-button size="small" type="primary">选择文件</el-button>
 				</el-upload>
 		    </el-form-item>
@@ -126,6 +135,7 @@
 </template>
 <script >
 import {shopJoin,linkage} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 	export default{
 		data(){
@@ -149,21 +159,21 @@ import {MessageBox,Message} from  'element-ui'
 		     };
 		     // 营业执照
 		     var checkLicense = (rule,value,callback) => {
-		     	if (this.fileList1[0].name === "") {
+		     	if (this.licenseList[0].name === "") {
 		     		callback(new Error('请上传营业执照'));
 		     	}else {
 		     		callback();
 		     	} 
 		     };
 		     var checkIdCard1 = (rule,value,callback) => {
-		     	if (this.fileList2[0].name === "") {
+		     	if (this.fileList1[0].name === "") {
 		     		callback(new Error('请上传身份证背面照'));
 		     	}else {
 		     		callback();
 		     	} 
 		     };
 		      var checkIdCard2 = (rule,value,callback) => {
-		     	if (this.fileList3[0].name === "") {
+		     	if (this.fileList2[0].name === "") {
 		     		callback(new Error('请上传身份证正面照'));
 		     	}else {
 		     		callback();
@@ -227,25 +237,57 @@ import {MessageBox,Message} from  'element-ui'
 			        	{ required: true, validator: checkIdCard1, trigger: 'blur' }
 			        ]
 		        },
-		        form1: {
+		        licenseForm: {
 			    	cate : 'license', 
 			    	access_token : sessionStorage.access_token
 			    },
-		        fileList1: [],
-		         form2: {
+		        licenseList: [],
+		         form1: {
 			    	cate : 'idCard1', 
 			    	access_token : sessionStorage.access_token
 			    },
-		         fileList2: [],
-		         form3: {
+		         fileList1: [],
+		         form2: {
 			    	cate : 'idCard2', 
 			    	access_token : sessionStorage.access_token
 			    },
-		         fileList3: []
+		         fileList2: []
 			}
 		},
 		methods:{
+			licenseBeforeUpload(){
+				let _this = this ;
+				let len = _this.$refs.license.uploadFiles.length;
+				if (len>1) {
+		    		_this.$refs.license.uploadFiles.splice(0,1);
+		    	}
+			},
+			licenseRemove(file, fileList) {
+				let _this = this ;
+		        _this.licenseList = new Array ;
+		    },
 			licenseSuccess (res, file, fileList) {
+		    	let _this = this ;
+	    		_this.licenseList[0] = new Object ;
+		    	// 获取图片的name
+		    	_this.licenseList[0].name = res.content.name;
+		    	// 获取图片url
+		    	_this.licenseList[0].url = res.content.url;
+		    	// 获取图片size
+		    	_this.licenseList[0].url = res.content.size; 
+	    	},
+	    	idCardBeforeUpload1(){
+				let _this = this ;
+				let len = _this.$refs.idCard1.uploadFiles.length;
+				if (len>1) {
+		    		_this.$refs.idCard1.uploadFiles.splice(0,1);
+		    	}
+			},
+			idCardRemove1(file, fileList) {
+				let _this = this ;
+		        _this.fileList1 = new Array ;
+		    },
+	    	idCardSuccess1 (res, file, fileList) {
 		    	let _this = this ;
 		    	_this.fileList1[0] = new Object ;
 		    	// 获取图片的name
@@ -253,21 +295,24 @@ import {MessageBox,Message} from  'element-ui'
 		    	// 获取图片url
 		    	_this.fileList1[0].url = res.content.url;
 	    	},
-	    	idCardSuccess1 (res, file, fileList) {
+	    	idCardBeforeUpload2(){
+				let _this = this ;
+				let len = _this.$refs.idCard2.uploadFiles.length;
+				if (len>1) {
+		    		_this.$refs.idCard2.uploadFiles.splice(0,1);
+		    	}
+			},
+			idCardRemove2(file, fileList) {
+				let _this = this ;
+		        _this.fileList2 = new Array ;
+		    },
+	    	idCardSuccess2 (res, file, fileList) {
 		    	let _this = this ;
 		    	_this.fileList2[0] = new Object ;
 		    	// 获取图片的name
 		    	_this.fileList2[0].name = res.content.name;
 		    	// 获取图片url
 		    	_this.fileList2[0].url = res.content.url;
-	    	},
-	    	idCardSuccess2 (res, file, fileList) {
-		    	let _this = this ;
-		    	_this.fileList3[0] = new Object ;
-		    	// 获取图片的name
-		    	_this.fileList3[0].name = res.content.name;
-		    	// 获取图片url
-		    	_this.fileList3[0].url = res.content.url;
 	    	},
 		    setOption(type,event){
 	            if(type === 'proIndex'){
@@ -295,18 +340,7 @@ import {MessageBox,Message} from  'element-ui'
 	    		linkage(params).then(res=>{
 	    			let {errcode,message,content} = res ;
 	            	if (errcode !== 0 ) {
-	            		if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+	            		errorInfo(errcode,message) ;
 	            	} else {
 	            		if (mask==='pro') {
 	            			this.proArr = content ;
@@ -334,29 +368,18 @@ import {MessageBox,Message} from  'element-ui'
 				            	city: this.cityArr[this.cityIndex].name,
 				            	district: this.areaArr[this.areaIndex].name,
 								address: this.ruleForm.address,
-								licence: this.fileList1[0].name,
+								licence: this.licenseList[0].name,
 								name: this.ruleForm.contactName,	
 								phone: this.ruleForm.contactTel,	
 								shop_name: this.storeName,
 								wx_qq: this.contactType,	
-								card_f: this.fileList2[0].name,	
-								card_b: this.fileList3[0].name
+								card_f: this.fileList1[0].name,	
+								card_b: this.fileList2[0].name
 				            }
 				            shopJoin(params).then(res=>{
 				            	let {errcode,message,content} = res ;
 				            	if (errcode !== 0 ) {
-				            		if (errcode === 99) {
-				            			MessageBox.alert(message, '提示', {
-								          	confirmButtonText: '确定',
-								          	callback: action => {
-								          		window.location.href = 'login.html';
-								          	}
-									    });
-				            		}else{
-				            			MessageBox.alert(message, '提示', {
-								          	confirmButtonText: '确定'
-									    });
-				            		}
+				            		errorInfo(errcode,message) ;
 				            	} else {
 				            		Message.success({
 							            message: '添加成功',

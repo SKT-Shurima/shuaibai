@@ -18,7 +18,8 @@
 	</div>
 </template>
 <script>
-import {bindEamil,sendCode} from '../../common/js/api.js'
+import {bindEamil,sendCode} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -67,18 +68,7 @@ import {MessageBox} from  'element-ui'
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
 	      		if (errcode !== 0) {
-	      		    if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+	      		    errorInfo(errcode,message) ;
 	      		} else {
 	      			_this.time = _this.total_time ;
 	      			let timer = setInterval(()=>{
@@ -108,18 +98,7 @@ import {MessageBox} from  'element-ui'
             bindEamil(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+            		errorInfo(errcode,message) ;
             	} else {
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',

@@ -65,9 +65,8 @@
 </template>
 <script>
 import {currency} from '../../common/js/filter'
-import {getRequest} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import {goodsList} from '../../common/js/api'
-import {MessageBox} from  'element-ui'
 import pagination from '../Common/pagination'
 	export default {
 		data(){
@@ -147,18 +146,7 @@ import pagination from '../Common/pagination'
 				goodsList(_this.params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						this.goods = content.goods_list ;
 						this.pagesize = content.pagesize ;

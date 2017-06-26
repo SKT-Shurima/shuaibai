@@ -168,6 +168,7 @@
 <script>
 import {getAddress,buy,generate} from '../../common/js/api'
 import {currency} from '../../common/js/filter'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -195,8 +196,10 @@ import {MessageBox} from  'element-ui'
 		      	 	access_token: this.userInfo.access_token
 		       };
 		      	getAddress(params).then(res=>{
-		      	 	let {errcode,content} = res;
-		      	 	if (errcode===0) {
+		      	 	let {errcode,message,content} = res;
+		      	 	if (errcode!==0) {
+		      	 		errorInfo(errcode,message) ;
+		      	 	}else{
 		      	 		this.addressList = content;
 		      	 		for(let i = 0;i<this.addressList.length;i++){
 		      	 			if (this.addressList[i].status === '1') {
@@ -239,20 +242,7 @@ import {MessageBox} from  'element-ui'
 		    	buy(params).then(res=>{
 			 		let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						if(sessionStorage.orderInfo){
 							sessionStorage.removeItem('orderInfo');
@@ -292,20 +282,7 @@ import {MessageBox} from  'element-ui'
 		    	generate(params).then(res=>{
 		    		let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						let order_sn = sessionStorage.order_sn;
 						if (order_sn) {

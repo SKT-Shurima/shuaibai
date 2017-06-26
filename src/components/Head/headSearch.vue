@@ -27,6 +27,7 @@
 </template>
 <script>
     import {getKeyWord} from "../../common/js/api"
+    import {MessageBox} from 'element-ui'
 	export default{
 		data(){
 			return{
@@ -150,11 +151,10 @@ $red_color: #f24450;
 				border: 1px  solid $primary;
 				span{
 					vertical-align: super;
-				    border-radius: 6px;
-				    padding: 0px 3px;
+				    border-radius: 8px;
+				    padding: 0px 4px;
 					color: #fff;
 					background-color: $red_color;
-
 				}
 			}
 		}

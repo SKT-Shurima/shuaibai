@@ -29,7 +29,7 @@
 	</div>
 </template>
 <script>
-	import {getCategoryGoods} from "../../common/js/api.js"
+	import {getCategoryGoods} from "../../common/js/api"
 	export default{
 		data(){
 			return{

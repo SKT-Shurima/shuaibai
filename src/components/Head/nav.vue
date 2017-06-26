@@ -39,7 +39,8 @@
 	</div>
 </template>
 <script>
-import {getCategory} from '../../common/js/api.js'
+import {getCategory} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
   export default {
      data(){
      	return{
@@ -53,8 +54,10 @@ import {getCategory} from '../../common/js/api.js'
       mounted(){
      	this.$nextTick(()=>{
 			getCategory().then(res=>{
-				let {errcode,content} = res ;
-				if (errcode === 0 ) {
+				let {errcode,message,content} = res ;
+				if (errcode !== 0 ) {
+					errorInfo(errcode,message) ;
+				}else{
 					this.category = content;
 				}
 			})

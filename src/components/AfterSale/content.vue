@@ -12,11 +12,11 @@
 			</dl>
 			<dl class="box">
 				<dt class="infoCol" style="min-height: 600px;">
-					<order-info :order-info='orderInfo'></order-info>
+					<order-info @sendGoodsInfo='getGoodsInfo'></order-info>
 				</dt>
 				<dd class="conCol" style="min-height: 600px;">
 					<keep-alive>
-						<component :is='currentView'></component>
+						<component :is='currentView'  :goods-info='goodsInfo'></component>
 					</keep-alive>
 				</dd>
 			</dl>
@@ -25,19 +25,20 @@
 </template>
 <script>
 import {getHashReq} from '../../common/js/common'
-import {getOrderDetail} from '../../common/js/api'
-import orderInfo from './orderInfo'
+import {getRefundInfo} from '../../common/js/api'
+import orderInfo from '../AfterSaleCommon/orderInfo'
 import applyType from './applyType'
-import seller from './seller'
 import moneyReturn from './moneyReturn'
 import goodsReturn from './goodsReturn'
+import maintain from './maintain'
+import {MessageBox} from  'element-ui'
 export default {
 	data() {
 		window.addEventListener("popstate",()=>{
 	 		this.init();
 	 	})
 		return {
-			orderInfo: {},
+			goodsInfo: {},
 			currentView:"",
 			currentIndex: "",
 			listTitle: [
@@ -49,44 +50,11 @@ export default {
 		}
 	},
 	components:{
-		orderInfo,applyType,seller,moneyReturn, goodsReturn
+		orderInfo,applyType,moneyReturn, goodsReturn,maintain
 	},
 	methods:{
-		orderDetail(){
-			let _this = this ;
-			let params = {
-				access_token: sessionStorage.access_token,
-				order_sn: _this.reqParams.order_sn
-			}
-			getOrderDetail(params).then(res=>{
-				let {errcode,message,content} = res ;
-				if(errcode!==0) {
-					if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		if (action==='confirm') {
-				          			window.location.href = 'login.html';
-				          		}
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
-				}else{
-					this.orderInfo = content.order ;
-					let goods = this.orderInfo.goods ;
-					let option_id = this.reqParams.option_id ;
-					for(let i = 0; i< goods.length;i++){
-						if (goods[i].option_id === option_id) {
-							this.orderInfo.goods = goods[i] ;
-							return;
-						}
-					}
-				}
-			})
+		getGoodsInfo(info){
+			this.goodsInfo = info;
 		},
 		init(){
 			let _this = this;
@@ -95,11 +63,26 @@ export default {
 		    _this.reqParams = getHashReq();
 		    switch (view){
 		    	case 'applyType':
-		    	_this.currentIndex = 0 ;
- 		    	_this.currentView = view ;
+			    	_this.currentIndex = 0 ;
+	 		    	_this.currentView = view ;
 		    	break;
+		    	case 'moneyReturn':
+			    	_this.currentIndex = 0 ;
+	 		    	_this.currentView = view ;
+		    	break;
+		    	case 'goodsReturn':
+			    	_this.currentIndex = 0 ;
+	 		    	_this.currentView = view ;
+		    	break;
+		    	case 'maintain':
+			    	_this.currentIndex = 0 ;
+	 		    	_this.currentView = view ;
+		    	break;
+		    	default:
+			    	_this.currentIndex = 0 ;
+	 		    	_this.currentView = 'applyType' ;
+ 		    	break;
 		    }
-		    _this.orderDetail();
 	    }
 	},
 	mounted(){

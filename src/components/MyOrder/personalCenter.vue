@@ -45,8 +45,8 @@
 	</div>
 </template>
 <script>
-import {num_filter,dateStyleCh,timeStyle} from '../../common/js/filter.js'
-import {getOrders} from '../../common/js/api.js'
+import {num_filter,dateStyleCh,timeStyle} from '../../common/js/filter'
+import {getOrders} from '../../common/js/api'
 import orderList from './orderList'
 	export default {
 		data() {

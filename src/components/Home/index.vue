@@ -11,7 +11,9 @@
 		<div class="con_wrap">
 		<div class="con_box">
 			<ul class="con_list" @mouseenter='listBol=true' @mouseleave='listBol=false'>
-				<li v-for='(item,index) in category' :key='item' v-text='item.name'></li>
+				<li v-for='(item,index) in category' :key='item'>
+					<img :src="item.icon">{{item.name}}
+				</li>
 			</ul>
 			<div class="content" v-show='listBol'  @mouseleave='listBol=false' @mouseenter='listBol=true'>
 				<div class="detail_list">
@@ -56,83 +58,7 @@
 				</dd>
 			</dl>
 			<div class="status">
-				<div class="info_box">
-					<dl>
-						<dt>
-							<img :src="userInfo.avater">
-						</dt>
-						<dd>
-							<span>Hi,您好！{{userInfo.nickname}}</span>
-						</dd>
-					</dl>
-					<div class="btnBox" v-if='!hasUser'>
-						<div>
-							<a href="login.html">
-								<el-button type='text' size='small'>登录</el-button>
-							</a>
-						</div>
-						<div>
-							<a href="reg.html">
-								<el-button type='text' size='small'>注册新用户</el-button>
-							</a>
-						</div>
-					</div>
-					<div class="info" v-if='hasUser'>
-						<el-row class='info_money'>
-							<el-col :span='8'>
-								<div class="info_num" v-text='userInfo.account'>
-								</div>
-								<div>
-									余额
-								</div>
-							</el-col>
-							<el-col :span='8'>
-								<div class="info_num" v-text='userInfo.shopping_coin'>
-								</div>
-								<div>
-									购物币
-								</div>
-							</el-col>
-							<el-col :span='8'>
-								<div class="info_num" v-text='userInfo.integration'>
-								</div>
-								<div>
-								    积分
-								</div>
-							</el-col>
-						</el-row>
-						<el-row class='info_order'>
-							<div class="info_title">
-								<span>
-									<i></i>
-									我的订单
-								</span>
-								<em>
-								    售后
-									<i></i>
-								</em>
-							</div>
-							<el-row class='order_menu'>
-								<el-col :span='6'>
-								    <span>待付款</span>
-									<i v-show='order.wait_pay_count'>{{order.wait_pay_count | num_filter}}</i>
-								</el-col>
-								<el-col :span='6'>
-									<span>待发货</span>
-									<i v-show='order.wait_delivery_count'>{{order.wait_delivery_count | num_filter}}</i>
-								</el-col>
-								<el-col :span='6'>
-									<span>待收货</span>
-									<i v-show='order.wait_receive_count'>{{order.wait_receive_count | num_filter}}</i>
-								</el-col>
-								<el-col :span='6'>
-									<span>待评价</span>
-									<i v-show='order.wait_comment_count'>{{ order.wait_comment_count | num_filter}}</i>
-								</el-col>
-							</el-row>
-						</el-row>
-					</div>
-				</div>
+				<user-info></user-info>
 				<div class="pre_msg">
 					<div class="info_title">
 						<span>
@@ -150,39 +76,7 @@
 						<li>伊利牛奶</li>
 					</ul>
 				</div>
-				<div class="recharge">
-					<div class="recharge_title">
-						<div @click='recharge_bol=true' :class='{"border_top":recharge_bol}'>话费充值</div>
-						<div @click=
-						'recharge_bol=false' :class='{"border_top":!recharge_bol}'> 流量充值</div>
-					</div>
-					<el-row>
-						<el-col :span='4'>号码</el-col>
-						<el-col :span='20'>
-							<el-input v-model='recharge_val' size='mini'></el-input>
-						</el-col>
-					</el-row>
-					<el-row>
-						<el-col :span='4'>数额</el-col>
-						<el-col :span='10'>
-							<el-select v-model="recharge_num" placeholder="请选择" size='mini'>
-							    <el-option
-							      v-for="item in options"
-							      :key="item.value"
-							      :label="item.label"
-							      :value="item.value">
-							    </el-option>
-							  </el-select>
-						</el-col>
-					</el-row>
-					<el-row>
-						<el-col :span='4'>售价</el-col>
-						<el-col :span='8'>
-							<span>{{47.88|currency}}</span>
-						</el-col>
-						<div class="top_up">立即充值</div>
-					</el-row>
-				</div>
+				<recharge></recharge>
 			</div>
 			</div>
 		</div>
@@ -190,60 +84,30 @@
 </template>
 
 <script>
-import {getHomePage,getCategory,getGuessLike,getActualFee} from '../../common/js/api.js'
-import {num_filter,currency} from '../../common/js/filter.js'
+import {getHomePage,getCategory,getGuessLike,getActualFee} from '../../common/js/api'
+
+import {errorInfo} from '../../common/js/common'
+import userInfo from './userInfo'
+import recharge from './recharge'
 	export default{
 		data(){
 			return{
-			   listBol: false,
-			   userInfo:{
-			   		nickname: '',
-			   		avater:'',
-			   		account: '',
-			   		integration: '',
-			   		shopping_coin: ''
-			   },
-			   banners: [],
-			   category: [{name:''}],
-			   fIndex: 0,
-			   sIndex: 0,
-			   order: {
-			   		wait_comment_count: null,
-			   		wait_delivery_count: null,
-					wait_pay_count: null,
-					wait_receive_count: null
-			   },
-			   recharge_bol: true,
-			   recharge_val: '',
-			   options: [{
-		          value: '额度1',
-		          label: '10.00'
-		        }, {
-		          value: '额度2',
-		          label: '20.00'
-		        }, {
-		          value: '额度3',
-		          label: '30.00'
-		        }, {
-		          value: '额度4',
-		          label: '40.00'
-		        }, {
-		          value: '额度5',
-		          label: '50.00'
-		        }],
-        		recharge_num: '',
-        		hasUser: false,
-        		youLike: null
+			    listBol: false,
+			    banners: [],
+			    category: [{name:''}],
+			    fIndex: 0,
+			    sIndex: 0,
+        	    youLike: null
 			}
 		},
-		filters:{
-			num_filter,
-			currency
+		
+		components: {
+			recharge,userInfo
 		},
 		methods:{
 			goodDetail(item){
 				let id = item.action.params[1].value;
-				window.location.href = `detail.html?goods_id=${id}`;
+				location.href = `detail.html?goods_id=${id}`;
 			},
 			homePage(){
 				let params = {
@@ -257,8 +121,10 @@ import {num_filter,currency} from '../../common/js/filter.js'
 			},
 			categoryList(){
 				getCategory().then(res=>{
-					let {errcode,content} = res ;
-					if (errcode === 0 ) {
+					let {errcode,message,content} = res ;
+					if (errcode !== 0 ) {
+						errorInfo(errcode,message) ;
+					} else{
 						this.category = content;
 					}
 				})
@@ -268,39 +134,21 @@ import {num_filter,currency} from '../../common/js/filter.js'
 					category_id: 1
 				}
 				getGuessLike(params).then(res=>{
-					let {errcode,content} = res;
-					if (errcode===0) {
+					let {errcode,message,content} = res;
+					if (errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
 						this.youLike = content;
-					}
-				})
-			},
-			getActualFee(){
-				let params ={
-					type: 1
-				}
-				getActualFee(params).then(res=>{
-					let {errcode,content} = res;
-					if (errcode===0) {
-						
 					}
 				})
 			}
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.hasUser = true;
-					// 读取用户信息
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
-					// 获取购物信息
-					this.order = this.userInfo.order;
-				}
 				// 获取轮播图
 				this.homePage();
 				//  获取分类
 				this.categoryList();
-				// 获取手机充值面额
-				this.getActualFee();
 			})
 		}
 	}
@@ -363,6 +211,11 @@ $text_color: #666;
 					li:hover{
 						background-color: #fff;
 						color: #c81623;
+					}
+					img{
+						width: 22px;
+						vertical-align: -5px;
+						margin-right: 10px;
 					}
 				}
 				.content{
@@ -493,79 +346,6 @@ $text_color: #666;
 					float: left;
 					color: #000;
 					background-color: #fff;
-					.info_box{
-						width: 100%;
-						height: 254px;
-						dl{
-							width: 100%;
-							height: 130px;
-							padding-top: 22px;
-							padding-bottom: 10px;
-							dt{
-								width: 70px;
-								margin: 0px auto;
-								img{
-									width: 70px;
-									height: 70px;
-									border-radius: 50%;
-								}
-							}
-							dd{
-								width: 100%;
-								text-align: center;
-								font-size: 14px;
-								margin-top: 10px;
-							}
-						}
-						.btnBox{
-							width: 100%;
-							height: 124px;
-							text-align: center;
-							background-color: #f2f2f2;
-							padding-top: 12px;
-							padding-bottom: 24px;
-							div{
-								margin-top: 14px;
-								.el-button{
-									width: 130px;
-									border: 1px solid $primary;
-								}
-							}
-						}
-						.info{
-							width: 100%;
-							height: 124px;
-							.info_money{
-								width: 100%;
-								height: 44px;
-								padding-bottom: 10px;
-								border-bottom: 1px solid $border_color;
-								text-align: center;
-								.info_num{
-									color: $primary;
-								}
-							}
-						    .info_order{
-								width: 100%;
-								.order_menu{
-									width: 100%;
-									span{
-										float: left;
-									}
-									i{
-										float: left;
-										height: 12px;
-										padding: 0px 3px;
-										border-radius: 6px;
-										margin-top: 2px;
-										text-align: center;
-										color: #fff;
-										background-color: $primary;
-									}
-								} 
-							}
-						}
-					}
 				}
 				.pre_msg{
 					width: 100%;
@@ -581,57 +361,8 @@ $text_color: #666;
 						}
 					}
 				}
-				.info_title{
-					width: 100%;
-					height: 48px;
-					line-height: 48px;
-					span{
-						float: left;
-						font-weight: 600;
-					}
-					em{
-						float: right;
-						color: $text_color;
-					}
-				}
-				.recharge{
-					width: 100%;
-					height: 130px;
-					.recharge_title{
-						width: 100%;
-						div{
-							display: inline-block;
-							width: 48%;
-							text-align: center;
-							height: 26px;
-							line-height: 26px;
-							cursor: pointer;
-						}
-					}
-					.border_top{
-						border-top: 2px solid $primary;
-					}
-					.el-row{
-						width: 100%;
-						height: 32px;
-						line-height: 32px;
-						.el-col-8{
-							color: $primary;
-						}
-						.top_up{
-							width: 76px;
-							height: 24px;
-							line-height: 24px;
-							text-align: center;
-							float: right;
-							border-radius: 12px;
-							background-color: $primary;
-							color: #fff;
-							margin-top: 4px;
-							cursor: pointer;
-						}
-					}
-				}
+				
+				
 			}
 		}
 	}

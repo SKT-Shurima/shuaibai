@@ -27,7 +27,7 @@
 							<img src="../../../static/loginImg/code.jpg" height="16" width="14" alt="verify_code">
 						</dt>
 						<dd>
-							<input type="text" name="verify_code" v-model='verify_code'/>
+							<input type="text" name="verify_code" v-model='verify_code' @keyup.enter='loginFn'/>
 						</dd>
 					</dl>
 					<div class="vertify_box">
@@ -61,9 +61,10 @@
 	</div>
 </template>
 <script>
-import {createToken,login} from '../../common/js/api.js' 
+import {createToken,login} from '../../common/js/api'
+import {setCookie,getCookie,delCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
-import {hex_md5} from '../../common/js/md5.js'
+import {hex_md5} from '../../common/js/md5'
 export default {
 	data(){
 		return {
@@ -88,32 +89,29 @@ export default {
 				let {errcode,message,content} = res;
 				if (errcode !== 0) {
 					MessageBox.alert(message, '提示', {
-		          	confirmButtonText: '确定'
-		        });
+			          	confirmButtonText: '确定'
+			        });
 				} else {
 					//  判断是否记住密码
 					let accountInfo ;
 					if(this.remember){
 						accountInfo = this.username + "&" + this.passwd;  
-						this.setCookie('accountInfo',accountInfo,1440*3);  
+						setCookie('accountInfo',accountInfo,3);  
 					}else {
-						let hasUserInfo = this.getCookie('accountInfo');
+						let hasUserInfo = getCookie('accountInfo');
 						if (hasUserInfo) {
-							this.delCookie('accountInfo');
+							delCookie('accountInfo');
 						}
 					}
 					// 本地存储登录后返回信息
 					if(sessionStorage.userInfo) {
 						sessionStorage.removeItem('userInfo');
-						sessionStorage.removeItem('access_token');
-						window.location.href = 'index.html' ;
-					}else {
-						sessionStorage.setItem('access_token',content.access_token);
-						content  = JSON.stringify(content);
-						sessionStorage.setItem('userInfo',content);
-						window.location.href = 'index.html' ;
+						delCookie('access_token');
 					}
-					
+					setCookie('access_token',content.access_token,.1);
+					content  = JSON.stringify(content);
+					sessionStorage.setItem('userInfo',content);
+					location.href = 'index.html' ;
 				}
 			})
 		},
@@ -129,42 +127,12 @@ export default {
 				}
 			})
 		},
-		// 设置cookie  
-		setCookie(c_name,value,expTime){  
-		    var exdate = new Date();  
-		    exdate.setTime(exdate.getTime() + expTime *24 *60 * 60 * 1000);  
-		    document.cookie= c_name + "=" + escape(value)+((expTime==null) ? "" : ";expires="+exdate.toGMTString());  
-		},
-		// 读取cookie  
-		getCookie(c_name){  
-		    if (document.cookie.length>0)  
-		    {  
-		        var c_start=document.cookie.indexOf(c_name + "=");  
-		        if (c_start!=-1)  
-		        {   
-		        c_start=c_start + c_name.length+1;  
-		        var c_end=document.cookie.indexOf(";",c_start);  
-		        if (c_end==-1)   
-		            c_end = document.cookie.length  
-		            return unescape(document.cookie.substring(c_start, c_end))  
-		        }  
-		    }  
-		    return ""     
-		},
-		// 删除cookie  
-		delCookie(c_name){  
-		    var exp = new Date();  
-		    exp.setTime(exp.getTime() - 1);  
-		    var cval = this.getCookie(c_name);  
-		    if(cval!=null){  
-		        document.cookie = c_name + "=" + cval + ";expires=" + exp.toGMTString();  
-		    }  
-		}, 
+		
 	},
 	mounted(){
 		this.$nextTick(()=>{
 			this.initToken();
-			let accountInfo = this.getCookie('accountInfo');
+			let accountInfo = getCookie('accountInfo');
 			accountInfo = accountInfo.split("&");
 			this.username = accountInfo[0];
 			this.passwd = accountInfo[1];

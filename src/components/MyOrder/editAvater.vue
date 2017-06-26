@@ -57,7 +57,8 @@
 </template>
 <script>
 import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
-import {MessageBox,Message} from  'element-ui'
+import {errorInfo} from '../../common/js/common'
+import {Message} from  'element-ui'
  export  default{
  	data(){
  		return{
@@ -87,10 +88,10 @@ import {MessageBox,Message} from  'element-ui'
       	    const isJPG = file.type === 'image/jpeg'||'image.png';
 	        const isLt2M = file.size / 1024 / 1024 < 2;
 	        if (!isJPG) {
-	          this.$message.error('上传头像图片只能是 JPG / PNG格式!');
+	            Message.error('上传头像图片只能是 JPG / PNG格式!');
 	        }
 	        if (!isLt2M) {
-	          this.$message.error('上传头像图片大小不能超过 2MB!');
+	            Message.error('上传头像图片大小不能超过 2MB!');
 	        }
 	        return isJPG && isLt2M;
     	},
@@ -104,18 +105,7 @@ import {MessageBox,Message} from  'element-ui'
 	    	changeAvater(paramAvater).then(res=>{
 	    		let {errcode,message,content} = res;
 	    		if (errcode!==0) {
-	    			 if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		window.location.href = 'login.html';
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+    			    errorInfo(errcode,message) ;
 	    		}else{
 	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			 Message.success({
@@ -131,7 +121,7 @@ import {MessageBox,Message} from  'element-ui'
  			if (sessionStorage.userInfo) {
 				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}else{
-				window.location.href = "login.html";
+				location.href = "login.html";
 			}
  		})
  	}

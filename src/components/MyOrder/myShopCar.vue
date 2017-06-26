@@ -116,6 +116,7 @@
 <script>
 import {currency} from "../../common/js/filter.js"
 import {getCarts,removeCart,editCart,buy}  from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -272,20 +273,7 @@ import {MessageBox} from  'element-ui'
 				editCart(params).then(res=>{
 					let {errcode,message,content} = res;
 			 		if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						this.initList(false);
 					}
@@ -300,20 +288,7 @@ import {MessageBox} from  'element-ui'
 		          removeCart(params).then(res=>{
 			 		let {errcode,message,content} = res;
 			 		if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						if (removeIndex) {
 							this.initList(false,removeIndex);
@@ -391,20 +366,7 @@ import {MessageBox} from  'element-ui'
 			 	buy(params).then(res=>{
 			 		let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						if(sessionStorage.orderInfo){
 							sessionStorage.removeItem('orderInfo');
@@ -446,20 +408,7 @@ import {MessageBox} from  'element-ui'
 			getCarts(params).then(res=>{
 				let {errcode,message,content} = res ;
 				if(errcode!==0) {
-					if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		if (action==='confirm') {
-				          			window.location.href = 'login.html';
-				          		}
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+					errorInfo(errcode,message) ;
 				}else{
 					this.shopList = content ;
 					//  刷新初始化选择列表

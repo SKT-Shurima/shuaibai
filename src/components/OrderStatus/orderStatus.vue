@@ -73,7 +73,7 @@
 import {timeStyleCh} from '../../common/js/filter'
 import {buy,cancelOrder,orderRemind,delivery} from '../../common/js/api'
 import {MessageBox,Message} from  'element-ui'
-import {getHashReq} from '../../common/js/common'
+import {getHashReq,errorInfo} from '../../common/js/common'
 	export default {
 	   data(){
 	   	  return {
@@ -177,20 +177,7 @@ import {getHashReq} from '../../common/js/common'
 		    	buy(params).then(res=>{
 			 		let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						if(sessionStorage.orderInfo){
 							sessionStorage.removeItem('orderInfo');
@@ -213,20 +200,7 @@ import {getHashReq} from '../../common/js/common'
 	   			orderRemind(params).then(res=>{
 	   				let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						Message.success({
 				          message: message,
@@ -265,20 +239,7 @@ import {getHashReq} from '../../common/js/common'
 		   	 		api(params).then(res=>{
 		   	 			let {errcode,message,content} = res ;
 						if(errcode!==0) {
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		if (action==='confirm') {
-						          			window.location.href = 'login.html';
-						          		}
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else{
 							location.reload();
 						}

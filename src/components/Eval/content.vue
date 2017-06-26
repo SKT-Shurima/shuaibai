@@ -4,12 +4,11 @@
 	</div>
 </template>
 <script >
-import {getRequest} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getOrderDetail} from '../../common/js/api'
 import firstEval from './firstEval'
 import addEval from './addEval'
 import noEval from './noEval'
-
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -33,20 +32,7 @@ import {MessageBox} from  'element-ui'
 	   			getOrderDetail(params).then(res=>{
 	   				let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						this.order = content.order;
 						let state = this.order.order_state - 0;

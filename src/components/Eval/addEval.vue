@@ -74,7 +74,7 @@
 	</div>
 </template>
 <script >
-import {getRequest} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getCommnets,addComment} from '../../common/js/api'
 import {MessageBox,Message} from  'element-ui'
 	export default{
@@ -112,20 +112,7 @@ import {MessageBox,Message} from  'element-ui'
 				let _this = this ;
 				let {errcode,message,content} = res ;
 				if(errcode!==0) {
-					if (errcode === 99) {
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定',
-				          	callback: action => {
-				          		if (action==='confirm') {
-				          			window.location.href = 'login.html';
-				          		}
-				          	}
-					    });
-            		}else{
-            			MessageBox.alert(message, '提示', {
-				          	confirmButtonText: '确定'
-					    });
-            		}
+					errorInfo(errcode,message) ;
 				}else{
 					let len = _this.uploadList[_this.uploadIndex].imgList.length ;
 					if (len < 5) {
@@ -165,20 +152,7 @@ import {MessageBox,Message} from  'element-ui'
 				addComment(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						MessageBox.alert('追加评论成功', '提示', {
 				          	confirmButtonText: '确定',
@@ -198,20 +172,7 @@ import {MessageBox,Message} from  'element-ui'
 				getCommnets(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						this.goods = content ;
 						for(let i = 0 ;i < this.goods.length ; i++ ){

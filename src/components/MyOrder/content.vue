@@ -58,6 +58,7 @@
 <script>
 	import {getRequest} from '../../common/js/common'
     import orderList from './orderList'
+    import refundList from './refundList'
 	import personalCenter from './personalCenter' ;
 	import address from './address'
 	import modidfyPw from './modidyPw'
@@ -126,6 +127,7 @@
 		components:{
 			youLike,
 			"view0": orderList,
+			'view01': refundList,
 			"view10": personalCenter,
 			"view100": address,
 			"view11": modidfyPw,
@@ -167,19 +169,25 @@
 	      vipView(index){
 	      	let _this = this ;
 	      	_this.vipIndex = index;
+	      	_this.orderIndex= "";
 	      	let view = 'vip' ;
 	        view += index ;
 	        _this.changeView(view);
 	      },
 	      getOrder(index){
 	      	let _this = this ;
-	      	// 切换当前视图
-	      	_this.changeView('view0');
 	      	// 改变点击后的列表效果
 	      	_this.orderIndex = index ;
 	      	_this.vipIndex = '';
 	      	if (index<5) {
-	      		this.$refs.orderList.getOrderList(index,"1");
+	      		if (_this.currentView === 'view0') {
+	      			_this.$refs.orderList.getOrderList(index,"1");
+	      		}
+	      		// 切换当前视图
+	      		_this.changeView('view0');
+	      	}else{
+	      		// 切换当前视图
+	      		_this.changeView('view01');
 	      	}
 	      },
 	      init(){
@@ -192,6 +200,9 @@
 					}
 					if (view === 'view0') {
 						this.orderIndex = 0;
+					}
+					if (view==='view01'){
+						this.orderIndex = 5;
 					}
 					this.changeView(view);
 				}else {

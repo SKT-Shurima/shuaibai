@@ -39,6 +39,7 @@
 <script>
 	import {currency} from '../../common/js/filter'
 	import {collection,cancelCollections} from '../../common/js/api'
+	import {errorInfo} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import pagination from '../Common/pagination'
 	export default {
@@ -70,18 +71,7 @@
 			        cancelCollections(params).then(res=>{
 			        	let {errcode,message,content} = res ;
 						if(errcode !== 0){
-							if (errcode === 99) {
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定',
-						          	callback: action => {
-						          		window.location.href = 'login.html';
-						          	}
-							    });
-		            		}else{
-		            			MessageBox.alert(message, '提示', {
-						          	confirmButtonText: '确定'
-							    });
-		            		}
+							errorInfo(errcode,message) ;
 						}else {
 							this.initList();
 						}
@@ -105,18 +95,7 @@
 				collection(params).then(res=>{
 					let {errcode,message,content,pageSize} = res ;
 					if(errcode !== 0){
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		window.location.href = 'login.html';
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else {
 						this.colList = content;
 						this.pagesize = pageSize ;

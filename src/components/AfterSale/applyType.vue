@@ -1,21 +1,39 @@
 <template>
 	<div class="wrap">
 		<ul>
-			<li>
-				我要退款
-			</li>
-			<li>
-				我要退货
-			</li>
-			<li>
-				我要换货/维修
-			</li>
+			<li v-for='(item,index) in type' :key='item' v-text='item.name' @click='chooseType(index)'></li>
 		</ul>
 	</div>
 </template>
 <script>
+import {getHashReq} from '../../common/js/common'
+import {MessageBox} from  'element-ui'
 	export default{
-
+		data(){
+			return {
+				reqParams: null,
+				type: [{name:'我要退款'},{name:'我要退货'},{name:'我要换货/维修'}],
+				req: location.hash.split('?')[1]
+			}
+		},
+		methods:{
+			chooseType(index){
+				let _this = this ;
+				let type = '';
+				switch (index){
+					case 0 :
+					  type = 'moneyReturn';
+					break ;
+					case 1 :
+					  type = 'goodsReturn';
+					break ;
+					case 2 :
+					  type = 'maintain';
+					break ;
+				}
+				location.hash = `${type}?${_this.req}`;
+			}
+		}
 	}
 </script>
 <style lang='scss' scoped>

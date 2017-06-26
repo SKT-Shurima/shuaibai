@@ -58,8 +58,13 @@ export const getHomePage = params => {
 // 手机面额充值
 export const  getActualFee = params =>{
 	params = trans(params);
-	return axios.get(`${base}/MobileRechargeAction/getActualFee?type=${params}`).then(res=>res.data )
-} 
+	return axios.get(`${base}/MobileRechargeAction/getActualFee?${params}`).then(res=>res.data )
+}
+// 手机充值
+export const mobileRecharge = params =>{
+	params = trans(params);
+	return axios.post(`${base}/MobileRechargeAction/recharge`,params).then(res=>res.data);
+}
 // 每日上新
 export const getNewGoods = () => {
     return axios.get(`${base}/initAction/getNewGoods`).then(res=> res.data);
@@ -416,4 +421,59 @@ export const getCommnets = params =>{
 export const addComment = params =>{
 	params = trans(params);
 	return axios.post(`${base}/orderAction/addComment`,params).then(res=>res.data);
+}
+// 申请退款退货 换货 维修
+export const refund = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/orderAction/refund`,params).then(res=>res.data) ;
+}
+// 获取退款列表
+export const getRefunds = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getRefunds`,params).then(res=>res.data);
+}
+// 申请售后商品信息
+export const getRefundInfo = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getRefundInfo`,params).then(res=>res.data); 
+}
+// 售后详情
+export const supportDetail =params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/orderAction/supportDetail`,params).then(res=>res.data); 
+}
+// 售后信息
+export const refundGoods =params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/orderAction/refundGoods`,params).then(res=>res.data); 
+}
+// 修改申请
+export const changeRefund = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/changeRefund`,params).then(res=>res.data);
+}
+// 撤销申请
+export const revokerRefund = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/orderAction/revokerRefund`,params).then(res=>res.data);
+}
+// 获取物流信息
+export const getExpress = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getExpress`,params).then(res=>res.data);
+}
+// 填写、修改退货
+export const writeReturnNote = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/writeReturnNote`,params).then(res=>res.data) ;
+}
+// 留言
+export const refundMessage = params => {
+	params = trans(params);
+	return  axios.post(`${base}/orderAction/refundMessage`,params).then(res=>res.data);
+}
+// 催一催
+export const refundRemind = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/orderAction/refundRemind`,params).then(res=>res.data) ; 
 }

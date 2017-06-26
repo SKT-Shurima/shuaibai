@@ -54,7 +54,7 @@
 <script>
 import {currency} from '../../common/js/filter'
 import {express} from '../../common/js/api'
-import {MessageBox} from  'element-ui'
+import {errorInfo} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -86,20 +86,7 @@ import {MessageBox} from  'element-ui'
 	   			express(params).then(res=>{
 	   				let {errcode,message,content} = res ;
 					if(errcode!==0) {
-						if (errcode === 99) {
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
-					          		}
-					          	}
-						    });
-	            		}else{
-	            			MessageBox.alert(message, '提示', {
-					          	confirmButtonText: '确定'
-						    });
-	            		}
+						errorInfo(errcode,message) ;
 					}else{
 						content.list = content.list.reverse();
 						this.expressInfo = content ;

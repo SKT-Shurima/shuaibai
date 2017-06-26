@@ -4,9 +4,14 @@ form,fieldset,input,textarea,p,blockquote,th,td {
 }
 /* 酌情修改 */
 body {
-    background:#fff;color:#333;font-size:12px; margin-top:5px;font-family:"SimSun","宋体","Arial Narrow";
+    background:#fff;
+    color:#333;
+    font-size:12px; 
+    margin-top:5px;
+    // font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+    font-family: 'Microsoft Yahei', arial, sans-serif ;
 }
-body,div,dl,dt,dd,ul,li,p,h4{
+body,div,dl,dt,dd,ul,li,p,h4,h1,p{
   margin: 0px;
   padding: 0px;
 }
