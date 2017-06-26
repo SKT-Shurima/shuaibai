@@ -10,8 +10,6 @@
 				<goods-list @sendSellerInfo='getSellerInfo'></goods-list>
 			</div>
 		</div>
-		
-
 	</div>
 </template>
 <script>

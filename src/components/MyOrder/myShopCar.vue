@@ -116,7 +116,7 @@
 <script>
 import {currency} from "../../common/js/filter.js"
 import {getCarts,removeCart,editCart,buy}  from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -267,7 +267,7 @@ import {MessageBox} from  'element-ui'
 				let arr = [];
 				arr.push(data);
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					data: JSON.stringify(arr),
 				}
 				editCart(params).then(res=>{
@@ -305,7 +305,7 @@ import {MessageBox} from  'element-ui'
 		 remove(cart_id,batch,sellerIndex,goodsIndex){
 		 	let _this = this ;
 		 	let params = {
-		 		access_token: sessionStorage.access_token
+		 		access_token: getCookie('access_token')
 		 	} ;
 		 	if (batch) {
 		 		let id = '' ;
@@ -335,7 +335,7 @@ import {MessageBox} from  'element-ui'
 		 	let _this = this ;
 		 	let totalCheck = 0 ;
 		 	let params = {
-		 		access_token: sessionStorage.access_token,
+		 		access_token: getCookie('access_token'),
 		 		data: new Array
 		 	}
 		 	for(let i = 0 ;i <_this.checkList.length;i++){
@@ -403,7 +403,7 @@ import {MessageBox} from  'element-ui'
 		 },
 		 initList(mask,removeIndex){
 		 	let params = {
-				access_token: sessionStorage.access_token
+				access_token: getCookie('access_token')
 			};
 			getCarts(params).then(res=>{
 				let {errcode,message,content} = res ;

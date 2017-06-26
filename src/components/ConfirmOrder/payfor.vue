@@ -27,7 +27,7 @@
 <script>
 import {pay} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
-import {getHashReq} from '../../common/js/common'
+import {getHashReq,getCookie} from '../../common/js/common'
 	export default {
 		data(){
 			return {
@@ -41,7 +41,7 @@ import {getHashReq} from '../../common/js/common'
 				_this.reqParams = getHashReq() ;
 				let order_sn = 	_this.reqParams.order_sn;
 				let  params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					type: _this.typeIndex,
 					orders: order_sn
 				}

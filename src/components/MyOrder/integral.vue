@@ -29,7 +29,7 @@
 <script>
 import {currency} from '../../common/js/filter'
 import {integration,integrationDetail} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -52,7 +52,7 @@ import {MessageBox} from  'element-ui'
     created(){
         this.$nextTick(()=>{
         	let params = {
-        		access_token : sessionStorage.access_token
+        		access_token: getCookie('access_token')
         	}
         	integration(params).then(res=>{
         		let {errcode,message,content} = res;

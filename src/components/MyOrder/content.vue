@@ -56,7 +56,7 @@
 	</div>
 </template>
 <script>
-	import {getRequest} from '../../common/js/common'
+	import {getHashReq,getCookie} from '../../common/js/common'
     import orderList from './orderList'
     import refundList from './refundList'
 	import personalCenter from './personalCenter' ;
@@ -115,7 +115,8 @@
 		        	{name: '待收货订单'},
 		        	{name: '待评价订单'},
 		        	{name: '退款/售后'}
-		        ]
+		        ],
+		        reqParams: null
 		    };
 		},
 		computed:{
@@ -161,10 +162,10 @@
 	      	let _this = this ;
 	      	_this.guessBol = msg;
 	      },
-	      changeView(view){
+	      changeView(view,hash){
 	      	let _this = this ;
 	      	_this.$store.commit('switchView',view);
-	      	location.hash = view ;
+	      	location.hash = hash ? hash : view ;
 	      },
 	      vipView(index){
 	      	let _this = this ;
@@ -191,24 +192,39 @@
 	      	}
 	      },
 	      init(){
-	      	let view = location.hash.slice(1) ;
-				if (view) {
-					if(view.indexOf('vip')>=0){
-						this.vipIndex = view[3] - 0;
-					}else{
-						this.vipIndex = "" ;
-					}
-					if (view === 'view0') {
-						this.orderIndex = 0;
-					}
-					if (view==='view01'){
-						this.orderIndex = 5;
-					}
-					this.changeView(view);
-				}else {
-					this.changeView('view10');
+	      	let hash = location.hash ;
+			let view ;
+			if (hash.indexOf('?')>0) {
+				view = hash.split('?')[0].slice(1)
+				this.reqParams = getHashReq();
+			}else {
+				view = location.hash.slice(1) ;
+			}
+			if (view) {
+				if(view.indexOf('vip')>=0){
+					this.vipIndex = view[3] - 0;
+				}else{
+					this.vipIndex = "" ;
 				}
+				if (view === 'view0') {
+					this.orderIndex = this.reqParams ? this.reqParams.orderIndex -0 : 0 ;
+				}
+				if (view==='view01'){
+					this.orderIndex = 5;
+				}
+				this.changeView(view,hash);
+			}else {
+				this.changeView('view10');
+			}
 	      }
+		},
+		created(){
+			this.$nextTick(()=>{
+				let access_token = getCookie('access_token') ;
+	            if(!access_token){
+	                location.href = 'login.html';
+	            }
+	        })
 		},
 		mounted(){
 			this.$nextTick(()=>{

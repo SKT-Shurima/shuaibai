@@ -15,10 +15,10 @@
 					</dt>
 					<dd>
 						<div class="theme_left">
-							<img :src="item.goods.goods[0].cover">
+							<img :src="item.goods.goods[0].cover" @click='goodsDeatil(item.goods.goods[0].goods_id)'>
 						</div>
 						<ul class="theme_right">
-							<li v-for='(childItem,index) in item.goods.goods' v-if='index!==0'>
+							<li v-for='(childItem,index) in item.goods.goods' v-if='index!==0' @click='goodsDeatil(childItem.goods_id)'>
 								<img :src="childItem.cover">
 							</li>
 						</ul>
@@ -34,6 +34,11 @@
 		data(){
 			return{
 			  theme: null
+			}
+		},
+		methods:{
+			goodsDeatil(id){
+				window.open(`goodDetail.html?goods_id=${id}`);
 			}
 		},
 		mounted(){
@@ -56,6 +61,9 @@ $border_list: #f0f0f0;
 				width: 100%;
 				height: 70px;
 			}
+        }
+        img{
+        	cursor: pointer;
         }
         .theme_box{
         	overflow: hidden;

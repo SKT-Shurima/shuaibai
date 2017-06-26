@@ -26,7 +26,6 @@ import {getHashReq} from '../../common/js/common'
 import orderInfo from '../AfterSaleCommon/orderInfo'
 import seller from '../AfterSaleCommon/seller'
 import editMoneyReturn from './editMoneyReturn'
-import {MessageBox} from  'element-ui'
 export default {
 	data() {
 		window.addEventListener("popstate",()=>{

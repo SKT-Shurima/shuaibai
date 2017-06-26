@@ -33,7 +33,7 @@
 <script >
 import {currency,dateStylePoint} from '../../common/js/filter'
 import {getCoupons} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import pagination from '../Common/pagination'
 	export default{
 		data(){
@@ -61,7 +61,7 @@ import pagination from '../Common/pagination'
 		mounted(){
 			this.$nextTick(()=>{
 				let params  ={
-					access_token : sessionStorage.access_token
+					access_token: getCookie('access_token')
 				}
 				getCoupons(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -118,7 +118,7 @@ $bg_color: #e84848;
 					    	}
 					    	dd{
 					    		float: left;
-					    		font-size: 40px;
+					    		font-size: 34px;
 					    		font-weight: 600;
 					    	}
 					    }

@@ -19,7 +19,7 @@ import confirmGet from '../OrderStatus/confirmGet'
 import evaluation from '../OrderStatus/evaluation'
 import tradeOver from '../OrderStatus/tradeOver'
 import {getOrderDetail} from '../../common/js/api'
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 window.onpopstate = function() {  
        location.reload() ;
  }; 
@@ -57,7 +57,7 @@ window.onpopstate = function() {
 				let order_sn = 	_this.reqParams.order_sn;
 				if (order_sn) {
 					let params = {
-						access_token: sessionStorage.access_token,
+						access_token: getCookie('access_token'),
 						order_sn: order_sn
 					}
 					getOrderDetail(params).then(res=>{

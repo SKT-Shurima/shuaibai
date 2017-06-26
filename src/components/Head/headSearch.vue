@@ -106,7 +106,6 @@ $red_color: #f24450;
 							background-color: #fff;
 							background-position: 0 -360px;
 							background-repeat: repeat-x;
-							color: #999;
 						 	font-family: arial,"宋体";
 							font-size: 14px;
 							padding: 5px;

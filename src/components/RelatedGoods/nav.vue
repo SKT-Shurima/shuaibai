@@ -6,7 +6,11 @@
 					<dt @mouseleave='listBol=false;listConBol=false'>
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-							<li v-for='(item,index) in category' :key='item' v-text='item.name'></li>
+							<li v-for='(item,index) in category' :key='item'>
+								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
+								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
+								{{item.name}}
+							</li>
 						</ul>
 						<div class="content" v-show='listBol'  @mouseleave='listBol=false;listConBol=false' @mouseenter='listBol=true;listConBol=true'>
 							<div class="detail_list">
@@ -21,16 +25,7 @@
 								</el-row>
 							</div>
 							<div class="img_box">
-								 <ul class="small_img">
-								 	<li v-for='(sItem,index) in youLike' :class='{"margin_left":index%2}' v-if='index<4'>
-								 		<img src="">
-								 	</li>
-								 </ul>
-								 <ul class="big_img">
-								 	<li v-for= '(bItem,index) in youLike' v-if='index>=4'>
-								 		<img src="">
-								 	</li>
-								 </ul>
+								<guess-like></guess-like>
 							</div>
 						</div>
 					</dt>
@@ -41,18 +36,20 @@
 	</div>
 </template>
 <script>
-import {getCategory} from '../../common/js/api.js'
+import {getCategory} from '../../common/js/api'
+import guessLike from '../Common/guessLike'
   export default {
-     data(){
+    data(){
      	return{
      		listBol: false,
      		listConBol: false,
+     		listIndex: "",
      		category: [{name:''}],
      		fIndex: 0,
 			sIndex: 0,
      	}
-     },
-     props:{
+    },
+    props:{
      	sellerInfo:{
      		type: Object,
      		required: true,
@@ -63,7 +60,10 @@ import {getCategory} from '../../common/js/api.js'
      		}
      	}
      },
-     mounted(){
+    components:{
+     	guessLike
+    },
+    mounted(){
      	this.$nextTick(()=>{
 			getCategory().then(res=>{
 				let {errcode,content} = res ;
@@ -118,6 +118,11 @@ $border_color: #ccc;
 						li:hover{
 							background-color: #fff;
 							color: #c81623;
+						}
+						img{
+							width: 22px;
+							vertical-align: -5px;
+							margin-right: 10px;
 						}
 					}
 					.content{

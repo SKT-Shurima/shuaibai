@@ -1,18 +1,19 @@
-<template>	
-	 <div class="recommend" style="margin-top:60px;">
+<template>
+	<div class="recommend">
 	 	<div class="title">
 	 		<i class="icon"></i>
-	 		<span style="vertical-align: 4px;">猜你喜欢</span>
+	 		<span>店内推荐</span>
 	 		<strong @click='init'>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
 	 	</div>
-	 	<ul class="youLove" v-if= 'loveList'>
-	 		<li class="infoList" v-for='item in loveList' @click='goodDetail(item.goods_id)'>
+	 	<ul v-if='storeRecommend'>
+	 		<li class="infoList" v-for='item in storeRecommend'>
 	 			<dl>
 					<dt>
-						<img :src="item.cover">
+						<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 					</dt>
 					<dd>
-						<div class="sellInfo" v-text='item.name'>
+						<div class="sellInfo">
+							{{item.name}}
 						</div>
 						<div class="priceInfo">
 							<span>
@@ -26,35 +27,42 @@
 				</dl>
 	 		</li>
 	 	</ul>
-	 </div>
+	</div> 
 </template>
 <script>
-	import {currency} from '../../common/js/filter'
-	import {getGuessLike} from '../../common/js/api'
-	import {errorInfo} from '../../common/js/common'
+import 'common/css/goodsList.scss'
+import {getRecommend} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
+import {currency} from '../../common/js/filter'
 	export default {
 		data(){
 			return {
-				loveList: ''
+				storeRecommend: null,
+			}
+		},
+		props:{
+			seller_id: {
+				type: String,
+				required: true
 			}
 		},
 		filters:{
 			currency
 		},
-		methods: {
+		methods:{
 			goodDetail(id){
 				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			init(){
-				let params = {
-					category_id: 1
-				};
-				getGuessLike(params).then(res=>{
+				let params ={
+					seller_id: this.seller_id
+				}
+				getRecommend(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						this.loveList = res.content ;
+						this.storeRecommend = content ;
 					}
 				})
 			}
@@ -68,12 +76,12 @@
 </script>
 <style lang='scss' scoped>
 $text_color: #666;
-$border_color: #ccc;
 $primary:#c71724;
 $bg_title: #f5f5f5;
 	 .recommend{
 	 	width: 100%;
 	 	overflow: hidden;
+		margin-top: 70px;
 		.title{
 			width: 100%;
 			height: 40px;
@@ -90,6 +98,7 @@ $bg_title: #f5f5f5;
 			span{
 				font-size: 16px;
 				font-weight: 600;
+				vertical-align: 4px;
 			}
 			strong{
 				float: right;
@@ -101,51 +110,24 @@ $bg_title: #f5f5f5;
 				margin-left: 10px;
 			}
 		}
-		.youLove{
+		ul{
 			width: 100%;
-			margin-top: 14px;
 			overflow: hidden;
 			.infoList{
+				width: 25%;
+				height: 320px;
 				float: left;
-				width: 209px;
-				padding: 14px;
-				cursor: pointer;
-				margin-right: -1px;
-				border: 1px solid #f0f0f0;
-				dl{
-					dt{
-						width: 180px;
-						height: 180px;
-						img{
-							width: 100%;
-							height: 100%; 
-						}
-					}
-					dd{
-						width: 100%;
-						overflow: hidden;
-						.sellInfo{
-							height: 36px;
-							line-height: 18px;
-							font-weight: 600;
-							margin-top: 10px;
-						}
-						.priceInfo{
-							margin-top: 6px;
-							span{
-								font-size: 18px;
-								font-weight: 600;
-								color: $primary;
-							}
-							em{
-								margin-top: 4px;
-								float: right;
-								color: #999;
-							}
-						}
-					}	 
+				padding: 15px;
+				dt{
+					width: 216px;
+					height: 216px;
 				}
 			}
 		}
+		.youLove{
+			width: 100%;
+			overflow: hidden;
+		}
  }
+
 </style>

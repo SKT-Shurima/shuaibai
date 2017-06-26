@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap" v-if='goodsInfo'>
-		<v-nav></v-nav>
+		<v-nav :seller-info='sellerInfo'></v-nav>
 		<div class="content" >
 			<dl class="goodsInfo">
 				<dt>
@@ -176,13 +176,14 @@
 <script>
 	import { arrCity } from '../../common/js/city'
  	import {currency} from '../../common/js/filter'
- 	import {getRequest,errorInfo} from '../../common/js/common'
+ 	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
  	import {goodsDetail,addCart,collectionGoods,addFollow,cancelFollow} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import vNav from '../StoreCommon/nav'
 	export default{
 		data(){
 			return {
+				sellerInfo: {},
 				goodsInfo: null, // 请求成功后的商品信息
 				imgListIndex: 0, // 详细展示图列表索引 默认为0
 				currentImg: "" , // 当前详情页的大图
@@ -319,7 +320,7 @@
 			addShopCar(){
 				let _this = this ;
 				let params = {
-				    access_token: sessionStorage.access_token,
+				    access_token: getCookie('access_token'),
 					goods_id: _this.params.goods_id,
 					option_id: _this.option_id,
 					quantity: _this.numInput
@@ -340,7 +341,7 @@
 			collection(){
 				let _this = this;
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					goods_id: _this.params.goods_id
 				}
 				collectionGoods(params).then(res=>{
@@ -349,7 +350,6 @@
 						errorInfo(errcode,message) ;
 					}else {
 						this.goodsInfo.goods.is_collection=!this.goodsInfo.goods.is_collection;
-						console.log(content);
 					}
 				})
 			},
@@ -363,7 +363,7 @@
 					fn = addFollow;
 				}
 				let params ={
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					seller_id: _this.goodsInfo.goods.seller_id
 				}
 				fn(params).then(res=>{
@@ -371,7 +371,6 @@
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						console.log(content)
 						this.goodsInfo.goods.is_seller_collection=!this.goodsInfo.goods.is_seller_collection
 					}
 				})
@@ -386,7 +385,7 @@
 			this.$nextTick(()=>{
 				this.params = getRequest();
 				let params = {
-					access_token : sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					goods_id: this.params.goods_id
 				}
 				goodsDetail(params).then(res=>{
@@ -395,6 +394,7 @@
 						errorInfo(errcode,message) ;
 					}else {
 						this.goodsInfo = content ;
+						this.sellerInfo.shop_header = this.goodsInfo.goods.shop_header ;
 						// 初始化结构数据
 						this.init();
 					}
@@ -673,6 +673,9 @@ $title_color: #333;
       				line-height: 56px;
       				font-size: 16px;
       				text-align: center;
+      				overflow: hidden;
+      				text-overflow: ellipsis;
+      				white-space: nowrap ;
       				border-bottom: 1px solid $border_color;
       			}
       			.eval{

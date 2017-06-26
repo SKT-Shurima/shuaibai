@@ -40,8 +40,8 @@
 						<dt><a href="javascript:;"><strong>购物指南</strong></a></dt>
 						<dd>
 							<ul>
-								<li><a href="" title="购物流程">购物流程</a></li>
-								<li><a href="" title="账号管理">账号管理</a></li>
+								<li><a  title="购物流程">购物流程</a></li>
+								<li><a  title="账号管理">账号管理</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -49,10 +49,10 @@
 						<dt><a href="javascript:void(0);"><strong>售后无忧</strong></a></dt>
 						<dd>
 							<ul>
-                                <li><a href="" title="售后服务">售后服务</a></li>
-                                <li><a href="" title="退款说明">退款说明</a></li>
-                                <li><a href="" title="返修/退换货">返修/退换货</a></li>
-                                <li><a href="" title="取消订单">取消订单</a></li>
+                                <li><a  title="售后服务">售后服务</a></li>
+                                <li><a  title="退款说明">退款说明</a></li>
+                                <li><a  title="返修/退换货">返修/退换货</a></li>
+                                <li><a  title="取消订单">取消订单</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -60,7 +60,7 @@
 						<dt><a href="javascript:void(0);"><strong>7天无理由退换货</strong></a></dt>
 						<dd>
 							<ul>
-								<li><a href="" title="7天无理由退换货">7天无理由退换货</a></li>
+								<li><a  title="7天无理由退换货">7天无理由退换货</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -68,8 +68,8 @@
 						<dt><a href="javascript:void(0);"><strong>商家服务</strong></a></dt>
 						<dd>
 							<ul>
-								<li><a href="" title="商家中心">商家中心</a></li>
-								<li><a href="" title="运营服务">运营服务</a></li>
+								<li><a  title="商家中心">商家中心</a></li>
+								<li><a  title="运营服务">运营服务</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -77,9 +77,9 @@
 						<dt><a href="javascript:void(0);"><strong>联系我们 </strong></a></dt>
 						<dd>
 							<ul>
-								<li><a href="" title="客服咨询">客服咨询</a></li>
-								<li><a href="" title="0571-22853930">0571-22853930</a></li>
-                                <li><a href="" title="156-0653-7001">156-0653-7001</a></li>
+								<li><a  title="客服咨询">客服咨询</a></li>
+								<li><a  title="0571-22853930">0571-22853930</a></li>
+                                <li><a  title="156-0653-7001">156-0653-7001</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -88,21 +88,21 @@
                     <ul>
                         <li>
                                                    
-                          <a href="" >免责条款</a> 
+                          <a  >免责条款</a> 
                            |  
                            
-                          <a href="" >隐私保护</a> 
+                          <a  >隐私保护</a> 
                            |  
                            
-                          <a href="" >咨询热点</a> 
+                          <a  >咨询热点</a> 
                            |  
                            
-                          <a href="" >联系我们</a> 
+                          <a  >联系我们</a> 
                            |  
                            
-                          <a href="" >公司简介</a>
+                          <a  >公司简介</a>
                            
-                           |<a href="">商家入驻</a>
+                           |<a >商家入驻</a>
                         </li>
                         <li>&copy; 2005-2017 帅柏商城 版权所有，并保留所有权利。浙江 杭州 萧山区北塘路38号 ICP备案证书号：浙ICP备15014916号</li>
                         <div style="width:230px;margin:0 auto; padding:20px 0;">

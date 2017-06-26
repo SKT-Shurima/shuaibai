@@ -96,7 +96,7 @@
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
 import {getOrderDetail} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -123,7 +123,7 @@ import {MessageBox} from  'element-ui'
 				}
 				let order_sn = 	_this.reqParams.order_sn;
 	   			let params = {
-	   				access_token: sessionStorage.access_token,
+	   				access_token: getCookie('access_token'),
 	   				order_sn: order_sn
 	   			}
 	   			getOrderDetail(params).then(res=>{

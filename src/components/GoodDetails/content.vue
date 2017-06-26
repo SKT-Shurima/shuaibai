@@ -8,7 +8,7 @@
 import infoCon from './infoCon'
 import evalCon from './evalCon'
 import {goodsDetail} from '../../common/js/api'
-import {getRequest,errorInfo} from '../../common/js/common'
+import {getRequest,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default {
 		data() {
@@ -27,7 +27,7 @@ import {MessageBox} from  'element-ui'
 			init(){
 				this.deliveryInfo.params = getRequest();
 				let params = {
-					access_token : sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					goods_id: this.deliveryInfo.params.goods_id
 				}
 				goodsDetail(params).then(res=>{

@@ -66,7 +66,7 @@
 </template>
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {refundGoods} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 	export default {
@@ -83,7 +83,7 @@ import {MessageBox} from  'element-ui'
 			this.$nextTick(()=>{
 				this.reqParams = getHashReq();
 				let params = {
-					access_token: sessionStorage.access_token
+					access_token: getCookie('access_token')
 				};
 				if (this.reqParams.order_sn) {
 					params.order_sn = this.reqParams.order_sn ;

@@ -21,6 +21,7 @@
 <script>
 import {emailBind,sendCode} from '../../common/js/api.js'
 import {MessageBox} from  'element-ui'
+import {errorInfo,getCookie} from '../../common/js/common'
   export default {
     data() {
 	      // 验证码验证
@@ -89,7 +90,7 @@ import {MessageBox} from  'element-ui'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: this.userInfo.access_token,
+            	access_token: getCookie('access_token'),
             	email: this.ruleForm.email,
             	code: this.ruleForm.code,
             	type: "3"
@@ -97,9 +98,7 @@ import {MessageBox} from  'element-ui'
             emailBind(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
-            		MessageBox.alert(message, '提示', {
-			          	confirmButtonText: '确定'
-				    });
+            		errorInfo(errcode,message) ;
             	} else {
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',

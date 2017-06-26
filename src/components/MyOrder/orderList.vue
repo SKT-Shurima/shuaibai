@@ -124,15 +124,19 @@
 <script>
 import {getOrders,cancelOrder,orderRemind,delivery,delOrder} from '../../common/js/api'
 import {currency,dateStyle} from '../../common/js/filter'
-import {errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 import pagination from '../Common/pagination'
 	export default {
 		data(){
+			window.addEventListener("popstate",()=>{
+		 		this.init();
+		 	})
 			return {
 				order: null,
 				pagesize: 1 ,// 总页数,
-				state: "0" 
+				state: "0" ,
+				reqParams: null
 			}
 		},
 		filters: {
@@ -150,7 +154,7 @@ import pagination from '../Common/pagination'
 	        	_this.state = state ;
 		      	state+='';
 		    	let params = {
-		    		access_token: sessionStorage.access_token,
+		    		access_token: getCookie('access_token'),
 		    		state: state,
 		    		page: page
 		    	};
@@ -179,7 +183,7 @@ import pagination from '../Common/pagination'
 	   	 	// 提醒发货
 	   	 	remind(order_sn){
 	   	 		let params = {
-	   	 			access_token: sessionStorage.access_token,
+	   	 			access_token: getCookie('access_token'),
 	   	 			order_sn: order_sn
 	   	 		}
 	   	 		orderRemind(params).then(res=>{
@@ -220,7 +224,7 @@ import pagination from '../Common/pagination'
 		            type: 'warning'
 		        }).then(() => {
 		            let params = {
-		   	 			access_token : sessionStorage.access_token,
+		   	 			access_token: getCookie('access_token'),
 		   	 			order_sn: order_sn
 		   	 		}
 		   	 		api(params).then(res=>{
@@ -243,12 +247,24 @@ import pagination from '../Common/pagination'
 			changePage(page){
 				let _this = this ;
 				_this.getOrderList(_this.state,page);
+			},
+			init(){
+				let hash = location.hash ;
+				if (hash.indexOf('?')>0) {
+					this.reqParams = getHashReq();
+					if (this.reqParams.orderIndex) {
+						let index = this.reqParams.orderIndex;
+						this.getOrderList(index,"1")
+					}
+				}else {
+					// 获取订单列表
+					this.getOrderList("0","1")
+				}
 			}
 		},
 		created(){
 			this.$nextTick(()=>{
-				// 获取订单列表
-				this.getOrderList("0","1")
+				this.init();	
 			})
 		}
 	}

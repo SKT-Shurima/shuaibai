@@ -1,16 +1,16 @@
 <template>
-	<div class="wrap">
+	<div class="wrap" v-if='userInfo'>
 		<div class="container">
 			<ul>
 				<li class="avater" style='padding:0px;'>
 					<div style="width: 28px;height: 28px;margin:0px auto;">
-						<img :src="userinfo.avater" style="width:100%;height: 100%;">
+						<img :src="userInfo.avater" style="width:100%;height: 100%;">
 					</div>
 				</li>
 				<li>
 					在线客服
 				</li>
-				<li>
+				<li @click='check("vip3")'>
 					<dl>
 						<dt class="singleCol">
 							<img src="../../../static/headImg/shopCar.png" height="16" width="16" style="border-radius: 50%;">
@@ -20,14 +20,14 @@
 								购物车
 							</div>
 							<div style="margin-top:10px;">
-								<span style="background-color:cd2928;padding: 0px 4px;border-radius: 8px;background-color:#c81623;">
-									18
+								<span style="background-color:cd2928;padding: 0px 4px;border-radius: 8px;background-color:#c81623;" v-show='userInfo.cart_num-0'>
+									{{userInfo.cart_num}}
 								</span>
 							</div>
 						</dd>
 					</dl>
 				</li>
-				<li>
+				<li @click='check("vip5")'>
 					<div class="singleCol">
 						<img src="../../../static/headImg/privilege.png" height="16" width="16">
 					</div>
@@ -35,13 +35,13 @@
 						优惠券
 					</div>
 				</li>
-				<li>
+				<li @click='check("vip2")'>
 					<div class="singleCol">
 						<img src="../../../static/headImg/view.png" height="16" width="16">
 					</div>
 					<div>关注</div>
 				</li>
-				<li>
+				<li @click='check("vip1")'>
 					<div class="singleCol">
 						<img src="../../../static/headImg/collection.png" height="16" width="16">
 					</div>
@@ -73,9 +73,7 @@
 	export default{
 		data(){
 			return{
-				userinfo:{
-					avater: ''
-				}
+				userInfo: null
 			}
 		},
 		methods:{
@@ -112,6 +110,9 @@
 			   if(x > 0 || y > 0) {
 			       window.setTimeout(this.gotoTop(acceleration,stime), stime);
 			   }
+			},
+			check(view){
+				window.open(`myOrder.html#${view}`);
 			}
 		},
 		mounted(){

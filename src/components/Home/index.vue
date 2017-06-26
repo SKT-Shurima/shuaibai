@@ -11,8 +11,10 @@
 		<div class="con_wrap">
 		<div class="con_box">
 			<ul class="con_list" @mouseenter='listBol=true' @mouseleave='listBol=false'>
-				<li v-for='(item,index) in category' :key='item'>
-					<img :src="item.icon">{{item.name}}
+				<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index'>
+					<img :src="item.selected_icon" v-show='listBol&listIndex===index'>
+					<img :src="item.icon" v-show='!(listBol&listIndex===index)'>
+					{{item.name}}
 				</li>
 			</ul>
 			<div class="content" v-show='listBol'  @mouseleave='listBol=false' @mouseenter='listBol=true'>
@@ -28,17 +30,7 @@
 					</el-row>
 				</div>
 				<div class="img_box">
-					 <ul class="small_img">
-					 	<li v-for='(sItem,index) in youLike' :class='{"margin_left":index%2}' v-if='index<4'>
-					 		<img src="">
-					 	</li>
-					 </ul>
-					 <ul class="big_img">
-					 	<li v-for= '(bItem,index) in youLike' v-if='index>=4'>
-					 		<img src="">
-					 	</li>
-					 </ul>
-
+					 <guess-like></guess-like>
 				</div>
 			</div>
 			<dl class="slide_show">
@@ -50,32 +42,19 @@
 				    </el-carousel>
 				</dt>
 				<dd>
-					<div class="left_btn"></div>   
+					<div class="left_btn">
+						<i class="el-icon-arrow-left"></i>
+					</div>   
 					<div class="cont">
 						<img :src="item.image" alt="" v-for='item in banners' :key='item' @click='goodDetail(item)'>
 					</div>
-					<div class="right_btn"></div>
+					<div class="right_btn" >
+						<i class="el-icon-arrow-right"></i>
+					</div>
 				</dd>
 			</dl>
 			<div class="status">
 				<user-info></user-info>
-				<div class="pre_msg">
-					<div class="info_title">
-						<span>
-							<i></i>
-							优惠快讯
-						</span>
-						<em>
-							更多
-							<i></i>
-						</em>
-					</div>
-					<ul class="msg_list">
-						<li>伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶</li>
-						<li>伊利牛奶</li>
-						<li>伊利牛奶</li>
-					</ul>
-				</div>
 				<recharge></recharge>
 			</div>
 			</div>
@@ -85,14 +64,15 @@
 
 <script>
 import {getHomePage,getCategory,getGuessLike,getActualFee} from '../../common/js/api'
-
 import {errorInfo} from '../../common/js/common'
+import guessLike from '../Common/guessLike'
 import userInfo from './userInfo'
 import recharge from './recharge'
 	export default{
 		data(){
 			return{
 			    listBol: false,
+			    listIndex: "",
 			    banners: [],
 			    category: [{name:''}],
 			    fIndex: 0,
@@ -102,7 +82,7 @@ import recharge from './recharge'
 		},
 		
 		components: {
-			recharge,userInfo
+			recharge,userInfo,guessLike 
 		},
 		methods:{
 			goodDetail(item){
@@ -190,7 +170,6 @@ $text_color: #666;
 				width: 1250px;
 				margin: 0px auto;
 				overflow: hidden;
-				position: relative;
 				img{
 					cursor: pointer;
 				}
@@ -267,30 +246,6 @@ $text_color: #666;
 						height: 500px;
 						padding: 10px;
 						background-color: #f2f2f2;
-						img{
-							width: 100%;
-							height: 110px;
-						}
-						.small_img{
-							border-bottom: 1px solid $border_color;
-							overflow: hidden;
-							li{
-								float: left;
-								width: 110px;
-								margin-bottom: 10px;
-								
-							}
-							.margin_left{
-								margin-left: 10px;
-							}
-						}
-						.big_img{
-							width: 100%;
-							li{
-								width: 100%;
-							    margin-top: 10px;
-							}
-						}
 					}
 				}
 				.slide_show{
@@ -329,6 +284,10 @@ $text_color: #666;
 							margin-top: auto;
 							margin-bottom: auto;
 							z-index: 10;
+							i{
+								font-size: 24px;
+								line-height: 56px;
+							}
 						}
 						.left_btn{
 							left: 4px;
@@ -347,22 +306,6 @@ $text_color: #666;
 					color: #000;
 					background-color: #fff;
 				}
-				.pre_msg{
-					width: 100%;
-					height: 116px;
-					.msg_list{
-						li{
-							color: $text_color;
-							line-height: 20px;
-							overflow: hidden; 
-			                white-space: nowrap;
-			                text-overflow: ellipsis;
-			                -o-text-overflow: ellipsis;
-						}
-					}
-				}
-				
-				
 			}
 		}
 	}

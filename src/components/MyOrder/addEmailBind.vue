@@ -18,7 +18,7 @@
 	</div>
 </template>
 <script>
-import {bindEamil,sendCode} from '../../common/js/api'
+import {bindEamil,sendCode,getCookie} from '../../common/js/api'
 import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
   export default {
@@ -91,7 +91,7 @@ import {MessageBox} from  'element-ui'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token:  sessionStorage.access_token,
+            	access_token: getCookie('access_token'),
             	email: this.ruleForm.email,
             	verify: this.ruleForm.code
             };

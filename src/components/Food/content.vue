@@ -70,7 +70,7 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter.js'
+import {currency} from '../../common/js/filter'
 	export default {
 		data(){
 			return{

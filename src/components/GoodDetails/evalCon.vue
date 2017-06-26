@@ -176,36 +176,7 @@
 				 	</ul>
 				 	<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 				 </div>
-				 <!-- 推荐 -->
-				 <div class="recommend">
-				 	<div class="title">
-				 		<i class="icon"></i>
-				 		<span>店内推荐</span>
-				 		<strong @clikc='getRecomment'>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
-				 	</div>
-				 	<ul v-if='storeRecommend'>
-				 		<li class="infoList" v-for='item in storeRecommend'>
-				 			<dl>
-								<dt>
-									<img :src="item.cover">
-								</dt>
-								<dd>
-									<div class="sellInfo">
-										{{item.name}}
-									</div>
-									<div class="priceInfo">
-										<span>
-											{{item.shop_price|currency}}
-										</span>
-										<em>
-											{{item.sale_count}}人付款
-										</em>
-									</div>
-								</dd>
-							</dl>
-				 		</li>
-				 	</ul>
-				 </div>         
+				<recommend :seller_id='deliveryInfo.goodsInfo.goods.seller_id'></recommend>    
 			</div>
 		</div>
 		<!-- 猜你喜欢 -->
@@ -215,12 +186,13 @@
 <script>
 	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter'
 	import {getRecommend,getComments,replyContent,usefulComment} from '../../common/js/api'
-	import {errorInfo} from '../../common/js/common'
+	import {errorInfo,getCookie} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content'
 	import hotSell from '../StoreCommon/hotSell'
 	import classify from '../StoreCommon/classify'
 	import reply from './reply'
+	import recommend from './recommend'
 	import pagination from '../../components/Common/pagination'
 	export default {
 		data(){
@@ -231,7 +203,7 @@
 				commentList: null, // 评价列表
 				replyList:[], // 获取回复列表
 				params: "",
-				hasLogin: sessionStorage.access_token, // 判断是否登录
+				hasLogin: getCookie('access_token'), // 判断是否登录
 				replyInfo: {
 					replyId: '',
 					replyIndex: 0,
@@ -250,14 +222,13 @@
 			currency,dateStyleCh,timeStyle
 		},
 		components:{
-			youLove,hotSell,classify,reply,pagination
+			youLove,hotSell,classify,reply,recommend,pagination
 		},
 		watch: {
 			deliveryInfo: {
 				handler(newVal,oldVal){
 					if (newVal.goodsInfo) {
 						this.getComment(0,1);
-						this.getRecomment();
 					}
 				},
 				deep: true
@@ -267,8 +238,9 @@
 			// 获取评价列表
 			getComment(mask,page){
 				let _this = this ;
+				let access_token = getCookie('access_token')
 				let params = {
-					access_token: sessionStorage.access_token?sessionStorage.access_token:"",
+					access_token: access_token?access_token:"",
 					goods_id: _this.deliveryInfo.params.goods_id,
 					type: mask,
 					page: page
@@ -320,7 +292,7 @@
 			// 有用
 			isUseful(id){
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					id: id
 				}
 				usefulComment(params).then(res=>{
@@ -337,20 +309,6 @@
 				let _this = this ;
 				_this.getAddReply(_this.replyInfo.replyId,_this.replyInfo.replyIndex,mask);
 				_this.getComment(_this.evalTabIndex,1);
-			},
-			// 获取店铺推荐
-			getRecomment(){
-				let params ={
-						seller_id: this.deliveryInfo.goodsInfo.goods.seller_id
-					}
-					getRecommend(params).then(res=>{
-						let {errcode,message,content} = res ;
-						if(errcode !== 0){
-							errorInfo(errcode,message) ;
-						}else {
-							this.storeRecommend = content ;
-						}
-					})
 			},
 			// 改变页数
 			changePage(page){
@@ -687,61 +645,7 @@ $bg_title: #f5f5f5;
 				}
 			}
 		}
-		.recommend{
-			margin-top: 70px;
-			ul{
-				width: 100%;
-				overflow: hidden;
-				.infoList{
-					width: 25%;
-					height: 320px;
-					float: left;
-					padding: 15px;
-					dt{
-						width: 216px;
-						height: 216px;
-					}
-				}
-			}
-		}
 	}
-	/*店铺推荐*/
-	 .recommend{
-	 	width: 100%;
-	 	overflow: hidden;
-		.title{
-			width: 100%;
-			height: 40px;
-			padding: 10px;
-			line-height: 20px;
-			color: $text_color;
-			background-color: $bg_title;
-			.icon{
-				display: inline-block;
-				width: 8px;
-				height: 20px;
-				background-color: $primary;
-			}
-			span{
-				font-size: 16px;
-				font-weight: 600;
-				vertical-align: 4px;
-			}
-			strong{
-				float: right;
-				font-size: 14px;
-				cursor: pointer;
-			}
-			img{
-				vertical-align: -2px;
-				margin-left: 10px;
-			}
-		}
-		.youLove{
-			width: 100%;
-			overflow: hidden;
-		}
- }
 } 
 .el-dialog .el-dialog--small{
 	width: 360px;

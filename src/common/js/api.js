@@ -65,6 +65,11 @@ export const mobileRecharge = params =>{
 	params = trans(params);
 	return axios.post(`${base}/MobileRechargeAction/recharge`,params).then(res=>res.data);
 }
+// 充值支付
+export const rechargePay = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/MobileRechargeAction/pay`,params).then(res=>res.data) ;
+}
 // 每日上新
 export const getNewGoods = () => {
     return axios.get(`${base}/initAction/getNewGoods`).then(res=> res.data);

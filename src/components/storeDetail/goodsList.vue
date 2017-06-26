@@ -55,7 +55,7 @@
 			</li>
 		</ul>
 		<ul class="goodsList" v-if='goods'>
-			<li v-for='(item,index) in goods.seller_goods' class="infoList">
+			<li v-for='(item,index) in goods.seller_goods' class="infoList" @click='goodDetail(item.goods_id)'>
 				<dl>
 					<dt>
 						<img :src="item.cover">
@@ -159,6 +159,9 @@ import pagination from '../Common/pagination'
 				}
 				_this.initList();
 			},
+			goodDetail(id){
+				window.open(`goodDetail.html?goods_id=${id}`);
+			},
 			initList(mask){
 				let _this = this;
 				_this.params.seller_id = _this.reqParams.seller_id ;
@@ -203,6 +206,7 @@ $bg_color: #f5f5f5;
 				text-align: center;
 				height: 36px;
 				line-height: 36px;
+				cursor: pointer;
 				color: $text_color;
 				border-right: 1px solid $border_color;
 				background-color: $bg_color;

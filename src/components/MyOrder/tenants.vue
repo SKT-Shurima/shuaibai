@@ -135,7 +135,7 @@
 </template>
 <script >
 import {shopJoin,linkage} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 	export default{
 		data(){
@@ -239,17 +239,17 @@ import {MessageBox,Message} from  'element-ui'
 		        },
 		        licenseForm: {
 			    	cate : 'license', 
-			    	access_token : sessionStorage.access_token
+			    	access_token: getCookie('access_token')
 			    },
 		        licenseList: [],
 		         form1: {
 			    	cate : 'idCard1', 
-			    	access_token : sessionStorage.access_token
+			    	access_token: getCookie('access_token')
 			    },
 		         fileList1: [],
 		         form2: {
 			    	cate : 'idCard2', 
-			    	access_token : sessionStorage.access_token
+			    	access_token: getCookie('access_token')
 			    },
 		         fileList2: []
 			}
@@ -362,7 +362,7 @@ import {MessageBox,Message} from  'element-ui'
 		    		this.$refs[formName].validate((valid) => {
 			            if (valid) {
 			                let params = {
-								access_token: sessionStorage.access_token,
+								access_token: getCookie('access_token'),
 								company: this.ruleForm.companyName,
 								province: this.proArr[this.proIndex].name,
 				            	city: this.cityArr[this.cityIndex].name,

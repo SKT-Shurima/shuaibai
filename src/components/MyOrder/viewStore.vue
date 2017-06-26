@@ -57,7 +57,7 @@
 </template>
 <script>
 	import {currency} from "../../common/js/filter"
-	import {errorInfo} from '../../common/js/common'
+	import {errorInfo,getCookie} from '../../common/js/common'
 	import {attention,cancelAttentions} from '../../common/js/api'
 	export default {
 		data(){
@@ -71,7 +71,7 @@
 		methods:{
 			escView(id){
 				let params = {
-					access_token : sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					ids: id
 				};
 				cancelAttentions(params).then(res=>{
@@ -87,7 +87,7 @@
 		 mounted(){
 	    	this.$nextTick(()=>{
 	    		let params  ={
-					access_token : sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					page: "0"
 				}
 				attention(params).then(res=>{

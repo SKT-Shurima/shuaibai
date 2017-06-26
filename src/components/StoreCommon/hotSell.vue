@@ -10,7 +10,7 @@
 				<li v-for='item in hotList' class="infoList">
 					<dl>
 						<dt>
-							<img :src="item.cover">
+							<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 						</dt>
 						<dd>
 							<div class="sellInfo" v-text='item.name'></div>
@@ -29,6 +29,7 @@
 		</div>
 </template>
 <script>
+import 'common/css/goodsList.scss'
 import {currency} from '../../common/js/filter'
 import {goodsDetail,getHotGoods} from '../../common/js/api'
 import {errorInfo} from '../../common/js/common'
@@ -45,6 +46,11 @@ import {errorInfo} from '../../common/js/common'
 			sellerId:{
 				type: String
 			}		
+		},
+		methods:{
+			goodDetail(id){
+				window.open(`goodDetail.html?goods_id=${id}`);
+			}
 		},
 		mounted(){
 			this.$nextTick(()=>{
@@ -65,45 +71,10 @@ import {errorInfo} from '../../common/js/common'
 </script>
 
 <style lang='scss' scoped>
+
 $text_color: #666;
 $border_color: #ccc;
 $primary:#c71724;
-.infoList{
-	dl{
-		dt{
-			width: 210px;
-			height: 210px;
-			img{
-				width: 100%;
-				height: 100%; 
-			}
-		}
-		dd{
-			width: 100%;
-			overflow: hidden;
-			.sellInfo{
-				height: 36px;
-				line-height: 18px;
-				font-weight: 600;
-				margin-top: 10px;
-			}
-			/*价格信息*/
-			.priceInfo{
-				margin-top: 6px;
-				span{
-					font-size: 18px;
-					font-weight: 600;
-					color: $primary;
-				}
-				em{
-					margin-top: 4px;
-					float: right;
-					color: #999;
-				}
-			}
-		}	 
-	}
-}
 	/*热销*/
 	.hotSell{
 		.title {

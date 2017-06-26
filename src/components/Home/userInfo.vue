@@ -1,79 +1,96 @@
 <template>
-	<div class="info_box">
-		<dl>
-			<dt>
-				<img :src="userInfo.avater">
-			</dt>
-			<dd>
-				<span>Hi,您好！{{userInfo.nickname}}</span>
-			</dd>
-		</dl>
-		<div class="btnBox" v-if='!hasUser'>
-			<div>
-				<a href="login.html">
-					<el-button type='text' size='small'>登录</el-button>
-				</a>
-			</div>
-			<div>
-				<a href="reg.html">
-					<el-button type='text' size='small'>注册新用户</el-button>
-				</a>
-			</div>
-		</div>
-		<div class="info" v-if='hasUser'>
-			<el-row class='info_money'>
-				<el-col :span='8'>
-					<div class="info_num" v-text='userInfo.account'>
-					</div>
-					<div>
-						余额
-					</div>
-				</el-col>
-				<el-col :span='8'>
-					<div class="info_num" v-text='userInfo.shopping_coin'>
-					</div>
-					<div>
-						购物币
-					</div>
-				</el-col>
-				<el-col :span='8'>
-					<div class="info_num" v-text='userInfo.integration'>
-					</div>
-					<div>
-					    积分
-					</div>
-				</el-col>
-			</el-row>
-			<el-row class='info_order'>
-				<div class="info_title">
-					<span>
-						<i></i>
-						我的订单
-					</span>
-					<em>
-					    售后
-						<i></i>
-					</em>
+	<div class="wrap">
+		<div class="info_box">
+			<dl>
+				<dt>
+					<img :src="userInfo.avater">
+				</dt>
+				<dd>
+					<span>Hi,您好！{{userInfo.nickname}}</span>
+				</dd>
+			</dl>
+			<div class="btnBox" v-if='!hasUser'>
+				<div>
+					<a href="login.html">
+						<el-button type='text' size='small'>登录</el-button>
+					</a>
 				</div>
-				<el-row class='order_menu'>
-					<el-col :span='6'>
-					    <span>待付款</span>
-						<i v-show='order.wait_pay_count'>{{order.wait_pay_count | num_filter}}</i>
+				<div>
+					<a href="reg.html">
+						<el-button type='text' size='small'>注册新用户</el-button>
+					</a>
+				</div>
+			</div>
+			<div class="info" v-if='hasUser'>
+				<el-row class='info_money'>
+					<el-col :span='8'>
+						<div class="info_num" v-text='userInfo.account'>
+						</div>
+						<div>
+							余额
+						</div>
 					</el-col>
-					<el-col :span='6'>
-						<span>待发货</span>
-						<i v-show='order.wait_delivery_count'>{{order.wait_delivery_count | num_filter}}</i>
+					<el-col :span='8'>
+						<div class="info_num" v-text='userInfo.shopping_coin'>
+						</div>
+						<div>
+							购物币
+						</div>
 					</el-col>
-					<el-col :span='6'>
-						<span>待收货</span>
-						<i v-show='order.wait_receive_count'>{{order.wait_receive_count | num_filter}}</i>
-					</el-col>
-					<el-col :span='6'>
-						<span>待评价</span>
-						<i v-show='order.wait_comment_count'>{{ order.wait_comment_count | num_filter}}</i>
+					<el-col :span='8'>
+						<div class="info_num" v-text='userInfo.integration'>
+						</div>
+						<div>
+						    积分
+						</div>
 					</el-col>
 				</el-row>
-			</el-row>
+				<el-row class='info_order'>
+					<div class="info_title">
+						<span>
+							<img src="../../../static/indexImg/order.png" height="16" width="16">
+							我的订单
+						</span>
+						<em @click='afterSale'>
+						    售后<img src="../../../static/commonImg/leftArrow.png" height="10" width="5" alt="">
+						</em>
+					</div>
+					<el-row class='order_menu'>
+						<el-col :span='6' >
+						    <span  @click='checkOrder(1)'>待付款</span>
+							<i v-show='order.wait_pay_count-0'>{{order.wait_pay_count | num_filter}}</i>
+						</el-col>
+						<el-col :span='6'>
+							<span  @click='checkOrder(2)'>待发货</span>
+							<i v-show='order.wait_delivery_count-0'>{{order.wait_delivery_count | num_filter}}</i>
+						</el-col>
+						<el-col :span='6'>
+							<span  @click='checkOrder(3)'>待收货</span>
+							<i v-show='order.wait_receive_count-0'>{{order.wait_receive_count | num_filter}}</i>
+						</el-col>
+						<el-col :span='6'>
+							<span  @click='checkOrder(4)'>待评价</span>
+							<i v-show='order.wait_comment_count-0'>{{ order.wait_comment_count | num_filter}}</i>
+						</el-col>
+					</el-row>
+				</el-row>
+			</div>
+		</div>
+		<div class="pre_msg">
+			<div class="info_title">
+				<span>
+					<img src="../../../static/indexImg/message.png" height="16" width="16">
+					优惠快讯
+				</span>
+				<em>
+					更多<img src="../../../static/commonImg/leftArrow.png" height="10" width="5" alt="">
+				</em>
+			</div>
+			<ul class="msg_list">
+				<li>伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶</li>
+				<li>伊利牛奶</li>
+				<li>伊利牛奶</li>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -102,6 +119,14 @@ import {num_filter,currency} from '../../common/js/filter'
 			num_filter,
 			currency
 		},
+		methods: {
+			afterSale(){
+				window.open(`myOrder.html#view01`);
+			},
+			checkOrder(index){
+				window.open(`myOrder.html#view0?orderIndex=${index}`);
+			}
+		},
 		mounted(){
 			this.$nextTick(()=>{
 				if (sessionStorage.userInfo) {
@@ -119,6 +144,8 @@ import {num_filter,currency} from '../../common/js/filter'
 $primary:#c71724;
 $border_color: #ccc;
 $text_color: #666;
+.wrap{
+	margin-top: 0px;
 	.info_box{
 		width: 100%;
 		height: 254px;
@@ -175,6 +202,9 @@ $text_color: #666;
 				width: 100%;
 				.order_menu{
 					width: 100%;
+					.el-col-6{
+						cursor: pointer;
+					}
 					span{
 						float: left;
 					}
@@ -191,19 +221,41 @@ $text_color: #666;
 					}
 				} 
 			}
-			.info_title{
-					width: 100%;
-					height: 48px;
-					line-height: 48px;
-					span{
-						float: left;
-						font-weight: 600;
-					}
-					em{
-						float: right;
-						color: $text_color;
-					}
-				}
 		}
 	}
+	.pre_msg{
+		width: 100%;
+		height: 116px;
+		.msg_list{
+			li{
+				color: $text_color;
+				line-height: 20px;
+				overflow: hidden; 
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+			}
+		}
+	}
+	.info_title{
+		width: 100%;
+		height: 48px;
+		line-height: 48px;
+		font-size: 14px;
+		padding: 0px 6px;
+		span{
+			float: left;
+			font-weight: 600;
+		}
+		em{
+			float: right;
+			cursor: pointer;
+			color: $text_color;
+			img{
+				margin-left: 6px;
+			}
+		}
+	}
+}
+	
 </style>

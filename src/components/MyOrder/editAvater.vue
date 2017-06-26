@@ -57,7 +57,7 @@
 </template>
 <script>
 import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {Message} from  'element-ui'
  export  default{
  	data(){
@@ -68,7 +68,7 @@ import {Message} from  'element-ui'
  			avater: '',
 		    form: {
 		    	cate : 'avater', 
-		    	access_token : sessionStorage.access_token
+		    	access_token: getCookie('access_token')
 		    },
  		}
  	},
@@ -99,7 +99,7 @@ import {Message} from  'element-ui'
 	    save(){
 	    	let _this = this ;
 	    	let paramAvater = {
-	    		access_token: sessionStorage.access_token,
+	    		access_token: getCookie('access_token'),
 	    		avater: _this.avater
 	    	}
 	    	changeAvater(paramAvater).then(res=>{

@@ -80,7 +80,7 @@
 	</div>
 </template>
 <script >
-import {getRequest,errorInfo} from '../../common/js/common'
+import {getRequest,errorInfo,getCookie} from '../../common/js/common'
 import {commentGoods} from '../../common/js/api'
 import uploadTips from '../Common/uploadTips'
 import {MessageBox,Message} from  'element-ui'
@@ -148,7 +148,7 @@ import {MessageBox,Message} from  'element-ui'
 			sendComment(){
 				let _this = this ;
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					order_sn: _this.reqParams.order_sn,
 					service_score: _this.service_score,
 					logistics_score: _this.logistics_score
@@ -189,7 +189,7 @@ import {MessageBox,Message} from  'element-ui'
 					}
 					this.scores.push(obj);
 					let dataObj = {
-						access_token: sessionStorage.access_token,
+						access_token: getCookie('access_token'),
 						cate: `eval${i}`
 					}
 					this.uploadData.push(dataObj);
