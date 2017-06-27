@@ -96,6 +96,12 @@ export const goodsList = params =>{
 	params = trans(params);
 	return axios.get(`${base}/goodsAction/goodsList?${params}`).then(res=>res.data);
 }
+// 专题活动 
+export const  getThematicActivities = params =>{
+	params = trans(params);
+	return  axios.get(`${base}/specialAction/getThematicActivities?${params}`).then(res=>res.data) ; 
+}
+
 
 // 个人中心
 // 获取用户信息

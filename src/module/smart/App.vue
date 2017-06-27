@@ -2,7 +2,6 @@
   <div class="wrap">
     <v-head></v-head>
     <v-nav></v-nav>
-    <v-slider></v-slider>
     <v-con></v-con>
     <v-foot></v-foot>
   </div>
@@ -12,15 +11,13 @@
   import 'common/css/reset.css';
   import vHead from 'components/Head/Head'
   import vNav from 'components/Head/Nav'
-  import vSlider from 'components/Slider/Slider'
-  import vCon from 'components/Smart/content'
+  import vCon from 'components/Theme/smart'
   import vFoot from 'components/Foot/Foot'
 
   export default {
     name: 'app',
     components: {
       vHead,
-      vSlider,
       vNav,
       vCon,
       vFoot

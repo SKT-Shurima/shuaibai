@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		<div class="update_box">
-			<el-row class="title">
+			<el-row class="themeTitle">
 		 		<el-col :span='7'>
 		 			<div class="slider"></div>
 		 		</el-col>
@@ -34,19 +34,19 @@
 		</div>
 		<ul class="theme_box">
 			<li>
-				<div class="title" :style='{background: `url(${firstTheme.img.img})`}' v-if='firstTheme.img'></div>
+				<div class="title" :style='{background: `url(${firstTheme.img.img})`}' v-if='firstTheme.img' @click='jump("snap",1)'></div>
 				<first-theme :theme='firstTheme'></first-theme>
 			</li>
 			<li>
-				<div class="title" :style='{background: `url(${secondTheme.img.img})`}' v-if='secondTheme.img'></div>
+				<div class="title" :style='{background: `url(${secondTheme.img.img})`}' v-if='secondTheme.img' @click='jump("food",2)'></div>
 				<second-theme :theme='secondTheme'></second-theme>
 			</li>
 			<li>
-				<div class="title" :style='{background: `url(${thirdTheme.img.img})`}' v-if='thirdTheme.img'></div>
+				<div class="title" :style='{background: `url(${thirdTheme.img.img})`}' v-if='thirdTheme.img' @click='jump("smart",3)'></div>
 				<third-theme :theme='thirdTheme'></third-theme>
 			</li>
 			<li>
-				<div class="title" :style='{background: `url(fourthTheme.img.img})`}' v-if='fourthTheme.img'></div>
+				<div class="title" :style='{background: `url(fourthTheme.img.img})`}' v-if='fourthTheme.img' @click='jump("household",4)'></div>
 				<second-theme :theme='fourthTheme'></second-theme>
 			</li>
 		</ul>
@@ -54,6 +54,7 @@
 	</div>
 </template>
 <script>
+import 'common/css/themeTitle.scss'
 	import {getNewGoods,getActivity} from "../../common/js/api"
  	import {currency,timeStyle,dateStyle} from '../../common/js/filter'
  	import {errorInfo} from '../../common/js/common'
@@ -91,6 +92,9 @@
 		methods: {
 			detail(){
 				location.href = 'detail.html';
+			},
+			jump(address,type){
+				window.open(`${address}.html?type=${type}`) ;
 			},
 			getTheme() {
 				getActivity().then(res=>{
@@ -180,36 +184,6 @@ $red_color: #f24450;
   	.update_box{
   		width: 1242px;
   		margin: 0px auto;
-  		.title{
-	  		width: 352px;
-	  		height: 24px;
-	  		margin: 0px auto;
-	  		overflow: hidden;
-	  		.el-col-7{
-	  			float: left;
-	  			.slider{
-	  				width: 100%;
-	  				height: 1px;
-	  				margin-top: 14px;
-	  				background-color: $border_color;
-	  			}
-	  			
-	  		}
-	  		.el-col-10{
-	  			float: left;
-	  			text-align: center;
-	  			.text{
-	  				color: #656565;
-	  				font-size: 20px;
-	  				font-weight: 600;
-	  				img{
-		  				width: 24px;
-		  				height: 24px;
-		  				vertical-align: top;
-		  			}
-	  			}
-	  		}
-	  	}
 	  	.update_list{
 	  		width: 100%;
 	  		margin-top: 10px;
@@ -249,6 +223,7 @@ $red_color: #f24450;
 			padding-left: 22px;
 			padding-right: 16px;
 			color: #fff;
+			cursor: pointer;
 			span{
 				float: left;
 				font-size: 20px;

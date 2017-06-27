@@ -20,13 +20,7 @@ export const dateStyle  = time =>{
     let {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
     m = trans(m);
     d = trans(d);
-    function trans (val){
-      		if (val < 10) {
-      			val = "0" + val ;
-      		}
-      		return val ;
-      };
-       return y +'-' + m + "-" + d ;
+    return y +'-' + m + "-" + d ;
 }
 //时间日期格式转换
 export const timeStyle  = time =>{
@@ -36,13 +30,7 @@ export const timeStyle  = time =>{
     h = trans(h);
     m = trans(m);
     s = trans(s);
-    function trans (val){
-      		if (val < 10) {
-      			val = "0" + val ;
-      		}
-      		return val ;
-      };
-       return h +':' + m ;
+    return h +':' + m ;
 }
 
 // 日期格式转成中文
@@ -53,13 +41,7 @@ export const dateStyleCh  = time =>{
     let {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
     m = trans(m);
     d = trans(d);
-    function trans (val){
-          if (val < 10) {
-            val = "0" + val ;
-          }
-          return val ;
-      };
-       return `${y}年${m}月${d}号` ;
+    return `${y}年${m}月${d}号` ;
 }
 
 // 带点日期格式
@@ -68,13 +50,7 @@ export const dateStylePoint  = time =>{
     let {y,m,d}={y:newDate.getFullYear(),m:newDate.getMonth()+1,d:newDate.getDate()};
     m = trans(m);
     d = trans(d);
-    function trans (val){
-          if (val < 10) {
-            val = "0" + val ;
-          }
-          return val ;
-      };
-       return `${y}.${m}.${d}` ;
+    return `${y}.${m}.${d}` ;
 }
 
 
@@ -90,16 +66,15 @@ export const timeStyleCh  = time =>{
     h = trans(h);
     m = trans(m);
     s = trans(s);
-    function trans (val){
-          if (val < 10) {
-            val = "0" + val ;
-          }
-          return val ;
-      };
-       return d + h +'小时' + m + "分" + s + "秒" ;
+    return d + h +'小时' + m + "分" + s + "秒" ;
 }
 
-
+function trans (val){
+    if (val < 10) {
+      val = "0" + val ;
+    }
+    return val ;
+};
 // 时间大于一个小时显示多少小时前
  export const timeTrans  = time =>{
         time-=0;
@@ -114,4 +89,18 @@ export const timeStyleCh  = time =>{
            }else{
             return m + '分钟前'
            }
+}
+
+// 倒计时
+export const countdown = time =>{
+    time -= 0 ;
+    let {d,h,m,s}={d:parseInt(time/(24*3600)),h:parseInt(time/3600%24),m:parseInt(time/60%60),s:parseInt(time%60)};
+    h = trans(h);
+    m = trans(m);
+    s = trans(s);
+    if (d===0) {
+      return `${h}:${m}:${s}` ;
+    }else{
+      return d ;
+    }
 }
