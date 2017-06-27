@@ -19,7 +19,7 @@
 			 			<div class="slider"></div>
 			 		</el-col>
 			 	</el-row>
-			 	<goods-list :goods-list='goodsList'></goods-list>
+			 	<goods-list :goods='goods'></goods-list>
 			 	<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 			</div>
 		</div>
@@ -39,7 +39,7 @@ import pagination from '../Common/pagination'
 				pagesize: 1,
 				reqParams: null,
 				special: null,
-				goodsList: new Array
+				goods: new Array
 			}
 		},
 		components:{
@@ -62,7 +62,7 @@ import pagination from '../Common/pagination'
 					if(errcode !== 0 ){
 						errorInfo(errcode,message);
 					}else{
-						this.goodsList = content.goods.goods ;
+						this.goods = content.goods.goods ;
 						this.pagesize = content.goods.pagesize ;
 						this.special = content.special ;
 					}

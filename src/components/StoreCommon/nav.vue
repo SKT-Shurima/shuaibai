@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<div class="storeLogoWrap">
 			<div class="storeLogoBox">
-				<img :src="sellerInfo.shop_header">
+				<img :src="shopHeader">
 			</div>
 		</div>
 		<div class="navWrap">
@@ -57,14 +57,9 @@ import guessLike from '../Common/guessLike'
      	}
      },
      props:{
-     	sellerInfo:{
-     		type: Object,
-     		required: true,
-     		default(){
-     			return {
-     				shop_header: ''
-     			}
-     		}
+     	shopHeader:{
+     		type: String,
+     		required: true
      	}
      },
      components:{

@@ -16,7 +16,7 @@
 				</ul>
 			</div>
 			 <div class="shopping_cart">
-				<a href="myOrder.html#view33">
+				<a href="myOrder.html#vip3">
 					<img src="../../../static/headImg/shopCarRed.png" height="14" width="14" style="vertical-align:-2px;">
 					我的购物车
 					<span v-text='userInfo.cart_num-0?userInfo.cart_num:0'  :style='{opacity:userInfo.cart_num?1:0}'></span>

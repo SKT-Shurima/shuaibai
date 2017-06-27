@@ -101,6 +101,6 @@ export const countdown = time =>{
     if (d===0) {
       return `${h}:${m}:${s}` ;
     }else{
-      return d ;
+      return `${d}天`;
     }
 }

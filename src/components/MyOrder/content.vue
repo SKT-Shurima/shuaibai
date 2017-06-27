@@ -20,8 +20,8 @@
 					</ul>
 				</div>
 				<div class="searchBox">
-					<input type="text" name="">
-					<button>搜索</button> 
+					<input type="text" name="" v-model='searchInput' @keyup.enter='search'>
+					<button @click='search'>搜索</button> 
 				</div>
 			</div>
 		</div>
@@ -57,6 +57,7 @@
 </template>
 <script>
 	import {getHashReq,getCookie} from '../../common/js/common'
+	import {MessageBox} from  'element-ui'
     import orderList from './orderList'
     import refundList from './refundList'
 	import personalCenter from './personalCenter' ;
@@ -93,6 +94,7 @@
 		 		this.init();
 		 	})
 		    return {
+		    	searchInput: "", 
 		    	guessBol: true,
 		        accountListBol: false,
 		        vipIndex: '',
@@ -155,6 +157,18 @@
 			"vip8": tenants
 		},
 	    methods: {
+	    	search(){
+	    		let _this = this ;
+	    		let keyword = _this.searchInput ;
+	    		keyword = keyword.trim();
+	    		if (keyword) {
+	    			window.open(`relatedGoods.html?keyword=${keyword}`);
+	    		}else {
+	    			MessageBox.alert('请输入关键字', '提示', {
+			          	confirmButtonText: '确定'
+				    });
+	    		}
+	    	},
 	      handleSelect(key, keyPath) {
 	        console.log(key, keyPath);
 	      },
@@ -194,6 +208,7 @@
 	      init(){
 	      	let hash = location.hash ;
 			let view ;
+			this.reqParams = null ;
 			if (hash.indexOf('?')>0) {
 				view = hash.split('?')[0].slice(1)
 				this.reqParams = getHashReq();

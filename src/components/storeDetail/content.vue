@@ -1,6 +1,6 @@
 <template>	
 	<div class="wrap">
-		<v-nav :sellerInfo='sellerInfo'></v-nav>
+		<v-nav :shopHeader='shop_header'></v-nav>
 		<div class="container">
 			<div class="slider">
 				<classify></classify>
@@ -20,7 +20,7 @@ import goodsList from '../storeDetail/goodsList'
 	export default {
 		data(){
 			return {
-				sellerInfo: {}
+				shop_header: {}
 			}
 		},
 		components:{
@@ -29,7 +29,7 @@ import goodsList from '../storeDetail/goodsList'
 		methods:{
 			getSellerInfo(info){
 				let _this =this ;
-				_this.sellerInfo = info;
+				_this.shop_header = info.shop_header;
 			}
 		},
 		mounted(){

@@ -1,6 +1,6 @@
 <template>
 	<ul class="wrap">
-		<li v-for='item in goodsList' class="infoList">
+		<li v-for='item in goodst' class="infoList">
 			<dl>
 				<dt>
 					<img :src="item.cover" @click='goodDetail(item.goods_id)'>
@@ -24,7 +24,7 @@
 import {currency} from '../../common/js/filter'
 	export default {
 		props: {
-			goodsList: {
+			goods: {
 				type: Array,
 				required: true
 			}

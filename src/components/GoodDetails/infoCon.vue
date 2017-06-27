@@ -1,6 +1,6 @@
 <template>
-	<div class="wrap" v-if='goodsInfo'>
-		<v-nav :seller-info='sellerInfo'></v-nav>
+	<div class="wrap" v-if='goods'>
+		<v-nav :shopHeader='shop_header'></v-nav>
 		<div class="content" >
 			<dl class="goodsInfo">
 				<dt>
@@ -10,7 +10,7 @@
 					<div class="leftBtn" @click='imgListIndex--;'><i class="el-icon-caret-left"></i></div>
 					<div class="imgList">
 						<ul>
-							<li v-for='(item,index) in goodsInfo.goods.images' @click='imgListIndex=index;currentImg=item;' :class='{"isClick":imgListIndex===index}'> 
+							<li v-for='(item,index) in goods.images' @click='imgListIndex=index;currentImg=item;' :class='{"isClick":imgListIndex===index}'> 
 								<img :src="item">
 							</li>
 						</ul>
@@ -20,7 +20,14 @@
 			</dl>
 			<div class="shopInfo">
 				<div class="title">
-					{{goodsInfo.goods.name}}
+					{{goods.name}}
+				</div>
+				<!-- 一元抢购 -->
+				<div class='special' v-if='special' :class='payBol===false&&addBol===true?"start":payBol&&addBol?"end":"over"'>
+					<img src="../../../static/detailImg/snapup.png" height="32" width="109">
+					<span v-show='special.date_start*1000>nowTime'>此商品<i>{{special.date_start*1000-nowTime|countdown}}</i>后开始抢购，请提前加入购物车！</span>
+					<span v-show='special.date_start*1000<=nowTime&&special.date_end*1000>=nowTime'>此商品正在参加抢购，<i>{{special.date_end*1000-nowTime|countdown}}</i>后结束，请尽快购买！</span>
+					<span v-show='special.date_end*1000<nowTime'>本次抢购已结束，期待下次！</span>
 				</div>
 				<dl  class="priceInfo">
 					<dt class="price">
@@ -29,12 +36,12 @@
 								原价
 							</el-col>
 							<el-col :span='20' style='text-decoration: line-through'>
-								{{goodsInfo.goods.market_price |currency}}
+								{{goods.market_price |currency}}
 							</el-col>
 						</el-row>
 						<div class="totalEval">
 							<span>累计评价</span>
-							<em>{{goodsInfo.goods.sale_count}}</em>
+							<em>{{goods.sale_count}}</em>
 						</div>
 						<el-row>
 							<el-col :span='4' style='padding-top: 16px;'>
@@ -50,9 +57,9 @@
 							</el-col>
 							<el-col :span='20'>
 								<ul>
-									<li>可使用&nbsp;{{goodsInfo.goods.max_integration}}&nbsp;积分</li>
-									<li>可使用&nbsp;{{goodsInfo.goods.max_shopping_coin}}&nbsp;购物币</li>
-									<li>可使用&nbsp;{{goodsInfo.goods.pv}}&nbsp;PV</li>
+									<li>可使用&nbsp;{{goods.max_integration}}&nbsp;积分</li>
+									<li>可使用&nbsp;{{goods.max_shopping_coin}}&nbsp;购物币</li>
+									<li>可使用&nbsp;{{goods.pv}}&nbsp;PV</li>
 								</ul>
 							</el-col>
 						</el-row>
@@ -61,7 +68,7 @@
 								促销
 							</el-col>
 							<el-col :span='20'>
-								<span  class="full">满&nbsp;减</span>满&nbsp;{{goodsInfo.full[0].limit}}&nbsp;减&nbsp;{{goodsInfo.full[0].amount}}
+								<span  class="full">满&nbsp;减</span>满&nbsp;{{full[0].limit}}&nbsp;减&nbsp;{{full[0].amount}}
 							</el-col>
 						</el-row>
 					</dt>
@@ -115,76 +122,35 @@
 							</el-col>
 						</el-row>
 						<div class='buyBtn'>
-							<el-button type='primary' >立即购买</el-button>
-							<el-button type='text' @click='addShopCar'>加入购物车</el-button>
+							<el-button type='primary' :disabled='!payBol' >立即购买</el-button>
+							<el-button type='text' @click='addShopCar' :disabled='!addBol'>加入购物车</el-button>
 						</div>
 					</dd>
-					
 				</dl>
 			</div>
-			<div class="storeInfo">
-				<div class="title">
-					<div class="titleContent">
-						<div class="slider"></div>
-						<div class="name">{{goodsInfo.goods.shop_name}}</div>
-						<div class="slider"></div>
-					</div>
-				</div>
-				<div class="storeContent">
-					<div class="storeName">
-						{{goodsInfo.goods.name}}
-					</div>
-					<div class="eval">
-						<dl>
-							<dt>商品</dt>
-							<dd>{{goodsInfo.goods.comment.goods_comment}}</dd>
-						</dl>
-						<dl>
-							<dt>服务</dt>
-							<dd>{{goodsInfo.goods.comment.service_comment}}</dd>
-						</dl>
-						<dl>
-							<dt>物流</dt>
-							<dd>{{goodsInfo.goods.comment.logistics_comment}}</dd>
-						</dl>
-					</div>
-					<dl class="online">
-						<dt>在线客服</dt>
-						<dd>
-							<img src ="../../../static/commonImg/qq.png" height="14" width="12">
-							客服天天
-						</dd>
-					</dl>
-					<div class="collectBtn">
-						<el-button type='text' size='small' @click='follow' :class='{"isView":goodsInfo.goods.is_seller_collection}'>
-							<img src="../../../static/detailImg/viewStoreOn.png" v-show='!goodsInfo.goods.is_seller_collection'  height="14" width="14">
-							<img src="../../../static/detailImg/viewStoreOff.png" v-show='goodsInfo.goods.is_seller_collection' height="14" width="14">
-							{{goodsInfo.goods.is_seller_collection?'取消关注':'关注店铺'}}
-						</el-button>
-						<el-button type='text'  size='small' style='margin-left:0px;' @click='collection' :class='{"isView":goodsInfo.goods.is_collection}'>
-							<img src="../../../static/detailImg/colGoodOn.png" v-show='!goodsInfo.goods.is_collection' height="14" width="14">
-							<img src="../../../static/detailImg/colGoodOff.png" v-show='goodsInfo.goods.is_collection' height="14" width="14">
-							{{goodsInfo.goods.is_collection?'取消收藏':'收藏商品'}}
-						</el-button>
-					</div>
-				</div>
-			</div>
+			<store-info :goods='goods'></store-info>
 		</div>
 	</div>
 </template>
 
 <script>
 	import { arrCity } from '../../common/js/city'
- 	import {currency} from '../../common/js/filter'
+ 	import {currency,countdown} from '../../common/js/filter'
  	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
- 	import {goodsDetail,addCart,collectionGoods,addFollow,cancelFollow} from '../../common/js/api'
+ 	import {goodsDetail,addCart} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
+ 	import storeInfo from './storeInfo'
  	import vNav from '../StoreCommon/nav'
 	export default{
 		data(){
 			return {
-				sellerInfo: {},
-				goodsInfo: null, // 请求成功后的商品信息
+				shop_header: "",
+				special: null, // 特殊商品 如一元抢购
+				nowTime: 0., //  计时器
+				payBol: true, // 立即购买开关开关
+				addBol: true, //  加入购物车开关
+				goods: null, // 请求成功后的商品信息
+				full: null, // 满减
 				imgListIndex: 0, // 详细展示图列表索引 默认为0
 				currentImg: "" , // 当前详情页的大图
 				salePrice: 0, // 帅柏价
@@ -211,10 +177,10 @@
 			}
 		},
 		filters: {
-			currency
+			currency,countdown
 		},
 		components: {
-			vNav
+			vNav,storeInfo
 		},
 		watch: {
 			//  监测当前展示图片
@@ -222,10 +188,10 @@
 				let _this = this;
 				if (_this.imgListIndex<0) {
 					_this.imgListIndex = 0;
-				}else if (_this.imgListIndex>_this.goodsInfo.goods.images.length-1) {
-					_this.imgListIndex = _this.goodsInfo.goods.images.length-1 ;
+				}else if (_this.imgListIndex>_this.goods.images.length-1) {
+					_this.imgListIndex = _this.goods.images.length-1 ;
 				} 
-				_this.currentImg = _this.goodsInfo.goods.images[_this.imgListIndex] ;
+				_this.currentImg = _this.goods.images[_this.imgListIndex] ;
 			},
 			//  监测选中类型值的变化 更改库存信息
 			specs: {
@@ -240,7 +206,7 @@
 						}
 					}
 					specs = specs.substr(0,specs.length-1);
-					let options  = _this.goodsInfo.goods.options;
+					let options  = _this.goods.options;
 					for(let j = 0 ; j< options.length;j++){
 						if (options[j].specs === specs) {
 							_this.stockNum = options[j].stock ;
@@ -311,10 +277,10 @@
 			// 初始化
 			init(){
 				let _this = this ;
-				_this.stockNum = _this.goodsInfo.goods.stock ;
-				_this.specs = _this.goodsInfo.goods.specs;
-				_this.salePrice = _this.goodsInfo.goods.shop_price;
-				_this.currentImg = _this.goodsInfo.goods.cover;
+				_this.stockNum = _this.goods.stock ;
+				_this.specs = _this.goods.specs;
+				_this.salePrice = _this.goods.shop_price;
+				_this.currentImg = _this.goods.cover;
 			},
 			// 添加购物车
 			addShopCar(){
@@ -337,43 +303,15 @@
 					}
 				})
 			},
-			// 收藏、取消收藏
-			collection(){
-				let _this = this;
-				let params = {
-					access_token: getCookie('access_token'),
-					goods_id: _this.params.goods_id
-				}
-				collectionGoods(params).then(res=>{
-					let {errcode,message,content} = res ;
-					if(errcode !== 0){
-						errorInfo(errcode,message) ;
-					}else {
-						this.goodsInfo.goods.is_collection=!this.goodsInfo.goods.is_collection;
-					}
-				})
-			},
-			// 关注/取消关注
-			follow(){
+			initTime(){
 				let _this = this ;
-				let fn ;
-				if(_this.goodsInfo.goods.is_seller_collection){
-					fn = cancelFollow;
-				}else {
-					fn = addFollow;
-				}
-				let params ={
-					access_token: getCookie('access_token'),
-					seller_id: _this.goodsInfo.goods.seller_id
-				}
-				fn(params).then(res=>{
-					let {errcode,message,content} = res ;
-					if(errcode !== 0){
-						errorInfo(errcode,message) ;
-					}else {
-						this.goodsInfo.goods.is_seller_collection=!this.goodsInfo.goods.is_seller_collection
-					}
-				})
+				let  {date_start,date_end}  =  _this.special
+				date_end*=1000;
+				date_start*=1000;
+				setInterval(()=>{
+					this.nowTime = new Date().getTime() ;
+					date_start-this.nowTime>0?(this.payBol= false):date_end-this.nowTime>0?(this.payBol=true):(this.payBol=false,this.addBol=false) 
+				},1000)
 			}
 		},
 		created() {
@@ -393,8 +331,13 @@
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						this.goodsInfo = content ;
-						this.sellerInfo.shop_header = this.goodsInfo.goods.shop_header ;
+						this.goods = content.goods ;
+						this.special =  content.special;
+						if(this.special){
+							this.initTime();
+						}
+						this.full = content.full ;
+						this.shop_header = content.goods.shop_header?content.goods.shop_header: "" ;
 						// 初始化结构数据
 						this.init();
 					}
@@ -409,10 +352,12 @@ $border_color: #ccc;
 $border_list: #f0f0f0;
 $primary:#c71724;
 $text_color: #666;
+$time_color: #fff336 ;
 $red_color: #f24450;
 $btn_bg: #fff882;
 $start_bg: #00bf8b;
 $end_bg: #f13f4c;
+$over_bg: #aaa;
 $title_color: #333;
   .wrap{
       width: 100%;
@@ -477,6 +422,30 @@ $title_color: #333;
       		width: 570px;
       		margin: 0px 30px;
       		overflow: hidden;
+      		.start{
+				background: $start_bg;
+			}
+			.end{
+				background-color: $end_bg;
+			    }
+  			.over{
+  				background-color: $over_bg;
+  			}
+      		.special{
+      			width: 100%;
+      			height: 60px;
+      			padding: 14px 22px;
+      			span{
+      				margin-left: 20px;
+      				vertical-align: -8px;
+      				font-size: 14px;
+      				color: #fff;
+      				i{
+      					margin: 0px 6px; 
+      					color: $time_color;
+      				}
+      			}	
+      		}
       		.price{
       			overflow: hidden;
       			margin-bottom: 26px;
@@ -634,106 +603,6 @@ $title_color: #333;
       			}
       		}
       	}
-      	.storeInfo{
-      		float: left;
-      		width: 200px;
-      		height: 340px;
-      		border: 1px solid $border_color;
-      		.title{
-      			width: 198px;
-      			height: 40px;
-      			padding-top: 10px;
-      			overflow: hidden;
-      			background: -webkit-linear-gradient(top,#cd2b2d,#cd4b2a) ;
-      			.titleContent{
-      				width: 156px;
-      				margin: 0px auto;
-      				.slider{
-	      				float: left;
-	      				width: 28px;
-	      				height: 1px;
-	      			    margin-top: 10px;
-	      				background-color: #fff;
-	      			}
-	      			.name{
-	      				float: left;
-	      				width: 100px;
-	      				padding: 0px 10px;
-	      				text-align: center;
-	      				color: #fff;
-	      				font-size: 20px;
-	      			}
-      			}
-      		}
-      		.storeContent{
-      			width: 198px;
-      			padding: 0px 10px;
-      			.storeName{
-      				height: 56px;
-      				line-height: 56px;
-      				font-size: 16px;
-      				text-align: center;
-      				overflow: hidden;
-      				text-overflow: ellipsis;
-      				white-space: nowrap ;
-      				border-bottom: 1px solid $border_color;
-      			}
-      			.eval{
-      				padding: 16px 0px;
-      				text-align: center;
-      				overflow: hidden;
-      				border-bottom: 1px solid $border_color;
-      				dl{
-      					float: left;
-      					width: 33.33%;
-      					border-right: 1px solid $border_color;
-      					dt{
-      						font-size: 14px;
-	      					color: $text_color;
-	      					margin-bottom: 14px;
-	      				}
-	      				dd{
-	      					font-size: 16px;
-	      					color: $red_color;
-	      				}
-      				}
-      				dl:last-child{
-      					border-right: none;
-      				}
-      			}
-      			.online{
-      				padding: 8px 0px 24px;
-      				text-align: center;
-      				border-bottom: 1px solid $border_color;
-      				dt{
-      					height: 40px;
-      					line-height: 40px;
-      				}
-      				dd{
-      					width: 80px;
-      					height: 24px;
-      					line-height: 24px;
-      					margin: 0px auto; 
-      					border-radius: 12px;
-      					background-color: #38b8fc;
-      					color: #fff;
-      				}
-      			}
-      			.collectBtn{
-      				margin-top: 24px;
-      				text-align: center;
-      				.el-button{
-      					border: 1px solid $red_color;
-      					padding: 6px;
-      				}
-      				.isView{
-      					color: #666;
-      				}
-      			}
-      		}
-      		
-      	} 
       }
-  	
   }
 </style>
