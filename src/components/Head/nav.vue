@@ -5,7 +5,7 @@
 				<dt @mouseleave='listBol=false;listConBol=false'>
 					<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 					<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-						<li v-for='(item,index) in category' :key='item'>
+						<li v-for='(item,index) in category' :key='item' @click='checkGoods(item.category_id)'>
 							<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
 							<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
 							{{item.name}}
@@ -15,11 +15,11 @@
 						<div class="detail_list">
 							<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
 								<el-col :span='4'>
-								    <span v-text='item2.name'></span>
+								    <span v-text='item2.name' @click='checkGoods(item.category_id)'></span>
 								    <em>></em>
 								</el-col>
 								<el-col :span='16' :offset="1">
-									<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
+									<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(item.category_id)'></span>
 								</el-col>
 							</el-row>
 						</div>
@@ -50,6 +50,11 @@ import guessLike from '../Common/guessLike'
      },
      components:{
      	guessLike
+     },
+     methods:{
+     	checkGoods(id){
+     		window.open(`relatedGoods.html?category_id=${id}`)
+     	}
      },
       mounted(){
      	this.$nextTick(()=>{
@@ -140,6 +145,7 @@ $border_color: #ccc;
 										display: inline-block;
 										width: 72px;
 										text-align-last: justify;
+										cursor: pointer;
 									}
 									em{
 										margin-left: 6px;
@@ -155,6 +161,7 @@ $border_color: #ccc;
 										float: left;
 										margin-right: 16px;
 										margin-bottom: 20px;
+										cursor: pointer;
 									}
 								}
 							}

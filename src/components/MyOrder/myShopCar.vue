@@ -114,7 +114,7 @@
 	</div>
 </template>
 <script>
-import {currency} from "../../common/js/filter.js"
+import {currency} from "../../common/js/filter"
 import {getCarts,removeCart,editCart,buy}  from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'

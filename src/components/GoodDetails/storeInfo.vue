@@ -83,7 +83,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 				let _this = this;
 				let params = {
 					access_token: getCookie('access_token'),
-					goods_id: _this.params.goods_id
+					goods_id: _this.goods.goods_id
 				}
 				collectionGoods(params).then(res=>{
 					let {errcode,message,content} = res ;

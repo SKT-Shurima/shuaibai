@@ -10,22 +10,22 @@
 		</div>
 		<div class="con_wrap">
 		<div class="con_box">
-			<ul class="con_list" @mouseenter='listBol=true' @mouseleave='listBol=false'>
-				<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index'>
-					<img :src="item.selected_icon" v-show='listBol&listIndex===index'>
-					<img :src="item.icon" v-show='!(listBol&listIndex===index)'>
+			<ul class="con_list" @mouseenter='listBol=true' @mouseleave='listBol=false;listIndex=""'>
+				<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index' :class='{"checkUnit":listIndex===index}' @click='checkGoods(item.category_id,item.name)'>
+					<img :src="item.selected_icon" v-show='listBol&&listIndex===index'>
+					<img :src="item.icon" v-show='!(listBol&&listIndex===index)'>
 					{{item.name}}
 				</li>
 			</ul>
-			<div class="content" v-show='listBol'  @mouseleave='listBol=false' @mouseenter='listBol=true'>
+			<div class="content" v-show='listBol'  @mouseleave='listBol=false;listIndex=""' @mouseenter='listBol=true;listIndex=fIndex'>
 				<div class="detail_list">
 					<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
 						<el-col :span='4'>
-						    <span v-text='item2.name'></span>
+						    <span v-text='item2.name' @click='checkGoods(item2.category_id,item2.name)'></span>
 						    <em>></em>
 						</el-col>
 						<el-col :span='16' :offset="1">
-							<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
+							<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(item3.category_id,item3.name)'></span>
 						</el-col>
 					</el-row>
 				</div>
@@ -89,6 +89,9 @@ import recharge from './recharge'
 				let id = item.action.params[1].value;
 				location.href = `detail.html?goods_id=${id}`;
 			},
+			checkGoods(id,name){
+	     		window.open(`relatedGoods.html?category_id=${id}&keyword=${name}`)
+	     	},
 			homePage(){
 				let params = {
 					t: '5-web',
@@ -170,6 +173,7 @@ $text_color: #666;
 				width: 1250px;
 				margin: 0px auto;
 				overflow: hidden;
+				position: relative;
 				img{
 					cursor: pointer;
 				}
@@ -187,7 +191,7 @@ $text_color: #666;
 						font-weight: bolder;
 						cursor: pointer;
 					}
-					li:hover{
+					.checkUnit{
 						background-color: #fff;
 						color: #c81623;
 					}
@@ -217,10 +221,12 @@ $text_color: #666;
 						.el-row{
 							margin-bottom: 22px;
 							.el-col-4{
+								font-weight: 600;
 								span{
 									display: inline-block;
 									width: 72px;
 									text-align-last: justify;
+									cursor: pointer;
 								}
 								em{
 									margin-left: 6px;
@@ -234,8 +240,10 @@ $text_color: #666;
 								border-bottom:  1px dashed #dcdcdc;
 								span{
 									float: left;
+									cursor: pointer;
 									margin-right: 16px;
 									margin-bottom: 20px;
+									color: $text_color;
 								}
 							}
 						}

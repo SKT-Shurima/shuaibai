@@ -6,7 +6,7 @@
 					<dt @mouseleave='listBol=false;listConBol=false'>
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-							<li v-for='(item,index) in category' :key='item'>
+							<li v-for='(item,index) in category' :key='item' @click='checkGoods(item.category_id,item.name)'>
 								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
 								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
 								{{item.name}}
@@ -16,11 +16,11 @@
 							<div class="detail_list">
 								<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
 									<el-col :span='4'>
-									    <span v-text='item2.name'></span>
+									    <span v-text='item2.name' @click='checkGoods(item2.category_id,item2.name)'></span>
 									    <em>></em>
 									</el-col>
 									<el-col :span='16' :offset="1">
-										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
+										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(item3.category_id,item3.name)'></span>
 									</el-col>
 								</el-row>
 							</div>
@@ -36,6 +36,7 @@
 	</div>
 </template>
 <script>
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getCategory} from '../../common/js/api'
 import guessLike from '../Common/guessLike'
   export default {
@@ -63,12 +64,87 @@ import guessLike from '../Common/guessLike'
     components:{
      	guessLike
     },
+    methods:{
+    	checkGoods(id,name){
+     		window.open(`relatedGoods.html?category_id=${id}&keyword=${name}`)
+     	},
+    	initLevel(id){
+    		let _this = this ;
+    		let category = _this.category ;
+    		var level;
+			for (let i = 0 ;i<category.length;i++){
+				if (category[i].category_id === id) {
+					level = new Array ;
+					var  fObj = {
+						category_id: category[i].category_id,
+						name: category[i].name
+					}
+					level.push(fObj);
+					console.log(level,id)
+					_this.$emit('sendLevel',level); 
+					return ;
+				}else{
+					let child_category = category[i].child_category ;
+					for (let j = 0; j < child_category.length; j++) {
+						if (child_category[j].category_id===id) {
+							level = new Array ;
+							var  fObj = {
+								category_id: category[i].category_id,
+								name: category[i].name
+							}
+							level.push(fObj);
+							var sObj = {
+								category_id: child_category[i].category_id,
+								name: child_category[i].name
+							}
+							level.push(sObj);
+							console.log(level,id)
+							_this.$emit('sendLevel',level);  
+							return ;
+						}else{
+							let grandChild_category =  child_category[i].child_category ;
+							for(let k = 0 ; k< grandChild_category.length;k++){
+								if (grandChild_category[k].category_id===id) {
+									level = new Array ;
+									var  fObj = {
+										category_id: category[i].category_id,
+										name: category[i].name
+									}
+									level.push(fObj);
+									var sObj = {
+										category_id: child_category[i].category_id,
+										name: child_category[i].name
+									}
+									level.push(sObj);
+									var tObj = {
+										category_id: grandChild_category[i].category_id,
+										name: grandChild_category[i].name
+									}
+									level.push(tObj);
+									console.log(level,id)
+									_this.$emit('sendLevel',level); 
+									return;
+								}
+							}
+						}
+					}
+				}
+			}
+		}, 
+    },
     mounted(){
      	this.$nextTick(()=>{
 			getCategory().then(res=>{
-				let {errcode,content} = res ;
-				if (errcode === 0 ) {
+				let {errcode,message,content} = res ;
+				if (errcode !== 0 ) {
+					errorInfo(errcode,message) ;
+				}else{
 					this.category = content;
+				    let reqParams = getRequest();
+					let id = reqParams.category_id ;
+					if (id) {
+						this.initLevel(id) ;
+					}
 				}
 			})
      	})
@@ -148,10 +224,12 @@ $border_color: #ccc;
 							.el-row{
 								margin-bottom: 22px;
 								.el-col-4{
+									font-weight: 600;
 									span{
 										display: inline-block;
 										width: 72px;
 										text-align-last: justify;
+										cursor: pointer;
 									}
 									em{
 										margin-left: 6px;
@@ -167,6 +245,7 @@ $border_color: #ccc;
 										float: left;
 										margin-right: 16px;
 										margin-bottom: 20px;
+										cursor: pointer;
 									}
 								}
 							}

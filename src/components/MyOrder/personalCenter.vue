@@ -4,7 +4,7 @@
 			<div class="title">
 				<dl>
 					<dt>
-						<img src="">
+						<img :src="userInfo.avater">
 					</dt>
 					<dd>
 						{{userInfo.nickname}}({{userInfo.real_phone}})
@@ -92,6 +92,8 @@ import orderList from './orderList'
 					this.userInfo = JSON.parse(sessionStorage.userInfo);
 					// 获取订单信息
 					this.order = this.userInfo.order;
+				}else{
+					location.href = 'login.html'
 				}
 			})
 		}
@@ -167,7 +169,7 @@ import orderList from './orderList'
 					border-right: 1px solid $border_color; 
 					i{
 						margin-left: 4px;
-						padding: 2px 5px;
+						padding: 0px 4px;
 						border-radius: 8px;
 						color: #fff;
 						background-color: $primary;

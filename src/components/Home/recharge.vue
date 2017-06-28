@@ -208,7 +208,6 @@ $primary:#c71724;
 			width: 100%;
 			height: 100%;
 			z-index: 100;
-			background-color: rgba(0,0,0,.7);
 			.payType{
 				width: 360px;
 				height: 180px;

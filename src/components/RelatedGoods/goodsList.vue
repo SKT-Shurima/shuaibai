@@ -18,7 +18,7 @@
 				<img src="../../../static/detailImg/soreup.png" height="14" width="14" v-else-if='priceIndex===1'>
 				<img src="../../../static/detailImg/sortDefault.png" height="14" width="14" v-else>
 			</li>
-			<li style="width:110px;cursor:pointer;" @click='sortType("date_on_sale")'>
+			<li style="width:110px;cursor:pointer;" :class='{"isclick":timeIndex>0}' @click='sortType("date_on_sale")'>
 				上架时间 
 				<img src="../../../static/detailImg/sortdown.png" height="14" width="14" v-if='timeIndex===2'>
 				<img src="../../../static/detailImg/soreup.png" height="14" width="14" v-else-if='timeIndex===1'>
@@ -44,7 +44,7 @@
 			<li v-for='(item,index) in goods' class="infoList">
 				<dl>
 					<dt>
-						<img :src="item.cover">
+						<img :src="item.cover"  @click='goodDetail(item.goods_id)'>
 					</dt>
 					<dd>
 						<div class="sellInfo" v-text='item.name'></div>
@@ -92,6 +92,9 @@ import pagination from '../Common/pagination'
 			pagination
 		},
 		methods:{
+			goodDetail(id){
+				window.open(`goodDetail.html?goods_id=${id}`) ;
+			},
 			// 改变页数
 			changePage(page){
 				let _this = this ;
@@ -157,8 +160,6 @@ import pagination from '../Common/pagination'
 		mounted(){
 			this.$nextTick(()=>{
 				this.reqParams = getRequest();
-				// this.params.keyword = this.reqParams.keyword ;
-				// this.params.category_id = this.reqParams.category_id ; 
 				this.initList();
 			})
 		}
@@ -210,8 +211,8 @@ $bg_color: #f5f5f5;
 		.goodsList{
 			width: 1002px;
 			margin-top: 20px;
-			border-right:1px solid $border_color;
-			border-bottom: 1px solid $border_color;
+			border-top:1px solid $border_color;
+			border-left: 1px solid $border_color;
 			overflow: hidden;
 			.infoList{
 				float: left;
@@ -219,19 +220,18 @@ $bg_color: #f5f5f5;
 				height: 330px;
 				padding: 14px;
 				cursor: pointer;
-				border-top: 1px solid $border_color;
-				border-left: 1px solid $border_color;
-				border-right: 1px solid transparent;
-				border-bottom: 1px solid transparent;
-				/*margin-right: -1px;*/
-				/*margin-top: -1px;*/
+				border-top: 1px solid transparent;
+				border-left: 1px solid transparent;
+				border-right: 1px solid $border_color;
+				border-bottom: 1px solid $border_color;
 				dl{
 					dt{
 						width: 220px;
 						height: 220px;
 						img{
 							width: 100%;
-							height: 100%; 
+							height: 100%;
+							cursor: pointer; 
 						}
 					}
 					dd{

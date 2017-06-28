@@ -8,7 +8,7 @@
 							<img :src="item.cover">
 						</div>
 						<div class="editBox">
-							<div class="delColGood(item.collection_id)">
+							<div @click="delColGood(item.collection_id)">
 							<i class="el-icon-delete"></i>删除</div>
 						</div>
 					</dt>

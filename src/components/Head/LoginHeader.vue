@@ -14,7 +14,7 @@
 				</dl>
 				<ul class="h_right">
 					<li><a href="">商家后台</a>|</li>
-					<li><a href="">客户服务<i></i></a></li>
+					<li><a href="">客户服务<img src="../../../static/headImg/down.png" height="7" width="10"></a></li>
 				</ul>
 			</div>
 		</div>
@@ -27,7 +27,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 	export default{
 		
@@ -51,29 +50,35 @@ $primary:#c71724;
 				width: 1250px;
 				margin:0px auto;
 			    overflow: hidden;
-			    .h_left{
-			    	float: left;
-			    	overflow: hidden;
-			    	dt,dd{
-			    		float: left;
-			    		overflow: hidden;
-			    	}
-			    	dd{
-			    		margin-left: 16px;
-			    	}
-			    }
-			    .h_right{
-			    	float: right;
-			    	overflow: hidden;
-			    	margin: 0px;
-			    	li{
-			    		float: left;
-			    		padding-left: 30px;
-			    	}
-			    }
 			}
 
 		}
+		.h_left{
+	    	float: left;
+	    	overflow: hidden;
+	    	dt,dd{
+	    		float: left;
+	    		overflow: hidden;
+	    	}
+	    	dd{
+	    		margin-left: 16px;
+	    	}
+	    }
+	    .h_right{
+	    	float: right;
+	    	overflow: hidden;
+	    	margin: 0px;
+	    	li{
+	    		float: left;
+	    		a{
+	    			padding: 0px 14px; 
+	    			img{
+	    				margin-left: 4px;
+	    				margin-bottom: 4px;
+	    			}
+	    		}
+	    	}
+	    }
 		.head_con_wrap{
 			width: 100%;
 			.head_con_box{
