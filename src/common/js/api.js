@@ -415,7 +415,16 @@ export const delOrder = params => {
 	params = trans(params);
 	return axios.post(`${base}/orderAction/delOrder`,params).then(res=>res.data);
 }
-
+// 店铺可用优惠券
+export const getShopCoupons = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/shopAction/getCoupons`,params).then(res=>res.data); 
+}
+// 领取优惠券
+export const receiveCoupon = params =>{
+	params = trans(params);
+	return axios.post(`${base}/shopAction/receiveCoupon`,params).then(res=>res.data) ;
+}
 
 // 售后
 // 评论

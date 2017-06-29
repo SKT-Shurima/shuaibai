@@ -11,7 +11,8 @@
 					<dt @mouseleave='listBol=false;listConBol=false'>
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-							<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index'>
+							<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index'
+							@click='checkGoods(index,item.name)'>
 								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
 								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
 								{{item.name}}
@@ -21,11 +22,11 @@
 							<div class="detail_list">
 								<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
 									<el-col :span='4'>
-									    <span v-text='item2.name'></span>
+									    <span v-text='item2.name' @click='checkGoods(`${fIndex},${index2}`,item2.name)'></span>
 									    <em>></em>
 									</el-col>
 									<el-col :span='16' :offset="1">
-										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
+										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(`${fIndex},${index2},${index3}`,item3.name)'></span>
 									</el-col>
 								</el-row>
 							</div>
@@ -64,6 +65,11 @@ import guessLike from '../Common/guessLike'
      },
      components:{
      	guessLike
+     },
+     methods:{
+     	checkGoods(index,name){
+     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`)
+     	}
      },
      mounted(){
      	this.$nextTick(()=>{

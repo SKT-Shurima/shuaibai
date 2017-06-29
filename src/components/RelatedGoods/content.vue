@@ -3,7 +3,7 @@
 		<v-nav :sellerInfo='sellerInfo' @sendLevel='getLevel'></v-nav>
 		<div class="container">
 			<ul class="level" v-show='level'>
-				<li v-for='item in level' @click='checkGoods(item.category_id,item.name)'>{{item.name}}&nbsp;></li>
+				<li v-for='(item,index) in level' @click='checkGoods(index,item.name)'>{{item.name}}&nbsp;></li>
 			</ul>
 			<div class="listWrap">
 				<goods-list @sendSellerInfo='getSellerInfo'></goods-list>
@@ -15,7 +15,8 @@
 	</div>
 </template>
 <script>
-import vNav from '../RelatedGoods/nav'
+import {getRequest} from '../../common/js/common'
+import vNav from '../Head/nav'
 import goodsList from '../RelatedGoods/goodsList'
 import recommended from './recommended'
 	export default {
@@ -29,8 +30,12 @@ import recommended from './recommended'
 			vNav,goodsList,recommended
 		},
 		methods:{
-			checkGoods(id,name){
-				location.href=`relatedGoods.html?category_id=${id}&keyword=${name}`;
+			checkGoods(index,name){
+				let req = getRequest() ;
+				let cat = req.cat.split(',');
+				cat = cat.slice(0, index+1);
+				cat = cat.join(',');
+				location.href=`relatedGoods.html?cat=${cat}&keyword=${name}`;
 	     	},
 			getSellerInfo(info){
 				let _this =this ;

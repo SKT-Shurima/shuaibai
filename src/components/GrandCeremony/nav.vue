@@ -6,31 +6,26 @@
 					<dt @mouseleave='listBol=false;listConBol=false'>
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-							<li v-for='(item,index) in category' :key='item' v-text='item.name'></li>
+							<li v-for='(item,index) in category' :key='item' @click='checkGoods(index,item.name)' @mouseenter='listIndex=index;fIndex=index'>
+								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
+								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
+								{{item.name}}
+							</li>
 						</ul>
 						<div class="content" v-show='listBol'  @mouseleave='listBol=false;listConBol=false' @mouseenter='listBol=true;listConBol=true'>
 							<div class="detail_list">
 								<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
 									<el-col :span='4'>
-									    <span v-text='item2.name'></span>
+									    <span v-text='item2.name' @click='checkGoods(`${fIndex},${index2}`,item2.name)'></span>
 									    <em>></em>
 									</el-col>
 									<el-col :span='16' :offset="1">
-										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name'></span>
+										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(`${fIndex},${index2},${index3}`,item3.name)'></span>
 									</el-col>
 								</el-row>
 							</div>
 							<div class="img_box">
-								 <ul class="small_img">
-								 	<li v-for='(sItem,index) in youLike' :class='{"margin_left":index%2}' v-if='index<4'>
-								 		<img src="">
-								 	</li>
-								 </ul>
-								 <ul class="big_img">
-								 	<li v-for= '(bItem,index) in youLike' v-if='index>=4'>
-								 		<img src="">
-								 	</li>
-								 </ul>
+								<guess-like></guess-like>
 							</div>
 						</div>
 					</dt>
@@ -108,6 +103,11 @@ $border_color: #ccc;
 							background-color: #fff;
 							color: #c81623;
 						}
+						img{
+							width: 22px;
+							vertical-align: -5px;
+							margin-right: 10px;
+						}
 					}
 					.content{
 						position: absolute;
@@ -132,6 +132,7 @@ $border_color: #ccc;
 							.el-row{
 								margin-bottom: 22px;
 								.el-col-4{
+									font-weight: 600;
 									span{
 										display: inline-block;
 										width: 72px;

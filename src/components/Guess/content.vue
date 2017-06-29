@@ -54,7 +54,7 @@
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						this.loveList = res.content ;
+						this.loveList = content ;
 					}
 				})
 			}

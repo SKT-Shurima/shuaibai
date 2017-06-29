@@ -1,44 +1,46 @@
 <template>
 	<div class="wrap">
-		<div class="box">
-			<dl>
-				<dt @mouseleave='listBol=false;listConBol=false'>
-					<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
-					<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-						<li v-for='(item,index) in category' :key='item' @click='checkGoods(item.category_id)'>
-							<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
-							<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
-							{{item.name}}
-						</li>
-					</ul>
-					<div class="content" v-show='listBol'  @mouseleave='listBol=false;listConBol=false' @mouseenter='listBol=true;listConBol=true'>
-						<div class="detail_list">
-							<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
-								<el-col :span='4'>
-								    <span v-text='item2.name' @click='checkGoods(item.category_id)'></span>
-								    <em>></em>
-								</el-col>
-								<el-col :span='16' :offset="1">
-									<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(item.category_id)'></span>
-								</el-col>
-							</el-row>
+		<div class="navWrap">
+			<div class="box">
+				<dl>
+					<dt @mouseleave='listBol=false;listConBol=false'>
+						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
+						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
+							<li v-for='(item,index) in category' :key='item' @click='checkGoods(index,item.name)' @mouseenter='listIndex=index;fIndex=index'>
+								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
+								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
+								{{item.name}}
+							</li>
+						</ul>
+						<div class="content" v-show='listBol'  @mouseleave='listBol=false;listConBol=false' @mouseenter='listBol=true;listConBol=true'>
+							<div class="detail_list">
+								<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
+									<el-col :span='4'>
+									    <span v-text='item2.name' @click='checkGoods(`${fIndex},${index2}`,item2.name)'></span>
+									    <em>></em>
+									</el-col>
+									<el-col :span='16' :offset="1">
+										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(`${fIndex},${index2},${index3}`,item3.name)'></span>
+									</el-col>
+								</el-row>
+							</div>
+							<div class="img_box">
+								<guess-like></guess-like>
+							</div>
 						</div>
-						<div class="img_box">
-							<guess-like></guess-like>
-						</div>
-					</div>
-				</dt>
-				<dd><a href="index.html">返回首页</a></dd>
-			</dl>
+					</dt>
+					<dd><a href="index.html">返回首页</a></dd>
+				</dl>
+			</div>
 		</div>
 	</div>
 </template>
 <script>
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getCategory} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
 import guessLike from '../Common/guessLike'
   export default {
-     data(){
+    data(){
      	return{
      		listBol: false,
      		listConBol: false,
@@ -47,16 +49,35 @@ import guessLike from '../Common/guessLike'
      		fIndex: 0,
 			sIndex: 0,
      	}
-     },
-     components:{
+    },
+    components:{
      	guessLike
-     },
-     methods:{
-     	checkGoods(id){
-     		window.open(`relatedGoods.html?category_id=${id}`)
-     	}
-     },
-      mounted(){
+    },
+    methods:{
+    	checkGoods(index,name){
+     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`) ;
+     	},
+    	initLevel(cat){
+    		let _this = this ;
+    		let category = _this.category ;
+    		let catArr = cat.split(',');
+    		let len = catArr.length;
+    		let level = new  Array ;
+    		let fObj =  category[catArr[0]] ;
+			level.push(fObj) ;
+    		if (len>=2) {
+    			let  sObj = category[catArr[0]].child_category[catArr[1]] ;
+    			level.push(sObj);
+    			if (len===3) {
+    				let tObj = category[catArr[0]].child_category[catArr[1]].child_category[catArr[2]] ;
+    				level.push(tObj); 
+    			}
+    		}
+    		_this.$emit('sendLevel',level); 
+			
+		}, 
+    },
+    mounted(){
      	this.$nextTick(()=>{
 			getCategory().then(res=>{
 				let {errcode,message,content} = res ;
@@ -64,6 +85,11 @@ import guessLike from '../Common/guessLike'
 					errorInfo(errcode,message) ;
 				}else{
 					this.category = content;
+				    let reqParams = getRequest();
+					let cat = reqParams.cat ;
+					if (cat) {
+						this.initLevel(cat) ;
+					}
 				}
 			})
      	})
@@ -73,7 +99,9 @@ import guessLike from '../Common/guessLike'
 <style lang='scss' scoped>
 $primary:#c71724;
 $border_color: #ccc;
-	.wrap{
+.wrap{
+	margin-top: 36px;
+    .navWrap{
 		width: 100%;
 		height: 40px;
 		background-color: $primary;
@@ -86,6 +114,7 @@ $border_color: #ccc;
 					height: 40px;
 					line-height: 40px;
 					color: #fff;
+					font-size: 14px;
 					font-weight: 600;
 					text-align: center;
 					float: left;
@@ -104,7 +133,6 @@ $border_color: #ccc;
 							width: 100%;
 							height: 50px;
 							line-height: 50px;
-							font-size: 14px;
 							font-weight: bolder;
 							cursor: pointer;
 						}
@@ -141,6 +169,7 @@ $border_color: #ccc;
 							.el-row{
 								margin-bottom: 22px;
 								.el-col-4{
+									font-weight: 600;
 									span{
 										display: inline-block;
 										width: 72px;
@@ -206,4 +235,6 @@ $border_color: #ccc;
 			
 		}
 	}
+}
+	
 </style>

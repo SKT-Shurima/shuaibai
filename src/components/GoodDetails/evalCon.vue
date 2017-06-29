@@ -3,12 +3,8 @@
 		<div class="container" v-if='deliveryInfo.goodsInfo'>
 			<!-- 店铺小信息列表 -->
 			<div class="sliderBox">
-			<!-- 优惠券 -->
-				<ul class="coupons">
-					<li v-for='item in 3'>
-						
-					</li>
-				</ul>
+				<!-- 优惠券 -->
+				<coupons></coupons>
 				<!-- 分类 -->
 				<classify></classify>
 				<!-- 热销排行 -->
@@ -189,6 +185,7 @@
 	import {errorInfo,getCookie} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content'
+	import coupons from './coupons.vue'
 	import hotSell from '../StoreCommon/hotSell'
 	import classify from '../StoreCommon/classify'
 	import reply from './reply'
@@ -222,7 +219,7 @@
 			currency,dateStyleCh,timeStyle
 		},
 		components:{
-			youLove,hotSell,classify,reply,recommend,pagination
+			youLove,hotSell,coupons,classify,reply,recommend,pagination
 		},
 		watch: {
 			deliveryInfo: {
@@ -247,16 +244,16 @@
 				}
 				getComments(params).then(res=>{
 					let {errcode,message,content} = res ;
-						if(errcode !== 0){
-							errorInfo(errcode,message) ;
-						}else {
-							this.commentList = content ;
-							this.pagesize = content.pagesize;
-							if (this.evalTabIndex!==mask) {
-								this.initAddReply(this.commentList.content.length);
-							}
-							_this.evalTabIndex = mask;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						this.commentList = content ;
+						this.pagesize = content.pagesize;
+						if (this.evalTabIndex!==mask) {
+							this.initAddReply(this.commentList.content.length);
 						}
+						_this.evalTabIndex = mask;
+					}
 				})
 			},
 			// 格式化追加回复列表
@@ -382,19 +379,8 @@ $bg_title: #f5f5f5;
 			.sliderBox{
 				float: left; 
 				width: 250px;
-				.coupons{
-					width: 100%;
-					margin-left: 10px;
-					margin-bottom: 14px;
-					li{
-						width: 220px;
-						height: 116px;
-						margin-bottom: 10px;     
-						background-color: #e7354d; 
-					}
 			}
 		}
-	}
 	/*内容区域*/
 	.contentBox{
 		width: 1000px;

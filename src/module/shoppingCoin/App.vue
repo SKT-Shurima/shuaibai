@@ -11,7 +11,7 @@
   import 'common/css/reset.css';
   import vHead from 'components/Head/Head'
   import vNav from 'components/Head/nav'
-  import vCon from 'components/Theme/integral'
+  import vCon from 'components/Theme/shoppingCoin'
   import vFoot from 'components/Foot/Foot'
 
   export default {

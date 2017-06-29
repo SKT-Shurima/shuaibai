@@ -224,7 +224,7 @@ $border_color: #ddd;
 					.newInfoBox{
 						position: relative;
 						width: 100%;
-						height: 300px;
+						height: 280px;
 						overflow: hidden;
 						margin-top:10px;
 					}
