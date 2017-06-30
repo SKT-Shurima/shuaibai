@@ -4,8 +4,8 @@
 			<nav class="nav_box">
 				<a href="javascript:void(0)">全部商品分类</a>
 				<a href="integral.html">积分半价</a>
-				<a href="">购物币专区</a>
-				<a href="">百城万店</a>
+				<a href="shoppingCoin.html">购物币专区</a>
+				<a href="cities.html">百城万店</a>
 			</nav>
 		</div>
 		<div class="con_wrap">

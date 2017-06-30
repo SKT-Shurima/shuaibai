@@ -81,15 +81,15 @@
 								<div class="addressInfo">
 									<div @click='addressBol=true'>{{proName}}{{cityName}}<em></em></div>
 									<div class="addressList" v-show='addressBol'>
-										<ul>
-											<li v-for="(item,index) in cityArr" v-text='item.name' @click='setOption("proIndex",index)' v-if='index!=0' :class='{"isChecked":proIndex===index}'></li>
+										<ul v-if='provinceArr'>
+											<li v-for="(proItem,index) in provinceArr" v-text='proItem.name' @click='getAddress(proItem.zone_id,"pro",index)'  :class='{"isChecked":proIndex===index}'></li>
 										</ul>
-										<ul v-show='proIndex'>
-											<li v-for="(item2,index2) in cityArr[proIndex].sub" v-text='item2.name'  @click='setOption("cityIndex",index2)' v-if='index2!=0' :class='{"isChecked":cityIndex===index2}'></li>
+										<ul v-if='cityArr'>
+											<li v-for="(cityItem,index) in cityArr" v-text='cityItem.name'  @click='getAddress(cityItem.zone_id,"city",index)'  :class='{"isChecked":cityIndex===index}'></li>
 										</ul>
-										<ul v-show='cityIndex'>
-											<li  v-for="(item3,index3) in cityArr[proIndex].sub[cityIndex].sub" v-text='item3.name'
-											v-if='index3!=0' :class='{"isChecked":areaIndex===index3}' @click='chooseOver(index3)'></li>
+										<ul v-if='areaArr'>
+											<li  v-for="(areaItem,index) in areaArr" v-text='areaItem.name'
+											 :class='{"isChecked":areaIndex===index}' @click='chooseOver(index)'></li>
 										</ul>
 									</div>
 								</div>
@@ -134,10 +134,9 @@
 </template>
 
 <script>
-	import { arrCity } from '../../common/js/city'
  	import {currency,countdown} from '../../common/js/filter'
  	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
- 	import {goodsDetail,addCart} from '../../common/js/api'
+ 	import {linkage,goodsDetail,addCart} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import storeInfo from './storeInfo'
  	import vNav from '../StoreCommon/nav'
@@ -156,13 +155,9 @@
 				salePrice: 0, // 帅柏价
 				version: '', 
 				combo: '',
-				cityArr: [{
-		      		name: '',
-		      		sub: [{
-		      			name: '',
-		      			sub: ''
-		      		}]
-		      	}],   // 省市区三级联动数组
+				provinceArr: null,
+				cityArr: null,
+				areaArr: null, // 省市区三级联动数组
 		      	proIndex: 0, // 省份索引
 		        cityIndex: 0, // 城市索引
 		        areaIndex: 0, // 地区索引 
@@ -236,27 +231,47 @@
 			 }
 			},
 		methods: {
-			// 选择对应的城市地区
-			setOption(type,index){
-	             if(type === 'proIndex'){
-	             	this.proIndex = index;
-	                this.cityIndex = 0;
-	                this.areaIndex = 0;
-	            }
-	            if(type === 'cityIndex'){
-	            	this.cityIndex = index;
-	                this.areaIndex = 0;
-	            }
-	        },
+			// 获取省市区
+			getAddress(id,mask,index){
+				let _this = this ;
+				let params = {
+					pid: id?id:""
+				}
+				linkage(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						switch (mask) {
+							case 'pro':
+								_this.cityArr = null ;
+								_this.areaArr = null ;
+								_this.proIndex = index ;
+								_this.cityIndex = 0 ;
+								_this.cityArr  = content ;
+							break;
+							case 'city': 
+								_this.areaArr = null
+								_this.cityIndex = index;
+								_this.areaIndex = 0 ;
+								_this.areaArr = content ;
+							break;
+							default:
+								_this.provinceArr = content ;
+							break;
+						}
+					}
+				})
+			},
 	        // 选择完毕
 	        chooseOver(index) {
 	            let _this = this ;
 	            _this.areaIndex = index;
-	            _this.proName = _this.cityArr[_this.proIndex].name;
-	            _this.cityName = _this.cityArr[_this.proIndex].sub[_this.cityIndex].name;
+	            _this.proName = _this.provinceArr[_this.proIndex].name ;
+	            _this.cityName = _this.cityArr[_this.cityIndex].name;
 	            if (_this.proName === _this.cityName) {
-	            	_this.proName = _this.cityArr[_this.proIndex].sub[_this.cityIndex].name;
-	           		_this.cityName = _this.cityArr[_this.proIndex].sub[_this.cityIndex].sub[_this.areaIndex].name;
+	            	_this.proName = _this.cityArr[_this.cityIndex].name;
+	           		_this.cityName = _this.areaArr[_this.areaIndex].name;
 	            }
 	            _this.addressBol = false;
 	        },
@@ -316,7 +331,7 @@
 		},
 		created() {
 			this.$nextTick(()=>{
-	            this.cityArr = arrCity;
+	            this.getAddress();
 	        })
 		},
 		mounted(){
@@ -421,7 +436,6 @@ $title_color: #333;
       		float: left;
       		width: 570px;
       		margin: 0px 30px;
-      		overflow: hidden;
       		.start{
 				background: $start_bg;
 			}
@@ -508,7 +522,7 @@ $title_color: #333;
       						left: 0px;
       						z-index: 20;
       						width: 400px;
-      						height: 228px;
+      						height: 194px;
       						overflow-y: scroll;
       						padding: 10px;
       						border:1px  solid $border_color;

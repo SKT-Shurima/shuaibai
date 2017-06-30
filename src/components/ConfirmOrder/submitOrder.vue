@@ -4,7 +4,7 @@
 			选择收货地址
 		</h4>
 		<ul class="addressList" v-if='addressList'>
-			<li v-for= '(item,index) in addressList' :class='{"isAddress":addressIndex===index}' :key='item' @click='addressIndex=index' v-if='index<entries'>
+			<li v-for= '(item,index) in addressList' :class='{"isAddress":addressIndex===index}' :key='item' @click='initExpressFee(index)' v-if='index<entries'>
 				<dl>
 					<dt>
 						<span v-text='item.name'>
@@ -17,7 +17,6 @@
 					</dt>
 					<dd class="addressInfo">
 						{{item.province}}{{item.city}}{{item.district}}{{item.address}}
-					    }
 					</dd>
 					<dd>
 						<em>
@@ -41,7 +40,8 @@
 		<h4>
 			订单信息
 		</h4>
-		<div class="orderInfo">
+		<div class="orderInfo" v-for='shopItem in orderInfo.shop'>
+			<div class="shopTitle" v-text='shopItem.shopName'></div>
 			<div class="orderTitle">
 				<div class="infoCol">商品信息</div>
 				<div class="priceCol">单价</div>
@@ -49,7 +49,7 @@
 				<div class="totalCol">小计</div>
 			</div>
 			<ul class="orderInfoList">
-				<li v-for='(item,index) in goodsList'>
+				<li v-for='(item,index) in shopItem.goods'>
 				    <div class="goodsInfo">
 				    	<dl class="goodsMsg infoCol">
 							<dt class="titleCol">
@@ -63,14 +63,14 @@
 							</dd>
 						</dl>
 						<div class="priceCol">
-							<dl class="vMiddle" v-show='false' style="height: 20px;">
+							<!-- <dl class="vMiddle" v-show='false' style="height: 20px;">
 								<dt style="color:#666;text-decoration: line-through;">
 									{{|currency}}
 								</dt>
 								<dd>
 									{{299.00|currency}}
 								</dd>
-							</dl>
+							</dl> -->
 							<dl class="vMiddle" v-show='true' style="height: 20px;">
 								<dd>
 									{{(item.price-0)|currency}}
@@ -79,9 +79,9 @@
 						</div>
 						<div style='padding-top:16px;' class="numCol">
 							<div class="numBtn">
-								<button @click='editGoods(item,-1)'><i class="el-icon-minus"></i></button>
+								<button @click='editGoods(shopItem.seller_id,item,-1)'><i class="el-icon-minus"></i></button>
 								<input type="text" name="" v-model='item.quantity' @change='editGoods(item,0)'>
-								<button @click='editGoods(item,1)'><i class="el-icon-plus"></i></button>
+								<button @click='editGoods(shopItem.seller_id,item,1)'><i class="el-icon-plus"></i></button>
 							</div>
 						</div>
 						<div class="totalCol totalAmount">
@@ -97,6 +97,7 @@
 						<el-col :span='21'>
 							<el-input
 							  type="textarea"
+							  v-model='shopItem.remark'
 							  :autosize="{ minRows: 2, maxRows: 4}"
 							  placeholder="请输入内容"
 							  ></el-input>
@@ -109,12 +110,12 @@
 							运费
 						</el-col>
 						<el-col :span='5'>
-							{{0|currency}}
+							{{shopItem.express_fee|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<el-checkbox size='small' v-model='checkbox'><span>使用优惠券</span></el-checkbox>
+							<el-checkbox size='small' v-model='shopItem.checkbox'><span>使用优惠券</span></el-checkbox>
 						</el-col>
 						<el-col :span='5'>
 							{{0|currency}}
@@ -122,13 +123,13 @@
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<el-radio class="radio" v-model="radio" label="1">
+							<el-radio class="radio" v-model="shopItem.radio" label="1">
 							<span>购物币抵扣</span>
 							</el-radio>
-							<span><em>剩余购物币{{userInfo.shopping_coin}}，当前可用{{orderInfo.shop[0].max_shopping_coin}}</em></span>
+							<span><em>剩余购物币{{orderInfo.customer.shopping_coin}}，当前可用{{shopItem.max_shopping_coin}}</em></span>
 						</el-col>
 						<el-col :span='5'>
-							{{radio==="1"?orderInfo.shop[0].max_shopping_coin-0:0|currency}}
+							{{shopItem.radio==="1"?orderInfo.customer.shopping_coin-0:0|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
@@ -136,10 +137,10 @@
 							<el-radio class="radio" v-model="radio" label="2">
 							<span>积分抵扣</span>
 							</el-radio>
-							<span><em>剩余积分{{userInfo.integration}}，当前可用{{orderInfo.shop[0].max_integration}}</em></span>
+							<span><em>剩余积分{{orderInfo.customer.integration}}，当前可用{{shopItem.max_integration}}</em></span>
 						</el-col>
 						<el-col :span='5'>
-							{{radio==='2'?orderInfo.shop[0].max_integration-0:0|currency}}
+							{{shopItem.radio==='2'?orderInfo.customer.integration-0:0|currency}}
 						</el-col>
 					</el-row>
 				</div>
@@ -166,22 +167,19 @@
 	</div>
 </template>
 <script>
-import {getAddress,buy,generate} from '../../common/js/api'
+import {buy_bal,getAddress,getExpressFee,generate} from '../../common/js/api'
 import {currency} from '../../common/js/filter'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
 			return {
-				userInfo: '',
 				addressList: null,
 				orderInfo: null,
 				addressIndex: "",
 				entries: 4,
 				goodsList: null,
-				remark: '',
-				radio: '0',
-				checkbox: ""
+				reqParams: null
 			} 
 		},
 		filters:{
@@ -209,7 +207,92 @@ import {MessageBox} from  'element-ui'
 		      	 	}
 		       })
 		    },
-		    editGoods(item,mask){
+		    initExpressFee(index){
+		    	let _this= this ;
+		    	if(index){
+		    		_this.addressIndex=index;
+		    	}
+		    	let params = {
+		    		address_id: _this.addressList[_this.addressIndex].address_id
+		    	}
+		    	let shops = [] ;
+		    	let shopArr = _this.orderInfo.shop ;
+		    	for(let i = 0 ; i< shopArr.length;i++){
+		    		let  shopObj = {
+			    		seller_id: shopArr[i].seller_id,
+			    		goods: []
+		    		}
+		    		let goodArr = shopArr[i].goods ;
+		    		for( let j = 0;j < goodArr.length;j++){
+		    			let goodObj = {
+							goods_id: goodArr[j].goods_id,
+							option_id: goodArr[j].option_id,
+							quantity: goodArr[j].quantity + ''
+						}
+						shopObj.goods.push(goodObj);
+		    		}
+		    		shops.push(shopObj);
+		    		shops = JSON.stringify(shops);
+			    	params.shops = shops ;
+			    	getExpressFee(params).then(res=>{
+			    		let {errcode,message,content} = res ;
+						if(errcode!==0) {
+							errorInfo(errcode,message) ;
+						}else{
+							for(let m = 0 ; m< content.length; m++){
+								let seller_id = content[m].seller_id ;
+								for(let n = 0 ;n<shopArr.length;n++){
+									if (seller_id===shopArr[n].seller_id) {
+										shopArr.express_fee = content[m].express_fee ;
+									}
+								}
+							}
+							_this.orderInfo.shop = shopArr ;
+						}
+			    	}) 
+		 		}
+		    },
+		    getGoodsInfo(){
+		    	let params = {
+		    		access_token: getCookie('access_token'),
+		    		id: this.reqParams.id
+		    	}
+		    	buy_bal(params).then(res=>{
+		    		let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
+						this.orderInfo = content ;
+						this.initOrderInfo();
+					}
+		    	})
+		    },
+		    initOrderInfo(){
+		    	let _this = this;
+		    	let  shopArr = _this.orderInfo.shop ;
+		    	for(let i = 0 ; i < shopArr.length; i++) {
+		    		shopArr[i].remark = "" ;
+		    		shopArr[i].radio = "" ;
+		    		shopArr[i].checkbox = "" ;
+		    		shopArr[i].express_fee = 0 ;
+		    	}
+		    },
+		    countTotalFee(){
+		    	let  _this = this ;
+		    	let shopArr = _this.orderInfo.shop ;
+		    	let totalFee = 0 ;
+		    	for(let i = 0 ; i< shopArr.length ;i++) {
+		    		let  goodsArr = shopArr[i].goods ;
+		    		totalFee+= shopArr[i].express_fee ; 
+		    		for(let j = 0 ; j < goodArr.length; j++){
+		    			let fee = goodsArr[i].price * goodsArr[i].quantity ;
+		    			totalFee+= fee;
+		    		}
+		    	}
+		    	totalFee = totalFee > _this.orderInfo.full.limit-0?(totalFee-_this.orderInfo.full.amount) : totalFee ;
+		    	_this.orderInfo.total_fee = totalFee ;
+		    },
+		    editGoods(seller_id,item,mask){
 		    	let _this  = this ;
 		    	if(mask>0){
 		    		item.quantity++;
@@ -222,37 +305,9 @@ import {MessageBox} from  'element-ui'
 		    		}
 		    	}
 		    	item.quantity = item.quantity-0>item.stock-0?itwm.stock:item.quantity-0<1?"1":item.quantity ;
-		    	let params = {
-		    		access_token: getCookie('access_token')
-		    	}
-		    	let data =[{
-		    		seller_id: _this.orderInfo.shop[0].seller_id,
-		    		goods: []
-		    	}]
-		    	for(let i = 0 ; i<_this.goodsList.length;i++){
-		 			let goodObj = {
-	 					cart_id: _this.goodsList[i].cart_id,
-						goods_id: _this.goodsList[i].goods_id,
-						option_id: _this.goodsList[i].option_id,
-						quantity: _this.goodsList[i].quantity + ''
-					}
-					data[0].goods.push(goodObj);
-		 		}
-		    	params.data = JSON.stringify(data);
-		    	buy(params).then(res=>{
-			 		let {errcode,message,content} = res ;
-					if(errcode!==0) {
-						errorInfo(errcode,message) ;
-					}else{
-						if(sessionStorage.orderInfo){
-							sessionStorage.removeItem('orderInfo');
-						}
-						this.orderInfo = content ;
-						this.goodsList = this.orderInfo.shop[0].goods ;
-						content = JSON.stringify(content);
-						sessionStorage.setItem('orderInfo',content)
-					}
-			 	})
+		    	_this.countTotalFee(); 
+		    	_this.initExpressFee();
+		    	
 		    },
 		    submitOrder(){
 		    	let _this = this ; 
@@ -260,23 +315,28 @@ import {MessageBox} from  'element-ui'
 		    		access_token: getCookie('access_token'),
 		    		address_id: _this.addressList[_this.addressIndex].address_id
 		    	}
-		    	let  data = [{
-		    		remark: _this.remark,
-		    		seller_id: _this.orderInfo.shop[0].seller_id,
-		    		use_type: _this.radio,
-		    		coupon: ''
-		    	}]
-		    	let goods = [];
-		    	for(let i = 0;i<_this.orderInfo.shop[0].goods.length;i++){
-		    		let goodsObj = {
-		    			cart_id: _this.orderInfo.shop[0].goods[i].cart_id,
-						goods_id: _this.orderInfo.shop[0].goods[i].goods_id,
-						option_id: _this.orderInfo.shop[0].goods[i].option_id,
-						quantity: _this.orderInfo.shop[0].goods[i].quantity
+		    	let  data = []
+		    	let shopArr = _this.orderInfo.shop ;
+		    	for(let i = 0 ; i< shopArr.length;i++){
+		    		let  shopObj = {
+			    		remark: shopArr[i].remark,
+			    		seller_id: shopArr[i].seller_id,
+			    		use_type: shopArr[i].radio,
+			    		coupon: '',
+			    		goods: []
 		    		}
-		    		goods.push(goodsObj); 
-		    	}
-		    	data[0].goods  = goods ;
+		    		let goodArr = shopArr[i].goods ;
+		    		for( let j = 0;j < goodArr.length;j++){
+		    			let goodObj = {
+		 					cart_id: goodArr[j].cart_id,
+							goods_id: goodArr[j].goods_id,
+							option_id: goodArr[j].option_id,
+							quantity: goodArr[j].quantity + ''
+						}
+						shopObj.goods.push(goodObj);
+		    		}
+		    		data.push(shopObj); 
+		 		}
 		    	data = JSON.stringify(data);
 		    	params.data = data ;
 		    	generate(params).then(res=>{
@@ -284,28 +344,22 @@ import {MessageBox} from  'element-ui'
 					if(errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						let order_sn = sessionStorage.order_sn;
-						if (order_sn) {
-							sessionStorage.removeItem('order_sn');
+						let order_snArr =content.order_sn ;
+						let order_sn = "" ;
+						for(let k = 0 ; k <order_snArr.length;k++){
+							order_sn+=order_snArr[k] +",";
 						}
-						sessionStorage.order_sn = content.order_sn[0] ;
-						location.hash = '#successSubmit'
+						order_sn = order_sn.slice(0,order_sn.length-1) ;
+						location.hash = `payfor?order_sn=${content.order_sn}` ;
 					}
 		    	})
 		    }
 		},
 		created(){
 	        this.$nextTick(()=>{
-	        	if (sessionStorage.userInfo) {
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
-					this.getAddressList();
-					if (sessionStorage.orderInfo) {
-						this.orderInfo = JSON.parse(sessionStorage.orderInfo);
-						this.goodsList = this.orderInfo.shop[0].goods ;
-					}
-				}else{
-					window.location.href = "login.html";
-				}
+        		this.getAddressList();
+				this.reqParams = getHashReq() ;
+        		this.getGoodsInfo();
 	        })
 	    }
 	}
@@ -313,8 +367,8 @@ import {MessageBox} from  'element-ui'
 <style lang='scss' scoped>
 $border_color: #ccc;
 $primary:#c71724;
-$text_color: #666;
-$bg_color: #f5f5f5;
+$text_color: #999;
+$bg_color: #f9fcff;
 	.wrap{
 		width: 100%;
 		h4{
@@ -382,6 +436,11 @@ $bg_color: #f5f5f5;
 			}
 		}
 		.orderInfo{
+			margin-bottom: 10px;
+			.shopTitle{
+				font-size: 14px;
+				margin: 10px 0px;
+			}
 			.infoCol,.priceCol,.numCol,.totalCol{
 					float: left;
 				}

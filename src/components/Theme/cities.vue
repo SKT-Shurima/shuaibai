@@ -1,48 +1,90 @@
 <template>
 	<div class="wrap">
 		<div class="box">
-			<special :special='special'></special>
-			<div class="theme_box">
-				<div class="theme">
-					<div class="theme_title">
-						<div>精品优质店铺</div>
-					</div>
-					<ul class="store_list">
-						<li :class="{'has_margin': (index+1)%3}" v-for='(item,index) in seller'>
-							<img :src="item.image" @click='storeDetail(item.seller_ic)'> 
+			<div class="container">
+				<ul class="topSeller">
+					<li v-for='(item,index) in topSeller' :class='{"noMargin":index===4}'>
+						<dl>
+							<dt>
+								<img :src="item.shop_logo" @click='storeDetail(item.seller_id)'>
+							</dt>
+							<dd>
+								<div>{{item.province}}-{{item.city}}</div>
+								<div style='font-size:14px;line-height:20px;font-weight:600;' v-text='item.shop_name'></div>
+								<div>店铺活动</div>
+							</dd>
+						</dl>
+					</li>
+				</ul>
+				<div class="area">
+					<h1>区域地区馆</h1>
+					<ul class="areaList">
+						<li v-for='item in area'>
+							<img :src="item.image">
 						</li>
 					</ul>
 				</div>
-				<div class="theme">
+			</div>
+			<div class="theme_box">
+				<div class="themeList">
 					<div class="theme_title">
-						<div>精品优质单品</div>
+						<div>优秀店铺/Excellent shop</div>
 					</div>
-					<ul class="single_list">
-						<li :class="{'has_margin': (index+1)%3}" v-for='(item,index) in goods'>
+					<ul class="excellentShop">
+						<li v-for='(item,index) in excellent_shop'>
 							<dl>
 								<dt>
-									<img :src="item.cover" @click='goodDetail(item.goods_id)'>
+									<img :src="item.shop_logo" @click='storeDetail(item.seller_id)'>
 								</dt>
 								<dd>
-									<div class="price_info">
-									 	<div class="price">
-									 		<em>&yen;</em>
-											<span v-text='item.shop_price/2'></span>
-									 	</div>
-									</div>
-									<div class="originPrice">
-										<div style="text-decoration: line-through;">{{item.shop_price|currency}}</div>
-										<div>积分半价优惠</div>
-									</div>
-									<div class="begin" @click='goodDetail(item.goods_id)'>
-										立即开抢
-									</div>
+									<div v-text='item.shop_title'></div>
+									<div class="shopName" v-text='item.shop_name'></div>
+									<div class="shopArea">{{item.province}}-{{item.city}}</div>
 								</dd>
 							</dl>
 						</li>
 					</ul>
 				</div>
-				<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
+				<div class="themeSlider">
+					<dl class="sliderTitle">
+						<dt @click='topIndex=0;topList=new_seller;' :class='{"active":topIndex===0}'>新店TOP10</dt>
+						<dd @click='topIndex=1;topList=excellent_shop' :class='{"active":topIndex===1}'>优秀店铺TOP10</dd>
+					</dl>
+					<ul class="topList">
+						<li v-for='(item,index) in topList'>
+							<div class="num" v-show='index<9'>{{"0"+(index+1)}}</div>
+							<div class="num" v-show='index===9'>{{index+1}}</div>
+							<dl>
+								<dt>
+									<img :src="item.shop_logo" @clikc='storeDetail(item.seller_id)'>
+								</dt>
+								<dd>
+									<div class="shopName" v-text='item.shop_name'></div>
+									<div class="shopArea" >{{item.province}}-{{item.city}}</div>
+									<div class="shopTitle" v-text='item.shop_title'></div>
+								</dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
+				<div class="store">
+					<div class="theme_title">
+						<div>店铺列表/Store List</div>
+					</div>
+					<ul class="storeList">
+						<li v-for='(item,index) in seller' :class='{"noMargin":(index+1)%4===0}'>
+							<dl>
+								<dt>
+									<img :src="item.shop_logo" @click='storeDetail(item.seller_id)' >
+								</dt>
+								<dd>
+									<div class="shopName" v-text='item.shop_name'></div>
+									<div class="shopArea">{{item.province}}-{{item.city}}</div>
+								</dd>
+							</dl>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -51,24 +93,20 @@
 import {currency} from '../../common/js/filter'
 import {getThematicActivities} from '../../common/js/api'
 import {errorInfo} from '../../common/js/common'
-import special from '../ThemeCommon/special'
-import pagination from '../../components/Common/pagination'
 	export default {
 		data(){
 			return {
-				pagesize: 1,
-				page:0,
-				special: [],
-				specialIndex: 0 ,
-				seller: null,
-				goods: null
+				topSeller: null,
+				area: null,
+				excellent_shop: null,
+				seller:null,
+				new_seller: null,
+				topList: null,
+				topIndex: 0
 			}
 		},
 		filters:{
 			currency
-		},
-		components:{
-			special,pagination
 		},
 		methods: {
 			storeDetail(id){
@@ -86,18 +124,19 @@ import pagination from '../../components/Common/pagination'
 			initList(){
 				let page = this.page + "" ;
 				let params = {
-					type: "6",
-					page: page
+					type: "7"
 				}
 				getThematicActivities(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						this.special = content.special ;
-						this.seller = content.seller ;
-						this.goods = content.goods.goods ;
-						this.pagesize  =content.goods.pagesize ;
+						this.topSeller = content.top_seller.seller ;
+						this.area = content.area ;
+						this.excellent_shop = content.excellent_shop ;
+						this.new_seller = content.new_seller ;
+						this.topList = this.new_seller ;
+						this.seller = content.seller_list.seller ;
 					}
 				})
 			}
@@ -110,11 +149,11 @@ import pagination from '../../components/Common/pagination'
   }
 </script>
 <style scoped lang='scss'>
-$page_bg: #f5f5f5;
+$title_bg: #f5f5f5;
 $page_border: #ddd;
 $primary:#c71724;
-$red_color: #f24450;
-$border_list: #f0f0f0;
+$red_color: #bf2032;
+$border_color: #f0f0f0;
 $pink_color: #f61d4a;
 $text_color: #ffd3d8;
 	.wrap{
@@ -122,109 +161,241 @@ $text_color: #ffd3d8;
 		.box{
 			width: 1210px;
 			margin: 0px auto;
-			.theme_box{
-				width: 100%;
-				.theme{
-					width: 100%;
-					margin-top: 18px;
-					.theme_title{
+			.container{
+				.topSeller{
+					padding: 10px;
+					overflow: hidden;
+					li{
+						float: left;
+						width: 218px;
+						margin-right: 20px;
+					}
+					.noMargin{
+						margin-right: 0px;
+					}
+					dl{
 						width: 100%;
-						border-bottom: 2px solid $red_color;
-						overflow: hidden;
-						div{
-							float: left;
-							width: 180px;
-							height: 40px;
-							line-height: 40px;
-							color: #fff;
-							font-size: 20px;
+						height: 300px;
+						dt{
+							width: 100%;
+							height: 218px;
+							img{
+								width: 100% ;
+								height: 100%;
+								cursor: pointer;
+							}
+						}
+						dd{
+							height: 60px;
 							text-align: center;
-							border-top-right-radius: 8px;
-							background-color: $red_color;
 						}
 					}
-					.store_list{
-						width: 100%;
+				}
+				.area{
+					h1{
+						margin-bottom: 10px;
+						font-weight: 400;
+					}
+					.areaList{
 						overflow: hidden;
 						li{
-							width: 400px;
-							height: 200px;
-							margin-top: 12px;
 							float: left;
-							border: 1px solid $border_list;
+							width: 302px;
+							height: 150px;
 							img{
 								width: 100%;
-								height: 100%;
+								height: 100%;   
 							}
 						}
 					}
 				}
 			}
-		}
-		.has_margin{
-			margin-right: 5px;
-		}
-		.single_list{
-			width: 100%;
-			overflow: hidden;
-			margin-bottom: 70px;
-			li{
-				width: 400px;
-				height: 356px;
-				border: 1px solid $border_list;
-				margin-top: 12px;
-				float: left;
-				dl{
-					width: 396px;
-					dt{
+			.theme_box{
+				width: 100%;
+				overflow: hidden;
+				.theme_title{
+					width: 100%;
+					border-bottom: 1px solid $border_color;
+					overflow: hidden;
+					div{
+						float: left;
+						width: 400px;
+						height: 50px;
+						line-height: 50px;
+						color: #fff;
+						font-size: 20px;
+						text-align: center;
+						border-top-right-radius: 50px;
+						margin-bottom: -1px;
+						background-color: $red_color;
+					}
+				}
+				.themeList{
+					float: left;
+					width: 910px;
+					margin-top: 18px;
+					.excellentShop{
 						width: 100%;
-						height: 294px;
-						img{
-							width: 100%;
-							height: 100%;
-							cursor: pointer;
+						li{
+							width: 886px;
+							height: 260px;
+							margin-top: 12px;
+							border: 1px solid $border_color;
+							dl{
+								overflow: hidden;
+								dt,dd{
+									float: left;
+								}
+								dt{
+									width: 580px;
+									height: 260px;
+									img{
+										width: 100%;
+										height: 100%;
+										cursor: pointer;
+									}
+								}
+								dd{
+									width: 304px;
+									height: 260px;
+									text-align: center;
+									padding-top: 72px;
+									.shopTitle{
+										font-size: 20px;
+									}
+									.shopName{
+										font-size: 30px;
+										line-height: 54px;
+									}
+									.shopArea{
+										width: 180px;
+										font-size: 16px;
+										margin: 0px auto;
+										border-top: 1px solid $border_color;
+									}
+								}
+							}
 						}
 					}
-					dd{
-						width: 100%;
-						height: 60px;
-						background-color: $pink_color;
-						.price_info,.originPrice{
+				}
+				.themeSlider{
+					float: left;
+					width: 300px;
+					.sliderTitle{
+						overflow: hidden;
+						border: 1px solid $border_color;
+						margin-top: 18px; 
+						margin-bottom: 7px;
+						dt,dd{
 							float: left;
-							color: #fff;
+							width: 149px;
 							height: 40px;
-							margin-top: 10px;
-						}
-						.price_info{
-							padding-top: 6px;
-							margin-left: 10px;
-							em{
-								font-size: 14px;
-								vertical-align: baseline;
-							}
-							span{
-								font-size: 28px;
-							}
-						}
-						.originPrice{
-							div{
-								color: $text_color;
-								line-height: 20px;
-								height: 20px;
-								margin-left: 10px;
-							}
-						}
-						.begin{
-							float: right;
-							width: 116px;
-							line-height: 60px;
-							font-size: 20px;
+							line-height: 40px;
+							font-size: 16px;
 							text-align: center;
-							margin-right: -1px;
 							cursor: pointer;
-							color: $red_color;
-							background: url('../../../static/themeImg/mask.png') no-repeat;
+							background-color: $title_bg ;
+							border:1px solid $border_color;
 						}
+						dt{
+							border-right: none;
+						}
+						dd{
+							border-left: none;
+						}
+						.active{
+							background-color: $red_color;
+							border-color: $red_color;
+							color: #fff;
+						}
+					}
+					.topList{
+						border: 1px solid $border_color;
+						li{
+							overflow: hidden;
+							margin: 0px 10px;
+							padding: 10px 0px;
+							border-bottom: 1px solid $border_color;
+							.num{
+								float: left;
+								font-size: 28px;
+								line-height: 80px;
+								padding: 0px 4px;
+							}
+							dl{
+								width: 234px;
+								float: left;
+								overflow: hidden;
+								dt,dd{
+									float: left;
+									cursor: pointer;
+								}
+								dt{
+									width: 80px;
+									height: 80px;
+									img{
+										width: 100%;
+										height: 100%;
+										cursor: pointer;
+									}
+								}
+								dd{
+									width: 134px;
+									margin-left: 10px;
+									padding-top: 8px;
+									.shopName,.shopTitle{
+										overflow: hidden;
+										text-overflow: ellipsis;
+										white-space: nowrap;
+									}
+									.shopName{
+										font-size: 16px;
+									}
+									.shopArea{
+										font-size: 14px;
+									}
+									.shopTitle{
+										margin-top: 10px;
+										font-size: 14px;
+										color: $primary;
+									}
+								}
+							}
+						}
+					}
+				}
+				.storeList{
+					overflow: hidden;
+					margin-top: 12px;
+					li{
+						float: left;
+						width: 292px;
+						margin-right: 10px;
+						margin-bottom: 10px;
+						border: 1px solid $border_color;
+						dt{
+							width: 292px;
+							height: 292px;
+							img{
+								width: 100%;
+								height: 100%;
+								cursor: pointer;
+							}
+						}
+						dd{
+							text-align: center;
+							.shopName{
+								font-size: 16px;
+								line-height: 24px;
+							}
+							.shopArea{
+								font-size: 14px;
+								line-height: 20px;
+							}
+						}
+					}
+					.noMargin{
+						margin-right: 0px;
 					}
 				}
 			}

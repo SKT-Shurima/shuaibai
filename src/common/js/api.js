@@ -375,6 +375,16 @@ export const getSellerInfo =  params => {
 }
 
 // 订单相关
+// 获取购买需要购买商品信息
+export const buy_bal = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/buy_bal`,params).then(res=>res.data);
+}
+// 获取运费
+export const getExpressFee = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getExpressFee`,params).then(res=>res.data);
+}
 // 确认订单
 export const generate = params =>{
 	params = trans(params);

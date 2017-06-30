@@ -1,14 +1,14 @@
 <template>
 	<div class="wrap">
-		<dl>	
+		<dl v-if='reqParams'>	
 			<dt>
-				<img src="../../../static/orderImg/paySuccess.png" height="153" width="153" v-if='status===0'>
+				<img src="../../../static/orderImg/paySuccess.png" height="153" width="153" v-if='reqParams.status=="0"'>
 				<img src="../../../static/orderImg/payFail.png" v-else>
 			</dt>
-			<dd>
-				<div v-if='status===0'>您已成功付款&nbsp;<em v-text='payInfo.count'></em>&nbsp;元</div>
-				<div v-if='status===1'>支付失败，请重试</div>
-				<div v-if='status===2'>您的余额不足，支付失败，请选择其他支付方式</div>
+			<dd style="font-weight: 600 ;">
+				<div v-show='reqParams.status=="0"'>您已成功付款&nbsp;<em v-text='reqParams.count'></em>&nbsp;元</div>
+				<div v-show='reqParams.status=="1"'>支付失败，请重试</div>
+				<div v-show='reqParams.status=="2"'>您的余额不足，支付失败，请选择其他支付方式</div>
 			</dd>
 			<dd>
 				<el-button type='primary' @click='checkOrder'>查看订单</el-button>
@@ -23,7 +23,6 @@ import {getHashReq} from '../../common/js/common'
 		data(){
 			return {
 				payInfo: null,
-				status: "",
 				reqParams: null
 			}
 		},
@@ -38,15 +37,6 @@ import {getHashReq} from '../../common/js/common'
 		created(){
 			this.$nextTick(()=>{
 				this.reqParams = getHashReq() ;
-				let order_sn = 	this.reqParams.order_sn;
-				if (sessionStorage.payResult) {
-					let payResult = JSON.parse(sessionStorage.payResult);
-					this.payInfo = payResult.payInfo ;
-					this.status = payResult.status ;
-				}else {
-					location.hash=`payfor?order_sn=${order_sn}`;
-				}
-				sessionStorage.removeItem('payResult');
 			})
 		
 		}
@@ -73,7 +63,6 @@ $border_color: #ddd;
 				width: 100%;
 				text-align: center;
 				margin-bottom: 56px;
-				font-weight: 600;
 				div{
 					font-size: 14px;
 					em{

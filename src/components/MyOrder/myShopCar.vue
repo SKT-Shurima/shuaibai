@@ -368,12 +368,7 @@ import {MessageBox} from  'element-ui'
 					if(errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						if(sessionStorage.orderInfo){
-							sessionStorage.removeItem('orderInfo');
-						}
-						content = JSON.stringify(content);
-						sessionStorage.setItem('orderInfo',content)
-						window.open('confirmOrder.html#submitOrder')
+						window.open(`confirmOrder.html#submitOrder?id=${content}`)
 					}
 			 	})
 		 	}else{

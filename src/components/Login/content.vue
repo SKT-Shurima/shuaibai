@@ -108,7 +108,7 @@ export default {
 						sessionStorage.removeItem('userInfo');
 						delCookie('access_token');
 					}
-					setCookie('access_token',content.access_token,.1);
+					setCookie('access_token',content.access_token,.5);
 					content  = JSON.stringify(content);
 					sessionStorage.setItem('userInfo',content);
 					location.href = 'index.html' ;

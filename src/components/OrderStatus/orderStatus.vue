@@ -310,7 +310,7 @@ $text_color: #666;
 					.el-button{
 						width:152px;
 						font-size:18px;
-						font-weight:600;
+						font-weight: 400;
 					}
 					a{
 						font-size: 14px;

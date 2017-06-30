@@ -47,7 +47,8 @@ import {getHashReq,getCookie} from '../../common/js/common'
 				}
 				pay(params).then(res=>{
 					let {errcode,message,content} = res ;
-					let payResult = {} ;
+					let status = '';
+					let count = "";
 					if(errcode!==0) {
 						if (errcode === 99) {
 	            			MessageBox.alert(message, '提示', {
@@ -59,17 +60,15 @@ import {getHashReq,getCookie} from '../../common/js/common'
 					          	}
 						    });
 	            		}else if(errcode=== -103){
-	            			payResult.status = 2 ;
+	            			status = 2 ;
 	            		}else{
-	            			payResult.status = 1; 
+	            			status = 1; 
 	            		}
 					}else{
-						payResult.payInfo = content;
-						payResult.status = 0 ;
+						status = 0 ;
+						count = content.count;
 					}
-					payResult = JSON.stringify(payResult);
-					sessionStorage.setItem('payResult',payResult);
-					location.hash= `payResult?order_sn=${order_sn}` ;
+					location.hash= `payResult?count=${count}&status=${status}` ;
 				})
 			}
 			
@@ -128,6 +127,7 @@ $border_color: #ddd;
 					height: 40px;
 					line-height: 40px;
 					font-size: 14px;
+					cursor: pointer;
 					border: 1px solid $border_color;
 					margin-bottom: 22px;
 				}
@@ -145,7 +145,6 @@ $border_color: #ddd;
 				.el-button{
 					width: 100%;
 					font-size: 20px;
-					font-weight: 600;
 				}
 			}
 		}

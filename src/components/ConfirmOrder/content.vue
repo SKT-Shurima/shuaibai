@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<div class="title">
 			<ul>
-				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"isTab":currentIndex===index}' :style='{zIndex:index*10,left: (340-16)*index + "px"}'></li>
+				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"isTab":currentIndex===index}' :style='{zIndex:index*10,left: (448-16)*index + "px"}'></li>
 			</ul>
 		</div>
 		<div>
@@ -16,13 +16,7 @@
 import submitOrder from './submitOrder'
 import payfor from  './payfor'
 import payResult from './payResult'
-import waitShipments from '../OrderStatus/waitShipments'
-import confirmGet from '../OrderStatus/confirmGet'
-import evaluation from '../OrderStatus/evaluation'
-import tradeOver from '../OrderStatus/tradeOver'
-import {getOrderDetail} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
-import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 window.onpopstate = function() {  
        location.reload() ;
  }; 
@@ -33,21 +27,14 @@ window.onpopstate = function() {
 				listTitle: [
 					{name:'1.确认订单信息'},
 					{name:'2.付款'},
-					{name:'3.确认收货'},
-					{name:'4.评价晒单'}
-				],
-				orderInfo: null,
-				reqParams: null,
+					{name:'3.支付结果'}
+				]
 			}
 		},
 		components:{
 			submitOrder,
 			payfor,
-			payResult,
-			waitShipments,
-			confirmGet,
-			evaluation,
-			tradeOver
+			payResult
 		},
 		computed: {
 		  	currentView () {
@@ -58,62 +45,21 @@ window.onpopstate = function() {
 			init(){
 				let _this = this ;
 				let hash = location.hash.split("?")[0] ;
-				_this.reqParams = getHashReq() ;
-				let order_sn = 	_this.reqParams.order_sn;
-				if (order_sn) {
-					let params = {
-						access_token: getCookie('access_token'),
-						order_sn: order_sn
-					}
-					getOrderDetail(params).then(res=>{
-						let {errcode,message,content} = res ;
-						if(errcode!==0) {
-							errorInfo(errcode,message) ;
-						}else{
-							let state = content.order.order_state;
-							let view = '';
-							if (hash) {
-								view = hash.slice(1) ;
-								this.$store.commit('switchView',view);
-							}else{
-								
-							}
-							switch (state){
-								case '1': 
-									this.currentIndex = 1;
-									if (view!=='payfor') {
-										location.hash = `payfor?order_sn=${order_sn}`
-									}
-								break;
-								case '2': 
-									this.currentIndex = 1;
-									if (view!=='waitShipments'&&view!=='payResult') {
-										location.hash = `waitShipments?order_sn=${order_sn}`
-									}
-								break;
-								case '3': 
-									this.currentIndex = 2;
-									if (view!=='confirmGet') {
-										location.hash = `confirmGet?order_sn=${order_sn}`
-									}
-								break;
-								case '4': 
-									this.currentIndex = 3;
-									if (view!=='evaluation') {
-										location.hash = `evaluation?order_sn=${order_sn}`
-									}
-								break;
-								case '5': 
-									this.currentIndex = 3;
-									if (view!=='tradeOver') {
-										location.hash = `tradeOver?order_sn=${order_sn}`
-									}
-								break;
-							}
-						}
-					})
-				}else{
-					location.href='myOrder.html#view10'
+				let view = '';
+				if (hash) {
+					view = hash.slice(1) ;
+					this.$store.commit('switchView',view);
+				}
+				switch (view) {
+					case "submitOrder" : 
+						this.currentIndex = 0 ;
+					break ;
+					case "payfor" : 
+						this.currentIndex = 1 ;
+					break ;
+					case "payResult" : 
+						this.currentIndex = 2 ;
+					break ;
 				}
 			}
 		},
@@ -138,23 +84,22 @@ $primary:#c71724;
 			ul{
 				position: absolute;
 				top: 0px;
-				transform: translateX(-22px);
+				transform: translateX(-30px);
 				height: 60px;
 				line-height: 60px;
 				font-size: 20px;
-				font-weight: 600;
 				text-align: center;
 				li{
 					position: absolute;
 					top: 0px;
-					width: 340px;
+					width: 448px;
 					text-align: center;
 					background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
 					background-size: 100% 100%;
 				}
 				li:last-child{
 					text-align: left;
-					text-indent: 96px;
+					text-indent: 160px;
 				}
 				.isTab{
 					color: #fff;

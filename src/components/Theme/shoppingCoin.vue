@@ -14,7 +14,7 @@
 							</dd>
 						</dl>
 					</li>
-					<li @mouseenter='index=1' @click='index=1' :class='{"active":index===1}'>
+					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===1}'>
 						<dl>
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico02.png" height="51" width="56">
@@ -24,7 +24,7 @@
 							</dd>
 						</dl>
 					</li>
-					<li @mouseenter='index=2' @click='index=2' :class='{"active":index===2}'>
+					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===2}'>
 						<dl>
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico03.png" height="51" width="56">
@@ -34,7 +34,7 @@
 							</dd>
 						</dl>
 					</li>
-					<li @mouseenter='index=3' @click='index=3' :class='{"active":index===3}'>
+					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===3}'>
 						<dl>
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico04.png" height="51" width="56">
@@ -44,7 +44,7 @@
 							</dd>
 						</dl>
 					</li>
-					<li @mouseenter='index=4' @click='index=4' :class='{"active":index===4}'>
+					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===4}'>
 						<dl>
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico05.png" height="51" width="56">
@@ -54,7 +54,7 @@
 							</dd>
 						</dl>
 					</li>
-					<li @mouseenter='index=5' @click='index=5' :class='{"active":index===5}'>
+					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===5}'>
 						<dl>
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico06.png" height="51" width="56">
@@ -72,14 +72,14 @@
 								<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 							</dt>
 							<dd>
-								<div class="name" v-text='ite.name'></div>
+								<div class="name" v-text='item.name'></div>
 								<div class="priceInfo">
 									<i></i>
-									<span></span>
-									<em>原价{{itme.shop_price|currency}}</em>
-									<button @clikc='goodDetail(item.goods_id)'>
+									<span v-text='item.shopping_coin'></span>
+									<em>原价{{item.shop_price|currency}}</em>
+									<el-button @clikc='goodDetail(item.goods_id)' type='text'>
 										立即购买
-									</button>
+									</el-button>
 								</div>
 							</dd>
 						</dl>
@@ -111,9 +111,6 @@ import special from '../ThemeCommon/special'
 			special
 		},
 		methods: {
-			storeDetail(id){
-				window.open(`storeDetail.html?seller_id=${id}`) ;
-			},
 			goodDetail(id){
 				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
@@ -151,22 +148,27 @@ $bg_color: #f5f5f5 ;
 			width: 1210px;
 			margin: 0px auto;
 		}
-		.title{
+		.container{
 			width: 1248px;
-			margin: 0px auto;
+			margin: 0px auto ;
+		}
+		.title,.goodsList{
+			margin-top: 10px;
 			overflow: hidden;
+		}
+		.title{
 			li{
 				float: left;
 				width: 208px;
 				height: 90px;
 				border-bottom: 2px solid transparent;
+				color: #B7B7B7;
 				dl{
 					text-align: center;
 				}
 				dd{
 					font-size: 16px;
 					line-height: 40px;
-					color: #B7B7B7;
 				}
 			}
 			.active{
@@ -175,10 +177,58 @@ $bg_color: #f5f5f5 ;
 			}
 		}
 		.goodsList{
-			overflow: hidden;
 			li{
 				float: left;
 				width: 312px;
+				padding: 10px;
+				background-color: $bg_color;
+				dl{
+					dt{
+						width: 302px;
+						height: 302px;
+						img{
+							width: 100%;
+							height: 100%;
+							cursor: pointer;
+						}
+					}
+					dd{
+						padding: 0px 6px;
+						.name{
+							font-size: 14px;
+							line-height: 20px;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							overflow: hidden;
+						}
+						.priceInfo{
+							height: 40px;
+							overflow: hidden;
+							i{
+								display: inline-block;
+								width: 20px;
+								height: 20px;
+								background: url('../../../static/shopingCoinImg/coin.png') no-repeat ;
+							}
+							span{
+								font-size: 30px;
+								line-height: 40px;
+								color: $primary;
+							}
+							em{
+								font-size: 14px;
+								text-decoration: line-through ;
+								color: #ababab;
+							}
+							.el-button{
+								float: right;
+								font-size: 20px;
+								line-height: 40px;
+								padding: 0px;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
