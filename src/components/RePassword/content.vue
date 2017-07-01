@@ -82,13 +82,6 @@ import {hex_md5} from '../../common/js/md5.js'
 	     };
       return {
       	complete: false,
-      	cityArr: [{
-      		name: '',
-      		sub: [{
-      			name: '',
-      			sub: ''
-      		}]
-      	}],
       	proIndex: 0,
         cityIndex: 0,
         areaIndex: 0,

@@ -37,10 +37,10 @@
 					</dt>
 				</dl>
 				<div class="searchBtn">
-					<el-button size='mini' type='primary'@click='initList'>搜索</el-button>
+					<el-button size='mini' type='primary'@click='sortType'>搜索</el-button>
 				</div>
 				<div class="page">
-					{{params.page}}/{{pagesize}}
+					{{params.page}}/{{goods.pagesize}}
 				</div>
 			</li>
 			<li class="leftBtn">
@@ -54,7 +54,7 @@
 				</el-button>
 			</li>
 		</ul>
-		<ul class="goodsList" v-if='goods'>
+		<ul class="goodsList" v-if='goods.seller_goods'>
 			<li v-for='(item,index) in goods.seller_goods' class="infoList" @click='goodDetail(item.goods_id)'>
 				<dl>
 					<dt>
@@ -74,34 +74,35 @@
 				</dl>
 			</li>
 		</ul>
-		<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
+		<pagination :pagesize='goods.pagesize' @changePage='changePage' ref='pagination'></pagination>
 	</div>
 </template>
 <script>
 import {currency} from '../../common/js/filter'
-import {getRequest,errorInfo} from '../../common/js/common'
-import {getSellerInfo} from '../../common/js/api'
 import pagination from '../Common/pagination'
 	export default {
 		data(){
 			return {
-				reqParams: null,
 				tabIndex: 1,
 				priceIndex: 0,
 				timeIndex: 0,
-				pagesize: 1 ,// 总页数
 				params: {
-					seller_id: "",
 					min_price: "",
 					max_price: "",
-					seller_cat_id: "",
-					is_recommend: "",
 					sort:"",
 					page:"1"
 				},
-				goods: null,
-				seller: null,
-				seller_cat: null
+			}
+		},
+		props:{
+			goods: {
+				type: Object,
+				required: true,
+				default(){
+					return {
+						seller_goods: null
+					}
+				} 
 			}
 		},
 		filters:{
@@ -115,6 +116,7 @@ import pagination from '../Common/pagination'
 			changePage(page){
 				let _this = this ;
 				_this.params.page = page + "" ;
+				_this.$emit('getGoods',_this.params);
 			},
 			page(mask){
 				let _this = this;
@@ -157,37 +159,11 @@ import pagination from '../Common/pagination'
 						_this.params['sort'] = mask;
 					break ;
 				}
-				_this.initList();
+				_this.$emit('getGoods',_this.params);
 			},
 			goodDetail(id){
 				window.open(`goodDetail.html?goods_id=${id}`);
-			},
-			initList(mask){
-				let _this = this;
-				_this.params.seller_id = _this.reqParams.seller_id ;
-				getSellerInfo(_this.params).then(res=>{
-					let {errcode,message,content} = res ;
-					if(errcode !== 0){
-						errorInfo(errcode,message) ;
-					}else {
-						this.goods = content.goods ;
-						if (!this.seller) {
-							this.seller = content.seller ;
-							this.$emit('sendSellerInfo',this.seller);
-						}
-						if (!this.seller_cat) {
-							this.seller_cat = content.seller_cat;
-						}
-						this.pagesize = content.goods.pagesize ;
-					}
-				})
 			}
-		},
-		mounted(){
-			this.$nextTick(()=>{
-				this.reqParams = getRequest();
-				this.initList();
-			})
 		}
 	}
 </script>
@@ -281,8 +257,8 @@ $bg_color: #f5f5f5;
 		.goodsList{
 			width: 1002px;
 			margin-top: 20px;
-			border-right:1px solid $border_color;
-			border-bottom: 1px solid $border_color;
+			border-top:1px solid $border_color;
+			border-left: 1px solid $border_color;
 			overflow: hidden;
 			.infoList{
 				float: left;
@@ -290,12 +266,8 @@ $bg_color: #f5f5f5;
 				height: 330px;
 				padding: 14px;
 				cursor: pointer;
-				border-top: 1px solid $border_color;
-				border-left: 1px solid $border_color;
-				border-right: 1px solid transparent;
-				border-bottom: 1px solid transparent;
-				/*margin-right: -1px;*/
-				/*margin-top: -1px;*/
+				border-right: 1px solid $border_color;
+				border-bottom: 1px solid $border_color;
 				dl{
 					dt{
 						width: 220px;

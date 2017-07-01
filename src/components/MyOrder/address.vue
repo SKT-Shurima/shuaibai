@@ -79,7 +79,6 @@
 						</dt>
 						<dd class="addressInfo">
 						    {{item.province===item.city?item.province:item.province+item.city}}{{item.district}}{{item.address}}
-						    
 						</dd>
 						<dd>
 							<em>

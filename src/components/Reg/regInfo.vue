@@ -63,7 +63,7 @@
 						<select v-model="ruleForm.province" @change='setOption("proIndex",$event)'>
 						<option value='' disabled selected style='display:none;'>省</option>
 		                    <option
-		                      v-for="(item,index) in cityArr"
+		                      v-for="(item,index) in proArr"
 		                      :label="item.name"
 		                      :value="index" :key='index'>
 		                    </option>
@@ -73,17 +73,17 @@
 						<select v-model="ruleForm.city" @change='setOption("cityIndex",$event)'>
 						<option value='' disabled selected style='display:none;'>市</option>
 		                    <option
-		                      v-for="(item2,index2) in cityArr[proIndex].sub"
+		                      v-for="(item2,index2) in cityArr"
 		                      :label="item2.name"
 		                      :value="index2" :key='index2'>
 		                    </option>
 		                 </select>
 					</el-col>
 					<el-col style='margin-left: 8px;'>
-						<select v-model="ruleForm.xian" @change='setOption("areaIndex",$event)'>
+						<select v-model="ruleForm.district" @change='setOption("areaIndex",$event)'>
 						<option value='' disabled selected style='display:none;'>区</option>
 		                    <option
-		                      v-for="(item3,index3) in cityArr[proIndex].sub[cityIndex].sub"
+		                      v-for="(item3,index3) in areaArr"
 		                      :label="item3.name"
 		                      :value="index3" :key='index3'>
 		                    </option>
@@ -101,10 +101,9 @@
 	</el-form>
 </template>
 <script>
-import { arrCity } from '../../common/js/city.js'
-import {reg,sendCode} from '../../common/js/api.js'
+import {reg,sendCode,linkage} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
-import {hex_md5} from '../../common/js/md5.js'
+import {hex_md5} from '../../common/js/md5'
   export default {
     data() {
     	// 手机验证
@@ -161,8 +160,8 @@ import {hex_md5} from '../../common/js/md5.js'
 	     	} else if (this.ruleForm.city === '') {
 	     		callback(new Error('请选择地级市或地区'));
 	     	} else {
-	     		if (this.cityArr[this.proIndex].sub[this.cityIndex].sub) {
-	     			if (this.ruleForm.xian === "") {
+	     		if (this.areaArr.length) {
+	     			if (this.ruleForm.district === "") {
 	     				callback(new Error('请选择地区'));
 	     			} else {
 	     				callback();
@@ -187,13 +186,9 @@ import {hex_md5} from '../../common/js/md5.js'
 	     }
       return {
       	complete: false,
-      	cityArr: [{
-      		name: '',
-      		sub: [{
-      			name: '',
-      			sub: ''
-      		}]
-      	}],
+      	proArr: [],
+      	cityArr: [],
+      	areaArr: [],
       	proIndex: 0,
         cityIndex: 0,
         areaIndex: 0,
@@ -214,7 +209,7 @@ import {hex_md5} from '../../common/js/md5.js'
 	        mobiletele: '',
 	        province: '',
 	        city: '',
-	        xian: '',
+	        district: '',
 	        address: ''
         },
         rules: {
@@ -270,6 +265,29 @@ import {hex_md5} from '../../common/js/md5.js'
       };
     },
     methods: {
+    	getLinkage(mask,id){
+    		let params = {
+    			pid: id
+    		}
+    		linkage(params).then(res=>{
+    			let {errcode,message,content} = res ;
+            	if (errcode !== 0 ) {
+            		errorInfo(errcode,message) ;
+            	} else {
+            		if (mask==='pro') {
+            			this.proArr = content ;
+            			this.cityArr= [];
+            			this.areaArr = [];
+            		}else if (mask==='city'){
+            			this.cityArr = [] ;
+            			this.cityArr = content; 
+            		}else if (mask=== 'area'){
+            			this.areaArr = [] ;
+            			this.areaArr = content;
+            		}
+            	}
+    		})
+    	},
     	send_code(){
 	      	let _this = this ;
 	      	if (_this.ruleForm.phone === '') {
@@ -315,18 +333,20 @@ import {hex_md5} from '../../common/js/md5.js'
 		      };
 		       return y +'-' + m + "-" + d ;
 	      },
-    	setOption(type,event){
+    	 setOption(type,event){
              if(type === 'proIndex'){
-             	this.proIndex = event.target.selectedIndex -1;
+             	this.proIndex = event.target.selectedIndex-1;
                 this.cityIndex = 0;
                 this.areaIndex = 0;
                 this.ruleForm.city = '';
-	    		this.ruleForm.xian= '';
+	    		this.ruleForm.district= '';
+	    		this.getLinkage('city',this.proArr[this.proIndex].zone_id);
             }
             if(type === 'cityIndex'){
-            	this.cityIndex = event.target.selectedIndex -1;
+            	this.cityIndex = event.target.selectedIndex-1;
                 this.areaIndex = 0;
-                this.ruleForm.xian= '';
+                this.ruleForm.district= '';
+                this.getLinkage('area',this.cityArr[this.cityIndex].zone_id);
             }
             if(type === 'areaIndex'){
             	this.areaIndex = event.target.selectedIndex -1;
@@ -356,9 +376,9 @@ import {hex_md5} from '../../common/js/md5.js'
 					sex: this.ruleForm.sex -0, 
 					mobiletele: this.ruleForm.mobiletele,
 					country: '中国',
-					province: this.cityArr[this.proIndex].name,
-					city: this.cityArr[this.proIndex].sub[this.cityIndex].name,
-					xian: this.cityArr[this.proIndex].sub[this.cityIndex].sub?this.cityArr[this.proIndex].sub[this.cityIndex].sub[this.areaIndex].name:"",
+					province: this.proArr[this.proIndex].name,
+					city: this.cityArr[this.cityIndex].name,
+					xian: this.areaArr[this.areaIndex].name,
 					address: this.ruleForm.address,
 					papernumber: this.ruleForm.papernumber
             	};
@@ -390,7 +410,7 @@ import {hex_md5} from '../../common/js/md5.js'
     },
     created(){
         this.$nextTick(()=>{
-            this.cityArr = arrCity;
+            this.getLinkage('pro');
         })
     }
   }

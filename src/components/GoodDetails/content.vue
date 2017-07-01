@@ -9,7 +9,6 @@ import infoCon from './infoCon'
 import evalCon from './evalCon'
 import {goodsDetail} from '../../common/js/api'
 import {getRequest,errorInfo,getCookie} from '../../common/js/common'
-import {MessageBox} from  'element-ui'
 	export default {
 		data() {
 			return {

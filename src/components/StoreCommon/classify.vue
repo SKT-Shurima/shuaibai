@@ -5,33 +5,65 @@
 			<li><div class="title">查看全部分类</div></li>
 			<li><div class="title">店铺热卖</div></li>
 			<li><div class="title">掌柜推荐</div></li>
-			<li><div class="title">护肤品 
-				<img src="../../../static/detailImg/close.png" height="14" width="14">
+			<li v-for='(sellerItem,sellerIndex) in sellerCat'><div class="title">
+				{{sellerItem.cat_name}} 
+				<img src="../../../static/detailImg/close.png" height="14" width="14" v-show='sellerItem.bol' @click='sellerItem.bol=!sellerItem.bol'>
+				<img src="../../../static/detailImg/open.png" height="14" width="14" v-show='!sellerItem.bol' @click='sellerItem.bol=!sellerItem.bol'>
 			</div>
-				<ul>
-					<li v-for='item in 4'>面膜</li>
+				<ul v-show='sellerItem.bol'>
+					<li v-for='(item,index) in sellerItem.child_category' v-text='item.cat_name' @click='sentCat(sellerIndex,index)' :class='{"active":fIndex===sellerIndex&&sIndex===index}'></li>
 				</ul>
 			</li>
-			<li><div class="title">护肤品
-					<img src="../../../static/detailImg/close.png" height="14" width="14">
-				</div>
-				<ul>
-					<li v-for='item in 4'>面膜</li>
-				</ul>
-			</li>
-			<li><div class="title">护肤品
-					<img src="../../../static/detailImg/close.png" height="14" width="14">
-				</div>
-				<ul>
-					<li v-for='item in 4'>面膜</li>
-				</ul>
-			</li> 
 		</ul> 
 	</div>
 </template>
 <script>
+import {getRequest} from '../../common/js/common'
 	export default{
-
+		data() {
+			return {
+				reqParams: null,
+				fIndex: null,
+				sIndex: null
+			}
+		},
+		props:{
+			sellerCat:{
+				type: Array,
+				required: true
+			}
+		},
+		watch: {
+			sellerCat:{
+				handler(newVal,oldVal){
+					let _this = this ;
+					let catIndex  = _this.reqParams.catIndex ;
+					if (catIndex) {
+						let cat = catIndex.split(',') ;
+						_this.fIndex = cat[0] -0 ;
+						_this.sIndex = cat[1] -0 ;
+						_this.sellerCat[_this.fIndex].bol = true ;
+						let id = _this.sellerCat[_this.fIndex].child_category[_this.sIndex].seller_cat_id ;
+						_this.$emit('getCat',id) ;
+					}
+				},
+				deep: true
+			}
+		},
+		methods:{
+			sentCat(sellerIndex,index,id){
+				let _this = this ;
+				let catIndex =  `${sellerIndex},${index}` ;
+				_this.fIndex= sellerIndex;
+				_this.sIndex = index;
+				location.href= `storeDetail.html?seller_id=2&catIndex=${catIndex}`
+			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				this.reqParams = getRequest();
+			})
+		}
 	}
 </script>
 <style lang='scss' scoped>
@@ -46,6 +78,9 @@ $bg_title: #f5f5f5;
 			border-left: 1px solid $border_color;
 			border-right: 1px solid $border_color;
 			border-top: 1px solid $border_color;
+			li{
+				cursor: pointer;
+			}
 			.title{
 				position: relative;
 				background-color: $bg_title;
@@ -70,6 +105,9 @@ $bg_title: #f5f5f5;
 					line-height: 36px;
 					padding-left: 10px;
 					font-weight: 400;
+				}
+				.active{
+					color: $primary;
 				}
 			}
 		}

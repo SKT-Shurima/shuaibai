@@ -80,9 +80,9 @@
 					<div class="addTitle">退货物流信息<i class="el-icon-close" @click='expressBol=false;'></i></div>
 					<el-form :model="form" label-width="70px" ref='expressForm'>
 					    <el-form-item label="物流公司">
-						    <el-select v-model="expressForm.name" placeholder="请选择" size='small' style='width:100%;'>
-						        <el-option :label='item.express_name' :value="item.code" v-for='item in express' :key='item'></el-option>
-						    </el-select>
+						    <select v-model="expressForm.name" placeholder="请选择" size='small' style='width:100%;' class="el-select">
+						        <option :label='item.express_name' :value="item.code" v-for='item in express' :key='item'></option>
+						    </select>
 				        </el-form-item>
 				        <el-form-item label="物流单号">
 					        <el-input v-model="expressForm.num" size='small'></el-input>
@@ -275,8 +275,11 @@ import {MessageBox,Message} from  'element-ui'
 						errorInfo(errcode,message) ;
 					}else{
 						this.refundInfo = content ;
-						if (this.refundInfo.refund_state!=="1") {
+						let state = this.refundInfo.refund_state ;
+						if (state=="2"||state=='5'||state=='6') {
 							location.hash=`result?refund_sn=${refund_sn}` ;
+						}else if(state=="3"){
+							location.hash=`goodsReturn?refund_sn=${refund_sn}` ;
 						}
 					}
 			    })
@@ -387,6 +390,22 @@ $bg_color: #f5f5f5;
 					.el-form-item{
 						margin-bottom: 18px;
 					}
+					select{
+				    	background-color: #fff;
+					    background-image: none;
+					    border-radius: 4px;
+					    border: 1px solid rgb(217, 193, 191);
+					    box-sizing: border-box;
+					    color: rgb(61, 33, 31);
+					    display: block;
+					    font-size: inherit;
+					    height: 30px;
+					    line-height: 1;
+					    outline: none;
+					    padding: 3px 10px;
+					    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+					    width: 100%;
+				    }
 				}
 				.ensureBtn{
 					text-align: center;

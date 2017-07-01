@@ -170,6 +170,7 @@ import pagination from '../Common/pagination'
 	   	 	},
 	   	 	// 申请售后
 	   	 	applyRefund(order_sn,goods_id,option_id){
+	   	 		option_id = option_id?option_id:"";
 	   	 		window.open(`afterSale.html#applyType?order_sn=${order_sn}&goods_id=${goods_id}&option_id=${option_id}`);
 	   	 	},
 	   	 	// 查看订单详情  物流信息

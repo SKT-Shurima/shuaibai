@@ -114,7 +114,6 @@ $bg_color: #f5f5f5;
 				height: 60px;
 				line-height: 60px;
 				font-size: 20px;
-				font-weight: 600;
 				text-align: center;
 				li{
 					position: absolute;

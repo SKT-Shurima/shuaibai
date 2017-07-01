@@ -122,7 +122,7 @@
 							</el-col>
 						</el-row>
 						<div class='buyBtn'>
-							<el-button type='primary' :disabled='!payBol' >立即购买</el-button>
+							<el-button type='primary' :disabled='!payBol' @click='settlement'>立即购买</el-button>
 							<el-button type='text' @click='addShopCar' :disabled='!addBol'>加入购物车</el-button>
 						</div>
 					</dd>
@@ -136,7 +136,7 @@
 <script>
  	import {currency,countdown} from '../../common/js/filter'
  	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
- 	import {linkage,goodsDetail,addCart} from '../../common/js/api'
+ 	import {linkage,goodsDetail,addCart,buy} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import storeInfo from './storeInfo'
  	import vNav from '../StoreCommon/nav'
@@ -296,6 +296,30 @@
 				_this.specs = _this.goods.specs;
 				_this.salePrice = _this.goods.shop_price;
 				_this.currentImg = _this.goods.cover;
+			},
+			// 立即购买
+			settlement(){
+				let _this = this ;
+			 	let params = {
+			 		access_token: getCookie('access_token'),
+			 		data: [{
+			 			seller_id: _this.goods.seller_id,
+			 			goods: [{
+		 					goods_id: _this.params.goods_id,
+							option_id: _this.option_id,
+							quantity: _this.numInput
+		 				}]
+			 		}]
+			 	}
+			 	params.data = JSON.stringify(params.data);
+			 	buy(params).then(res=>{
+			 		let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
+						window.open(`confirmOrder.html#submitOrder?id=${content}`)
+					}
+			 	})
 			},
 			// 添加购物车
 			addShopCar(){

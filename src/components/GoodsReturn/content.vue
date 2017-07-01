@@ -48,7 +48,8 @@ export default {
 		}
 	},
 	components:{
-		orderInfo,seller,editGoodsReturn
+		orderInfo,seller,editGoodsReturn,
+		goodsReturn:seller
 	},
 	methods:{
 		getOrderInfo(info){
@@ -69,8 +70,12 @@ export default {
 	 		    	_this.currentView = view ;
 		    	break;
 		    	case 'result':
-		    		_this.currentIndex = 2 ;
+		    		_this.currentIndex = 3 ;
 	 		    	_this.currentView = 'seller' ;
+		    	break;
+		    	case 'goodsReturn':
+		    		_this.currentIndex = 2 ;
+	 		    	_this.currentView = 'goodsReturn' ;
 		    	break;
 		    	default:
 			    	_this.currentIndex = 0 ;
@@ -108,7 +113,6 @@ $bg_color: #f5f5f5;
 				height: 60px;
 				line-height: 60px;
 				font-size: 20px;
-				font-weight: 600;
 				text-align: center;
 				li{
 					position: absolute;

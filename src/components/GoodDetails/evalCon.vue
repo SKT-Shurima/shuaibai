@@ -6,7 +6,7 @@
 				<!-- 优惠券 -->
 				<coupons></coupons>
 				<!-- 分类 -->
-				<classify></classify>
+				<classify  :sellerCat='sellerCat'></classify>
 				<!-- 热销排行 -->
 				<hot-sell :seller-id='deliveryInfo.goodsInfo.goods.seller_id'></hot-sell>
 			</div>
@@ -81,11 +81,8 @@
 				 	</dd>
 				 </dl>
 				 <div class="detailsList" v-show='infoTabIndex===1'>
-				 	<ul class="storeImg">
-					 	<li>
-					 		{{deliveryInfo.goodsInfo.goods.description}}
-					 	</li>
-					 </ul>
+				 	<div class="storeImg" v-html='deliveryInfo.goodsInfo.goods.description'>
+					 </div>
 				 </div>
 				 <!-- 评论区域 -->
 				 <div class="evalList" v-show='infoTabIndex===2'>
@@ -181,7 +178,7 @@
 </template>
 <script>
 	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter'
-	import {getRecommend,getComments,replyContent,usefulComment} from '../../common/js/api'
+	import {getRecommend,getComments,replyContent,usefulComment,getSellerInfo} from '../../common/js/api'
 	import {errorInfo,getCookie} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content'
@@ -194,6 +191,7 @@
 	export default {
 		data(){
 			return {
+				sellerCat: [], // 店铺分类
 				infoTabIndex: 1,  // 切换商品详情和评价 初始加载商品详情
 				evalTabIndex: null, // 评论分类标识
 				storeRecommend: null, // 店铺推荐
@@ -206,7 +204,7 @@
 					replyIndex: 0,
 					replyBol: false
 				},
-				pagesize: 1 // 总页数 
+				pagesize: 1, // 总页数 
 			}
 		},
 		props:{
@@ -226,12 +224,41 @@
 				handler(newVal,oldVal){
 					if (newVal.goodsInfo) {
 						this.getComment(0,1);
+						let id = this.deliveryInfo.goodsInfo.goods.seller_id ;
+						this.getCat(id);
+						let description = this.deliveryInfo.goodsInfo.goods.description ;
+						description = this.escape2Html(description) ;
+						this.deliveryInfo.goodsInfo.goods.description  = description ;
 					}
 				},
 				deep: true
 			}
 		},
 		methods:{
+			// 转义
+			escape2Html(a) {
+			 var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+			 return a.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+			},
+			// 获取店铺分类
+			getCat(id){
+				let params = {
+					seller_id: id,
+					page: "1"
+				}
+				getSellerInfo(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						let arr = content.seller_cat ;
+						for(let i = 0 ;i<arr.length;i++){
+							arr[i].bol = false ;
+						}
+						this.sellerCat = arr ;
+					}
+				})
+			},
 			// 获取评价列表
 			getComment(mask,page){
 				let _this = this ;
@@ -461,14 +488,6 @@ $bg_title: #f5f5f5;
 		.detailsList{
 			.storeImg{
 				margin-top: 32px;
-				li{
-					width: 100%;
-					height: 800px;
-					img{
-						width: 100%;
-						height: 100%;
-					}
-				}
 			}
 		}
 		/*评论列表*/
