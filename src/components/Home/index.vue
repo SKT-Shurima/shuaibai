@@ -64,7 +64,7 @@
 
 <script>
 import {getHomePage,getCategory,getGuessLike,getActualFee} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import guessLike from '../Common/guessLike'
 import userInfo from './userInfo'
 import recharge from './recharge'
@@ -76,7 +76,8 @@ import recharge from './recharge'
 			    banners: [],
 			    category: [{name:''}],
 			    fIndex: 0,
-        	    youLike: null
+        	    youLike: null,
+        	    reqParams: {result:null}
 			}
 		},
 		
@@ -131,6 +132,11 @@ import recharge from './recharge'
 				this.homePage();
 				//  获取分类
 				this.categoryList();
+				this.reqParams = getRequest();
+				let  result = this.reqParams.result ;
+				if (result==='false') {
+					location.replace('reg.html#view3');
+				}
 			})
 		}
 	}

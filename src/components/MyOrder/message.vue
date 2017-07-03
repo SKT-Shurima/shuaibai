@@ -10,7 +10,7 @@
 					<el-col :span='10'>
 						您的订单有新的动态
 					</el-col>
-					<el-col :span='6'>
+					<el-col :span='10' style='text-align: right;padding-right: 34px;'>
 						{{item.date_add*1000 | timeTrans}}
 					</el-col>
 				</el-row>
@@ -18,7 +18,7 @@
 					<dt>
 						<img :src="item.goods_cover">
 					</dt>
-					<dd style="width:140px;line-height:70px;">
+					<dd style="width:240px;line-height:70px;">
 						订单号: {{item.order_sn}}
 					</dd>
 					<dd style="width:80px;line-height:70px;" v-text='item.state_name'></dd>
@@ -61,7 +61,7 @@ import pagination from '../Common/pagination'
 		      	 location.hash = view ;
 		    },
 		    checkDetail(order_sn){
-		    	window.open(`orderDetail.html?order_sn=${order_sn}`) ; 
+		    	window.open(`orderDetail.html#?order_sn=${order_sn}`) ; 
 		    },
 		    // 改变页数
 			changePage(page){
@@ -119,9 +119,10 @@ $text_color: #666;
 				padding: 18px 4px;
 				border-bottom: 1px solid $border_color;
 				.el-row{
-					width: 420px;
+					width: 500px;
 					line-height: 22px;
 					margin-bottom: 16px;
+					overflow: hidden;
 					.el-col-4{
 						font-size: 14px;
 						font-weight: 600;
@@ -132,6 +133,7 @@ $text_color: #666;
 					}
 				}
 				dl{
+					width: 500px;
 					overflow: hidden;
 					dt{
 						float: left;

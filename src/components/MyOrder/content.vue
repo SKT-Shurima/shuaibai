@@ -62,6 +62,7 @@
     import refundList from './refundList'
 	import personalCenter from './personalCenter' ;
 	import address from './address'
+	import editAddress from './editAddress'
 	import modidfyPw from './modidyPw'
 	import phoneBind from './phoneBind'
 	import addPhoneBind from './addPhoneBind'
@@ -133,6 +134,7 @@
 			'view01': refundList,
 			"view10": personalCenter,
 			"view100": address,
+			"view101": editAddress,
 			"view11": modidfyPw,
 			"view12": phoneBind,
 			"view120": addPhoneBind,

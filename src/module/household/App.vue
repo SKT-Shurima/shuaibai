@@ -11,8 +11,8 @@
 <script>
   import 'common/css/reset.css';
   import vHead from 'components/Head/Head'
-  import vNav from 'components/Head/Nav'
-  import vCon from 'components/theme/household'
+  import vNav from 'components/Head/nav'
+  import vCon from 'components/Theme/household'
   import vFoot from 'components/Foot/Foot'
 
   export default {

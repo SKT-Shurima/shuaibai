@@ -53,7 +53,8 @@
 					</div>
 					<div class="icon">
 						<img src='../../../static/loginImg/qq.png' height="20" width="20" alt="QQ">
-						<img src="../../../static/loginImg/wexin.png" height="20" width="20" alt="wexin">
+						<a href="https://open.weixin.qq.com/connect/qrconnect?appid=wx06db8000a8ef09e3&redirect_uri=http%3A%2F%2Fshuaibo.zertone1.com%2Fweb%2FcustomerAction%2FwebWeixinLogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect 
+"><img src="../../../static/loginImg/wexin.png" height="20" width="20" alt="wexin"></a>
 					</div>
 				</div>
 			</div>

@@ -11,19 +11,21 @@
 	import regInfo from './regInfo'
 	import bindEmail from './bindEmail'
 	import vSuccess from './success'
-	
+	import complete from './complete'
+	import {getHashReq} from '../../common/js/common'
 
 	export default {
 		data() {
 		   return {
-		   	  showBol: 0,
-		   	  currentView: 'view0'
+		   	  currentView: 'view0',
+		   	  reqParams: null
 		   }
 		},
 		components: {
 	      'view0': regInfo,
 	      'view1': bindEmail,
-	      'view2': vSuccess
+	      'view2': vSuccess,
+	      'view3': complete
 	    },
 	    methods: {
 	    	regFn(mark){
@@ -33,6 +35,15 @@
 	    			this.currentView = 'view1' ;
 	    		}
 	    	}
+	    },
+	    mounted(){
+	    	this.$nextTick(()=>{
+	    		let hash = location.hash ;
+	    		if (hash) {
+	    			let view = hash.slice(1);
+	    			this.currentView = view ;
+	    		}
+	    	})
 	    }
 	}
 </script>

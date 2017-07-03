@@ -91,7 +91,7 @@
 				 		<button :class='{"evalTabChecked":evalTabIndex===1}' @click='getComment(1)'>好评（{{deliveryInfo.goodsInfo.goods.comment.praise}}）</button>
 				 		<button :class='{"evalTabChecked":evalTabIndex===2}' @click='getComment(2)'>中评（{{deliveryInfo.goodsInfo.goods.comment.common}}）</button>
 				 		<button :class='{"evalTabChecked":evalTabIndex===3}' @click='getComment(3)'>差评（{{deliveryInfo.goodsInfo.goods.comment.bad}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===4}' @click='getComment(0)'>有图（{{deliveryInfo.goodsInfo.goods.comment.have_picture}}）</button>
+				 		<button :class='{"evalTabChecked":evalTabIndex===4}' @click='getComment(4)'>有图（{{deliveryInfo.goodsInfo.goods.comment.have_picture}}）</button>
 				 	</div>
 				 	<!-- 初次评论列表 -->
 				 	<ul v-if='commentList' class="evalWrap">
@@ -106,8 +106,8 @@
 				 				<dd>
 				 					<p v-text='item.content' class="evalContent"></p>
 				 					<ul class="evalImgList">
-				 						<li v-for='item in images'>
-				 							<img :src="item">
+				 						<li v-for='(imgItem,imgIndex) in item.images' @click='item.current_img=imgItem;item.currentIndex=imgIndex;' :class='{"evalImgChecked":item.currentIndex===imgIndex}'>
+				 							<img :src="imgItem">
 				 						</li>
 				 					</ul>
 				 					<div class="evalBigImg" v-show='item.current_img'>
@@ -274,6 +274,11 @@
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
+						let  commentArr = content.content ;
+						for(let i = 0 ;i < commentArr.length ; i++){
+							commentArr[i].currentIndex =  "" ;
+						}
+						content.content  = commentArr ;
 						this.commentList = content ;
 						this.pagesize = content.pagesize;
 						if (this.evalTabIndex!==mask) {
@@ -540,9 +545,10 @@ $bg_title: #f5f5f5;
 							.evalContent{
 								font-size: 14px;
 								line-height: 20px;
+								margin-bottom: 18px;
 							}
 							.evalImgList{
-								margin: 18px 0px;
+								margin-bottom: 18px;
 								padding-bottom: 10px;
 								overflow: hidden;
 								li{
@@ -551,6 +557,7 @@ $bg_title: #f5f5f5;
 									height: 40px;
 									margin-right: 10px;
 									padding: 0px;
+									cursor: pointer;
 									border: 2px solid transparent;
 									img{
 										width: 100%;
@@ -558,7 +565,7 @@ $bg_title: #f5f5f5;
 									}
 								}
 								.evalImgChecked{
-									border:2 px solid $primary;
+									border: 2px solid $primary;
 								}
 							}
 							.evalBigImg{
@@ -566,6 +573,10 @@ $bg_title: #f5f5f5;
 								height: 230px;
 								border: 1px solid  $border_color;
 								margin-bottom: 10px;
+								img{
+									width: 100%;
+									height: 100%;
+								}
 							}
 							.evalMsg{
 								overflow: hidden;

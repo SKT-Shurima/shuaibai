@@ -28,10 +28,10 @@ window.onpopstate = function() {
 			return {
 				currentIndex: "",
 				listTitle: [
-					{name:'1.提交订单'},
-					{name:'2.付款'},
-					{name:'3.卖家发货'},
-					{name:'4.确认收货'}
+					{name:'1.付款'},
+					{name:'2.卖家发货'},
+					{name:'3.确认收货'},
+					{name:'4.评价'}
 				],
 				orderInfo: null,
 				reqParams: null
@@ -137,7 +137,6 @@ $primary:#c71724;
 				height: 60px;
 				line-height: 60px;
 				font-size: 20px;
-				font-weight: 600;
 				text-align: center;
 				li{
 					position: absolute;

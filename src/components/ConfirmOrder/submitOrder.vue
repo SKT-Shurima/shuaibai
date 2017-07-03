@@ -40,7 +40,7 @@
 		<h4>
 			订单信息
 		</h4>
-		<div class="orderInfo" v-for='shopItem in orderInfo.shop'>
+		<div class="orderInfo" v-for='(shopItem,shopIndex) in orderInfo.shop'>
 			<div class="shopTitle" v-text='shopItem.shopName'></div>
 			<div class="orderTitle">
 				<div class="infoCol">商品信息</div>
@@ -115,7 +115,7 @@
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<el-checkbox size='small' v-model='shopItem.checkbox'><span>使用优惠券</span></el-checkbox>
+							<el-checkbox size='small' v-model='shop[shopIndex].check'><span>使用优惠券</span></el-checkbox>
 						</el-col>
 						<el-col :span='5'>
 							{{0|currency}}
@@ -123,9 +123,11 @@
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<el-radio class="radio" v-model="shopItem.radio" label="1">
-							<span>购物币抵扣</span>
-							</el-radio>
+							<span @click='shop[shopIndex].radio = "1"'>
+								<el-radio class="radio" v-model="shop[shopIndex].radio" label="1">
+								<span>购物币抵扣</span>
+								</el-radio>
+							</span>
 							<span><em>剩余购物币{{orderInfo.customer.shopping_coin}}，当前可用{{shopItem.max_shopping_coin}}</em></span>
 						</el-col>
 						<el-col :span='5'>
@@ -134,9 +136,12 @@
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<el-radio class="radio" v-model="radio" label="2">
-							<span>积分抵扣</span>
-							</el-radio>
+							<span @click='shop[shopIndex].radio = "2"'>
+								<el-radio class="radio" v-model="shop[shopIndex].radio" label="2">
+								<span @click='shopItem.radio="2"'>积分抵扣</span>
+								</el-radio>
+							</span>
+							
 							<span><em>剩余积分{{orderInfo.customer.integration}}，当前可用{{shopItem.max_integration}}</em></span>
 						</el-col>
 						<el-col :span='5'>
@@ -179,6 +184,7 @@ import {MessageBox} from  'element-ui'
 				addressIndex: "",
 				entries: 4,
 				goodsList: null,
+				shop: [],
 				reqParams: null
 			} 
 		},
@@ -209,11 +215,13 @@ import {MessageBox} from  'element-ui'
 		    },
 		    initExpressFee(index){
 		    	let _this= this ;
-		    	if(index){
+		    	if(index>=0){
 		    		_this.addressIndex=index;
 		    	}
+		    	let id = _this.addressList[_this.addressIndex].address_id ;
+		    	console.log("")
 		    	let params = {
-		    		address_id: _this.addressList[_this.addressIndex].address_id
+		    		address_id: id
 		    	}
 		    	let shops = [] ;
 		    	let shopArr = _this.orderInfo.shop ;
@@ -270,12 +278,19 @@ import {MessageBox} from  'element-ui'
 		    initOrderInfo(){
 		    	let _this = this;
 		    	let  shopArr = _this.orderInfo.shop ;
+		    	let arr = [] ;
 		    	for(let i = 0 ; i < shopArr.length; i++) {
-		    		shopArr[i].remark = "" ;
-		    		shopArr[i].radio = "" ;
-		    		shopArr[i].checkbox = "" ;
 		    		shopArr[i].express_fee = 0 ;
+		    		shopArr[i].remark = "" ;
+		    		let  obj = {
+		    			check: false,
+		    			radio: "1"
+		    		}
+		    		arr.push(obj);
 		    	}
+		    	_this.orderInfo.shop = shopArr ;
+		    	_this.shop = arr ;
+		    	_this.initExpressFee();
 		    },
 		    countTotalFee(){
 		    	let  _this = this ;
@@ -284,12 +299,14 @@ import {MessageBox} from  'element-ui'
 		    	for(let i = 0 ; i< shopArr.length ;i++) {
 		    		let  goodsArr = shopArr[i].goods ;
 		    		totalFee+= shopArr[i].express_fee ; 
-		    		for(let j = 0 ; j < goodArr.length; j++){
-		    			let fee = goodsArr[i].price * goodsArr[i].quantity ;
+		    		for(let j = 0 ; j < goodsArr.length; j++){
+		    			let fee = goodsArr[j].price * goodsArr[j].quantity ;
 		    			totalFee+= fee;
 		    		}
 		    	}
-		    	totalFee = totalFee > _this.orderInfo.full.limit-0?(totalFee-_this.orderInfo.full.amount) : totalFee ;
+		    	if (_this.orderInfo.full) {
+		    		totalFee = totalFee > _this.orderInfo.full.limit-0?(totalFee-_this.orderInfo.full.amount) : totalFee ;
+		    	}
 		    	_this.orderInfo.total_fee = totalFee ;
 		    },
 		    editGoods(seller_id,item,mask){
@@ -321,7 +338,7 @@ import {MessageBox} from  'element-ui'
 		    		let  shopObj = {
 			    		remark: shopArr[i].remark,
 			    		seller_id: shopArr[i].seller_id,
-			    		use_type: shopArr[i].radio,
+			    		use_type: this.shop[i].radio,
 			    		coupon: '',
 			    		goods: []
 		    		}

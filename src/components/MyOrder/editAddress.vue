@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view100")'>我的收货地址</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view100")'>我的收货地址</span>&nbsp;<i>&gt;</i>&nbsp;<span>修改收货地址</span></h4>
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" label-position='right'>
 			<div class="reg_box">
 				<div class="title">新增收货地址</div>
@@ -88,7 +88,7 @@
 								电话：{{item.phone}}
 							</strong>
 							<span class="edit">
-								<el-button type='text' size='mini' @click='changeView("view101",item.address_id)'>
+								<el-button type='text' size='mini'>
 									修改
 								</el-button>
 								<i style='color:#ccc;'>|</i>
@@ -104,8 +104,8 @@
 	</div>
 </template>
 <script>
-import {saveAddress,getAddress,delAddress,defaultAddress,linkage} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {getOneAddress,saveAddress,defaultAddress,linkage} from '../../common/js/api'
+import {errorInfo,getCookie,getHashReq} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
   export default {
     data() {
@@ -141,6 +141,7 @@ import {MessageBox,Message} from  'element-ui'
     	 	}
 	      };
       return {
+      	reqParams: null,
       	userInfo: '',
       	setDefault: true,
       	proIndex: 0,
@@ -175,11 +176,79 @@ import {MessageBox,Message} from  'element-ui'
         },
         time: -1 ,
         total_time: 5, 
-        send_btn: '发送验证码',
-        addressList: null
+        send_btn: '发送验证码'
       };
     },
     methods: {
+    	getOneAddressAPI(){
+    		let _this =  this ;
+    		let params = {
+    			access_token: getCookie('access_token'),
+    			address_id: _this.reqParams.address_id
+    		}
+    		getOneAddress(params).then(res=>{
+    			let {errcode,message,content} = res ;
+	      		if (errcode !== 0) {
+	      		   errorInfo(errcode,message) ;
+	      		} else {
+	      			// 格式省市区
+	      			this.initLevel(content);
+	        		this.ruleForm.name = content.name;
+	        		this.ruleForm.phone= content.phone;
+	        		this.ruleForm.address= content.address;
+	        		this.ruleForm.postcode = content.postcode;
+	        	    this.ruleForm.tel = content.tel;
+	        	    this.setDefault = content.status==='1' ;
+	      		}
+    		})
+    	},
+    	initLevel(content){
+    		let _this = this ;
+    		let proArr = _this.proArr ;
+    		for(let i = 0 ; i<proArr.length;i++ ){
+    			if (proArr[i].name===content.province) {
+    				_this.ruleForm.province = i ;
+    				let proParams = {
+		    			pid: proArr[i].zone_id
+		    		}
+		    		linkage(proParams).then(proRes=>{
+		    			let  proErrcode = proRes.errcode ;
+		    			let  proMsg =  proRes.message ;
+		    			let  proCon = proRes.content ;
+		            	if (proErrcode !== 0 ) {
+		            		errorInfo(proErrcode,proMsg) ;
+		            	} else {
+		            		_this.cityArr = proCon ;
+		            		let cityArr = _this.cityArr ;
+		    				for(let j = 0 ;j<cityArr.length;j++){
+		    					if (cityArr[j].name===content.city) {
+		    						_this.ruleForm.city = j ;
+		    						let cityParams = {
+						    			pid: cityArr[j].zone_id
+						    		}
+						    		linkage(cityParams).then(cityRes=>{
+						    			let  cityErrcode = cityRes.errcode ;
+						    			let  cityMsg =  cityRes.message ;
+						    			let  cityCon = cityRes.content ;
+						            	if (cityErrcode !== 0 ) {
+						            		errorInfo(cityErrcode,cityMsg) ;
+						            	} else {
+						            		_this.areaArr = cityCon ;
+						            		let districtArr = _this.areaArr ;
+						    				for(let k = 0 ;k<districtArr.length;k++){
+						    					if (districtArr[k].name===content.district) {
+						    						_this.ruleForm.district = k ;
+						    					}
+						    				}
+						            	}
+						    		})
+		    					}
+		    				}
+		            	}
+		    		})
+    			}
+    		}
+    	},
     	getLinkage(mask,id){
     		let params = {
     			pid: id
@@ -227,9 +296,9 @@ import {MessageBox,Message} from  'element-ui'
 	      		}
 	      	});
 	    },
-	    changeView(view,id){
+	    changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 location.hash = id?`${view}?address_id=${id}`:view;
+	      	 location.hash = view ;
 	    },
 	    setOption(type,event){
              if(type === 'proIndex'){
@@ -251,95 +320,64 @@ import {MessageBox,Message} from  'element-ui'
             }
         },
       	submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let params = {
-            	access_token: getCookie('access_token') ,
-            	address_id: '',
-            	province: this.proArr[this.proIndex].name,
-            	city: this.cityArr[this.cityIndex].name,
-            	district: this.areaArr[this.areaIndex].name,
-            	name: this.ruleForm.name,
-            	phone: this.ruleForm.phone,
-            	status:this.setDefault?"1":"0",
-            	address: this.ruleForm.address,
-            	postcode: this.ruleForm.postcode,
-            	tel: this.ruleForm.tel
-            };
-            saveAddress(params).then(res=>{
-            	let {errcode,message} = res ;
-            	if (errcode !== 0 ) {
-            		errorInfo(errcode,message) ;
-            	} else {
-            		  Message.success({
-				          message: '新增地址添加成功',
-				          type: 'success'
-				        });
-            		  this.getAddressList();
-            		  // 初始化表单信息
-            		  this.getLinkage('pro');
-            		  this.ruleForm.province = '';
-            		  this.ruleForm.city = '';
-            		  this.ruleForm.district = '';
-            		  this.ruleForm.name = '';
-            		  this.ruleForm.phone='';
-            		  this.ruleForm.address='';
-            		  this.ruleForm.postcode ='';
-            	      this.ruleForm.tel ='';
+	        this.$refs[formName].validate((valid) => {
+	          if (valid) {
+	            let params = {
+	            	access_token: getCookie('access_token') ,
+	            	address_id: this.reqParams.address_id,
+	            	province: this.proArr[this.proIndex].name,
+	            	city: this.cityArr[this.cityIndex].name,
+	            	district: this.areaArr[this.areaIndex].name,
+	            	name: this.ruleForm.name,
+	            	phone: this.ruleForm.phone,
+	            	status:this.setDefault?"1":"0",
+	            	address: this.ruleForm.address,
+	            	postcode: this.ruleForm.postcode,
+	            	tel: this.ruleForm.tel
+	            };
+	            saveAddress(params).then(res=>{
+	            	let {errcode,message} = res ;
+	            	if (errcode !== 0 ) {
+	            		errorInfo(errcode,message) ;
+	            	} else {
+	            		  Message.success({
+					          message: '修改地址成功',
+					          type: 'success'
+					        });
+	            		  // 初始化表单信息
+	            		  this.getLinkage('pro');
+	            		  this.ruleForm.province = '';
+	            		  this.ruleForm.city = '';
+	            		  this.ruleForm.district = '';
+	            		  this.ruleForm.name = '';
+	            		  this.ruleForm.phone='';
+	            		  this.ruleForm.address='';
+	            		  this.ruleForm.postcode ='';
+	            	      this.ruleForm.tel ='';
 
-            	}
-            })
-          } else {
-            MessageBox.alert('请完成必填信息', '提示', {
-		          confirmButtonText: '确定'
-		        });
-            return false;
-          }
-        });
-      },
-      getAddressList(){
-      	 let params = {
-      	 	access_token: getCookie('access_token')
-      	 };
-      	 getAddress(params).then(res=>{
-      	 	let {errcode,message,content} = res ;
-            	if (errcode !== 0 ) {
-            		errorInfo(errcode,message) ;
-            	} else {
-	        		this.addressList = content;
-            	}
-      	 })
-      },
-      removeAddress(id){
-      	MessageBox.confirm('此操作将永久删除该地址, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let params = {
-      	 	access_token: getCookie('access_token'),
-      	 	address_id: id
-      	 };
-      	 delAddress(params).then(res=>{
-      	 	let {errcode,message} = res ;
-            	if (errcode !== 0 ) {
-            		errorInfo(errcode,message) ;
-            	} else {
-	        		this.getAddressList();
-            	}
-      	 })
-        }).catch(() => {
-                   
-        });
-      }
+	            	}
+	            })
+	          } else {
+	            MessageBox.alert('请完成必填信息', '提示', {
+			          confirmButtonText: '确定'
+			        });
+	            return false;
+	          }
+	        });
+        }
     },
     created(){
         this.$nextTick(()=>{
+        	this.getLinkage('pro');
+        })
+    },
+    mounted(){
+    	this.$nextTick(()=>{
         	if (sessionStorage.userInfo) {
 				this.hasUser = true;
 				this.userInfo = JSON.parse(sessionStorage.userInfo);
-				this.getAddressList();
-				this.getLinkage('pro');
+				this.reqParams = getHashReq();
+				this.getOneAddressAPI();
 			}else{
 				window.location.href = "login.html";
 			}

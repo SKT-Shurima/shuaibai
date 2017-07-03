@@ -54,7 +54,7 @@ import guessLike from '../Common/guessLike'
      		listIndex: "",
      		category: [{name:''}],
      		fIndex: 0,
-			sIndex: 0,
+			sIndex: 0
      	}
      },
      props:{
@@ -96,7 +96,7 @@ $border_color: #ccc;
       		margin: 0px auto;
       		img{
       			width: 100%;
-      			height: 150px;
+      			/*height: 150px;*/
       		}
       	}
     }

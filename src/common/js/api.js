@@ -6,6 +6,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
 
+
 const trans = params => {
     // Do whatever you want to transform the data
     let ret = ''
@@ -18,6 +19,11 @@ const trans = params => {
 export const reg = params => {
 	params = trans(params);
 	return axios.post(`${base}/customerAction/register`,params).then( res => res.data);
+}
+// 完善信息
+export const  perInfomation = params =>{
+	params = trans(params);
+	return axios.post(`${base}/customerAction/perInfomation`,params).then(res=>res.data); 
 }
 
 // 发送验证码 
@@ -404,6 +410,11 @@ export const cancelOrder = params =>{
 export const pay = params =>{
 	params = trans(params);
 	return axios.post(`${base}/orderAction/pay`,params).then(res=>res.data);
+}
+// 获取支付订单状态
+export const  getOrderPayStatus = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/orderAction/getOrderPayStatus`,params).then(res=>res.data);
 }
 // 催一催(提醒发货)
 export const orderRemind = params =>{

@@ -300,6 +300,12 @@
 			// 立即购买
 			settlement(){
 				let _this = this ;
+				if (_this.goods.options&&!_this.option_id) {
+					MessageBox.alert("请选择商品规格", '提示', {
+			          	confirmButtonText: '确定'
+				    });
+				    return ;
+				}
 			 	let params = {
 			 		access_token: getCookie('access_token'),
 			 		data: [{
@@ -317,7 +323,7 @@
 					if(errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						window.open(`confirmOrder.html#submitOrder?id=${content}`)
+						window.open(`confirmOrder.html#submitOrder?id=${content}`);
 					}
 			 	})
 			},
@@ -445,6 +451,7 @@ $title_color: #333;
 						img{
 							width: 58px;
 							height: 58px;
+							cursor: pointer;
 						}
 					}
 					li:last-child{

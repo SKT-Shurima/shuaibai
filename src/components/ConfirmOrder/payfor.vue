@@ -6,15 +6,15 @@
 			</div>
 			<ul>
 				<li @click='typeIndex="1"' :class='{"isType":typeIndex==="1"}'>
-					<img src="../../../static/commonImg/money.png" height="16" width="16" alt="余额支付">余额支付
+					<img src="../../../static/commonImg/money.png" height="16" width="16" alt="余额支付" style="margin-right:10px;">余额支付
 					<img src="../../../static/commonImg/checked.png" height="16" width="16" v-show='typeIndex==="1"' class="checkImg">
 				</li>
-				<li @click='typeIndex="2"' :class='{"isType":typeIndex==="2"}'>
-					<img src="../../../static/commonImg/alipay.png" height="16" width="16" alt="支付宝支付">支付宝支付
+				<li @click='typeIndex="4"' :class='{"isType":typeIndex==="4"}'>
+					<img src="../../../static/commonImg/alipay.png" height="16" width="16" alt="支付宝支付" style="margin-right:10px;">支付宝支付
 					<img src="../../../static/commonImg/checked.png" height="16" width="16" v-show='typeIndex==="2"' class="checkImg">
 				</li>
-				<li @click='typeIndex="3"' :class='{"isType":typeIndex==="3"}'>
-					<img src="../../../static/commonImg/weixin.png" height="16" width="16" alt="微信支付">微信支付
+				<li @click='typeIndex="5"' :class='{"isType":typeIndex==="5"}'>
+					<img src="../../../static/commonImg/weixin.png" height="16" width="16" alt="微信支付" style="margin-right:10px;">微信支付
 					<img src="../../../static/commonImg/checked.png" height="16" width="16" v-show='typeIndex==="3"' class="checkImg">
 				</li>
 			</ul>
@@ -67,11 +67,22 @@ import {getHashReq,getCookie} from '../../common/js/common'
 					}else{
 						status = 0 ;
 						count = content.count;
+						if (_this.typeIndex==="1") {
+							location.hash= `payResult?count=${count}&status=${status}` ;
+						}
+						if (_this.typeIndex==='4') {
+							document.write(content.html_text);
+						}
+						if (_this.typeIndex==='5') {
+							let  code_url = content.code_url ;
+							let  order_number = content.order_number ;
+							code_url = code_url.split("?");
+							code_url = code_url.join("&");
+							location.replace(`confirmOrder.html#scode?code_url=${code_url}&order_number=${order_number}`);
+						}
 					}
-					location.hash= `payResult?count=${count}&status=${status}` ;
 				})
 			}
-			
 		}
 	}
 </script>

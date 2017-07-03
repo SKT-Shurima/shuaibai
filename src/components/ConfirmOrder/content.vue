@@ -16,6 +16,7 @@
 import submitOrder from './submitOrder'
 import payfor from  './payfor'
 import payResult from './payResult'
+import scode from './scode'
 import {MessageBox} from  'element-ui'
 window.onpopstate = function() {  
        location.reload() ;
@@ -34,6 +35,7 @@ window.onpopstate = function() {
 		components:{
 			submitOrder,
 			payfor,
+			scode,
 			payResult
 		},
 		computed: {
@@ -55,6 +57,9 @@ window.onpopstate = function() {
 						this.currentIndex = 0 ;
 					break ;
 					case "payfor" : 
+						this.currentIndex = 1 ;
+					break ;
+					case "scode" : 
 						this.currentIndex = 1 ;
 					break ;
 					case "payResult" : 
