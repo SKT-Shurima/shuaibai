@@ -24,7 +24,8 @@ import {getOrderPayStatus} from '../../common/js/api'
 export default {
 	data(){
 		return {
-			reqParams: null
+			reqParams: null,
+			mask: false
 		}
 	},
 	methods:{
@@ -34,16 +35,21 @@ export default {
 			let params = {
 				order_sn: order_sn
 			}
-			let timer = setInterval(()=>{
+			let  timer =  setInterval(()=>{
+				let mask = this.mask;
+				if (mask) {
+					clearInterval(timer) ;
+				}
 				getOrderPayStatus(params).then(res=>{
 					let {errcode,message,content} =  res ;
-					if (content===1) {
+					if (this.content===1) {
 						let count = _this.reqParams.count ;
 						clearInterval(timer);
-						location.replace(`confirmOrder.html#payResult?count=${count}&status=0`) ;
+						location.replace(`myOrder.html#vip7`) ;
 					}
 				})
 			},3000) ;
+
 		}
 	},
 	mounted(){
@@ -61,6 +67,9 @@ export default {
 		    	this.countStatus();
 		    },6000) ;
 		})
+	},
+	beforeDestroy(){
+		this.mask = true ;
 	}
 }
 </script>

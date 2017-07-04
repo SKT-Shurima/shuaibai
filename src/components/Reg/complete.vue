@@ -23,6 +23,7 @@
 </template>
 <script>
 import {perInfomation,sendCode} from '../../common/js/api'
+import {getHashReq} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
   export default {
@@ -98,7 +99,8 @@ import {hex_md5} from '../../common/js/md5'
         time: -1 ,
         total_time: 5, 
         send_btn: '发送验证码',
-        recommend: ''
+        recommend: '',
+        reqParams: null
       };
     },
     methods: {
@@ -138,6 +140,9 @@ import {hex_md5} from '../../common/js/md5'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
+            	oauth: 'WeixinWeb',
+            	wx_web_openid: this.reqParams.wx_web_openid,
+            	wx_unionid: this.reqParams.wx_unionid,
             	phone: this.ruleForm.phone,
             	verify_code: this.ruleForm.verify_code,
             	passwd: hex_md5(this.ruleForm.passwd),
@@ -164,6 +169,11 @@ import {hex_md5} from '../../common/js/md5'
           }
         });
       }
+    },
+    mounted(){
+    	this.$nextTick(()=>{
+    		this.reqParams = getHashReq() ;
+    	})
     }
   }
 </script>

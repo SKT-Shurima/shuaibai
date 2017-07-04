@@ -14,13 +14,13 @@
 				付款方式
 			</el-col>
 			<el-col :span='19' style='line-height:30px;' :offset='1'>
-				<el-radio class="radio" v-model="radio" label="2"><span style='font-size:12px;'>支付宝支付</span></el-radio>
-	  			<el-radio class="radio" v-model="radio" label="3"><span style='font-size:12px;'>微信支付</span></el-radio>
+				<el-radio class="radio" v-model="radio" label="4"><span style='font-size:12px;'>支付宝支付</span></el-radio>
+	  			<el-radio class="radio" v-model="radio" label="5"><span style='font-size:12px;'>微信支付</span></el-radio>
 			</el-col>
 		</el-row>
 		<el-row style='margin-top: 30px;'>
 			<el-col :span='19' :offset='5'>
-				<el-button type='primary' size='small' style='width:94px;' @click='submitPay'>确认支付</el-button>
+				<el-button type='primary' size='small' style='width:94px;' @click='submitPay' :disabled='!(account-0)'>确认支付</el-button>
 			</el-col>
 		</el-row>
 	</div>
@@ -28,11 +28,11 @@
 <script >
 import {recharge} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
-import {Message} from  'element-ui'
+import {Message,MessageBox} from  'element-ui'
 	export default{
 		data(){
 			return{
-				radio: "2",
+				radio: "4",
 				account: null
 			}
 		},
@@ -50,6 +50,12 @@ import {Message} from  'element-ui'
 		    },
 		    submitPay(){
 		    	let _this = this;
+		    	if (!(_this.account-0)) {
+		    		MessageBox.alert('请输入充值金额', '提示', {
+			          	confirmButtonText: '确定'
+				    });
+				    return ;
+		    	}
 		    	let params = {
 		    		access_token: getCookie('access_token'),
 		    		type: _this.radio,
@@ -60,11 +66,16 @@ import {Message} from  'element-ui'
 			 		if(errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						 Message.success({
-				          message: '充值成功',
-				          type: 'success'
-				        }); 
-						 _this.account = "" ;
+						if (_this.radio==='4') {
+							document.write(content.html_text);
+						}
+						if (_this.radio==='5') {
+							let  code_url = content.code_url ;
+							let  order_number = content.order_number ;
+							code_url = code_url.split("?");
+							code_url = code_url.join("&");
+							location.replace(`myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}`);
+						}
 					}
 		    	}) 
 		    }

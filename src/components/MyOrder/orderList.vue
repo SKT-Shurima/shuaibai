@@ -11,7 +11,7 @@
 				<el-col :span='3'>交易操作</el-col>
 			</el-row>
 		</div>
-		<div class="shopInfoList" v-for='(shopItem,index) in order' v-if='order'>
+		<div class="shopInfoList" v-for='(shopItem,shopIndex) in order' v-if='order'>
 			<div class="title">
 				<el-row>
 					<el-col :span='9'>
@@ -105,7 +105,7 @@
 								<!-- 再次购买 -->
 								<div v-show='shopItem.order_state==="6"' style='padding-top: 8px;'>
 									<ul>
-										<li><span>再次购买</span></li>
+										<li><span @click='buyAgain(shopItem.goods[0].goods_id)'>再次购买</span></li>
 										<li><span @click='del(shopItem.order_sn)'>删除订单</span></li>
 									</ul>
 								</div>
@@ -204,6 +204,10 @@ import pagination from '../Common/pagination'
 	   	 		let _this = this ;
 	   	 		let msg  = '是否取消订单?'
 	   	 		_this.commonAPI(msg,cancelOrder,order_sn);
+	   	 	},
+	   	 	// 再次购买
+	   	 	buyAgain(id){
+	   	 		window.open(`goodDetail.html?goods_id=${id}`);
 	   	 	},
 	   	 	// 确认收货
 	   	 	confirmGet(order_sn){

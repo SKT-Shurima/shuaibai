@@ -21,10 +21,10 @@
 						<li>有效时间：{{(item.date_start-0)*1000|dateStylePoint}}-{{(item.date_end-0)*1000|dateStylePoint}}</li>
 					</ul>
 				</div>
-				<div class="opera">
+				<!-- <div class="opera">
 					<button>进店看看</button>
-					<button>删除优惠券</button>
-				</div>
+					<button @click='delCoupons()'>删除优惠券</button>
+				</div> -->
 			</li>
 		</ul>
 		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>

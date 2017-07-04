@@ -135,7 +135,9 @@ import recharge from './recharge'
 				this.reqParams = getRequest();
 				let  result = this.reqParams.result ;
 				if (result==='false') {
-					location.replace('reg.html#view3');
+					let wx_web_openid = this.reqParams.wx_web_openid ;
+					let wx_unionid = this.reqParams.wx_unionid ;
+					location.replace(`reg.html#view3?wx_web_openid=${wx_web_openid}&wx_unionid=${wx_unionid}`);
 				}
 			})
 		}

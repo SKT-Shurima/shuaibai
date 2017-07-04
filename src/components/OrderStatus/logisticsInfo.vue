@@ -39,8 +39,7 @@
 										<dt></dt>
 										<dd :style='{opacity: index===expressInfo.list.length-1?0:1}'></dd>
 									</dl>
-									<div class="infoCol">
-										{{item.status}}
+									<div class="infoCol" v-html='item.status'>
 									</div>
 								</li>
 							</ul> 

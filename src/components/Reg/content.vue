@@ -40,7 +40,7 @@
 	    	this.$nextTick(()=>{
 	    		let hash = location.hash ;
 	    		if (hash) {
-	    			let view = hash.slice(1);
+	    			let view = hash.split('?')[0].slice(1);
 	    			this.currentView = view ;
 	    		}
 	    	})

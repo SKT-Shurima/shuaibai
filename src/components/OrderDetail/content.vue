@@ -104,6 +104,18 @@ window.onpopstate = function() {
 										location.hash = `tradeOver?order_sn=${order_sn}`
 									}
 								break;
+								case '6': 
+									this.currentIndex = 0;
+									if (view!=='successSubmit') {
+										location.hash = `successSubmit?order_sn=${order_sn}`
+									}
+								break;
+								case '7': 
+									this.currentIndex = 3;
+									if (view!=='tradeOver') {
+										location.hash = `tradeOver?order_sn=${order_sn}`
+									}
+								break;
 							}
 						}
 					})

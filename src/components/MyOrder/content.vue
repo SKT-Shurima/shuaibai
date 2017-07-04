@@ -44,9 +44,7 @@
 			</div>
 			<div class="container">
 				<div class="orderList">
-					<keep-alive>
-						<component :is='currentView' @hasGuess='hasGuess(msg)' ref='orderList'></component>
-					</keep-alive>
+					<component :is='currentView' @hasGuess='hasGuess(msg)' ref='orderList'></component>
 				</div>
 			</div>
 		</div>
@@ -81,6 +79,7 @@
 	import complaints from './complaints'
 	import money from './money'
 	import recharge from './recharge'
+	import payFor from './payFor'
 	import withdraw from './withdraw'
 	import shopCoin from './shopCoin'
 	import integral from './integral'
@@ -153,6 +152,7 @@
 			"vip6": complaints,
 			"vip7": money,
 			"vip70": recharge,
+			"vip700": payFor,
 			"vip71": withdraw,
 			"vip72": shopCoin,
 			"vip73": integral,

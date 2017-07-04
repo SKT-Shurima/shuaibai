@@ -2,7 +2,7 @@
 	<div class="wrap" v-if='bol'>
 		<div class="status">
 			<!-- 订单已关闭 -->
-			<div class="close" v-show='payTime<0&&orderInfo.order.order_state==="1"'>
+			<div class="close" v-show='payTime<0&&orderInfo.order.order_state==="6"'>
 				订单状态：订单已关闭
 			</div>
 			<!-- 订单已提交 -->
@@ -233,7 +233,7 @@ import {getHashReq,errorInfo} from '../../common/js/common'
 		            type: 'warning'
 		        }).then(() => {
 		            let params = {
-		   	 			access_token : sessionStorage.access_token,
+		   	 			access_token: sessionStorage.access_token,
 		   	 			order_sn: order_sn
 		   	 		}
 		   	 		api(params).then(res=>{

@@ -38,7 +38,6 @@ import {getHashReq} from '../../common/js/common'
 			this.$nextTick(()=>{
 				this.reqParams = getHashReq() ;
 			})
-		
 		}
 	}
 </script>

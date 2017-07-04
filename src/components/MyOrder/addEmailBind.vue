@@ -18,8 +18,8 @@
 	</div>
 </template>
 <script>
-import {bindEamil,sendCode,getCookie} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {bindEamil,sendCode} from '../../common/js/api'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
