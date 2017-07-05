@@ -139,8 +139,9 @@ import {hex_md5} from '../../common/js/md5'
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+          	let wx_web_openid = this.reqParams.wx_web_openid ;
             let params = {
-            	oauth: 'WeixinWeb',
+            	oauth: wx_web_openid?'WeixinWeb':'QqWeb',
             	wx_web_openid: this.reqParams.wx_web_openid,
             	wx_unionid: this.reqParams.wx_unionid,
             	phone: this.ruleForm.phone,
@@ -149,13 +150,14 @@ import {hex_md5} from '../../common/js/md5'
             	confirm_passwd: hex_md5(this.ruleForm.confirm_passwd)
             };
             perInfomation(params).then(res=>{
-            	let {errcode,message} = res ;
+            	let {errcode,message,content} = res ;
             	if (errcode !== 0 ) {
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定'
 				    });
             	} else {
             		let userInfo = content ; 
+            		let access_token= content.access_token ;
             		userInfo = JSON.stringify(userInfo);
             		sessionStorage.userInfo = userInfo ;
             		location.href = 'index.html' ;

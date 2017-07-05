@@ -96,7 +96,7 @@
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
 import {getOrderDetail} from '../../common/js/api'
-import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
+import {getHashReq,errorInfo} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -114,7 +114,7 @@ import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 				_this.reqParams = getHashReq() ;
 				let order_sn = 	_this.reqParams.order_sn;
 	   			let params = {
-	   				access_token: getCookie('access_token'),
+	   				access_token: sessionStorage.access_token,
 	   				order_sn: order_sn
 	   			}
 	   			getOrderDetail(params).then(res=>{

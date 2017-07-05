@@ -84,7 +84,7 @@
 <script>
 import {getRefunds,refundRemind} from '../../common/js/api'
 import {currency,dateStyle} from '../../common/js/filter'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 import pagination from '../Common/pagination'
 	export default {
@@ -108,7 +108,7 @@ import pagination from '../Common/pagination'
 	        getRefundsList(page){
 	        	let _this = this ;
 		    	let params = {
-		    		access_token: getCookie('access_token'),
+		    		access_token: sessionStorage.access_token,
 		    		page: page
 		    	};
 		    	getRefunds(params).then(res=>{
@@ -132,7 +132,7 @@ import pagination from '../Common/pagination'
 	   	 	// 催一催
 	   	 	rush(refund_sn){
 	   	 		let params = {
-	   	 			access_token: getCookie('access_token'),
+	   	 			access_token: sessionStorage.access_token,
 	   	 			refund_sn: refund_sn
 	   	 		}
 	   	 		refundRemind(params).then(res=>{

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {getHomePage,getCategory,getGuessLike,getActualFee} from '../../common/js/api'
+import {getHomePage,getCategory,getGuessLike,getActualFee,getUserInfo} from '../../common/js/api'
 import {getRequest,errorInfo} from '../../common/js/common'
 import guessLike from '../Common/guessLike'
 import userInfo from './userInfo'
@@ -134,10 +134,32 @@ import recharge from './recharge'
 				this.categoryList();
 				this.reqParams = getRequest();
 				let  result = this.reqParams.result ;
+				let  access_token = this.reqParams.access_token ;
+				if (access_token) {
+					sessionStorage.access_token  = access_token;
+					let params = {
+						access_token: sessionStorage.access_token
+					}
+					getUserInfo(params).then(res=>{
+						let {errcode,message,content} = res;
+						if (errcode!==0) {
+							errorInfo(errcode,message) ;
+						}else{
+							let userInfo = content ;
+							sessionStorage.userInfo = JSON.stringify(userInfo);
+						}
+					})
+				}
 				if (result==='false') {
 					let wx_web_openid = this.reqParams.wx_web_openid ;
 					let wx_unionid = this.reqParams.wx_unionid ;
-					location.replace(`reg.html#view3?wx_web_openid=${wx_web_openid}&wx_unionid=${wx_unionid}`);
+					let qq_open_id = this.reqParams.qq_open_id ;
+					if (wx_web_openid) {
+						location.replace(`reg.html#view3?wx_web_openid=${wx_web_openid}&wx_unionid=${wx_unionid}`);
+					}
+					if (qq_open_id) {
+						location.replace(`reg.html#view3?qq_open_id=${qq_open_id}`);
+					}
 				}
 			})
 		}

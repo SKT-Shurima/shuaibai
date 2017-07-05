@@ -25,7 +25,7 @@
 </template>
 <script>
 import {getShopCoupons,receiveCoupon} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 	export default {
 		data(){
@@ -35,7 +35,7 @@ import {MessageBox,Message} from  'element-ui'
 		},
 		methods:{
 			getCoupon(id){
-				let  access_token  =getCookie('access_token');
+				let  access_token  = sessionStorage.access_token;
 				if (access_token) {
 					let params = {
 						access_token: access_token,
@@ -64,7 +64,7 @@ import {MessageBox,Message} from  'element-ui'
 				
 			},
 			initList(){
-				let  access_token = getCookie() ;
+				let  access_token = sessionStorage.access_token ;
 				let params = {
 					access_token: access_token?access_token:""
 				}

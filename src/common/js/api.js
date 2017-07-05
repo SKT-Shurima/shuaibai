@@ -165,6 +165,11 @@ export const bindEamil = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/customerAction/bindEmail`,params).then(res=>res.data);
 }
+// 解绑邮箱
+export const unbindEmail = params =>{
+	params = trans(params) ;
+	return  axios.post(`${base}/userAction/unbindEmail`,params).then(res=>res.data) ;
+}
 // 设置头像
 export const changeAvater = params =>{
 	params = trans(params);

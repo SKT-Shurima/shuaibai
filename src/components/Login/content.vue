@@ -52,7 +52,9 @@
 						<div class="slider"></div>
 					</div>
 					<div class="icon">
-						<img src='../../../static/loginImg/qq.png' height="20" width="20" alt="QQ">
+						<a href="https://graph.qq.com/oauth/show?which=Login&display=pc&response_type=code&client_id=101408899&redirect_uri=http%3A%2F%2Fshuaibo.zertone1.com%2Fweb%2FcustomerAction%2FqqWebLogin">
+							<img src='../../../static/loginImg/qq.png' height="20" width="20" alt="QQ">
+						</a>
 						<a href="https://open.weixin.qq.com/connect/qrconnect?appid=wx06db8000a8ef09e3&redirect_uri=http%3A%2F%2Fshuaibo.zertone1.com%2Fweb%2FcustomerAction%2FwebWeixinLogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect 
 "><img src="../../../static/loginImg/wexin.png" height="20" width="20" alt="wexin"></a>
 					</div>
@@ -107,9 +109,9 @@ export default {
 					// 本地存储登录后返回信息
 					if(sessionStorage.userInfo) {
 						sessionStorage.removeItem('userInfo');
-						delCookie('access_token');
+						sessionStorage.removeItem('access_token');
 					}
-					setCookie('access_token',content.access_token,.5);
+					sessionStorage.setItem('access_token',content.access_token);
 					content  = JSON.stringify(content);
 					sessionStorage.setItem('userInfo',content);
 					location.href = 'index.html' ;

@@ -20,7 +20,7 @@
 </template>
 <script>
 import {phoneBind,sendCode} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5.js'
   export default {
@@ -105,7 +105,7 @@ import {hex_md5} from '../../common/js/md5.js'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: getCookie('access_token'),
+            	access_token: sessionStorage.access_token,
             	phone: this.ruleForm.phone,
             	code: this.ruleForm.code,
             	type: "3"

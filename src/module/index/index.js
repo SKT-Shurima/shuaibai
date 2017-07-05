@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 
-import {Button,Row,Col,Input,Select,Option,Carousel,CarouselItem,Radio} from  'element-ui'
+import {Button,Row,Col,Input,Select,Option,Carousel,CarouselItem,Radio,Dialog} from  'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import '../../../theme/index.css'
 
@@ -15,6 +15,7 @@ Vue.use(Option)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.use(Radio)
+Vue.use(Dialog)
 
 /* eslint-disable no-new */
 new Vue({

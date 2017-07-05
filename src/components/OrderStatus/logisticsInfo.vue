@@ -53,7 +53,7 @@
 <script>
 import {currency} from '../../common/js/filter'
 import {express} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -78,7 +78,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 	   		getEpress(){
 	   			let _this = this ;
 	   			let params = {
-	   				access_token: getCookie('access_token'),
+	   				access_token: sessionStorage.access_token,
 	   				type: "",
 	   				number: _this.orderInfo.order.express_sn
 	   			}

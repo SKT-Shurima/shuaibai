@@ -179,7 +179,7 @@
 <script>
 	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter'
 	import {getRecommend,getComments,replyContent,usefulComment,getSellerInfo} from '../../common/js/api'
-	import {errorInfo,getCookie} from '../../common/js/common'
+	import {errorInfo} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content'
 	import coupons from './coupons.vue'
@@ -198,7 +198,7 @@
 				commentList: null, // 评价列表
 				replyList:[], // 获取回复列表
 				params: "",
-				hasLogin: getCookie('access_token'), // 判断是否登录
+				hasLogin: sessionStorage.access_token, // 判断是否登录
 				replyInfo: {
 					replyId: '',
 					replyIndex: 0,
@@ -262,7 +262,7 @@
 			// 获取评价列表
 			getComment(mask,page){
 				let _this = this ;
-				let access_token = getCookie('access_token')
+				let access_token = sessionStorage.access_token ;
 				let params = {
 					access_token: access_token?access_token:"",
 					goods_id: _this.deliveryInfo.params.goods_id,
@@ -321,7 +321,7 @@
 			// 有用
 			isUseful(id){
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					id: id
 				}
 				usefulComment(params).then(res=>{

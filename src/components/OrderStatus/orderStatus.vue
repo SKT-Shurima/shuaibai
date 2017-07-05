@@ -194,7 +194,7 @@ import {getHashReq,errorInfo} from '../../common/js/common'
 	   			let _this = this ;
 	   			let order_sn = _this.reqParams.order_sn ;
 	   			let params = {
-	   				access_token: getCookie('access_token'),
+	   				access_token: sessionStorage.access_token,
 	   				order_sn: order_sn
 	   			}
 	   			orderRemind(params).then(res=>{

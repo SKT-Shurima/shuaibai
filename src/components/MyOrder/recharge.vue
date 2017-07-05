@@ -27,7 +27,7 @@
 </template>
 <script >
 import {recharge} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {Message,MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -57,7 +57,7 @@ import {Message,MessageBox} from  'element-ui'
 				    return ;
 		    	}
 		    	let params = {
-		    		access_token: getCookie('access_token'),
+		    		access_token: sessionStorage.access_token,
 		    		type: _this.radio,
 		    		account: _this.account + '' 
 		    	}

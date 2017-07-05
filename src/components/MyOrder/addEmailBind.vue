@@ -19,7 +19,7 @@
 </template>
 <script>
 import {bindEamil,sendCode} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -63,7 +63,7 @@ import {MessageBox} from  'element-ui'
 	      	let _this = this ;
       		let params = {
 	      		param: _this.ruleForm.email,
-	      		type: '8'
+	      		type: '5'
 	      	};
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
@@ -91,20 +91,22 @@ import {MessageBox} from  'element-ui'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: getCookie('access_token'),
+            	access_token: sessionStorage.access_token,
             	email: this.ruleForm.email,
             	verify: this.ruleForm.code
             };
             bindEamil(params).then(res=>{
-            	let {errcode,message} = res ;
+            	let {errcode,message,content} = res ;
             	if (errcode !== 0 ) {
             		errorInfo(errcode,message) ;
             	} else {
+            		this.userInfo.email = content;
+            		this.userInfo.has_email = true ;
+            		sessionStorage.userInfo = JSON.stringify(this.userInfo) ;
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
 				            this.$store.commit('switchView','view10');
-				            sessionStorage.currentView = 'view10';
 				        }
 				    });
             	}

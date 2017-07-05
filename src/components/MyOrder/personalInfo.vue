@@ -43,7 +43,7 @@
 </template>
 <script>
 import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
  export  default{
  	data(){
@@ -63,7 +63,7 @@ import {MessageBox} from  'element-ui'
  			avater: '',
 		    form: {
 		    	cate : 'avater', 
-		    	access_token: getCookie('access_token')
+		    	access_token: sessionStorage.access_token
 		    },
  		}
  	},
@@ -76,7 +76,7 @@ import {MessageBox} from  'element-ui'
 	    editUserName(){
 	    	let _this = this ;
 	    	let paramsName = {
-	    		access_token: getCookie('access_token'),
+	    		access_token: sessionStorage.access_token,
 	    		nickname: _this.userInfo.nickname
 	    	}
 	    	changeUsername(paramsName).then(res=>{
@@ -94,7 +94,7 @@ import {MessageBox} from  'element-ui'
 	    editBirthday(){
 	    	let _this = this ;
 	    	let paramsBirth = {
-	    		access_token: getCookie('access_token'),
+	    		access_token: sessionStorage.access_token,
 	    		birthday: _this.userInfo.birthday-0
 	    	}
 	    	changeBirthday(paramsBirth).then(res=>{
@@ -112,7 +112,7 @@ import {MessageBox} from  'element-ui'
 	    editSex(){
 	    	let _this = this ;
 	    	let paramsSex = {
-	    		access_token: getCookie('access_token'),
+	    		access_token: sessionStorage.access_token,
 	    		type: _this.radio
 	    	}
 	    	changeSex(paramsSex).then(res=>{

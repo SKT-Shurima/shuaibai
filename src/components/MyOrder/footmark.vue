@@ -38,7 +38,7 @@
 <script >
 import {currency,dateStyle} from '../../common/js/filter'
 import {footmark,delFoots} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import pagination from '../Common/pagination'
 	export default{
 		data(){
@@ -63,7 +63,7 @@ import pagination from '../Common/pagination'
 		          type: 'warning'
 		        }).then(() => {
 		        	let params = {
-						access_token: getCookie('access_token'),
+						access_token: sessionStorage.access_token,
 						ids: id
 					};
 		         	delFoots(params).then(res=>{
@@ -121,7 +121,7 @@ import pagination from '../Common/pagination'
 			getList(){
 				let _this = this ;
 				let params  ={
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					page: _this.page
 				}
 				footmark(params).then(res=>{

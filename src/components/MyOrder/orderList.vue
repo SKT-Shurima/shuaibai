@@ -96,7 +96,7 @@
 								</div>
 								<!-- 待评价 -->
 								<div v-show='shopItem.order_state==="4"' style='padding-top: 16px;'>
-									<el-button size='small' type='text'>评价</el-button>
+									<el-button size='small' type='text' @click='toEval(shopItem.order_sn)'>评价</el-button>
 								</div>
 								<!-- 追加评价 -->
 								<div v-show='shopItem.order_state==="5"' style='padding-top: 16px;'>
@@ -124,7 +124,7 @@
 <script>
 import {getOrders,cancelOrder,orderRemind,delivery,delOrder} from '../../common/js/api'
 import {currency,dateStyle} from '../../common/js/filter'
-import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
+import {getHashReq,errorInfo} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 import pagination from '../Common/pagination'
 	export default {
@@ -154,7 +154,7 @@ import pagination from '../Common/pagination'
 	        	_this.state = state ;
 		      	state+='';
 		    	let params = {
-		    		access_token: getCookie('access_token'),
+		    		access_token: sessionStorage.access_token,
 		    		state: state,
 		    		page: page
 		    	};
@@ -184,7 +184,7 @@ import pagination from '../Common/pagination'
 	   	 	// 提醒发货
 	   	 	remind(order_sn){
 	   	 		let params = {
-	   	 			access_token: getCookie('access_token'),
+	   	 			access_token: sessionStorage.access_token,
 	   	 			order_sn: order_sn
 	   	 		}
 	   	 		orderRemind(params).then(res=>{
@@ -209,6 +209,10 @@ import pagination from '../Common/pagination'
 	   	 	buyAgain(id){
 	   	 		window.open(`goodDetail.html?goods_id=${id}`);
 	   	 	},
+	   	 	// 评价
+	   	 	toEval(order_sn){
+	   	 		window.open(`eval.html?order_sn=${order_sn}`);
+	   	 	},
 	   	 	// 确认收货
 	   	 	confirmGet(order_sn){
 	   	 		let _this = this ;
@@ -229,7 +233,7 @@ import pagination from '../Common/pagination'
 		            type: 'warning'
 		        }).then(() => {
 		            let params = {
-		   	 			access_token: getCookie('access_token'),
+		   	 			access_token: sessionStorage.access_token,
 		   	 			order_sn: order_sn
 		   	 		}
 		   	 		api(params).then(res=>{

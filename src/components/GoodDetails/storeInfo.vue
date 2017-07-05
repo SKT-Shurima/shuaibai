@@ -49,7 +49,7 @@
 </template>
 <script>
 import {collectionGoods,addFollow,cancelFollow} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 	export default {
 		 props: {
 		 	goods: {
@@ -67,7 +67,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 					fn = addFollow;
 				}
 				let params ={
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					seller_id: _this.goods.seller_id
 				}
 				fn(params).then(res=>{
@@ -82,7 +82,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 			collection(){
 				let _this = this;
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					goods_id: _this.goods.goods_id
 				}
 				collectionGoods(params).then(res=>{

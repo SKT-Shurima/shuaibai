@@ -135,7 +135,7 @@
 
 <script>
  	import {currency,countdown} from '../../common/js/filter'
- 	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
+ 	import {getRequest,errorInfo} from '../../common/js/common'
  	import {linkage,goodsDetail,addCart,buy} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import storeInfo from './storeInfo'
@@ -300,14 +300,14 @@
 			// 立即购买
 			settlement(){
 				let _this = this ;
-				if (_this.goods.options&&!_this.option_id) {
+				if (_this.goods.options.length&&!_this.option_id) {
 					MessageBox.alert("请选择商品规格", '提示', {
 			          	confirmButtonText: '确定'
 				    });
 				    return ;
 				}
 			 	let params = {
-			 		access_token: getCookie('access_token'),
+			 		access_token: sessionStorage.access_token,
 			 		data: [{
 			 			seller_id: _this.goods.seller_id,
 			 			goods: [{
@@ -331,7 +331,7 @@
 			addShopCar(){
 				let _this = this ;
 				let params = {
-				    access_token: getCookie('access_token'),
+				    access_token: sessionStorage.access_token,
 					goods_id: _this.params.goods_id,
 					option_id: _this.option_id,
 					quantity: _this.numInput
@@ -368,7 +368,7 @@
 			this.$nextTick(()=>{
 				this.params = getRequest();
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					goods_id: this.params.goods_id
 				}
 				goodsDetail(params).then(res=>{

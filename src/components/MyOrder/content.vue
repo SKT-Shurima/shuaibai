@@ -54,7 +54,7 @@
 	</div>
 </template>
 <script>
-	import {getHashReq,getCookie} from '../../common/js/common'
+	import {getHashReq} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
     import orderList from './orderList'
     import refundList from './refundList'
@@ -237,8 +237,7 @@
 		},
 		created(){
 			this.$nextTick(()=>{
-				let access_token = getCookie('access_token') ;
-	            if(!access_token){
+	            if(!sessionStorage.access_token){
 	                location.href = 'login.html';
 	            }
 	        })

@@ -4,7 +4,7 @@
 	</div>
 </template>
 <script >
-import {getRequest,errorInfo,getCookie} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getOrderDetail} from '../../common/js/api'
 import firstEval from './firstEval'
 import addEval from './addEval'
@@ -26,7 +26,7 @@ import {MessageBox} from  'element-ui'
 				let _this = this ;
 				let order_sn = 	_this.reqParams.order_sn;
 	   			let params = {
-	   				access_token: getCookie('access_token'),
+	   				access_token: sessionStorage.access_token,
 	   				order_sn: order_sn
 	   			}
 	   			getOrderDetail(params).then(res=>{

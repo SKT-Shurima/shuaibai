@@ -34,7 +34,7 @@
 	</div>
 </template>
 <script>
-import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
+import {getHashReq,errorInfo} from '../../common/js/common'
 import {currency} from '../../common/js/filter'
 import {changeRefund,supportDetail} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
@@ -68,7 +68,7 @@ export default {
 	          ]
 	        },
 	        data: {
-	        	access_token: getCookie('access_token'),
+	        	access_token: sessionStorage.access_token,
 	        	cate: 'editsMoneyReturnImgs'
 	        },
 	        fileList: [],
@@ -102,7 +102,7 @@ export default {
 	          	}
 	          	images = images.slice(0,images.length-1);
 	            let params = {
-	            	access_token: getCookie('access_token'), 
+	            	access_token: sessionStorage.access_token, 
 					refund_sn: this.reqParams.refund_sn,
 					money: this.form.account + '' ,
 					reason: this.form.reason,
@@ -160,7 +160,7 @@ export default {
 	    },
 	    init(){
 	    	let params = {
-		    	access_token: getCookie('access_token'),
+		    	access_token: sessionStorage.access_token,
 		    	refund_sn: this.reqParams.refund_sn
 		    }
 		    supportDetail(params).then(res=>{

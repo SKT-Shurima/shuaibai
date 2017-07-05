@@ -61,7 +61,7 @@
 import {MessageBox} from  'element-ui'
 import {currency} from '../../common/js/filter'
 import {collection,cancelCollections} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -100,7 +100,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 		            type: 'warning'
 		        }).then(() => {
 			        let params = {
-			        	access_token: getCookie('access_token'),
+			        	access_token: sessionStorage.access_token,
 			        	ids: ids
 			        }
 			        cancelCollections(params).then(res=>{
@@ -118,7 +118,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 			},
 			initList(){
 				let params  ={
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					page: ''
 				}
 				collection(params).then(res=>{
@@ -137,8 +137,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 					this.hasUser = true;
 					this.userInfo = JSON.parse(sessionStorage.userInfo);
 				}
-				let access_token = getCookie('access_token');
-				if (access_token) {
+				if (sessionStorage.access_token) {
 					this.initList();
 				}
 			})
@@ -293,6 +292,7 @@ $bg_color: rgb(217, 193, 191);
 	    				height: 30px;
 	    				line-height: 30px;
 	    				color: #000;
+	    				cursor: pointer;
 	    			}
 	    			li:hover{
 	    				color: $primary;

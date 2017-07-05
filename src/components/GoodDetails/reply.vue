@@ -15,7 +15,7 @@
 </template>
 <script >
 import {replyComment} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {Message} from  'element-ui'
 	export default {
 		data(){
@@ -39,7 +39,7 @@ import {Message} from  'element-ui'
 			reply(){
 				let _this = this ;
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					content: _this.replyContent,
 					id: _this.replyInfo.replyId
 				}

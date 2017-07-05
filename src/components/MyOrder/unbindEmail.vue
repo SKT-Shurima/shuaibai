@@ -13,15 +13,15 @@
 				  
 			</div>
 			<div style="width:500px;margin:50px 100px;">
-			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.email&&ruleForm.code)'>确认解绑</el-button>
+			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.code)'>确认解绑</el-button>
 			</div>	  
 		</el-form>
 	</div>
 </template>
 <script>
-import {emailBind,sendCode} from '../../common/js/api.js'
+import {unbindEmail,sendCode} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
   export default {
     data() {
 	      // 验证码验证
@@ -59,8 +59,8 @@ import {errorInfo,getCookie} from '../../common/js/common'
     	send_code(){
 	      	let _this = this ;
       		let params = {
-	      		param: _this.ruleForm.email,
-	      		type: '8'
+	      		param: _this.userInfo.email,
+	      		type: '7'
 	      	};
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
@@ -90,21 +90,22 @@ import {errorInfo,getCookie} from '../../common/js/common'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: getCookie('access_token'),
-            	email: this.ruleForm.email,
-            	code: this.ruleForm.code,
-            	type: "3"
+            	access_token: sessionStorage.access_token,
+            	email: this.userInfo.email,
+            	code: this.ruleForm.code
             };
-            emailBind(params).then(res=>{
+            unbindEmail(params).then(res=>{
             	let {errcode,message} = res ;
             	if (errcode !== 0 ) {
             		errorInfo(errcode,message) ;
             	} else {
+            		this.userInfo.email = "";
+            		this.userInfo.has_email = false ;
+            		sessionStorage.userInfo = JSON.stringify(this.userInfo) ;
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
 				            this.$store.commit('switchView','view10');
-				            sessionStorage.currentView = 'view10';
 				        }
 				    });
             	}

@@ -57,7 +57,6 @@ export const delCookie = (c_name)=>{
         document.cookie = c_name + "=" + cval + ";expires=" + exp.toGMTString();  
     }  
 }
-
 // 请求接口错误信息提示
 import {MessageBox} from  'element-ui'
 export const errorInfo= (errcode,message)=>{

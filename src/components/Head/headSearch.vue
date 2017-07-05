@@ -61,7 +61,7 @@
     import {getKeyWord,getCarts,removeCart} from "../../common/js/api"
     import {MessageBox} from 'element-ui'
 	import {currency} from '../../common/js/filter'
-	import {errorInfo,getCookie} from '../../common/js/common'
+	import {errorInfo} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -128,7 +128,7 @@
 		          type: 'warning'
 		        }).then(() => {
 		        	let params = {
-				 		access_token: getCookie('access_token'),
+				 		access_token: sessionStorage.access_token,
 				 		cart_ids: cart_id
 		 			} ;
 			        removeCart(params).then(res=>{
@@ -145,7 +145,7 @@
 			 },
 			initList(){
 			 	let params = {
-					access_token: getCookie('access_token')
+					access_token: sessionStorage.access_token
 				};
 				getCarts(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -165,8 +165,7 @@
 					this.userInfo = JSON.parse(sessionStorage.userInfo);
 				}
 				this.keyWords();
-				let access_token = getCookie('access_token');
-				if (access_token) {
+				if (sessionStorage.access_token) {
 					this.initList();
 				}
 			})

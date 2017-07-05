@@ -30,43 +30,33 @@
 			</el-col>
 			<div class="top_up" @click='rechargeFn'>立即充值</div>
 		</el-row>
-		<transition name='fade'>
-			<div v-show='payBol' class="mask">
-				<div class="payType">
-					<div class="payTitle">选择支付方式<i class="el-icon-close" @click='payBol=false;'></i></div>
-					<div class='typeBox'>
-						<el-radio class="radio" v-model="typeRadio" label="2">支付宝</el-radio>
-						<el-radio class="radio" v-model="typeRadio" label="3">微信</el-radio>
-					</div>
-					<div class="ensureBtn">
-						<el-button type='primary' size='small' @click="payFor">确定</el-button>
-					</div>
-				</div>
-			</div>
-		</transition>
+		<recharge-type :payBol='payBol' :order='order' @close='payBol=false'></recharge-type>
 	</div>
 </template>
 <script>
-import {getActualFee,mobileRecharge,rechargePay} from '../../common/js/api'
+import {getActualFee,mobileRecharge} from '../../common/js/api'
 import {currency} from '../../common/js/filter'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
+import rechargeType from './rechargeType'
 	export default{
 		data(){
 			return {
 				type: 1,
 				payBol: false,
-				typeRadio: "2",
 				phone: '',
 				options: [],
 				price: '',
         		value: '',
         		id: '',
-        		orders: ""
+        		order: {}
 			}
 		},
 		filters:{
 			currency
+		},
+		components:{
+			rechargeType
 		},
 		watch:{
 			type(){
@@ -89,7 +79,7 @@ import {MessageBox} from  'element-ui'
 			rechargeFn(){
 				let _this = this ;
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					phone: _this.phone,
 					mobile_recharge_fee_id: _this.id
 				}
@@ -98,28 +88,8 @@ import {MessageBox} from  'element-ui'
 					if (errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						this.orders = content ;
+						this.order = content ;
 						this.payBol = true;
-					}
-				})
-			},
-			payFor(orders){
-				let access_token = getCookie('access_token') ;
-				let _this = this ;
-				let params = {
-					access_token: access_token?access_token:"",
-					type: _this.typeRadio,
-					orders: _this.orders
-				}
-				rechargePay(params).then(res=>{
-					let {errcode,message,content} = res ;
-					if (errcode!==0) {
-						errorInfo(errcode,message) ;
-					}else{
-						this.payBol=false;
-						MessageBox.alert('充值成功', '提示', {
-				          	confirmButtonText: '确定'
-					    });
 					}
 				})
 			},
@@ -200,58 +170,6 @@ $primary:#c71724;
 			    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 			    width: 100%;
 			}
-		}
-		.mask{
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			width: 100%;
-			height: 100%;
-			z-index: 100;
-			.payType{
-				width: 360px;
-				height: 180px;
-				position: absolute;
-				top: 30%;
-				left: 0px;
-				right: 0px;
-				margin: auto;
-				padding-top: 24px;
-				padding-left: 24px;
-				padding-right: 40px;
-				padding-bottom: 24px;
-				border-radius: 4px;
-				background-color: #fff;
-				.payTitle{
-					position: relative;
-					text-align: center;
-					font-weight: 600;
-					font-size: 14px;
-					margin-bottom: 28px;
-					i{
-						position: absolute;
-						top: -10px;
-						right: -10px;
-						cursor: pointer;
-					}
-				}
-				.typeBox{
-					text-align: center;
-					margin-bottom: 20px;
-				}
-				.ensureBtn{
-					text-align: center;
-					.el-button{
-						width: 118px;
-					}
-				}
-			}
-		}
-		.fade-enter-active, .fade-leave-active {
-		  	transition: opacity .5s
-		}
-		.fade-enter, .fade-leave-active {
-		  	opacity: 0
 		}
 	}
 </style>

@@ -74,7 +74,7 @@
 	</div>
 </template>
 <script >
-import {getRequest,errorInfo,getCookie} from '../../common/js/common'
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getCommnets,addComment} from '../../common/js/api'
 import {MessageBox,Message} from  'element-ui'
 	export default{
@@ -132,7 +132,7 @@ import {MessageBox,Message} from  'element-ui'
 			sendComment(){
 				let _this = this ;
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					order_sn: _this.reqParams.order_sn
 				}
 				let comments = [];
@@ -166,7 +166,7 @@ import {MessageBox,Message} from  'element-ui'
 			getComment(){
 				let _this = this ;
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: sessionStorage.access_token,
 					order_sn: _this.reqParams.order_sn
 				}
 				getCommnets(params).then(res=>{
@@ -178,7 +178,7 @@ import {MessageBox,Message} from  'element-ui'
 						for(let i = 0 ;i < this.goods.length ; i++ ){
 							this.goods[i].comment = "" ;
 							let dataObj = {
-								access_token: getCookie('access_token'),
+								access_token: sessionStorage.access_token,
 								cate: `eval${i}`
 							}
 							this.uploadData.push(dataObj);
