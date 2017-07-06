@@ -22,7 +22,7 @@
 				</dt>
 				<dd>
 					<el-button type='primary' @click='urged'>催一催</el-button>
-					<a @click=''>申请退款</a>
+					<a href="myOrder.html#view10">查看订单</a>
 				</dd>
 			</dl>
 			<!-- 待收货 -->
@@ -32,7 +32,7 @@
 				</dt>
 				<dd>
 					<el-button type='primary' @click='confirmGet'>确认收货</el-button>
-					<a href="">申请退货</a>
+					<a href="myOrder.html#view10">查看订单</a>
 				</dd>
 			</dl>
 			<!-- 交易成功 -->
@@ -42,7 +42,7 @@
 				</dt>
 				<dd>
 					<el-button type='primary' @click='evaluate'>评价</el-button>
-					<a href="">申请售后</a>
+					<a href="myOrder.html#view10">查看订单</a>
 				</dd>
 			</dl>
 			<!-- 交易成功自动评价 -->
@@ -63,7 +63,7 @@
 				</dt>
 				<dd>
 					<el-button type='primary'>追加评价</el-button>
-					<a href="">申请售后</a>
+					<a href="myOrder.html#view10">查看订单</a>
 				</dd>
 			</dl>
 		</div>
@@ -73,7 +73,7 @@
 import {timeStyleCh} from '../../common/js/filter'
 import {buy,cancelOrder,orderRemind,delivery} from '../../common/js/api'
 import {MessageBox,Message} from  'element-ui'
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 	export default {
 	   data(){
 	   	  return {
@@ -158,7 +158,7 @@ import {getHashReq,errorInfo} from '../../common/js/common'
 	   			let _this = this ;
 	   			let order_sn = _this.reqParams.order_sn ;
 	   			let params = {
-		    		access_token: sessionStorage.access_token
+		    		access_token: getCookie('access_token')
 		    	}
 		    	let data =[{
 		    		seller_id: _this.orderInfo.order.seller_id,
@@ -179,8 +179,8 @@ import {getHashReq,errorInfo} from '../../common/js/common'
 					if(errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						if(sessionStorage.orderInfo){
-							sessionStorage.removeItem('orderInfo');
+						if(localStorage.orderInfo){
+							localStorage.removeItem('orderInfo');
 						}
 						this.orderInfo = content ;
 						this.goodsList = this.orderInfo.order.shop[0].goods ;
@@ -194,7 +194,7 @@ import {getHashReq,errorInfo} from '../../common/js/common'
 	   			let _this = this ;
 	   			let order_sn = _this.reqParams.order_sn ;
 	   			let params = {
-	   				access_token: sessionStorage.access_token,
+	   				access_token: getCookie('access_token'),
 	   				order_sn: order_sn
 	   			}
 	   			orderRemind(params).then(res=>{
@@ -233,7 +233,7 @@ import {getHashReq,errorInfo} from '../../common/js/common'
 		            type: 'warning'
 		        }).then(() => {
 		            let params = {
-		   	 			access_token: sessionStorage.access_token,
+		   	 			access_token: getCookie('access_token'),
 		   	 			order_sn: order_sn
 		   	 		}
 		   	 		api(params).then(res=>{

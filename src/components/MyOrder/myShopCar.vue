@@ -15,7 +15,6 @@
 		</div>
 		<ul class="shopList" v-if='shopList&&checkList.length>0'  >
 			<li v-for='(item,sellerIndex) in shopList' :key='item'>
-
 				<div class="title">
 					<div class="checkAll">
 				    	<el-checkbox v-model='checkList[sellerIndex].sellerBol'></el-checkbox>
@@ -23,7 +22,7 @@
 				    <div class="shopName">
 				    	<span v-text='item.shop_name'>
 				    	</span>
-				    	<button>
+				    	<button  @click='kf(item.kf_qq)'>
 				    		<img src="../../../static/commonImg/qq.png" height="14" width="12">
 				    		联系客服
 				    	</button>
@@ -116,7 +115,7 @@
 <script>
 import {currency} from "../../common/js/filter"
 import {getCarts,removeCart,editCart,buy}  from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -247,6 +246,9 @@ import {MessageBox} from  'element-ui'
 			}
 		},
 		methods:{
+			kf(qq){
+	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+	        },
 			editNum(item,mask){
 				if(mask===1){
 					item.quantity++;
@@ -267,7 +269,7 @@ import {MessageBox} from  'element-ui'
 				let arr = [];
 				arr.push(data);
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					data: JSON.stringify(arr),
 				}
 				editCart(params).then(res=>{
@@ -305,7 +307,7 @@ import {MessageBox} from  'element-ui'
 		 remove(cart_id,batch,sellerIndex,goodsIndex){
 		 	let _this = this ;
 		 	let params = {
-		 		access_token: sessionStorage.access_token
+		 		access_token: getCookie('access_token')
 		 	} ;
 		 	if (batch) {
 		 		let id = '' ;
@@ -335,7 +337,7 @@ import {MessageBox} from  'element-ui'
 		 	let _this = this ;
 		 	let totalCheck = 0 ;
 		 	let params = {
-		 		access_token: sessionStorage.access_token,
+		 		access_token: getCookie('access_token'),
 		 		data: new Array
 		 	}
 		 	for(let i = 0 ;i <_this.checkList.length;i++){
@@ -398,7 +400,7 @@ import {MessageBox} from  'element-ui'
 		 },
 		 initList(mask,removeIndex){
 		 	let params = {
-				access_token: sessionStorage.access_token
+				access_token: getCookie('access_token')
 			};
 			getCarts(params).then(res=>{
 				let {errcode,message,content} = res ;

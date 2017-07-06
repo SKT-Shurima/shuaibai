@@ -86,7 +86,7 @@ import pagination from '../../components/Common/pagination'
 			initList(){
 				let page = this.page + "" ;
 				let params = {
-					type: "6",
+					type: "5",
 					page: page
 				}
 				getThematicActivities(params).then(res=>{

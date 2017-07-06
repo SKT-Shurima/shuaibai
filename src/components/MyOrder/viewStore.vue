@@ -62,7 +62,7 @@
 </template>
 <script>
 	import {currency} from "../../common/js/filter"
-	import {errorInfo} from '../../common/js/common'
+	import {errorInfo,getCookie} from '../../common/js/common'
 	import {attention,cancelAttentions} from '../../common/js/api'
 	import pagination from '../Common/pagination'
 	export default {
@@ -88,7 +88,7 @@
 			},
 			escView(id){
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					ids: id
 				};
 				cancelAttentions(params).then(res=>{
@@ -102,7 +102,7 @@
 			},
 			initList(){
 				let params  ={
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					page: "1"
 				}
 				attention(params).then(res=>{

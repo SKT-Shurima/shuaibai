@@ -127,16 +127,15 @@ import {num_filter,currency} from '../../common/js/filter'
 				window.open(`myOrder.html#view0?orderIndex=${index}`);
 			}
 		},
-		mounted(){
-			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.hasUser = true;
-					// 读取用户信息
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
-					// 获取购物信息
-					this.order = this.userInfo.order;
-				}
-			})
+		created(){
+			if (localStorage.userInfo) {
+				this.hasUser = true;
+				// 读取用户信息
+				this.userInfo = JSON.parse(localStorage.userInfo);
+				// 获取购物信息
+				this.order = this.userInfo.order;
+			}
+			
 		}
 	}
 </script>

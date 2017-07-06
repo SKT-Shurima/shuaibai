@@ -32,7 +32,7 @@
 <script >
 import {currency,dateStylePoint} from '../../common/js/filter'
 import {getCoupons} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -46,7 +46,7 @@ import {errorInfo} from '../../common/js/common'
 		mounted(){
 			this.$nextTick(()=>{
 				let params  ={
-					access_token: sessionStorage.access_token
+					access_token: getCookie('access_token')
 				}
 				getCoupons(params).then(res=>{
 					let {errcode,message,content} = res ;

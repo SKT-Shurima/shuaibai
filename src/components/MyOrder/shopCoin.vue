@@ -29,7 +29,7 @@
 <script>
 import {currency,dateStyle} from '../../common/js/filter'
 import {shoppingCoin,shoppingCoinDetail} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
   export default {
     data() {
       return {
@@ -52,7 +52,7 @@ import {errorInfo} from '../../common/js/common'
     created(){
         this.$nextTick(()=>{
         	let params = {
-        		access_token: sessionStorage.access_token
+        		access_token: getCookie('access_token')
         	}
         	shoppingCoin(params).then(res=>{
         		let {errcode,message,content} = res;
@@ -69,7 +69,7 @@ import {errorInfo} from '../../common/js/common'
     		// 是否含有‘猜你喜欢’
     		this.$emit('hasGuess',false);
     		let params  ={
-				access_token: sessionStorage.access_token,
+				access_token: getCookie('access_token'),
 				page: 0
 			}
 			shoppingCoinDetail(params).then(res=>{

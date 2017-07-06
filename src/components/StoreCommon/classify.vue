@@ -2,9 +2,9 @@
 	<div class="wrap">
 		<!-- 分类 -->
 		<ul class="navList">
-			<li><div class="title">查看全部分类</div></li>
-			<li><div class="title">店铺热卖</div></li>
-			<li><div class="title">掌柜推荐</div></li>
+			<li><div class="title" @click='checkStore'>查看全部分类</div></li>
+			<li><div class="title"  @click='checkStore(true)'>店铺热卖</div></li>
+			<li><div class="title"  @click='checkStore(true)'>掌柜推荐</div></li>
 			<li v-for='(sellerItem,sellerIndex) in sellerCat'><div class="title">
 				{{sellerItem.cat_name}} 
 				<img src="../../../static/detailImg/close.png" height="14" width="14" v-show='sellerItem.bol' @click='sellerItem.bol=!sellerItem.bol'>
@@ -31,6 +31,9 @@ import {getRequest} from '../../common/js/common'
 			sellerCat:{
 				type: Array,
 				required: true
+			},
+			sellerId:{
+				type: String
 			}
 		},
 		watch: {
@@ -51,6 +54,15 @@ import {getRequest} from '../../common/js/common'
 			}
 		},
 		methods:{
+			checkStore(mask){
+	     		let id = this.sellerId ;
+	     		if (true) {
+	     			window.open(`storeDetail.html?seller_id=${id}&is_recommend=1`)
+	     		}else{
+	     			window.open(`storeDetail.html?seller_id=${id}`)
+	     		}
+	     		
+	     	},
 			sentCat(sellerIndex,index,id){
 				let _this = this ;
 				let catIndex =  `${sellerIndex},${index}` ;
@@ -72,6 +84,7 @@ $border_color: #ccc;
 $primary:#c71724;
 $bg_title: #f5f5f5;
 	.wrap{
+		width: 100%;
 		.navList{
 			width: 220px;
 			margin-left: 10px;

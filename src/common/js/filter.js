@@ -2,7 +2,7 @@
 export const num_filter = val =>{
 	val = val - 0 ;
      if (val > 9 ) {
-     	return "9+"
+     	return "9"
      }else{
       return val;
      }

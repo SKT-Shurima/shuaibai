@@ -19,7 +19,7 @@
 </template>
 <script>
 import {rechargePay} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
   export default {
     data() {
       return {
@@ -42,7 +42,7 @@ import {errorInfo} from '../../common/js/common'
 	        this.$emit('close');
 	     },
     	payFor(){
-			let access_token = sessionStorage.access_token ;
+			let access_token = getCookie('access_token') ;
 			let _this = this ;
 			let params = {
 				access_token: access_token?access_token:"",

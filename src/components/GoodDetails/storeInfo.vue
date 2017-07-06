@@ -27,9 +27,9 @@
 			</div>
 			<dl class="online">
 				<dt>在线客服</dt>
-				<dd>
-					<img src ="../../../static/commonImg/qq.png" height="14" width="12">
-					客服天天
+				<dd  @click='kf(goods.kf_qq)'>
+          <img src ="../../../static/commonImg/qq.png" height="14" width="12">
+          客服天天
 				</dd>
 			</dl>
 			<div class="collectBtn">
@@ -49,7 +49,7 @@
 </template>
 <script>
 import {collectionGoods,addFollow,cancelFollow} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 	export default {
 		 props: {
 		 	goods: {
@@ -58,6 +58,9 @@ import {errorInfo} from '../../common/js/common'
 		 	}
 		 },
 		 methods: {
+      kf(qq){
+        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+      },
 			follow(){
 				let _this = this ;
 				let fn ;
@@ -67,7 +70,7 @@ import {errorInfo} from '../../common/js/common'
 					fn = addFollow;
 				}
 				let params ={
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					seller_id: _this.goods.seller_id
 				}
 				fn(params).then(res=>{
@@ -82,7 +85,7 @@ import {errorInfo} from '../../common/js/common'
 			collection(){
 				let _this = this;
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					goods_id: _this.goods.goods_id
 				}
 				collectionGoods(params).then(res=>{
@@ -182,6 +185,7 @@ $red_color: #f24450;
   					line-height: 24px;
   					margin: 0px auto; 
   					border-radius: 12px;
+            cursor: pointer;
   					background-color: #38b8fc;
   					color: #fff;
   				}

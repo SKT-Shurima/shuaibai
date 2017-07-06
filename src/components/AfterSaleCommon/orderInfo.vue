@@ -14,7 +14,7 @@
 			<div class="storeInfo">
 				<div class="storeName">
 					<span v-text='refundInfo.shop_name'></span>
-					<button><img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服</button>
+					<button @click='kf(refundInfo.kf_qq)'><img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服</button>
 				</div>
 				<ul>
 					<li>
@@ -66,7 +66,7 @@
 </template>
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {refundGoods} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 	export default {
@@ -79,11 +79,16 @@ import {MessageBox} from  'element-ui'
 		filters:{
 			currency,dateStyle,timeStyle
 		},
+		methods:{
+			kf(qq){
+		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+		    }
+		},
 		mounted(){
 			this.$nextTick(()=>{
 				this.reqParams = getHashReq();
 				let params = {
-					access_token: sessionStorage.access_token
+					access_token: getCookie('access_token')
 				};
 				if (this.reqParams.order_sn) {
 					params.order_sn = this.reqParams.order_sn ;

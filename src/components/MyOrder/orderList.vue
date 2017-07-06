@@ -20,7 +20,7 @@
 					</el-col>
 					<el-col :span='10'>
 						<span v-text='shopItem.shop_name'></span>
-						<button>
+						<button  @click='kf(shopItem.kf_qq)'>
 							<img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服
 						</button>
 					</el-col>
@@ -32,7 +32,7 @@
 				 		<div v-for='(item,index) in shopItem.goods' :key='item' class="goodsList">
 					 		<dl class="goodsMsg">
 								<dt>
-									<img :src="item.image">
+									<img :src="item.image" @click='goodDetail(item.goods_id)'>
 								</dt>
 								<dd>
 									<div class="goodsName" v-text='item.name'></div>
@@ -124,7 +124,7 @@
 <script>
 import {getOrders,cancelOrder,orderRemind,delivery,delOrder} from '../../common/js/api'
 import {currency,dateStyle} from '../../common/js/filter'
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 import pagination from '../Common/pagination'
 	export default {
@@ -146,6 +146,12 @@ import pagination from '../Common/pagination'
 			pagination
 		},
 	    methods: {
+	    	goodDetail(id){
+				window.open(`goodDetail.html?goods_id=${id}`) ;
+			},
+			kf(qq){
+	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+	        },
 	        handleSelect(key, keyPath) {
 	            console.log(key, keyPath);
 	        },
@@ -154,7 +160,7 @@ import pagination from '../Common/pagination'
 	        	_this.state = state ;
 		      	state+='';
 		    	let params = {
-		    		access_token: sessionStorage.access_token,
+		    		access_token: getCookie('access_token'),
 		    		state: state,
 		    		page: page
 		    	};
@@ -184,7 +190,7 @@ import pagination from '../Common/pagination'
 	   	 	// 提醒发货
 	   	 	remind(order_sn){
 	   	 		let params = {
-	   	 			access_token: sessionStorage.access_token,
+	   	 			access_token: getCookie('access_token'),
 	   	 			order_sn: order_sn
 	   	 		}
 	   	 		orderRemind(params).then(res=>{
@@ -233,7 +239,7 @@ import pagination from '../Common/pagination'
 		            type: 'warning'
 		        }).then(() => {
 		            let params = {
-		   	 			access_token: sessionStorage.access_token,
+		   	 			access_token: getCookie('access_token'),
 		   	 			order_sn: order_sn
 		   	 		}
 		   	 		api(params).then(res=>{
@@ -334,6 +340,7 @@ import pagination from '../Common/pagination'
 									img{
 										width: 100%;
 										height: 100%;
+										cursor: pointer;
 									}
 								}
 								dd{

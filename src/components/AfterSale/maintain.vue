@@ -30,7 +30,7 @@
 	</div>
 </template>
 <script>
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {currency} from '../../common/js/filter'
 import {refund} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
@@ -51,7 +51,7 @@ export default {
 	          ]
 	        },
 	        data: {
-	        	access_token: sessionStorage.access_token,
+	        	access_token: getCookie('access_token'),
 	        	cate: 'credentials'
 	        },
 	        fileList: [],
@@ -88,7 +88,7 @@ export default {
 	          	}
 	          	images = images.slice(0,images.length-1);
 	            let params = {
-	            	access_token: sessionStorage.access_token, 
+	            	access_token: getCookie('access_token'), 
 					order_sn: this.reqParams.order_sn,
 					goods_id: this.orderInfo.goods.goods_id,
 					option_id: this.orderInfo.goods.option_id,

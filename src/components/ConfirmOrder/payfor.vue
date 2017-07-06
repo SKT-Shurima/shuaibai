@@ -27,7 +27,7 @@
 <script>
 import {pay} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
-import {getHashReq} from '../../common/js/common'
+import {getHashReq,getCookie} from '../../common/js/common'
 	export default {
 		data(){
 			return {
@@ -41,7 +41,7 @@ import {getHashReq} from '../../common/js/common'
 				_this.reqParams = getHashReq() ;
 				let order_sn = 	_this.reqParams.order_sn;
 				let  params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					type: _this.typeIndex,
 					orders: order_sn
 				}
@@ -64,10 +64,14 @@ import {getHashReq} from '../../common/js/common'
 	            		}else{
 	            			status = 1; 
 	            		}
+	            		location.hash= `payResult?status=${status}` ;
 					}else{
 						status = 0 ;
-						count = content.count;
+						count = content.amount;
 						if (_this.typeIndex==="1") {
+							let userInfo =  JSON.parse(localStorage.userInfo) ;
+							userInfo.account -= count ;
+							localStorage.userInfo = JSON.stringify(userInfo);
 							location.hash= `payResult?count=${count}&status=${status}` ;
 						}
 						if (_this.typeIndex==='4') {

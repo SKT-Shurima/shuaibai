@@ -64,7 +64,7 @@
 
 <script>
 import {getHomePage,getCategory,getGuessLike,getActualFee,getUserInfo} from '../../common/js/api'
-import {getRequest,errorInfo} from '../../common/js/common'
+import {getRequest,errorInfo,getCookie,delCookie,setCookie} from '../../common/js/common'
 import guessLike from '../Common/guessLike'
 import userInfo from './userInfo'
 import recharge from './recharge'
@@ -126,7 +126,7 @@ import recharge from './recharge'
 				})
 			}
 		},
-		mounted(){
+		created(){
 			this.$nextTick(()=>{
 				// 获取轮播图
 				this.homePage();
@@ -136,20 +136,32 @@ import recharge from './recharge'
 				let  result = this.reqParams.result ;
 				let  access_token = this.reqParams.access_token ;
 				if (access_token) {
-					sessionStorage.access_token  = access_token;
+					delCookie('access_token');
+					setCookie('access_token',access_token,30);
+				}
+				let hasCookie = getCookie('access_token');
+				if (hasCookie) {
+					delCookie('access_token');
+					setCookie('access_token',hasCookie,30);
 					let params = {
-						access_token: sessionStorage.access_token
+						access_token: getCookie('access_token')
 					}
 					getUserInfo(params).then(res=>{
 						let {errcode,message,content} = res;
 						if (errcode!==0) {
 							errorInfo(errcode,message) ;
 						}else{
+							// let userInfo =  localStorage.userInfo ;
+							// if (userInfo) {
+							// 	localStorage.removeItem('userInfo');
+							// }
 							let userInfo = content ;
-							sessionStorage.userInfo = JSON.stringify(userInfo);
+							localStorage.userInfo = JSON.stringify(userInfo);
 						}
 					})
 				}
+				
+				
 				if (result==='false') {
 					let wx_web_openid = this.reqParams.wx_web_openid ;
 					let wx_unionid = this.reqParams.wx_unionid ;

@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<div class="storeLogoWrap">
 			<div class="storeLogoBox">
-				<img :src="shopHeader">
+				<img :src="shopHeader.shop_header">
 			</div>
 		</div>
 		<div class="navWrap">
@@ -36,8 +36,8 @@
 						</div>
 					</dt>
 					<dd><a href="index.html">首页</a></dd>
-					<dd><a href="index.html">店铺热卖</a></dd>
-					<dd><a href="index.html">掌柜推荐</a></dd>
+					<dd @click='checkStore'>店铺热卖</dd>
+					<dd @click='checkStore'>掌柜推荐</dd>
 				</dl>
 			</div>
 		</div>
@@ -59,7 +59,7 @@ import guessLike from '../Common/guessLike'
      },
      props:{
      	shopHeader:{
-     		type: String,
+     		type: Object,
      		required: true
      	}
      },
@@ -69,6 +69,10 @@ import guessLike from '../Common/guessLike'
      methods:{
      	checkGoods(index,name){
      		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`)
+     	},
+     	checkStore(){
+     		let id = this.shopHeader.seller_id ;
+     		window.open(`storeDetail.html?seller_id=${id}&is_recommend=1`)
      	}
      },
      mounted(){
@@ -226,6 +230,9 @@ $border_color: #ccc;
 				}
 				a{
 					color: #fff;
+				}
+				dd{
+					cursor: pointer;
 				}
 			}
 			

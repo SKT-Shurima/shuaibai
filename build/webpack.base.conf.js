@@ -52,10 +52,10 @@ module.exports = {
       //   loaders: ["style","css","sass"]
       // },
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpeg|jpg|gif|svg)(\?.*)?$/,
         loader: 'url',
         query: {
-          limit: 10000,
+          limit: 500000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },

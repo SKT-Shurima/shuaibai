@@ -34,7 +34,7 @@
 				 	<li @click='getOrders(2)'>待发货<i>{{order.wait_delivery_count | num_filter}}</i></li>
 				 	<li @click='getOrders(3)'>待收货<i>{{order.wait_receive_count | num_filter}}</i></li>
 				 	<li @click='getOrders(4)'>待评价<i>{{order.wait_comment_count | num_filter}}</i></li>
-				 	<li>退款/售后</li>
+				 	<li @click='getOrders(5)'>退款/售后</li>
 				 </ul>
 				 <div class="lastLogin">
 				 	上次登录时间：{{userInfo.last_check_date|dateStyleCh}}&nbsp;{{userInfo.last_check_date*1000 | timeStyle}}
@@ -81,15 +81,20 @@ import orderList from './orderList'
 		      	 location.hash = view;
 		    },
 		    getOrders(index){
-		    	this.$refs.orderList.getOrderList(index,"1");
+		    	if (index!==5) {
+		    		this.$refs.orderList.getOrderList(index,"1");
+		    	}else{
+		    		this.changeView('view01');
+		    	}
+		    	
 		    }
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
+				if (localStorage.userInfo) {
 					this.hasUser = true;
 					// 读取用户信息
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
+					this.userInfo = JSON.parse(localStorage.userInfo);
 					// 获取订单信息
 					this.order = this.userInfo.order;
 				}else{

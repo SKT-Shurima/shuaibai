@@ -174,7 +174,7 @@
 <script>
 import {buy_bal,getAddress,getExpressFee,generate} from '../../common/js/api'
 import {currency} from '../../common/js/filter'
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 	export default{
 		data(){
@@ -197,7 +197,7 @@ import {MessageBox} from  'element-ui'
 			},
 			getAddressList(){
 		      	let params = {
-		      	 	access_token: sessionStorage.access_token
+		      	 	access_token: getCookie('access_token')
 		       };
 		      	getAddress(params).then(res=>{
 		      	 	let {errcode,message,content} = res;
@@ -270,7 +270,7 @@ import {MessageBox} from  'element-ui'
 		    },
 		    getGoodsInfo(){
 		    	let params = {
-		    		access_token: sessionStorage.access_token,
+		    		access_token: getCookie('access_token'),
 		    		id: this.reqParams.id
 		    	}
 		    	buy_bal(params).then(res=>{
@@ -337,7 +337,7 @@ import {MessageBox} from  'element-ui'
 		    submitOrder(){
 		    	let _this = this ; 
 		    	let params = {
-		    		access_token: sessionStorage.access_token,
+		    		access_token: getCookie('access_token'),
 		    		address_id: _this.addressList[_this.addressIndex].address_id
 		    	}
 		    	let  data = []

@@ -28,7 +28,7 @@
 </template>
 <script >
 import {currency} from '../../common/js/filter'
-import {errorInfo} from '../../common/js/common' 
+import {errorInfo,getCookie} from '../../common/js/common' 
 import {Message} from  'element-ui'
 import {withdraw} from '../../common/js/api'
 	export default{
@@ -51,7 +51,7 @@ import {withdraw} from '../../common/js/api'
 		    submitWithdraw(){
 		    	let _this = this ;
 		    	let params = {
-		    		access_token: sessionStorage.access_token,
+		    		access_token: getCookie('access_token'),
 		    		account: "",
 		    		realname: "",
 		    		money: _this.money,
@@ -72,8 +72,8 @@ import {withdraw} from '../../common/js/api'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.userInfo = JSON.parse(sessionStorage.userInfo) ;
+				if (localStorage.userInfo) {
+					this.userInfo = JSON.parse(localStorage.userInfo) ;
 				}
 			})
 		}

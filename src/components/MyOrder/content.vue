@@ -54,7 +54,7 @@
 	</div>
 </template>
 <script>
-	import {getHashReq} from '../../common/js/common'
+	import {getHashReq,getCookie} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
     import orderList from './orderList'
     import refundList from './refundList'
@@ -171,9 +171,6 @@
 				    });
 	    		}
 	    	},
-	      handleSelect(key, keyPath) {
-	        console.log(key, keyPath);
-	      },
 	      hasGuess(msg){
 	      	let _this = this ;
 	      	_this.guessBol = msg;
@@ -199,9 +196,10 @@
 	      	if (index<5) {
 	      		if (_this.currentView === 'view0') {
 	      			_this.$refs.orderList.getOrderList(index,"1");
+	      		}else{
+	      			// 切换当前视图
+	      			_this.changeView(`view0?orderIndex=${index}`);
 	      		}
-	      		// 切换当前视图
-	      		_this.changeView('view0');
 	      	}else{
 	      		// 切换当前视图
 	      		_this.changeView('view01');
@@ -237,7 +235,9 @@
 		},
 		created(){
 			this.$nextTick(()=>{
-	            if(!sessionStorage.access_token){
+				let  access_token = getCookie('access_token');
+				let  userInfo = localStorage.userInfo ;
+	            if(!access_token||!userInfo){
 	                location.href = 'login.html';
 	            }
 	        })

@@ -20,7 +20,7 @@
 </template>
 <script>
 import {phoneBind,sendCode} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5.js'
   export default {
@@ -105,7 +105,7 @@ import {hex_md5} from '../../common/js/md5.js'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: sessionStorage.access_token,
+            	access_token: getCookie('access_token'),
             	phone: this.ruleForm.phone,
             	code: this.ruleForm.code,
             	type: "3"
@@ -119,7 +119,7 @@ import {hex_md5} from '../../common/js/md5.js'
 			          	confirmButtonText: '确定',
 			          	callback: action => {
 				            this.$store.commit('switchView','view10');
-				            sessionStorage.currentView = 'view10';
+				            localStorage.currentView = 'view10';
 				        }
 				    });
             	}
@@ -135,9 +135,9 @@ import {hex_md5} from '../../common/js/md5.js'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
+        	if (localStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+				this.userInfo = JSON.parse(localStorage.userInfo);
 			}
         })
     }

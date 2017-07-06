@@ -45,7 +45,7 @@
 				   	</div>
 				</div>
 			</li>
-			<li><a href="">商家后台</a>|</li>
+			<li><a href="index.html">商家后台</a>|</li>
 			<li class="service">
 				<div class="title" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false'>客户服务<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":serviceBol}'></div>
 				<ul class="serviceList" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false' v-show='serviceBol'>
@@ -61,7 +61,7 @@
 import {MessageBox} from  'element-ui'
 import {currency} from '../../common/js/filter'
 import {collection,cancelCollections} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -100,7 +100,7 @@ import {errorInfo} from '../../common/js/common'
 		            type: 'warning'
 		        }).then(() => {
 			        let params = {
-			        	access_token: sessionStorage.access_token,
+			        	access_token: getCookie('access_token'),
 			        	ids: ids
 			        }
 			        cancelCollections(params).then(res=>{
@@ -118,7 +118,7 @@ import {errorInfo} from '../../common/js/common'
 			},
 			initList(){
 				let params  ={
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					page: ''
 				}
 				collection(params).then(res=>{
@@ -131,16 +131,15 @@ import {errorInfo} from '../../common/js/common'
 				})
 			}
 		},
-		mounted(){
-			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.hasUser = true;
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
-				}
-				if (sessionStorage.access_token) {
-					this.initList();
-				}
-			})
+		created(){
+			if (localStorage.userInfo) {
+				this.hasUser = true;
+				this.userInfo = JSON.parse(localStorage.userInfo);
+			}
+			let  access_token = getCookie('access_token');
+			if (access_token) {
+				this.initList();
+			}
 		}
 	}
 </script>

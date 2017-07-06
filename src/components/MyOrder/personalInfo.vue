@@ -43,7 +43,7 @@
 </template>
 <script>
 import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
  export  default{
  	data(){
@@ -63,7 +63,7 @@ import {MessageBox} from  'element-ui'
  			avater: '',
 		    form: {
 		    	cate : 'avater', 
-		    	access_token: sessionStorage.access_token
+		    	access_token: getCookie('access_token')
 		    },
  		}
  	},
@@ -76,7 +76,7 @@ import {MessageBox} from  'element-ui'
 	    editUserName(){
 	    	let _this = this ;
 	    	let paramsName = {
-	    		access_token: sessionStorage.access_token,
+	    		access_token: getCookie('access_token'),
 	    		nickname: _this.userInfo.nickname
 	    	}
 	    	changeUsername(paramsName).then(res=>{
@@ -85,7 +85,7 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.nickname = content ;
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
+	    			localStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			_this.editBirthday();
 	    		} 
 	    	});
@@ -94,7 +94,7 @@ import {MessageBox} from  'element-ui'
 	    editBirthday(){
 	    	let _this = this ;
 	    	let paramsBirth = {
-	    		access_token: sessionStorage.access_token,
+	    		access_token: getCookie('access_token'),
 	    		birthday: _this.userInfo.birthday-0
 	    	}
 	    	changeBirthday(paramsBirth).then(res=>{
@@ -103,7 +103,7 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.birthday = content ;
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
+	    			localStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			_this.editSex();
 	    		} 
 	    	});
@@ -112,7 +112,7 @@ import {MessageBox} from  'element-ui'
 	    editSex(){
 	    	let _this = this ;
 	    	let paramsSex = {
-	    		access_token: sessionStorage.access_token,
+	    		access_token: getCookie('access_token'),
 	    		type: _this.radio
 	    	}
 	    	changeSex(paramsSex).then(res=>{
@@ -121,7 +121,7 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.sex = content ;
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
+	    			localStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			MessageBox.alert('信息保存成功', '提示', {
 			          	confirmButtonText: '确定',
 			          	type: 'success',
@@ -153,8 +153,8 @@ import {MessageBox} from  'element-ui'
 	},
  	mounted(){
  		this.$nextTick(()=>{
- 			if (sessionStorage.userInfo) {
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+ 			if (localStorage.userInfo) {
+				this.userInfo = JSON.parse(localStorage.userInfo);
 				this.userInfo.birthday-=0;
 				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
 			}else{

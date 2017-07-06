@@ -117,8 +117,8 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
+				if (localStorage.userInfo) {
+					this.userInfo = JSON.parse(localStorage.userInfo);
 				}
 			})
 		}

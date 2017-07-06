@@ -99,7 +99,7 @@ export default {
 					let accountInfo ;
 					if(this.remember){
 						accountInfo = this.username + "&" + this.passwd;  
-						setCookie('accountInfo',accountInfo,3);  
+						setCookie('accountInfo',accountInfo,30);  
 					}else {
 						let hasUserInfo = getCookie('accountInfo');
 						if (hasUserInfo) {
@@ -107,13 +107,13 @@ export default {
 						}
 					}
 					// 本地存储登录后返回信息
-					if(sessionStorage.userInfo) {
-						sessionStorage.removeItem('userInfo');
-						sessionStorage.removeItem('access_token');
+					if(localStorage.userInfo) {
+						localStorage.removeItem('userInfo');
+						delCookie('access_token');
 					}
-					sessionStorage.setItem('access_token',content.access_token);
+					setCookie('access_token',content.access_token,30);
 					content  = JSON.stringify(content);
-					sessionStorage.setItem('userInfo',content);
+					localStorage.setItem('userInfo',content);
 					location.href = 'index.html' ;
 				}
 			})
@@ -156,11 +156,10 @@ $red_color: #f24450;
 		    top: 0;
 		    left: 0;
 		    background-size: cover;
-		    background-repeat: no-repeat;
 		    background-position: center center;
 		    width: 100%;
 		    height: 600px;
-		    background-image: url('../../../static/loginImg/bg.jpg');
+		    background: url('../../../static/loginImg/bg.jpg') no-repeat;
 		}
 		.content_layout{
 		    width: 1200px;

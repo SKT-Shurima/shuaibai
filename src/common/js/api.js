@@ -1,7 +1,9 @@
 import axios from 'axios'
 
-
-let base = '/shuaibo' ;
+// 开发
+// let base = '/shuaibo' ;
+// 正式
+let base = 'http://shuaibo.zertone1.com/web'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -89,8 +91,9 @@ export const  getActivity = ()=>{
 	return axios.get(`${base}/initAction/getActivity`).then(res=>res.data);
 }
 // 获取首页分类商品
-export const getCategoryGoods = ()=>{
-	return axios.post(`${base}/initAction/getCategoryGoods`,{}).then(res=>res.data);
+export const getCategoryGoods = params =>{
+	params = trans(params);
+	return axios.post(`${base}/initAction/getCategoryGoods`,params).then(res=>res.data);
 }
 // 猜你喜欢
 export const getGuessLike = params =>{

@@ -19,7 +19,7 @@
 </template>
 <script>
 import {bindEamil,sendCode} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -91,7 +91,7 @@ import {MessageBox} from  'element-ui'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: sessionStorage.access_token,
+            	access_token: getCookie('access_token'),
             	email: this.ruleForm.email,
             	verify: this.ruleForm.code
             };
@@ -102,7 +102,7 @@ import {MessageBox} from  'element-ui'
             	} else {
             		this.userInfo.email = content;
             		this.userInfo.has_email = true ;
-            		sessionStorage.userInfo = JSON.stringify(this.userInfo) ;
+            		localStorage.userInfo = JSON.stringify(this.userInfo) ;
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
@@ -122,9 +122,9 @@ import {MessageBox} from  'element-ui'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
+        	if (localStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+				this.userInfo = JSON.parse(localStorage.userInfo);
 			}
         })
     }

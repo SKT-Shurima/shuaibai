@@ -36,7 +36,7 @@
 <script>
 import {getActualFee,mobileRecharge} from '../../common/js/api'
 import {currency} from '../../common/js/filter'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import rechargeType from './rechargeType'
 	export default{
@@ -79,7 +79,7 @@ import rechargeType from './rechargeType'
 			rechargeFn(){
 				let _this = this ;
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					phone: _this.phone,
 					mobile_recharge_fee_id: _this.id
 				}

@@ -159,7 +159,7 @@ import {hex_md5} from '../../common/js/md5'
             		let userInfo = content ; 
             		let access_token= content.access_token ;
             		userInfo = JSON.stringify(userInfo);
-            		sessionStorage.userInfo = userInfo ;
+            		localStorage.userInfo = userInfo ;
             		location.href = 'index.html' ;
             	}
             })

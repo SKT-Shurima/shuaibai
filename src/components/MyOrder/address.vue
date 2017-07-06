@@ -105,7 +105,7 @@
 </template>
 <script>
 import {saveAddress,getAddress,delAddress,defaultAddress,linkage} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
   export default {
     data() {
@@ -254,7 +254,7 @@ import {MessageBox,Message} from  'element-ui'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: sessionStorage.access_token ,
+            	access_token: getCookie('access_token') ,
             	address_id: '',
             	province: this.proArr[this.proIndex].name,
             	city: this.cityArr[this.cityIndex].name,
@@ -299,7 +299,7 @@ import {MessageBox,Message} from  'element-ui'
       },
       getAddressList(){
       	 let params = {
-      	 	access_token: sessionStorage.access_token
+      	 	access_token: getCookie('access_token')
       	 };
       	 getAddress(params).then(res=>{
       	 	let {errcode,message,content} = res ;
@@ -317,7 +317,7 @@ import {MessageBox,Message} from  'element-ui'
           type: 'warning'
         }).then(() => {
           let params = {
-      	 	access_token: sessionStorage.access_token,
+      	 	access_token: getCookie('access_token'),
       	 	address_id: id
       	 };
       	 delAddress(params).then(res=>{
@@ -335,9 +335,9 @@ import {MessageBox,Message} from  'element-ui'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
+        	if (localStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+				this.userInfo = JSON.parse(localStorage.userInfo);
 				this.getAddressList();
 				this.getLinkage('pro');
 			}else{

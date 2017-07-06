@@ -115,7 +115,7 @@
 <script>
 import {currency,dateStyle,timeStyle} from '../../common/js/filter'
 import {supportDetail,revokerRefund,getExpress,writeReturnNote,refundMessage} from '../../common/js/api'
-import {getHashReq,errorInfo} from '../../common/js/common'
+import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 	export default{
 		data(){
@@ -174,7 +174,7 @@ import {MessageBox,Message} from  'element-ui'
 		            type: 'warning'
 		        }).then(() => {
 		            let params = {
-						access_token: sessionStorage.access_token,
+						access_token: getCookie('access_token'),
 						refund_sn: _this.reqParams.refund_sn
 					}
 					revokerRefund(params).then(res=>{
@@ -209,7 +209,7 @@ import {MessageBox,Message} from  'element-ui'
 	        	this.$refs[formName].validate((valid) => {
 		            if (valid) {
 			            let params = {
-			            	access_token: sessionStorage.access_token,
+			            	access_token: getCookie('access_token'),
 			            	refund_sn: this.reqParams.refund_sn,
 			            	content: this.leaveMsgForm.content
 			            }
@@ -239,7 +239,7 @@ import {MessageBox,Message} from  'element-ui'
 	        	this.$refs[formName].validate((valid) => {
 		            if (valid) {
 			            let params = {
-			            	access_token: sessionStorage.access_token,
+			            	access_token: getCookie('access_token'),
 			            	refund_sn: this.reqParams.refund_sn,
 			            	express: this.expressForm.name,
 			            	express_sn: this.expressForm.num
@@ -266,7 +266,7 @@ import {MessageBox,Message} from  'element-ui'
 	    		this.reqParams = getHashReq();
 	    		let  refund_sn = this.reqParams.refund_sn ;
 			    let params = {
-			    	access_token: sessionStorage.access_token,
+			    	access_token: getCookie('access_token'),
 			    	refund_sn: refund_sn
 			    }
 			    supportDetail(params).then(res=>{

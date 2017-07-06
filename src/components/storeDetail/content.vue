@@ -3,7 +3,7 @@
 		<v-nav :shopHeader='shop_header'></v-nav>
 		<div class="container">
 			<div class="slider">
-				<classify :sellerCat='seller_cat' @getCat='getCatId'></classify>
+				<classify :sellerCat='seller_cat' @getCat='getCatId' :seller-id='seller_id'></classify>
 				<hot-sell></hot-sell>
 			</div>
 			<div class="listWrap">
@@ -24,6 +24,7 @@ import goodsList from '../storeDetail/goodsList'
 			return {
 				reqParams: null,
 				seller_cat: [],
+				seller_id: '',
 				goods: {}, 
 				shop_header: "",
 				params: {
@@ -49,7 +50,7 @@ import goodsList from '../storeDetail/goodsList'
 					}else {
 						this.goods = content.goods ;
 						if (!this.shop_header&!this.seller_cat.length) {
-							this.shop_header = content.seller.shop_header ;
+							this.shop_header = content.seller ;
 							let arr = content.seller_cat ;
 							for(let i = 0 ;i<arr.length;i++){
 								arr[i].bol = false ;
@@ -78,6 +79,11 @@ import goodsList from '../storeDetail/goodsList'
 			this.$nextTick(()=>{
 				this.reqParams = getRequest();
 				this.params.seller_id = this.reqParams.seller_id ;
+				this.seller_id = this.reqParams.seller_id ;
+				let is_recommend = this.reqParams.is_recommend ;
+				if (is_recommend) {
+					this.params.is_recommend = is_recommend
+				}
 				this.commonAPI() ;
 			})
 		}

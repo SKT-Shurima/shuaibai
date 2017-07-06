@@ -135,7 +135,7 @@
 
 <script>
  	import {currency,countdown} from '../../common/js/filter'
- 	import {getRequest,errorInfo} from '../../common/js/common'
+ 	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
  	import {linkage,goodsDetail,addCart,buy} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import storeInfo from './storeInfo'
@@ -307,7 +307,7 @@
 				    return ;
 				}
 			 	let params = {
-			 		access_token: sessionStorage.access_token,
+			 		access_token: getCookie('access_token'),
 			 		data: [{
 			 			seller_id: _this.goods.seller_id,
 			 			goods: [{
@@ -331,7 +331,7 @@
 			addShopCar(){
 				let _this = this ;
 				let params = {
-				    access_token: sessionStorage.access_token,
+				    access_token: getCookie('access_token'),
 					goods_id: _this.params.goods_id,
 					option_id: _this.option_id,
 					quantity: _this.numInput
@@ -368,7 +368,7 @@
 			this.$nextTick(()=>{
 				this.params = getRequest();
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					goods_id: this.params.goods_id
 				}
 				goodsDetail(params).then(res=>{
@@ -382,7 +382,11 @@
 							this.initTime();
 						}
 						this.full = content.full ;
-						this.shop_header = content.goods.shop_header?content.goods.shop_header: "" ;
+						let  shop_header = {
+							shop_header: content.goods.shop_header,
+							seller_id: content.goods.seller_id
+						}
+						this.shop_header = shop_header ;
 						// 初始化结构数据
 						this.init();
 					}

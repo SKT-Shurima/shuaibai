@@ -39,7 +39,7 @@
 <script>
 import {timeTrans} from '../../common/js/filter'
 import {getExpressMessages} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
 import pagination from '../Common/pagination'
 	export default {
 		data(){
@@ -72,7 +72,7 @@ import pagination from '../Common/pagination'
 			initList(){
 				let _this = this ;
 				let params = {
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					page: _this.page,
 					t: " 4" 
 				}

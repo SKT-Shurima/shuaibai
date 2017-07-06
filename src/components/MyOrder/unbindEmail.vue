@@ -21,7 +21,7 @@
 <script>
 import {unbindEmail,sendCode} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
   export default {
     data() {
 	      // 验证码验证
@@ -90,7 +90,7 @@ import {errorInfo} from '../../common/js/common'
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let params = {
-            	access_token: sessionStorage.access_token,
+            	access_token: getCookie('access_token'),
             	email: this.userInfo.email,
             	code: this.ruleForm.code
             };
@@ -101,7 +101,7 @@ import {errorInfo} from '../../common/js/common'
             	} else {
             		this.userInfo.email = "";
             		this.userInfo.has_email = false ;
-            		sessionStorage.userInfo = JSON.stringify(this.userInfo) ;
+            		localStorage.userInfo = JSON.stringify(this.userInfo) ;
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
@@ -121,9 +121,9 @@ import {errorInfo} from '../../common/js/common'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
+        	if (localStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+				this.userInfo = JSON.parse(localStorage.userInfo);
 			}
         })
     }

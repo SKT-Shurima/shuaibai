@@ -105,7 +105,7 @@
 </template>
 <script>
 import {getOneAddress,saveAddress,defaultAddress,linkage} from '../../common/js/api'
-import {errorInfo,getHashReq} from '../../common/js/common'
+import {errorInfo,getHashReq,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
   export default {
     data() {
@@ -183,7 +183,7 @@ import {MessageBox,Message} from  'element-ui'
     	getOneAddressAPI(){
     		let _this =  this ;
     		let params = {
-    			access_token: sessionStorage.access_token,
+    			access_token: getCookie('access_token'),
     			address_id: _this.reqParams.address_id
     		}
     		getOneAddress(params).then(res=>{
@@ -323,7 +323,7 @@ import {MessageBox,Message} from  'element-ui'
 	        this.$refs[formName].validate((valid) => {
 	          if (valid) {
 	            let params = {
-	            	access_token: sessionStorage.access_token ,
+	            	access_token: getCookie('access_token') ,
 	            	address_id: this.reqParams.address_id,
 	            	province: this.proArr[this.proIndex].name,
 	            	city: this.cityArr[this.cityIndex].name,
@@ -373,9 +373,9 @@ import {MessageBox,Message} from  'element-ui'
     },
     mounted(){
     	this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
+        	if (localStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+				this.userInfo = JSON.parse(localStorage.userInfo);
 				this.reqParams = getHashReq();
 				this.getOneAddressAPI();
 			}else{

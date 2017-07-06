@@ -61,7 +61,7 @@
     import {getKeyWord,getCarts,removeCart} from "../../common/js/api"
     import {MessageBox} from 'element-ui'
 	import {currency} from '../../common/js/filter'
-	import {errorInfo} from '../../common/js/common'
+	import {errorInfo,getCookie} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -116,7 +116,7 @@
 				}
 				_this.totalPrice = totalPrice ;
 				_this.userInfo.cart_num = totalNum ;
-				sessionStorage.userInfo = JSON.stringify(_this.userInfo) ;
+				localStorage.userInfo = JSON.stringify(_this.userInfo) ;
 			},
 			goodDetail(id){
 				window.open(`goodDetail.html?goods_id=${id}`)
@@ -128,7 +128,7 @@
 		          type: 'warning'
 		        }).then(() => {
 		        	let params = {
-				 		access_token: sessionStorage.access_token,
+				 		access_token: getCookie('access_token'),
 				 		cart_ids: cart_id
 		 			} ;
 			        removeCart(params).then(res=>{
@@ -145,7 +145,7 @@
 			 },
 			initList(){
 			 	let params = {
-					access_token: sessionStorage.access_token
+					access_token: getCookie('access_token')
 				};
 				getCarts(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -160,12 +160,13 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
+				if (localStorage.userInfo) {
 					this.hasUser = true;
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
+					this.userInfo = JSON.parse(localStorage.userInfo);
 				}
 				this.keyWords();
-				if (sessionStorage.access_token) {
+				let  access_token = getCookie('access_token');
+				if (access_token) {
 					this.initList();
 				}
 			})

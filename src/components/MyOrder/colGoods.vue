@@ -39,7 +39,7 @@
 <script>
 	import {currency} from '../../common/js/filter'
 	import {collection,cancelCollections} from '../../common/js/api'
-	import {errorInfo} from '../../common/js/common'
+	import {errorInfo,getCookie} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import pagination from '../Common/pagination'
 	export default {
@@ -65,7 +65,7 @@
 		            type: 'warning'
 		        }).then(() => {
 			        let params = {
-			        	access_token: sessionStorage.access_token,
+			        	access_token: getCookie('access_token'),
 			        	ids: ids
 			        }
 			        cancelCollections(params).then(res=>{
@@ -89,7 +89,7 @@
 			},
 			initList(){
 				let params  ={
-					access_token: sessionStorage.access_token,
+					access_token: getCookie('access_token'),
 					page: this.page
 				}
 				collection(params).then(res=>{

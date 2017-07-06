@@ -35,7 +35,7 @@
 <script>
 import {currency,dateStyle} from '../../common/js/filter'
 import {finance} from '../../common/js/api'
-import {errorInfo} from '../../common/js/common'
+import {errorInfo,getCookie} from '../../common/js/common'
   export default {
     data() {
       return {
@@ -57,9 +57,9 @@ import {errorInfo} from '../../common/js/common'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
+        	if (localStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+				this.userInfo = JSON.parse(localStorage.userInfo);
 			}else{
 				location.href = "login.html";
 			}
@@ -70,7 +70,7 @@ import {errorInfo} from '../../common/js/common'
     		// 是否含有‘猜你喜欢’
     		this.$emit('hasGuess',false);
     		let params  ={
-				access_token: sessionStorage.access_token,
+				access_token: getCookie('access_token'),
 				page: "0"
 			}
 			finance(params).then(res=>{
