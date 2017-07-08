@@ -51,32 +51,32 @@
 							<div class='normalCol'>
 								<dl class="vMiddle" v-if='goodItem.market_price' style="height: 20px;">
 									<dt style="color:#666;text-decoration: line-through;">
-										{{goodItem.market_price|currency}}
+										{{goodItem.market_price.toFixed(2)|currency}}
 									</dt>
 									<dd>
-										{{goodItem.sale_price|currency}}
+										{{goodItem.sale_price.toFixed(2)|currency}}
 									</dd>
 								</dl>
 								<dl class="vMiddle" v-else style="height: 20px;">
 									<dd>
-										{{goodItem.sale_price|currency}}
+										{{goodItem.sale_price.toFixed(2)|currency}}
 									</dd>
 								</dl>
 							</div>
 							<div style='padding-top:30px;' class="normalCol">
 								<div class="numBtn">
-									<button @click='editNum(goodItem,0)'><i class="el-icon-minus"></i></button>
+									<button @click='editNum(goodItem,0)' style="padding: 6px 0px;"><i class="el-icon-minus"></i></button>
 										<input type="text" v-model='goodItem.quantity' @change='editNum(goodItem)'>
-									<button @click='editNum(goodItem,1)'><i class="el-icon-plus"></i></button>
+									<button @click='editNum(goodItem,1)' class="padding:3px 0px;"><i class="el-icon-plus"></i></button>
 								</div>
 							</div>
 							<div class="normalCol totalAmount">
-								{{goodItem.sale_price * goodItem.quantity|currency}}
+								{{(goodItem.sale_price * goodItem.quantity).toFixed(2)|currency}}
 							</div>
 							<div class="normalCol">
 								<dl class="vMiddle">
 									<dt>
-										<button>移入收藏夹</button>
+										<button @click='colGoods(goodItem.goods_id)'>移入收藏夹</button>
 									</dt>
 									<dd>
 										<button @click='remove(goodItem.cart_id,false,sellerIndex,goodsIndex)'>删除</button>
@@ -103,7 +103,7 @@
 					<span>已选商品<em>{{checkNum}}</em>件</span>
 				</div>
 				<div class="checkAmount">
-					<span>合计（不含运费）：<em>{{totalPrice|currency}}</em></span>
+					<span>合计（不含运费）：<em>{{totalPrice.toFixed(2)|currency}}</em></span>
 				</div>
 				<div class="settlement" @click='settlement'>
 					结算
@@ -114,9 +114,9 @@
 </template>
 <script>
 import {currency} from "../../common/js/filter"
-import {getCarts,removeCart,editCart,buy}  from '../../common/js/api'
+import {getCarts,removeCart,editCart,buy,collectionGoods}  from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
-import {MessageBox} from  'element-ui'
+import {MessageBox,Message} from  'element-ui'
 	export default{
 		data(){
 			return{
@@ -250,6 +250,7 @@ import {MessageBox} from  'element-ui'
 	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
 	        },
 			editNum(item,mask){
+				let _this = this ;
 				if(mask===1){
 					item.quantity++;
 					
@@ -266,6 +267,17 @@ import {MessageBox} from  'element-ui'
 					cart_id: item.cart_id,
 					quantity: item.quantity
 				}
+				let price = 0;
+				_this.totalPrice = 0;
+				// 查询勾选项
+				for(let i = 0;i<_this.checkList.length;i++){
+					for(let n = 0 ; n< _this.checkList[i].goods.length ; n++){
+						if (_this.checkList[i].goods[n].goodsBol) {
+							price+=(_this.shopList[i].goods[n].sale_price-0)*(_this.shopList[i].goods[n].quantity-0);
+						}
+					}
+				}
+				_this.totalPrice = price;
 				let arr = [];
 				arr.push(data);
 				let params = {
@@ -333,6 +345,24 @@ import {MessageBox} from  'element-ui'
 		 		_this.removeAPI(params,removeIndex);
 		 	}
 		 },
+		 // 移入收藏夹
+		 colGoods(id){
+		 	let params = {
+		 		access_token: getCookie('access_token'),
+		 		goods_id: id
+		 	}
+		 	collectionGoods(params).then(res=>{
+		 		let {errcode,message,content} = res ;
+				if(errcode!==0) {
+					errorInfo(errcode,message) ;
+				}else{
+					Message.success({
+			          message: message,
+			          type: 'success'
+			        });
+				}
+		 	})
+		 },
 		 settlement(){
 		 	let _this = this ;
 		 	let totalCheck = 0 ;
@@ -370,7 +400,7 @@ import {MessageBox} from  'element-ui'
 					if(errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						window.open(`confirmOrder.html#submitOrder?id=${content}`)
+						location.href = `confirmOrder.html#submitOrder?id=${content}` ;
 					}
 			 	})
 		 	}else{
@@ -568,6 +598,11 @@ $bg_color: #f5f5f5;
 							.goodsName{
 								line-height: 18px;
 								margin-bottom: 18px;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								display: -webkit-box;
+							  	-webkit-line-clamp: 2;
+						  	 	-webkit-box-orient: vertical;
 							}
 							.goodsType{
 								color: $text_color;
@@ -607,7 +642,6 @@ $bg_color: #f5f5f5;
 								float: left;
 								width: 22px;
 								height: 22px;
-								padding: 6px 0px;
 								outline: none;
 								border: none;
 								background-color: $bg_color;

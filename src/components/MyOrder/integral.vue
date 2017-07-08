@@ -27,7 +27,6 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter'
 import {integration,integrationDetail} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
@@ -39,9 +38,6 @@ import {MessageBox} from  'element-ui'
       	},
       	integrationList: null
       };
-    },
-    filters:{
-    	currency
     },
     methods: {
     	changeView(view){

@@ -9,7 +9,9 @@
 			<div class="head_con_wrap">
 				<div class="head_con_box">
 					<div class="logo">
-						<img src="../../../static/headImg/logo.png" height="39" width="269">
+						<a href="index.html">
+							<img src="../../../static/headImg/logo.png" height="39" width="269">
+						</a>
 					</div>
 				</div>
 			</div>

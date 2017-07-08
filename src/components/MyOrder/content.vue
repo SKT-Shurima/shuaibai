@@ -164,7 +164,7 @@
 	    		let keyword = _this.searchInput ;
 	    		keyword = keyword.trim();
 	    		if (keyword) {
-	    			window.open(`relatedGoods.html?keyword=${keyword}`);
+	    			location.href = `relatedGoods.html?keyword=${keyword}`;
 	    		}else {
 	    			MessageBox.alert('请输入关键字', '提示', {
 			          	confirmButtonText: '确定'

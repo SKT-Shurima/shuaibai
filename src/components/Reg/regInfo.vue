@@ -1,4 +1,5 @@
 <template>
+<div>
 	<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position='left'>
 		<div class="reg_box">
 			<div class="title">注册信息</div>
@@ -99,11 +100,14 @@
 			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;'>注册</el-button>
 		</div>	  
 	</el-form>
+	<vmask></vmask>
+	</div>
 </template>
 <script>
 import {reg,sendCode,linkage} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
+import vmask from './mask'
   export default {
     data() {
     	// 手机验证
@@ -263,6 +267,9 @@ import {hex_md5} from '../../common/js/md5'
         send_btn: '发送验证码',
         recommend: ''
       };
+    },
+    components:{
+    	vmask
     },
     methods: {
     	getLinkage(mask,id){

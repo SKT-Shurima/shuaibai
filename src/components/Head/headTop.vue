@@ -28,7 +28,7 @@
 									<dd>
 										<div class="show_info" v-text='item.name'></div>
 										<div class="sell_info">
-											<span>{{item.price|currency}}</span><em @click="delColGood(item.collection_id)">取消收藏</em>
+											<span>{{item.price.toFixed(2)|currency}}</span><em @click="delColGood(item.collection_id)">取消收藏</em>
 										</div>
 									</dd>
 								</dl>
@@ -49,8 +49,8 @@
 			<li class="service">
 				<div class="title" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false'>客户服务<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":serviceBol}'></div>
 				<ul class="serviceList" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false' v-show='serviceBol'>
-					<li>售前服务</li>
-					<li>售后服务</li>
+					<!-- <li>售前服务</li>
+					<li>售后服务</li> -->
 					<li><a href="myOrder.html#vip6">投诉中心</a></li>
 				</ul>
 			</li>
@@ -90,7 +90,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 				}
 			},
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`)
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			},
 			// 取消收藏
 			delColGood(ids){
@@ -298,6 +298,9 @@ $bg_color: rgb(217, 193, 191);
 	    			}
 	    			a{
 	    				padding: 0px;
+	    			}
+	    			a:hover{
+	    				color: $primary;
 	    			}
 	    		}
 	    	}

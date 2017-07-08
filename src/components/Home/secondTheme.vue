@@ -28,7 +28,7 @@
 		},
 		methods:{
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`) ;
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			}
 		}
 	}
@@ -37,7 +37,6 @@
 $border_list: #f0f0f0;
 	.theme{
 		width: 100%;
-		margin-left: 26px;
 		img{
 			cursor: pointer;
 		}
@@ -46,8 +45,9 @@ $border_list: #f0f0f0;
 			overflow: hidden;
 			border-top: 1px solid $border_list;
 			border-left: 1px solid $border_list;
+			padding-left: 1px;
 			li{
-				width: 202px;
+				width: 203px;
 				height: 249px;
 				float: left;
 				border-right: 1px solid $border_list;

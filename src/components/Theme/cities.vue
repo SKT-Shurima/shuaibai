@@ -56,7 +56,7 @@
 							<div class="num" v-show='index===9'>{{index+1}}</div>
 							<dl>
 								<dt>
-									<img :src="item.shop_logo" @clikc='storeDetail(item.seller_id)'>
+									<img :src="item.shop_logo" @click='storeDetail(item.seller_id)'>
 								</dt>
 								<dd>
 									<div class="shopName" v-text='item.shop_name'></div>
@@ -90,7 +90,6 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter'
 import {getThematicActivities} from '../../common/js/api'
 import {errorInfo} from '../../common/js/common'
 	export default {
@@ -105,15 +104,12 @@ import {errorInfo} from '../../common/js/common'
 				topIndex: 0
 			}
 		},
-		filters:{
-			currency
-		},
 		methods: {
 			storeDetail(id){
-				window.open(`storeDetail.html?seller_id=${id}`) ;
+				location.href = `storeDetail.html?seller_id=${id}` ;
 			},
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`) ;
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			},
 			// 改变页数
 			changePage(page){

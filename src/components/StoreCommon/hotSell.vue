@@ -16,7 +16,7 @@
 							<div class="sellInfo" v-text='item.name'></div>
 							<div class="priceInfo">
 								<span>
-									{{item.shop_price|currency}}
+									{{item.shop_price.toFixed(2)|currency}}
 								</span>
 								<em>
 									{{item.sale_count}}人付款
@@ -49,7 +49,7 @@ import {errorInfo} from '../../common/js/common'
 		},
 		methods:{
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`);
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			}
 		},
 		mounted(){

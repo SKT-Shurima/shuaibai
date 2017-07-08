@@ -75,6 +75,7 @@ import {getHashReq,getCookie} from '../../common/js/common'
 							location.hash= `payResult?count=${count}&status=${status}` ;
 						}
 						if (_this.typeIndex==='4') {
+							return
 							document.write(content.html_text);
 						}
 						if (_this.typeIndex==='5') {
@@ -83,7 +84,7 @@ import {getHashReq,getCookie} from '../../common/js/common'
 							let  coun = content.count ;
 							code_url = code_url.split("?");
 							code_url = code_url.join("&");
-							location.replace(`confirmOrder.html#scode?code_url=${code_url}&order_number=${order_number}&count=${count}`);
+							location.replace(`confirmOrder.html#scode?code_url=${code_url}&order_number=${order_number}&count=${count}&order_sn=${order_sn}`);
 						}
 					}
 				})

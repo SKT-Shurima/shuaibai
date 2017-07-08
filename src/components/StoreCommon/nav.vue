@@ -68,11 +68,11 @@ import guessLike from '../Common/guessLike'
      },
      methods:{
      	checkGoods(index,name){
-     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`)
+     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
      	},
      	checkStore(){
      		let id = this.shopHeader.seller_id ;
-     		window.open(`storeDetail.html?seller_id=${id}&is_recommend=1`)
+     		location.href = `storeDetail.html?seller_id=${id}&is_recommend=1` ;
      	}
      },
      mounted(){

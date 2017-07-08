@@ -33,6 +33,15 @@ export const timeStyle  = time =>{
     return h +':' + m ;
 }
 
+export const timeStyles  = time =>{
+    time -= 0;
+    var newDate = new Date(time);
+    let {h,m,s}={h:newDate.getHours(),m:newDate.getMinutes(),s:newDate.getSeconds()};
+    h = trans(h);
+    m = trans(m);
+    s = trans(s);
+    return h +':' + m + ':' + s;
+}
 // 日期格式转成中文
 export const dateStyleCh  = time =>{
     time -= 0;
@@ -93,7 +102,7 @@ function trans (val){
 
 // 倒计时
 export const countdown = time =>{
-    time -= 0 ;
+    time /= 1000 ;
     let {d,h,m,s}={d:parseInt(time/(24*3600)),h:parseInt(time/3600%24),m:parseInt(time/60%60),s:parseInt(time%60)};
     h = trans(h);
     m = trans(m);

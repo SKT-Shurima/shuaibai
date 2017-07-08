@@ -112,7 +112,7 @@
 			   }
 			},
 			check(view){
-				window.open(`myOrder.html#${view}`);
+				location.href = `myOrder.html#${view}`;
 			}
 		},
 		mounted(){

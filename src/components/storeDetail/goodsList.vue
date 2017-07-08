@@ -64,7 +64,7 @@
 						<div class="sellInfo" v-text='item.name'></div>
 						<div class="priceInfo">
 							<span>
-								{{item.shop_price|currency}}
+								{{item.shop_price.toFixed(2)|currency}}
 							</span>
 							<em>
 								{{item.sale_count}}人付款
@@ -162,7 +162,7 @@ import pagination from '../Common/pagination'
 				_this.$emit('getGoods',_this.params);
 			},
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`);
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			}
 		}
 	}

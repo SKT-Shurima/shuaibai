@@ -44,8 +44,8 @@
 										<img :src="item.cover">
 									</dt>
 									<dd>
-										<span>{{item.shop_price|currency}}</span>
-										<em>{{item.market_price|currency}}</em>
+										<span>{{item.shop_price.toFixed(2)|currency}}</span>
+										<em>{{item.market_price.toFixed(2)|currency}}</em>
 									</dd>
 								</dl>
 							</li>

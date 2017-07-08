@@ -24,7 +24,7 @@
 		 				<dd>
 		 					<div class="show_info" v-text='item.name'></div>
 		 					<div class="sell_info">
-		 						<span>{{item.shop_price|currency}}</span>
+		 						<span>{{item.shop_price.toFixed(2)|currency}}</span>
 		 						<em>{{item.sale_count}}人付款</em>
 		 					</div>
 		 				</dd>
@@ -34,19 +34,19 @@
 		</div>
 		<ul class="theme_box">
 			<li>
-				<div class="title" :style='{background: `url(${firstTheme.img.img})`}' v-if='firstTheme.img' @click='jump("snap",1)'></div>
+				<div class="title" :style='{backgroundImage: `url(${firstTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%" v-if='firstTheme.img' @click='jump("snap",1)'></div>
 				<first-theme :theme='firstTheme'></first-theme>
 			</li>
-			<li>
-				<div class="title" :style='{background: `url(${secondTheme.img.img})`}' v-if='secondTheme.img' @click='jump("food",2)'></div>
+			<li style="margin-left:26px;">
+				<div class="title" :style='{backgroundImage: `url(${secondTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  v-if='secondTheme.img' @click='jump("food",2)'></div>
 				<second-theme :theme='secondTheme'></second-theme>
 			</li>
 			<li>
-				<div class="title" :style='{background: `url(${thirdTheme.img.img})`}' v-if='thirdTheme.img' @click='jump("smart",3)'></div>
+				<div class="title" :style='{backgroundImage: `url(${thirdTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%"  v-if='thirdTheme.img' @click='jump("smart",3)'></div>
 				<third-theme :theme='thirdTheme'></third-theme>
 			</li>
-			<li>
-				<div class="title" :style='{background: `url(fourthTheme.img.img})`}' v-if='fourthTheme.img' @click='jump("household",4)'></div>
+			<li style="margin-left:26px;">
+				<div class="title" :style='{backgroundImage: `url(${fourthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" v-if='fourthTheme.img' @click='jump("household",4)'></div>
 				<second-theme :theme='fourthTheme'></second-theme>
 			</li>
 		</ul>
@@ -94,7 +94,7 @@ import 'common/css/themeTitle.scss'
 				location.href = 'detail.html';
 			},
 			jump(address,type){
-				window.open(`${address}.html?type=${type}`) ;
+				location.href = `${address}.html?type=${type}` ;
 			},
 			getTheme() {
 				getActivity().then(res=>{

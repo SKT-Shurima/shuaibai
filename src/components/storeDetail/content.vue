@@ -26,7 +26,7 @@ import goodsList from '../storeDetail/goodsList'
 				seller_cat: [],
 				seller_id: '',
 				goods: {}, 
-				shop_header: "",
+				shop_header: {},
 				params: {
 					seller_id: "",
 					min_price: "",
@@ -43,13 +43,15 @@ import goodsList from '../storeDetail/goodsList'
 		},
 		methods:{
 			commonAPI(){
-				getSellerInfo(this.params).then(res=>{
+				let _this = this ; 
+				let params = _this.params ;
+				getSellerInfo(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
 						this.goods = content.goods ;
-						if (!this.shop_header&!this.seller_cat.length) {
+						if (!this.shop_header&&!this.seller_cat.length) {
 							this.shop_header = content.seller ;
 							let arr = content.seller_cat ;
 							for(let i = 0 ;i<arr.length;i++){

@@ -29,30 +29,67 @@
 							</div>
 						</div>
 					</dt>
-					<dd><a href="grandCeremony.html">世尊印</a></dd>
+					<dd><a href="index.html">返回首页</a></dd>
 				</dl>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
+import {getRequest,errorInfo} from '../../common/js/common'
 import {getCategory} from '../../common/js/api'
+import guessLike from '../Common/guessLike'
   export default {
-     data(){
+    data(){
      	return{
      		listBol: false,
      		listConBol: false,
+     		listIndex: "",
      		category: [{name:''}],
      		fIndex: 0,
 			sIndex: 0,
      	}
-     },
-     mounted(){
+    },
+    components:{
+     	guessLike
+    },
+    methods:{
+    	checkGoods(index,name){
+     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
+     	},
+    	initLevel(cat){
+    		let _this = this ;
+    		let category = _this.category ;
+    		let catArr = cat.split(',');
+    		let len = catArr.length;
+    		let level = new  Array ;
+    		let fObj =  category[catArr[0]] ;
+			level.push(fObj) ;
+    		if (len>=2) {
+    			let  sObj = category[catArr[0]].child_category[catArr[1]] ;
+    			level.push(sObj);
+    			if (len===3) {
+    				let tObj = category[catArr[0]].child_category[catArr[1]].child_category[catArr[2]] ;
+    				level.push(tObj); 
+    			}
+    		}
+    		_this.$emit('sendLevel',level); 
+			
+		}, 
+    },
+    mounted(){
      	this.$nextTick(()=>{
 			getCategory().then(res=>{
-				let {errcode,content} = res ;
-				if (errcode === 0 ) {
+				let {errcode,message,content} = res ;
+				if (errcode !== 0 ) {
+					errorInfo(errcode,message) ;
+				}else{
 					this.category = content;
+				    let reqParams = getRequest();
+					let cat = reqParams.cat ;
+					if (cat) {
+						this.initLevel(cat) ;
+					}
 				}
 			})
      	})
@@ -137,6 +174,7 @@ $border_color: #ccc;
 										display: inline-block;
 										width: 72px;
 										text-align-last: justify;
+										cursor: pointer;
 									}
 									em{
 										margin-left: 6px;
@@ -152,6 +190,7 @@ $border_color: #ccc;
 										float: left;
 										margin-right: 16px;
 										margin-bottom: 20px;
+										cursor: pointer;
 									}
 								}
 							}

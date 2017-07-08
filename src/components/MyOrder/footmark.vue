@@ -18,13 +18,13 @@
 					<dd></dd>
 				</dl>
 				<ul>
-					<li v-for="(item,index) in dayItem"m :class='{"isNoTop":index>4}'>
+					<li v-for="(item,index) in dayItem" :class='{"isNoTop":index>4}'>
 						<dl>
 							<dt>
-								<img :src="item.cover">
+								<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 							</dt>
 							<dd>
-								<span>{{item.sale_count|currency}}</span>
+								<span>{{item.sale_count.toFixed(2)|currency}}</span>
 								<!-- <em>{{198.00|currency}}</em> -->
 							</dd>
 						</dl>
@@ -56,6 +56,9 @@ import pagination from '../Common/pagination'
 			pagination
 		},
 		methods:{
+			goodDetail(id){
+				location.href = `goodDetail.html?goods_id=${id}`  ;
+			},
 			deleteFoots(id){
 				MessageBox.confirm('此操作将永久删除该记录, 是否继续?', '提示', {
 		          confirmButtonText: '确定',
@@ -217,6 +220,7 @@ $text_color: #666;
 								img{
 									width: 100%;
 									height: 100%;
+									cursor: pointer;
 								}
 							}
 							dd{

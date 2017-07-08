@@ -61,7 +61,7 @@ import pagination from '../Common/pagination'
 		      	 location.hash = view ;
 		    },
 		    checkDetail(order_sn){
-		    	window.open(`orderDetail.html#?order_sn=${order_sn}`) ; 
+		    	location.href = `orderDetail.html#?order_sn=${order_sn}` ; 
 		    },
 		    // 改变页数
 			changePage(page){

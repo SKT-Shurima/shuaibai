@@ -55,7 +55,7 @@ import guessLike from '../Common/guessLike'
     },
     methods:{
     	checkGoods(index,name){
-     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`) ;
+     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
      	},
     	initLevel(cat){
     		let _this = this ;

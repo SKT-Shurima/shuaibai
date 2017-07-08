@@ -95,7 +95,7 @@
 	</div>
 </template>
 <script>
-import {num_filter,currency} from '../../common/js/filter'
+import {num_filter} from '../../common/js/filter'
 	export default{
 		data(){
 			return {
@@ -116,15 +116,14 @@ import {num_filter,currency} from '../../common/js/filter'
 			}
 		},
 		filters:{
-			num_filter,
-			currency
+			num_filter
 		},
 		methods: {
 			afterSale(){
-				window.open(`myOrder.html#view01`);
+				location.href = `myOrder.html#view01`;
 			},
 			checkOrder(index){
-				window.open(`myOrder.html#view0?orderIndex=${index}`);
+				location.href = `myOrder.html#view0?orderIndex=${index}`;
 			}
 		},
 		created(){

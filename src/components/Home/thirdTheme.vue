@@ -20,7 +20,7 @@
 						<dd>
 							<div class="show_info" v-text='theme.goods.goods[1].name' style="min-height: 58px;"></div>
 							<div class="sell_info">
-								<span>{{theme.goods.goods[1].shop_price|currency}}</span><em>{{theme.goods.goods[1].sale_count}}人付款</em>
+								<span>{{theme.goods.goods[1].shop_price.toFixed(2)|currency}}</span><em>{{theme.goods.goods[1].sale_count}}人付款</em>
 							</div>
 						</dd>
 					</dl>
@@ -36,7 +36,7 @@
 						<dd>
 							<div class="show_info" v-text='item.name'></div>
 							<div class="sell_info">
-								<span>{{item.shop_price|currency}}</span><em>{{item.sale_count}}人付款</em>
+								<span>{{item.shop_price.toFixed(2)|currency}}</span><em>{{item.sale_count}}人付款</em>
 							</div>
 						</dd>
 					</dl>
@@ -65,7 +65,7 @@ import {currency} from '../../common/js/filter'
 		},
 		methods: {
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`)
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			}
 		}
 	}

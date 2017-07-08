@@ -32,7 +32,7 @@
 				 		<div v-for='(item,index) in shopItem.goods' :key='item' class="goodsList">
 					 		<dl class="goodsMsg">
 								<dt>
-									<img :src="item.cover">
+									<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 								</dt>
 								<dd>
 									<div class="goodsName" v-text='item.name'></div>
@@ -46,7 +46,7 @@
 									{{299.00|currency}}
 								</dt> -->
 								<dd>
-									{{item.price|currency}}
+									{{item.price.toFixed(2)|currency}}
 								</dd>
 							</div>
 							<div class="goodsPrice" v-text='item.quantity'></div>
@@ -59,9 +59,9 @@
 					<div class="goodsInfo" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":shopItem.goods.length>1}'>
 						<el-row>
 							<el-col :span='8'>
-								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount|currency}}</div>
-								<div style="color:#666;line-height:20px;">含运费:{{shopItem.express_amount|currency}}</div>
-								<div style='color:#666;line-height:20px;'>优惠券:{{shopItem.goods_count|currency}}</div>
+								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount.toFixed(2)|currency}}</div>
+								<div style="color:#666;line-height:20px;">含运费:{{shopItem.express_amount.toFixed(2)|currency}}</div>
+								<div style='color:#666;line-height:20px;'>优惠券:{{shopItem.goods_count.toFixed(2)|currency}}</div>
 							</el-col>
 							<el-col :span='8' style='line-height:20px;padding-top: 14px;'>
 								<div>
@@ -102,6 +102,9 @@ import pagination from '../Common/pagination'
 			pagination
 		},
 	    methods: {
+	    	goodDetail(id){
+				location.href = `goodDetail.html?goods_id=${id}`  ;
+			},
 	        handleSelect(key, keyPath) {
 	            console.log(key, keyPath);
 	        },
@@ -123,9 +126,9 @@ import pagination from '../Common/pagination'
 	   	 	// 查看售后详情
 	   	 	checkRefund(refund_sn,type){
 	   	 		if (type==="1") {
-	   	 			window.open(`moneyReturn.html#seller?refund_sn=${refund_sn}`);
+	   	 			location.href = `moneyReturn.html#seller?refund_sn=${refund_sn}`;
 	   	 		}else {
-	   	 			window.open(`goodsReturn.html#seller?refund_sn=${refund_sn}`);
+	   	 			location.href = `goodsReturn.html#seller?refund_sn=${refund_sn}`;
 	   	 		}
 	   	 		
 	   	 	},
@@ -216,6 +219,7 @@ import pagination from '../Common/pagination'
 									img{
 										width: 100%;
 										height: 100%;
+										cursor: pointer;
 									}
 								}
 								dd{

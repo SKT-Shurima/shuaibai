@@ -31,7 +31,6 @@
 </template>
 <script>
 import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
-import {currency} from '../../common/js/filter'
 import {refund} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 export default {
@@ -68,9 +67,6 @@ export default {
 				}
 			}
 		}
-	},
-	filters: {
-		currency
 	},
 	methods:{
 		submitForm(formName) {

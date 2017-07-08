@@ -6,6 +6,7 @@
 				<a href="integral.html">积分半价</a>
 				<a href="shoppingCoin.html">购物币专区</a>
 				<a href="cities.html">百城万店</a>
+				<a href="grandCeremony.html">世尊印</a>
 			</nav>
 		</div>
 		<div class="con_wrap">
@@ -42,13 +43,13 @@
 				    </el-carousel>
 				</dt>
 				<dd>
-					<div class="left_btn">
+					<div class="left_btn" @click='prev(0)'>
 						<i class="el-icon-arrow-left"></i>
 					</div>   
-					<div class="cont">
+					<div class="cont" :style='{width:212.5*banners.length+"px",left: -212.5*sliderIndex+"px"}'>
 						<img :src="item.image" alt="" v-for='item in banners' :key='item' @click='goodDetail(item)'>
 					</div>
-					<div class="right_btn" >
+					<div class="right_btn" @click='prev(1)'>
 						<i class="el-icon-arrow-right"></i>
 					</div>
 				</dd>
@@ -77,7 +78,8 @@ import recharge from './recharge'
 			    category: [{name:''}],
 			    fIndex: 0,
         	    youLike: null,
-        	    reqParams: {result:null}
+        	    reqParams: {result:null},
+        	    sliderIndex: 0
 			}
 		},
 		
@@ -85,12 +87,20 @@ import recharge from './recharge'
 			recharge,userInfo,guessLike 
 		},
 		methods:{
+			prev(mask){
+				let len = this.banners.length ;
+				if (mask) {
+					this.sliderIndex = this.sliderIndex>0?--this.sliderIndex:0;
+				}else{
+					this.sliderIndex = this.sliderIndex<(len-4)?++this.sliderIndex:(len-4);
+				}
+			},
 			goodDetail(item){
 				let id = item.action.params[1].value;
 				location.href = `detail.html?goods_id=${id}`;
 			},
 			checkGoods(index,name){
-	     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`)
+	     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
 	     	},
 			homePage(){
 				let params = {
@@ -135,11 +145,11 @@ import recharge from './recharge'
 				this.reqParams = getRequest();
 				let  result = this.reqParams.result ;
 				let  access_token = this.reqParams.access_token ;
+				let hasCookie = getCookie('access_token');
 				if (access_token) {
 					delCookie('access_token');
 					setCookie('access_token',access_token,30);
 				}
-				let hasCookie = getCookie('access_token');
 				if (hasCookie) {
 					delCookie('access_token');
 					setCookie('access_token',hasCookie,30);
@@ -157,11 +167,12 @@ import recharge from './recharge'
 							// }
 							let userInfo = content ;
 							localStorage.userInfo = JSON.stringify(userInfo);
+							if (hasCookie!==access_token) {
+								window.reload();
+							}
 						}
 					})
 				}
-				
-				
 				if (result==='false') {
 					let wx_web_openid = this.reqParams.wx_web_openid ;
 					let wx_unionid = this.reqParams.wx_unionid ;
@@ -313,9 +324,11 @@ $text_color: #666;
 						overflow: hidden;
 						position: relative;
 						.cont{
-							width: 100%;
+							position: absolute;
+							height: 110px;
+							transition: all .5s;
 							img{
-								width: 25%;
+								width: 212.5px;
 								height: 110px;
 								float: left;
 							}
@@ -333,6 +346,7 @@ $text_color: #666;
 							margin-top: auto;
 							margin-bottom: auto;
 							z-index: 10;
+							cursor: pointer;
 							i{
 								font-size: 24px;
 								line-height: 56px;

@@ -28,7 +28,7 @@ import {getHashReq} from '../../common/js/common'
 		},
 		methods:{
 			checkOrder(){
-				window.open("myOrder.html#view10");
+				location.href = "myOrder.html#view10" ;
 			},
 			backHome(){
 				location.href = 'index.html'

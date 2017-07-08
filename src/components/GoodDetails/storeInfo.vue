@@ -14,15 +14,15 @@
 			<div class="eval">
 				<dl>
 					<dt>商品</dt>
-					<dd>{{goods.comment.goods_comment}}</dd>
+					<dd>{{goods.comment.goods_comment.toFixed(2)}}</dd>
 				</dl>
 				<dl>
 					<dt>服务</dt>
-					<dd>{{goods.comment.service_comment}}</dd>
+					<dd>{{goods.comment.service_comment.toFixed(2)}}</dd>
 				</dl>
 				<dl>
 					<dt>物流</dt>
-					<dd>{{goods.comment.logistics_comment}}</dd>
+					<dd>{{goods.comment.logistics_comment.toFixed(2)}}</dd>
 				</dl>
 			</div>
 			<dl class="online">

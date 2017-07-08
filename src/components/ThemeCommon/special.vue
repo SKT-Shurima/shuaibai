@@ -17,7 +17,7 @@
 		},
 		methods:{
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`) ;
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			}
 		}
 	}

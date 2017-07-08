@@ -17,7 +17,7 @@
 						</div>
 						<div class="priceInfo">
 							<span>
-								{{item.shop_price|currency}}
+								{{item.shop_price.toFixed(2)|currency}}
 							</span>
 							<em>
 								{{item.sale_count}}人付款
@@ -51,7 +51,7 @@ import {currency} from '../../common/js/filter'
 		},
 		methods:{
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`) ;
+				location.href = `goodDetail.html?goods_id=${id}`  ;
 			},
 			init(){
 				let params ={

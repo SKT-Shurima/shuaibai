@@ -30,7 +30,7 @@
 	</div>
 </template>
 <script >
-import {currency,dateStylePoint} from '../../common/js/filter'
+import {dateStylePoint} from '../../common/js/filter'
 import {getCoupons} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 	export default{
@@ -40,7 +40,6 @@ import {errorInfo,getCookie} from '../../common/js/common'
 			}
 		},
 		filters:{
-			currency,
 			dateStylePoint
 		},
 		mounted(){

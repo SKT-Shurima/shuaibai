@@ -251,7 +251,7 @@ import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 	   	 	evaluate(){
 	   	 		let _this = this ;
 	   	 		let order_sn = _this.reqParams.order_sn ;
-	   	 		window.open(`eval.html?order_sn=${order_sn}`);
+	   	 		location.href = `eval.html?order_sn=${order_sn}` ;
 	   	 	}
 	   }
 	}

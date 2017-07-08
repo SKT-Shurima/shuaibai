@@ -11,7 +11,7 @@
 		</el-row>
 		<el-row>
 			<el-col :span='19' :offset='5' style='color:#666;'>
-				当前可提现金额{{userInfo.account|currency}}
+				当前可提现金额{{userInfo.account.toFixed(2)|currency}}
 			</el-col>
 		</el-row>
 		<el-row>

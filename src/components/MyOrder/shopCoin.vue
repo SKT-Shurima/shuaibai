@@ -27,7 +27,7 @@
 	</div>
 </template>
 <script>
-import {currency,dateStyle} from '../../common/js/filter'
+import {dateStyle} from '../../common/js/filter'
 import {shoppingCoin,shoppingCoinDetail} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
   export default {
@@ -40,7 +40,6 @@ import {errorInfo,getCookie} from '../../common/js/common'
       };
     },
     filters:{
-    	currency,
     	dateStyle
     },
     methods: {

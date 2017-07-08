@@ -18,7 +18,7 @@
 						</div>
 						<div class="priceInfo" >
 							<span>
-								{{item.price|currency}}
+								{{item.price.toFixed(2)|currency}}
 							</span>
 							<em>
 								{{item.sale_count}}人付款

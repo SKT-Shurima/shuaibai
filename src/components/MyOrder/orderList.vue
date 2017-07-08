@@ -47,7 +47,7 @@
 									{{299.00|currency}}
 								</dt> -->
 								<dd>
-									{{item.price|currency}}
+									{{item.price.toFixed(2)|currency}}
 								</dd>
 							</div>
 							<div class="goodsPrice" v-text='item.quantity'></div>
@@ -59,9 +59,9 @@
 					<div class="goodsInfo" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":shopItem.goods.length>1}'>
 						<el-row>
 							<el-col :span='8'>
-								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount|currency}}</div>
-								<div style="color:#666;line-height:20px;">含运费:{{shopItem.express_amount|currency}}</div>
-								<div style='color:#666;line-height:20px;'>优惠券:{{shopItem.goods_count|currency}}</div>
+								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount.toFixed(2)|currency}}</div>
+								<div style="color:#666;line-height:20px;">含运费:{{shopItem.express_amount.toFixed(2)|currency}}</div>
+								<div style='color:#666;line-height:20px;'>优惠券:{{shopItem.goods_count.toFixed(2)|currency}}</div>
 							</el-col>
 							<el-col :span='8' style='line-height:20px;padding-top: 4px;'>
 								<!-- 待付款 待发货 待评价 -->
@@ -147,7 +147,7 @@ import pagination from '../Common/pagination'
 		},
 	    methods: {
 	    	goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`) ;
+				location.href = `goodDetail.html?goods_id=${id}`  ;
 			},
 			kf(qq){
 	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
@@ -177,15 +177,15 @@ import pagination from '../Common/pagination'
 	   	 	// 申请售后
 	   	 	applyRefund(order_sn,goods_id,option_id){
 	   	 		option_id = option_id?option_id:"";
-	   	 		window.open(`afterSale.html#applyType?order_sn=${order_sn}&goods_id=${goods_id}&option_id=${option_id}`);
+	   	 		location.href = `afterSale.html#applyType?order_sn=${order_sn}&goods_id=${goods_id}&option_id=${option_id}`;
 	   	 	},
 	   	 	// 查看订单详情  物流信息
 	   	 	checkOrder(order_sn){
-	   	 		window.open(`orderDetail.html#?order_sn=${order_sn}`);
+	   	 		location.href = `orderDetail.html#?order_sn=${order_sn}`;
 	   	 	},
 	   	 	// 立即付款
 	   	 	payFor(order_sn){
-	   	 		window.open(`confirmOrder.html#payfor?order_sn=${order_sn}`)
+	   	 		location.href = `confirmOrder.html#payfor?order_sn=${order_sn}` ;
 	   	 	},
 	   	 	// 提醒发货
 	   	 	remind(order_sn){
@@ -213,11 +213,11 @@ import pagination from '../Common/pagination'
 	   	 	},
 	   	 	// 再次购买
 	   	 	buyAgain(id){
-	   	 		window.open(`goodDetail.html?goods_id=${id}`);
+	   	 		location.href = `goodDetail.html?goods_id=${id}`;
 	   	 	},
 	   	 	// 评价
 	   	 	toEval(order_sn){
-	   	 		window.open(`eval.html?order_sn=${order_sn}`);
+	   	 		location.href = `eval.html?order_sn=${order_sn}`;
 	   	 	},
 	   	 	// 确认收货
 	   	 	confirmGet(order_sn){

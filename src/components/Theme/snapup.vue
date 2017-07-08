@@ -29,17 +29,17 @@
 			 		   	    	<div class="info_text" v-text='item.name'></div>
 			 		   	    	<div class="info_price">
 			 		   	    		<span>
-			 		   	    			{{item.kill_price|currency}}
+			 		   	    			{{item.kill_price.toFixed(2)|currency}}
 			 		   	    		</span>
 			 		   	    		<em style="text-decoration: line-through;">
-			 		   	    			{{item.shop_price|currency}}
+			 		   	    			{{item.shop_price.toFixed(2)|currency}}
 			 		   	    		</em>	
 			 		   	    	</div>
 			 		   	    </dt>
 			 		   	    <dd class="start" v-show='item.date_start*1000 > nowTime'>
 			 		   	    	<div class="info_time">
 			 		   	    		<span>
-			 		   	    			{{item.date_start*1000 - nowTime | countdown}}
+			 		   	    			{{(item.date_start*1000 - nowTime) | countdown}}
 			 		   	    		</span>
 			 		   	    		<em>后开始</em>
 			 		   	    	</div>
@@ -50,7 +50,7 @@
 			 		   	    <dd  class="end" v-show='item.date_start*1000 <= nowTime && item.date_end*1000 >= nowTime'>
 			 		   	    	<div class="info_time">
 			 		   	    		<span>
-			 		   	    			{{item.date_start*1000 - nowTime | countdown}}
+			 		   	    			{{(item.date_end*1000 - nowTime) | countdown}}
 			 		   	    		</span>
 			 		   	    		<em>后结束</em>
 			 		   	    	</div>
@@ -107,7 +107,7 @@ import {MessageBox} from  'element-ui'
 				_this.initList();
 			},
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`) ;
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			},
 			initList(){
 				let _this = this ;

@@ -51,7 +51,6 @@
 	</div>
 </template>
 <script>
-import {currency} from '../../common/js/filter'
 import {express} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 	export default{

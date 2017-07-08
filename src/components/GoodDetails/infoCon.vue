@@ -4,7 +4,8 @@
 		<div class="content" >
 			<dl class="goodsInfo">
 				<dt>
-					<img :src="currentImg">
+					<!-- <img :src="currentImg"> -->
+					<magnifying-glass :currentImg='currentImg'></magnifying-glass>
 				</dt>
 				<dd>
 					<div class="leftBtn" @click='imgListIndex--;'><i class="el-icon-caret-left"></i></div>
@@ -25,8 +26,8 @@
 				<!-- 一元抢购 -->
 				<div class='special' v-if='special' :class='payBol===false&&addBol===true?"start":payBol&&addBol?"end":"over"'>
 					<img src="../../../static/detailImg/snapup.png" height="32" width="109">
-					<span v-show='special.date_start*1000>nowTime'>此商品<i>{{special.date_start*1000-nowTime|countdown}}</i>后开始抢购，请提前加入购物车！</span>
-					<span v-show='special.date_start*1000<=nowTime&&special.date_end*1000>=nowTime'>此商品正在参加抢购，<i>{{special.date_end*1000-nowTime|countdown}}</i>后结束，请尽快购买！</span>
+					<span v-show='special.date_start*1000>nowTime'>此商品<i>{{(special.date_start*1000-nowTime)|countdown}}</i>后开始抢购，请提前加入购物车！</span>
+					<span v-show='special.date_start*1000<=nowTime&&special.date_end*1000>=nowTime'>此商品正在参加抢购，<i>{{(special.date_end*1000-nowTime)|countdown}}</i>后结束，请尽快购买！</span>
 					<span v-show='special.date_end*1000<nowTime'>本次抢购已结束，期待下次！</span>
 				</div>
 				<dl  class="priceInfo">
@@ -36,7 +37,7 @@
 								原价
 							</el-col>
 							<el-col :span='20' style='text-decoration: line-through'>
-								{{goods.market_price |currency}}
+								{{goods.market_price.toFixed(2)|currency}}
 							</el-col>
 						</el-row>
 						<div class="totalEval">
@@ -138,6 +139,7 @@
  	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
  	import {linkage,goodsDetail,addCart,buy} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
+ 	import magnifyingGlass from './magnifyingGlass'
  	import storeInfo from './storeInfo'
  	import vNav from '../StoreCommon/nav'
 	export default{
@@ -175,7 +177,7 @@
 			currency,countdown
 		},
 		components: {
-			vNav,storeInfo
+			vNav,storeInfo,magnifyingGlass
 		},
 		watch: {
 			//  监测当前展示图片
@@ -323,13 +325,19 @@
 					if(errcode!==0) {
 						errorInfo(errcode,message) ;
 					}else{
-						window.open(`confirmOrder.html#submitOrder?id=${content}`);
+						location.href =  `confirmOrder.html#submitOrder?id=${content}` ;
 					}
 			 	})
 			},
 			// 添加购物车
 			addShopCar(){
 				let _this = this ;
+				if (_this.goods.options.length&&!_this.option_id) {
+					MessageBox.alert("请选择商品规格", '提示', {
+			          	confirmButtonText: '确定'
+				    });
+				    return ;
+				}
 				let params = {
 				    access_token: getCookie('access_token'),
 					goods_id: _this.params.goods_id,

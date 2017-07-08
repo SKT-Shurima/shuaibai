@@ -5,10 +5,10 @@
 			<li><div class="title" @click='checkStore'>查看全部分类</div></li>
 			<li><div class="title"  @click='checkStore(true)'>店铺热卖</div></li>
 			<li><div class="title"  @click='checkStore(true)'>掌柜推荐</div></li>
-			<li v-for='(sellerItem,sellerIndex) in sellerCat'><div class="title">
-				{{sellerItem.cat_name}} 
-				<img src="../../../static/detailImg/close.png" height="14" width="14" v-show='sellerItem.bol' @click='sellerItem.bol=!sellerItem.bol'>
-				<img src="../../../static/detailImg/open.png" height="14" width="14" v-show='!sellerItem.bol' @click='sellerItem.bol=!sellerItem.bol'>
+			<li v-for='(sellerItem,sellerIndex) in sellerCat'><div class="title" >
+				<span v-text='sellerItem.cat_name' @click='checkCatId(sellerItem.seller_cat_id)'></span>
+				<img src="../../../static/detailImg/close.png" height="14" width="14" v-show='sellerItem.bol&&sellerItem.child_category' @click='sellerItem.bol=!sellerItem.bol'>
+				<img src="../../../static/detailImg/open.png" height="14" width="14" v-show='!sellerItem.bol&&sellerItem.child_category' @click='sellerItem.bol=!sellerItem.bol'>
 			</div>
 				<ul v-show='sellerItem.bol'>
 					<li v-for='(item,index) in sellerItem.child_category' v-text='item.cat_name' @click='sentCat(sellerIndex,index)' :class='{"active":fIndex===sellerIndex&&sIndex===index}'></li>
@@ -39,8 +39,10 @@ import {getRequest} from '../../common/js/common'
 		watch: {
 			sellerCat:{
 				handler(newVal,oldVal){
+					console.log(newVal,oldVal)
 					let _this = this ;
 					let catIndex  = _this.reqParams.catIndex ;
+					let catId = _this.reqParams.catId ;
 					if (catIndex) {
 						let cat = catIndex.split(',') ;
 						_this.fIndex = cat[0] -0 ;
@@ -48,6 +50,10 @@ import {getRequest} from '../../common/js/common'
 						_this.sellerCat[_this.fIndex].bol = true ;
 						let id = _this.sellerCat[_this.fIndex].child_category[_this.sIndex].seller_cat_id ;
 						_this.$emit('getCat',id) ;
+					}
+					if (catId) {
+						console.log(catId)
+						_this.$emit('getCat',catId) ;
 					}
 				},
 				deep: true
@@ -57,18 +63,23 @@ import {getRequest} from '../../common/js/common'
 			checkStore(mask){
 	     		let id = this.sellerId ;
 	     		if (true) {
-	     			window.open(`storeDetail.html?seller_id=${id}&is_recommend=1`)
+	     			location.href = `storeDetail.html?seller_id=${id}&is_recommend=1` ;
 	     		}else{
-	     			window.open(`storeDetail.html?seller_id=${id}`)
+	     			location.href = `storeDetail.html?seller_id=${id}` ;
 	     		}
 	     		
 	     	},
 			sentCat(sellerIndex,index,id){
 				let _this = this ;
 				let catIndex =  `${sellerIndex},${index}` ;
+				let sellerId = _this.sellerId ;
 				_this.fIndex= sellerIndex;
 				_this.sIndex = index;
-				location.href= `storeDetail.html?seller_id=2&catIndex=${catIndex}`
+				location.href= `storeDetail.html?seller_id=${sellerId}&catIndex=${catIndex}`
+			},
+			checkCatId(catId){
+				let id = this.sellerId ;
+				location.href= `storeDetail.html?seller_id=${id}&catId=${catId}`;
 			}
 		},
 		mounted(){

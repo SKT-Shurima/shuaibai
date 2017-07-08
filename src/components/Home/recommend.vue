@@ -4,18 +4,15 @@
 			<img src="">
 		</div>
 		<div class="theme_box" v-if='theme'>
-			<div class="theme" v-for='item in theme'>
+			<div class="theme" v-for='(item,index) in theme' :class='{"marginLeft":index%2}'>
 				<dl>
 					<dt>
-						<div class="title_box">
-							<div class="slider"></div>
-							<div class="title_text" :style='{background: `url(${item.img})`}'></div>
-							<div class="slider"></div>
+						<div class="title" :style='{background: `url(${item.img})`}'>
 						</div>
 					</dt>
 					<dd>
 						<div class="theme_left">
-							<img :src="item.goods.goods[0].cover" @click='goodsDeatil(item.goods.goods[0].goods_id)'>
+							<img :src="item.goods.goods[0].cover_l" @click='goodsDeatil(item.goods.goods[0].goods_id)'>
 						</div>
 						<ul class="theme_right">
 							<li v-for='(childItem,index) in item.goods.goods' v-if='index!==0' @click='goodsDeatil(childItem.goods_id)'>
@@ -38,7 +35,7 @@
 		},
 		methods:{
 			goodsDeatil(id){
-				window.open(`goodDetail.html?goods_id=${id}`);
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			}
 		},
 		mounted(){
@@ -67,6 +64,9 @@ $border_list: #f0f0f0;
         }
         .theme_box{
         	overflow: hidden;
+        	.marginLeft{
+				margin-left: 26px;
+			}
         	.theme{
 				width: 612px;
 				overflow: hidden;
@@ -76,29 +76,11 @@ $border_list: #f0f0f0;
         			width: 100%;
         			height: 40px;
         			border-radius: 20px;
-        			.title_box{
-	    				width: 342px;
+        			.title{
+	    				width: 100%;
 	    				height: 40px;
-	    				margin: 0px auto;
-	    				overflow: hidden;
-	    				.slider{
-	    					width: 100px;
-	    					height: 1px;
-	    					margin-top: 18px;
-	    					background-color: #fff;
-	    					float: left;
-	    				}
-	    				.title_text{
-	    					width: 142px;
-	    					float: left;
-	    					font-size: 16px;
-	    					text-align: center;
-	    					color: #fff;
-	    					line-height: 40px;
-	    					padding-left: 20px;
-	    					padding-right: 20px;
-	    				}
         			}
+        			
         		}
         		dd{
         			overflow: hidden;

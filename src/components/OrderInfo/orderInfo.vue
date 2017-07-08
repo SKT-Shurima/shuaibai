@@ -77,8 +77,8 @@
 							</div>
 							<div class="payCol">
 								<dl>
-									<dt>{{item.price*item.quantity|currency}}</dt>
-									<dd>含运费：{{order.express_amount|currency}}</dd>
+									<dt>{{(item.price*item.quantity).toFixed(2)|currency}}</dt>
+									<dd>含运费：{{order.express_amount.toFixed(2)|currency}}</dd>
 								</dl>
 							</div>
 					    </div>

@@ -2,7 +2,9 @@
 	<div class="head_con_wrap">
 		<div class="head_con_box">
 			<div class="logo">
-				<img src="../../../static/headImg/logo.png" height="39" width="269">
+				<a href="index.html">
+					<img src="../../../static/headImg/logo.png" height="39" width="269">
+				</a>
 			</div>
 			<div class="search_box">
 				<div class="search_form">
@@ -12,7 +14,7 @@
                     </form>
 				</div>
 				<ul class="hot_words">
-					<li v-for='item in keyWordsArr'  :key='item' v-text='item.keyword'></li>
+					<li v-for='item in keyWordsArr'  :key='item' v-text='item.keyword' @click='relatedGoods(item.keyword)'></li>
 				</ul>
 			</div>
 			 <div class="shopping_cart" @mouseenter='cartBol=true' @mouseleave='cartBol=false'>
@@ -32,7 +34,7 @@
 									<dd>
 										<div class="show_info" v-text='item.name'></div>
 										<div class="sell_info">
-											<span>{{item.shop_price|currency}}*{{item.quantity}}</span><em @click="remove(item.cart_id)">删除</em>
+											<span>{{item.shop_price.toFixed(2)|currency}}*{{item.quantity}}</span><em @click="remove(item.cart_id)">删除</em>
 										</div>
 									</dd>
 								</dl>
@@ -40,7 +42,7 @@
 						</ul>
 						<dl class="checkCcart">
 							<dt>
-								共{{userInfo.cart_num}}件商品&nbsp;共计{{totalPrice|currency}}
+								共{{userInfo.cart_num}}件商品&nbsp;共计{{totalPrice.toFixed(2)|currency}}
 							</dt>
 							<dd>
 								<el-button size='mini' type='primary'>
@@ -81,6 +83,9 @@
 			currency
 		},
 		methods:{
+			relatedGoods(keyword){
+				location.href = `relatedGoods.html?keyword=${keyword}`; 
+			},
 			keyWords(){
 				getKeyWord().then(res=>{
 					let {errcode,message,content} = res ;

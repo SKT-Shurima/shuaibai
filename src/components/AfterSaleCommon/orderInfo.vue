@@ -20,11 +20,11 @@
 					<li>
 						<el-row>
 							<el-col :span='8'>单价：</el-col>
-							<el-col :span='16'>{{refundInfo.price|currency}} × {{refundInfo.quantity}}</el-col>
+							<el-col :span='16'>{{refundInfo.price.toFixed(2)|currency}} × {{refundInfo.quantity}}</el-col>
 						</el-row>
 						<el-row>
 							<el-col :span='8'>小计：</el-col>
-							<el-col :span='16'><strong>{{refundInfo.price*refundInfo.quantity|currency}}</strong></el-col>
+							<el-col :span='16'><strong>{{(refundInfo.price*refundInfo.quantity).toFixed(2)|currency}}</strong></el-col>
 						</el-row>
 					</li>
 				</ul>
@@ -39,19 +39,19 @@
 				<li>
 					<el-row>
 						<el-col :span='8'>运费：</el-col>
-						<el-col :span='16'>{{refundInfo.express_amount|currency}}</el-col>
+						<el-col :span='16'>{{refundInfo.express_amount.toFixed(2)|currency}}</el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>总优惠：</el-col>
-						<el-col :span='16'>-{{refundInfo.coupon_amount|currency}}</el-col>
+						<el-col :span='16'>-{{refundInfo.coupon_amount.toFixed(2)|currency}}</el-col>
 					</el-row>
 				</li>
 				<li>
 					<el-row>
 						<el-col :span='8'>合计：</el-col>
-						<el-col :span='16'><strong>{{refundInfo.price*refundInfo.quantity|currency}}</strong></el-col>
+						<el-col :span='16'><strong>{{refundInfo.order_amount.toFixed(2)|currency}}</strong></el-col>
 					</el-row>
 				</li>
 				<li>
@@ -151,6 +151,7 @@ $text_color: #666;
 			}
 			.el-col-16{
 				overflow: hidden;
+				white-space: nowrap;
     			text-overflow: ellipsis;
 				strong{
 					font-size: 14px;

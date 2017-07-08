@@ -31,7 +31,7 @@
 									 	</div>
 									</div>
 									<div class="originPrice">
-										<div style="text-decoration: line-through;">{{item.shop_price|currency}}</div>
+										<div style="text-decoration: line-through;">{{item.shop_price.toFixed(2)|currency}}</div>
 										<div>积分半价优惠</div>
 									</div>
 									<div class="begin" @click='goodDetail(item.goods_id)'>
@@ -72,10 +72,10 @@ import pagination from '../../components/Common/pagination'
 		},
 		methods: {
 			storeDetail(id){
-				window.open(`storeDetail.html?seller_id=${id}`) ;
+				location.href = `storeDetail.html?seller_id=${id}` ;
 			},
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id=${id}`) ;
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			},
 			// 改变页数
 			changePage(page){

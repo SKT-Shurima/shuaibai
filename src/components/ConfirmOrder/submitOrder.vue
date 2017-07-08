@@ -73,7 +73,7 @@
 							</dl> -->
 							<dl class="vMiddle" v-show='true' style="height: 20px;">
 								<dd>
-									{{(item.price-0)|currency}}
+									{{item.price.toFixed(2)|currency}}
 								</dd>
 							</dl>
 						</div>
@@ -85,7 +85,7 @@
 							</div>
 						</div>
 						<div class="totalCol totalAmount">
-							{{(item.quantity-0)*(item.price-0)|currency}}
+							{{(item.quantity*item.price).toFixed(2)|currency}}
 						</div>
 				    </div>
 				</li>
@@ -110,7 +110,7 @@
 							运费
 						</el-col>
 						<el-col :span='5'>
-							{{shopItem.express_fee|currency}}
+							{{shopItem.express_fee.toFixed(2)|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
@@ -292,7 +292,7 @@ import {MessageBox} from  'element-ui'
 		    		shopArr[i].remark = "" ;
 		    		let  obj = {
 		    			check: false,
-		    			radio: "1"
+		    			radio: "0"
 		    		}
 		    		arr.push(obj);
 		    	}

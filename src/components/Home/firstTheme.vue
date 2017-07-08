@@ -1,24 +1,25 @@
 <template>
 	<div class="theme">
-		<el-row v-if='theme.goods'>
+		<el-row v-if='showBol'>
 			<el-col :span='12' class='snapup_left'>
 				<dl>
 					<dt style="width:270px;height:270px;">
 						<img :src="theme.goods.goods[0].cover" width="100%" height="100%">
 					</dt>
 					<dd>
-						<div class="show_info" v-text='theme.goods.goods[0].name' style='margin-top:8px;'></div>
+						<div class="show_info" style='margin-top:8px;' v-text='theme.goods.goods[0].name'
+						></div>
 	 					<div class="sell_info">
 	 						<span>￥1.00</span>
-	 						<em>{{theme[0].goods.goods[0].shop_price|currency}}</em>
+	 						<em>{{theme.goods.goods[0].shop_price.toFixed(2)|currency}}</em>
 	 					</div>
 	 					<div class="snapup_btn_box" :class='theme.goods.goods[0].date_start*1000-nowTime >= 0?"start":theme.goods.goods[0].date_end*1000-nowTime >= 0?"end":"over"'>
 	 						<div class="snapup_time" v-if='theme.goods.goods[0].date_start*1000-nowTime>=0'>
-	 							<span>{{theme.goods.goods[0].date_start*1000-nowTime|timeStyle}}</span>
+	 							<span>{{theme.goods.goods[0].date_start*1000-nowTime|timeStyles}}</span>
 	 							<em>后开始</em>
 	 						</div>
 	 						<div class="snapup_time" v-else-if='theme.goods.goods[0].date_end*1000-nowTime>= 0'>
-	 							<span>{{theme.goods.goods[0].date_end*1000-nowTime|timeStyle}}</span>
+	 							<span>{{theme.goods.goods[0].date_end*1000-nowTime|timeStyles}}</span>
 	 							<em>后结束</em>
 	 						</div>
 	 						<div class="snapup_time" v-else>
@@ -33,83 +34,90 @@
 			</el-col>
 			<el-col :span='12' class='snapup_right'>
 			<!-- 主题 一元抢购 -->
-			<ul>
-				<li v-for='item in 3'>
-					<dl class="goods_info">
-						<dt>
-							<img :src="theme.goods.goods[1].cover">
-						</dt>
-						<dd>
-							<div class="show_info" v-text='theme.goods.goods[1].name'></div>
-							<div class="sell_info">
-							<span>￥1.00</span>
-							</div>
-							<div class="goods_preprice">{{theme[0].goods.goods[1].shop_price|currency}}</div>
-						</dd>
-					</dl>
-					<dl class="start" v-if='theme.goods.goods[0].date_start*1000-nowTime>=0'>
-						<dt>
-							<span>
-							{{theme.goods.goods[1].date_start*1000-nowTime|timeStyle}}
-							</span>
-							<em>
-								后开始
-							</em>
-						</dt>
-						<dd>
-							立即前往
-						</dd>
-					</dl>
-					<dl class="end" v-else-if='theme.goods.goods[0].date_end*1000-nowTime>=0'>
-						<dt>
-							<span>
-							{{theme.goods.goods[0].date_end*1000-nowTime|timeStyle}}
-							</span>
-							<em>
-								后结束
-							</em>
-						</dt>
-						<dd>
-							立即抢购
-						</dd>
-					</dl>
-					<dl class="over" v-else>
-						<dt>
-							<span>
-							   已结束
-							</span>
-						</dt>
-						<dd disabled>
-							立即抢购
-						</dd>
-					</dl>
-				</li>
-			</ul>
+				<ul>
+					<li v-for='(item,index) in theme.goods.goods' v-if='index!==0'>
+						<dl class="goods_info">
+							<dt>
+								<img :src="theme.goods.goods[index].cover">
+							</dt>
+							<dd>
+								<div class="show_info" v-text='theme.goods.goods[index].name'></div>
+								<div class="sell_info">
+								<span>￥1.00</span>
+								</div>
+								<div class="goods_preprice">{{theme.goods.goods[index].shop_price.toFixed(2)|currency}}</div>
+							</dd>
+						</dl>
+						<dl class="start" v-if='theme.goods.goods[index].date_start*1000-nowTime>=0'>
+							<dt>
+								<span>
+								{{theme.goods.goods[index].date_start*1000-nowTime|timeStyles}}
+								</span>
+								<em>
+									后开始
+								</em>
+							</dt>
+							<dd>
+								立即前往
+							</dd>
+						</dl>
+						<dl class="end" v-else-if='theme.goods.goods[index].date_end*1000-nowTime>=0'>
+							<dt>
+								<span>
+								{{theme.goods.goods[index].date_end*1000-nowTime|timeStyles}}
+								</span>
+								<em>
+									后结束
+								</em>
+							</dt>
+							<dd>
+								立即抢购
+							</dd>
+						</dl>
+						<dl class="over" v-else>
+							<dt>
+								<span>
+								   已结束
+								</span>
+							</dt>
+							<dd disabled>
+								立即抢购
+							</dd>
+						</dl>
+					</li>
+				</ul>
 			</el-col>
 		</el-row>
 	</div>
 </template>
 <script>
+	import {timeStyles,currency} from '../../common/js/filter'
 	export default{
 		data(){
 			return {
-				nowTime: 0
+				nowTime: 0,
+				showBol: false
 			}
 		},
 		props:{
 			theme: {
 				type: Object,
-				required: true ,
-				default(){
-					return {
-						goods: null
-					}
+				required: true 
+			}
+		},
+		watch:{
+			theme: {
+				handler(newVal,oldVal){
+					this.showBol = true; 
 				}
 			}
 		},
+		filters: {
+			currency,timeStyles
+		},
 		methods:{
 			goodDetail(id){
-				window.open(`goodDetail.html?goods_id='${id}`)
+				location.href = `goodDetail.html?goods_id='${id}` ;
 			},
 			init(){
 				setInterval(()=>{
@@ -130,6 +138,7 @@ $start_bg: #00bf8b;
 $end_bg: #f13f4c;
 $over_bg: #aaa;
 $btn_bg: #fff882;
+$text_color: #666;
 $border_list: #f0f0f0;
 	.theme{
 		.start{
@@ -141,12 +150,19 @@ $border_list: #f0f0f0;
 		.over{
 			background-color: $over_bg;
 		}
+		.show_info{
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+		  	-webkit-line-clamp: 2;
+	  	 	-webkit-box-orient: vertical;
+		}
 		.el-row{
 			width: 100%;
 			height: 498px;
 			margin-top: 10px;
 			.snapup_left{
-				padding: 20px;
+				padding: 18px;
 				height: 498px;
 				border-left: 1px solid $border_list;
 				border-top: 1px solid $border_list;
@@ -162,12 +178,30 @@ $border_list: #f0f0f0;
 						}
 					}
 					dd{
+						.show_info{
+							height: 36px;
+							line-height: 18px;
+						}
+						.sell_info{
+							overflow: hidden;
+							margin: 14px 0px;
+							span{
+								float: left;
+								font-size: 18px;
+								color: $primary;
+							}
+							em{
+								float: right;
+								font-size: 14px;
+								text-decoration: line-through;
+								color: $text_color;
+							}
+						}
 	  					.snapup_btn_box{
 	  						width: 100%;
 	  						height: 100px;
 	  						border-radius: 4px;
 	  						padding: 10px;
-	  						margin-top: 16px;
 	  		 				.snapup_time{
 	  							height: 42px;
 	  							padding-top: 8px;
@@ -213,6 +247,38 @@ $border_list: #f0f0f0;
 						padding: 10px;
 						border-bottom: 1px solid $border_list;
 						height: 166px;
+						.goods_info{
+							overflow: hidden;
+							margin-bottom: 12px;
+							dt{
+								float: left;
+								width: 90px;
+								height: 90px;
+								img{
+									width: 100%;
+									height: 100%;
+								}
+							}
+							dd{
+								float: left;
+								margin-left: 10px;
+								.show_info{
+									width: 100%;
+									height: 36px;
+									line-height: 18px;
+								}
+								.sell_info{
+									margin: 4px 0px;
+									font-size: 18px;
+									color: $primary;
+								}
+								.goods_preprice{
+									font-size: 14px;
+									color: $text_color;
+									text-decoration: line-through;
+								}
+							}
+						}
 						.start,.end{
 							width: 100%;
 							height: 40px;

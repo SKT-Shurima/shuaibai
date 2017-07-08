@@ -1,5 +1,5 @@
 <template>
-	<div class="wrap">
+	<div class="wrap" v-show='bol'>
 		<div class="box">
 			<h2>注册协议</h2>
 			<p><strong>【审慎阅读】</strong>您在申请注册流程中点击同意前，应当认真阅读以下协议。<strong style="text-decoration: underline;">请您务必审慎阅读、充分理解协议中相关条款内容，其中包括：</strong></p>
@@ -14,11 +14,20 @@
 			<p><a href="">《帅柏商城服务协议》</a></p>
 			<p><a href="">《法律声明及隐私政策》</a></p>
 			<div style="width：100%;text-align: center;">
-				<el-button type='primary' style='width: 300px;'>同意协议</el-button>
+				<el-button type='primary' style='width: 300px;' @click='bol=false'>同意协议</el-button>
 			</div>
 		</div>
 	</div>	
 </template>
+<script >
+	export default {
+		data(){
+			return {
+				bol: true
+			}
+		}
+	}
+</script>
 <style lang='scss' scoped>
 $red_color: #f24450;
 	.wrap{

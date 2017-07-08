@@ -177,7 +177,7 @@
 	</div>
 </template>
 <script>
-	import {currency,dateStyleCh,timeStyle} from '../../common/js/filter'
+	import {dateStyleCh,timeStyle} from '../../common/js/filter'
 	import {getRecommend,getComments,replyContent,usefulComment,getSellerInfo} from '../../common/js/api'
 	import {errorInfo,getCookie} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
@@ -214,7 +214,7 @@
 			}
 		},
 		filters:{
-			currency,dateStyleCh,timeStyle
+			dateStyleCh,timeStyle
 		},
 		components:{
 			youLove,hotSell,coupons,classify,reply,recommend,pagination
