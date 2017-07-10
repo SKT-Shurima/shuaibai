@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" style="width:100%">
     <v-head></v-head>
     <v-content></v-content>
     <v-foot></v-foot>

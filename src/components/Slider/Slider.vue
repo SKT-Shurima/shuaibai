@@ -4,7 +4,8 @@
 			<ul>
 				<li class="avater" style='padding:0px;'>
 					<div style="width: 28px;height: 28px;margin:0px auto;">
-						<img :src="userInfo.avater" style="width:100%;height: 100%;">
+						<img :src="userInfo.avater" style="width:100%;height: 100%;" v-if='userInfo.avater' @click='check("vip0")'>
+						<img src="../../../static/centerImg/avaterDefault.jpg" style="width:100%;height: 100%;" v-else>
 					</div>
 				</li>
 				<li>
@@ -139,6 +140,8 @@
 			height: 100%;
 			color: #fff;
 			text-align: center;
+			position: relative;
+			top: 18%;
 			.singleCol{
 				width: 20px;
 			}
@@ -149,7 +152,7 @@
 				margin-bottom: 12px;
 			}
 			ul{
-				margin:200px 6px 0px;
+				margin:0px 6px ;
 				li{
 					cursor: pointer;
 					padding: 16px 2px;
@@ -157,12 +160,10 @@
 				}
 			}
 			.bakcTop{
-				position: absolute;
-				bottom: 0px;
-				right: 0px;
-				width: 100%;
-				height: 100px;
-				padding-top: 10px;
+				width: 40px;
+				height: 110px;
+				padding: 10px 0px;
+				margin-top: 10px;
 				cursor: pointer;
 				background-color: #c81623;
 			}

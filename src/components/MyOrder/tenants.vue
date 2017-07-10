@@ -134,7 +134,7 @@
 	</div>
 </template>
 <script >
-import {shopJoin,linkage} from '../../common/js/api'
+import {shopJoin,linkage,commission} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 	export default{
@@ -255,6 +255,10 @@ import {MessageBox,Message} from  'element-ui'
 			}
 		},
 		methods:{
+			changeView(view){
+		      	 this.$store.commit('switchView',view);
+		      	 location.hash = view ;
+		    },
 			licenseBeforeUpload(){
 				let _this = this ;
 				let len = _this.$refs.license.uploadFiles.length;
@@ -418,6 +422,25 @@ import {MessageBox,Message} from  'element-ui'
 		created(){
 			this.$nextTick(()=>{
 				this.$emit('hasGuess',false);
+				let params = {
+					access_token: getCookie('access_token')
+				}
+				commission(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						if (content.errcode=== -101) {
+							this.changeView("vip800?status=101");
+						}
+						if (content.errcode=== -102) {
+							this.changeView("vip800?status=102");
+						}
+						if (content.errcode===-103) {
+							this.changeView("vip800?status=103");
+						}
+					}
+				})
 				this.getLinkage('pro');
 			})
 			

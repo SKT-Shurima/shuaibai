@@ -91,10 +91,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 					}
 	   			})
 	   		}	
-	   },	
-		filters:{
-			currency
-		}
+	   }
 	}
 </script>
 <style lang='scss' scoped>

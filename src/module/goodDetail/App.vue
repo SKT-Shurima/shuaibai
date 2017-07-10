@@ -1,7 +1,7 @@
 <template>
-  <div class="wrap">
-    <v-head></v-head>
-    <v-content></v-content>
+  <div class="wrap" style="width:100%">
+    <v-head ref='head'></v-head>
+    <v-content @sendShopCar='getShopCar' @getCol='getColList'></v-content>
     <v-slider></v-slider>
     <v-foot></v-foot>
   </div>
@@ -21,6 +21,16 @@
       vSlider,
       vContent,
       vFoot
+    },
+    methods:{
+      // 获取收藏列表
+      getColList(){
+         this.$refs.head.$refs.headTop.initList() ;
+      },
+      // 获取购物车信息
+      getShopCar(){
+        this.$refs.head.$refs.search.initList() ;
+      }
     }
   }
 </script>

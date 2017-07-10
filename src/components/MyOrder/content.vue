@@ -84,6 +84,9 @@
 	import shopCoin from './shopCoin'
 	import integral from './integral'
 	import tenants from './tenants'
+	import auditStatus from './auditStatus'
+	import commission from './commission'
+	import commissionWithdraw from './commissionWithdraw'
 	import youLike from '../../components/Guess/content'
 
 	//  监测地址栏的变化
@@ -156,7 +159,10 @@
 			"vip71": withdraw,
 			"vip72": shopCoin,
 			"vip73": integral,
-			"vip8": tenants
+			"vip8": tenants,
+			"vip800": auditStatus,
+			"vip80": commission,
+			"vip81": commissionWithdraw
 		},
 	    methods: {
 	    	search(){

@@ -11,8 +11,7 @@
 					<dt @mouseleave='listBol=false;listConBol=false'>
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
-							<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index'
-							@click='checkGoods(index,item.name)'>
+							<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index' :class='{"checkUnit":listIndex===index}' @click='checkGoods(index,item.name)'>
 								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
 								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
 								{{item.name}}
@@ -139,7 +138,7 @@ $border_color: #ccc;
 							font-weight: bolder;
 							cursor: pointer;
 						}
-						li:hover{
+						.checkUnit{
 							background-color: #fff;
 							color: #c81623;
 						}

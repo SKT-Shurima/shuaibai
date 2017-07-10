@@ -1,15 +1,16 @@
 <template>
 	<div class="wrap">
 		<div class="info_box">
-			<dl>
+			<dl @click='personCenter'>
 				<dt>
-					<img :src="userInfo.avater">
+					<img :src="userInfo.avater" v-if='userInfo.avater'>
+					<img src="../../../static/centerImg/avaterDefault.jpg" v-else>
 				</dt>
 				<dd>
 					<span>Hi,您好！{{userInfo.nickname}}</span>
 				</dd>
 			</dl>
-			<div class="btnBox" v-if='!hasUser'>
+			<div class="btnBox" v-if='!userInfo.nickname'>
 				<div>
 					<a href="login.html">
 						<el-button type='text' size='small'>登录</el-button>
@@ -21,30 +22,33 @@
 					</a>
 				</div>
 			</div>
-			<div class="info" v-if='hasUser'>
-				<el-row class='info_money'>
-					<el-col :span='8'>
-						<div class="info_num" v-text='userInfo.account'>
-						</div>
-						<div>
-							余额
-						</div>
-					</el-col>
-					<el-col :span='8'>
-						<div class="info_num" v-text='userInfo.shopping_coin'>
-						</div>
-						<div>
-							购物币
-						</div>
-					</el-col>
-					<el-col :span='8'>
-						<div class="info_num" v-text='userInfo.integration'>
-						</div>
-						<div>
-						    积分
-						</div>
-					</el-col>
-				</el-row>
+			<div class="info" v-if='userInfo.nickname'>
+				<a href="myOrder.html#view10">
+					<el-row class='info_money'>
+						<el-col :span='8'>
+							<div class="info_num" v-text='userInfo.account'>
+
+							</div>
+							<div>
+								余额
+							</div>
+						</el-col>
+						<el-col :span='8'>
+							<div class="info_num" v-text='userInfo.shopping_coin'>
+							</div>
+							<div>
+								购物币
+							</div>
+						</el-col>
+						<el-col :span='8'>
+							<div class="info_num" v-text='userInfo.integration'>
+							</div>
+							<div>
+							    积分
+							</div>
+						</el-col>
+					</el-row>
+				</a>
 				<el-row class='info_order'>
 					<div class="info_title">
 						<span>
@@ -58,19 +62,19 @@
 					<el-row class='order_menu'>
 						<el-col :span='6' >
 						    <span  @click='checkOrder(1)'>待付款</span>
-							<i v-show='order.wait_pay_count-0'>{{order.wait_pay_count | num_filter}}</i>
+							<i v-show='userInfo.order.wait_pay_count-0'>{{userInfo.order.wait_pay_count| num_filter}}</i>
 						</el-col>
 						<el-col :span='6'>
 							<span  @click='checkOrder(2)'>待发货</span>
-							<i v-show='order.wait_delivery_count-0'>{{order.wait_delivery_count | num_filter}}</i>
+							<i v-show='userInfo.order.wait_delivery_count-0'>{{userInfo.order.wait_delivery_count | num_filter}}</i>
 						</el-col>
 						<el-col :span='6'>
 							<span  @click='checkOrder(3)'>待收货</span>
-							<i v-show='order.wait_receive_count-0'>{{order.wait_receive_count | num_filter}}</i>
+							<i v-show='userInfo.order.wait_receive_count-0'>{{userInfo.order.wait_receive_count | num_filter}}</i>
 						</el-col>
 						<el-col :span='6'>
 							<span  @click='checkOrder(4)'>待评价</span>
-							<i v-show='order.wait_comment_count-0'>{{ order.wait_comment_count | num_filter}}</i>
+							<i v-show='userInfo.order.wait_comment_count-0'>{{userInfo.order.wait_comment_count | num_filter}}</i>
 						</el-col>
 					</el-row>
 				</el-row>
@@ -97,44 +101,25 @@
 <script>
 import {num_filter} from '../../common/js/filter'
 	export default{
-		data(){
-			return {
-				userInfo:{
-			   		nickname: '',
-			   		avater:'',
-			   		account: '',
-			   		integration: '',
-			   		shopping_coin: ''
-			    },
-			    order: {
-			   		wait_comment_count: null,
-			   		wait_delivery_count: null,
-					wait_pay_count: null,
-					wait_receive_count: null
-			    },
-			    hasUser: false,
+		props:{
+			userInfo: {
+				type: Object,
+				required: true 
 			}
 		},
 		filters:{
 			num_filter
 		},
 		methods: {
+			personCenter(){
+				location.href = `myOrder.html#vip0` ;
+			},
 			afterSale(){
 				location.href = `myOrder.html#view01`;
 			},
 			checkOrder(index){
 				location.href = `myOrder.html#view0?orderIndex=${index}`;
 			}
-		},
-		created(){
-			if (localStorage.userInfo) {
-				this.hasUser = true;
-				// 读取用户信息
-				this.userInfo = JSON.parse(localStorage.userInfo);
-				// 获取购物信息
-				this.order = this.userInfo.order;
-			}
-			
 		}
 	}
 </script>
@@ -152,6 +137,7 @@ $text_color: #666;
 			height: 130px;
 			padding-top: 22px;
 			padding-bottom: 10px;
+			cursor: pointer;
 			dt{
 				width: 70px;
 				margin: 0px auto;

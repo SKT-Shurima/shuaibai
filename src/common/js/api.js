@@ -79,8 +79,9 @@ export const rechargePay = params =>{
 	return axios.post(`${base}/MobileRechargeAction/pay`,params).then(res=>res.data) ;
 }
 // 每日上新
-export const getNewGoods = () => {
-    return axios.get(`${base}/initAction/getNewGoods`).then(res=> res.data);
+export const getNewGoods = params => {
+	params = trans(params);
+    return axios.get(`${base}/initAction/getNewGoods?${params}`).then(res=> res.data);
 }
 // 分类
 export const getCategory = () => {
@@ -315,7 +316,22 @@ export const withdraw =params =>{
 export const shopJoin = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/shopJoin`,params).then(res=>res.data);
-} 
+}
+// 店铺佣金
+export const commission = params =>{
+	params =  trans(params) ;
+	return axios.post(`${base}/userAction/commission`,params).then(res=>res.data) ;
+}
+// 缴纳保证金
+export const bail = params =>{
+	params = trans(params); 
+	return axios.post(`${base}/userAction/bail`,params).then(res=>res.data);
+}
+// 佣金明细
+export const  commissionDetail = params =>{
+	params =  trans(params);
+	return axios.post(`${base}/userAction/commissionDetail`,params).then(res=>res.data) ;
+}
 
 // 物流消息
 export const getExpressMessages = params =>{
@@ -398,6 +414,11 @@ export const buy_bal = params =>{
 export const getExpressFee = params =>{
 	params = trans(params);
 	return axios.post(`${base}/orderAction/getExpressFee`,params).then(res=>res.data);
+}
+// 获取可用优惠券
+export const orderCoupons = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getCoupons`,params).then(res=>res.data) ; 
 }
 // 确认订单
 export const generate = params =>{

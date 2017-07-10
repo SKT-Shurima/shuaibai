@@ -51,8 +51,10 @@ import goodsList from '../storeDetail/goodsList'
 						errorInfo(errcode,message) ;
 					}else {
 						this.goods = content.goods ;
-						if (!this.shop_header&&!this.seller_cat.length) {
+						if (this.shop_header) {
 							this.shop_header = content.seller ;
+						}
+						if (!this.seller_cat.length) {
 							let arr = content.seller_cat ;
 							for(let i = 0 ;i<arr.length;i++){
 								arr[i].bol = false ;

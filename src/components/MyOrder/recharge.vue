@@ -44,9 +44,9 @@ import {Message,MessageBox} from  'element-ui'
 		    changeAccount(){
 		    	let _this = this ;
 				let  reg = /^\d+$/g ;
-				if (!reg.test(_this.account)) {
-					_this.account = "";
-				}
+				// if (!reg.test(_this.account)) {
+				// 	_this.account = "";
+				// }
 		    },
 		    submitPay(){
 		    	let _this = this;
@@ -72,9 +72,10 @@ import {Message,MessageBox} from  'element-ui'
 						if (_this.radio==='5') {
 							let  code_url = content.code_url ;
 							let  order_number = content.order_number ;
+							let count = _this.account;
 							code_url = code_url.split("?");
 							code_url = code_url.join("&");
-							location.replace(`myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}`);
+							location.replace(`myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}&count=${count}`);
 						}
 					}
 		    	}) 

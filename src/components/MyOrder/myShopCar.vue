@@ -37,7 +37,7 @@
 					    <div class="goodsInfo">
 					    	<dl class="goodsMsg">
 								<dt class="titleCol">
-									<img :src="goodItem.cover">
+									<img :src="goodItem.cover" @click='goodDetail(goodItem.goods_id)'>
 								</dt>
 								<dd class="infoCol">
 									<div class="goodsName" v-text='goodItem.name'>
@@ -51,15 +51,15 @@
 							<div class='normalCol'>
 								<dl class="vMiddle" v-if='goodItem.market_price' style="height: 20px;">
 									<dt style="color:#666;text-decoration: line-through;">
-										{{goodItem.market_price.toFixed(2)|currency}}
+										{{goodItem.market_price|currency}}
 									</dt>
 									<dd>
-										{{goodItem.sale_price.toFixed(2)|currency}}
+										{{goodItem.sale_price|currency}}
 									</dd>
 								</dl>
 								<dl class="vMiddle" v-else style="height: 20px;">
 									<dd>
-										{{goodItem.sale_price.toFixed(2)|currency}}
+										{{goodItem.sale_price|currency}}
 									</dd>
 								</dl>
 							</div>
@@ -71,7 +71,7 @@
 								</div>
 							</div>
 							<div class="normalCol totalAmount">
-								{{(goodItem.sale_price * goodItem.quantity).toFixed(2)|currency}}
+								{{(goodItem.sale_price * goodItem.quantity)|currency}}
 							</div>
 							<div class="normalCol">
 								<dl class="vMiddle">
@@ -103,7 +103,7 @@
 					<span>已选商品<em>{{checkNum}}</em>件</span>
 				</div>
 				<div class="checkAmount">
-					<span>合计（不含运费）：<em>{{totalPrice.toFixed(2)|currency}}</em></span>
+					<span>合计（不含运费）：<em>{{totalPrice|currency}}</em></span>
 				</div>
 				<div class="settlement" @click='settlement'>
 					结算
@@ -249,6 +249,9 @@ import {MessageBox,Message} from  'element-ui'
 			kf(qq){
 	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
 	        },
+	        goodDetail(id){
+				location.href = `goodDetail.html?goods_id=${id}` ;
+			},
 			editNum(item,mask){
 				let _this = this ;
 				if(mask===1){
@@ -591,6 +594,7 @@ $bg_color: #f5f5f5;
 							img{
 								width: 100%;
 								height: 100%;
+								cursor: pointer;
 							}
 						}
 						dd{

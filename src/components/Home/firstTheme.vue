@@ -11,22 +11,22 @@
 						></div>
 	 					<div class="sell_info">
 	 						<span>￥1.00</span>
-	 						<em>{{theme.goods.goods[0].shop_price.toFixed(2)|currency}}</em>
+	 						<em>{{theme.goods.goods[0].shop_price|currency}}</em>
 	 					</div>
 	 					<div class="snapup_btn_box" :class='theme.goods.goods[0].date_start*1000-nowTime >= 0?"start":theme.goods.goods[0].date_end*1000-nowTime >= 0?"end":"over"'>
 	 						<div class="snapup_time" v-if='theme.goods.goods[0].date_start*1000-nowTime>=0'>
-	 							<span>{{theme.goods.goods[0].date_start*1000-nowTime|timeStyles}}</span>
+	 							<span>{{theme.goods.goods[0].date_start*1000-nowTime|countdown}}</span>
 	 							<em>后开始</em>
 	 						</div>
 	 						<div class="snapup_time" v-else-if='theme.goods.goods[0].date_end*1000-nowTime>= 0'>
-	 							<span>{{theme.goods.goods[0].date_end*1000-nowTime|timeStyles}}</span>
+	 							<span>{{theme.goods.goods[0].date_end*1000-nowTime|countdown}}</span>
 	 							<em>后结束</em>
 	 						</div>
 	 						<div class="snapup_time" v-else>
 	 							<span>已结束</span>
 	 						</div>
 	 						<div class="snapup_btn">
-	 							<el-button type='text' :disabled='theme.goods.goods[0].date_end*1000-nowTime<0'>立即抢购</el-button>
+	 							<el-button type='text' :disabled='theme.goods.goods[0].date_end*1000-nowTime<0' @click='goodDetail(theme.goods.goods[0].goods_id)'>立即抢购</el-button>
 	 						</div>
 	 					</div>
 					</dd>
@@ -38,39 +38,39 @@
 					<li v-for='(item,index) in theme.goods.goods' v-if='index!==0'>
 						<dl class="goods_info">
 							<dt>
-								<img :src="theme.goods.goods[index].cover">
+								<img :src="item.cover">
 							</dt>
 							<dd>
-								<div class="show_info" v-text='theme.goods.goods[index].name'></div>
+								<div class="show_info" v-text='item.name'></div>
 								<div class="sell_info">
 								<span>￥1.00</span>
 								</div>
-								<div class="goods_preprice">{{theme.goods.goods[index].shop_price.toFixed(2)|currency}}</div>
+								<div class="goods_preprice">{{item.shop_price|currency}}</div>
 							</dd>
 						</dl>
-						<dl class="start" v-if='theme.goods.goods[index].date_start*1000-nowTime>=0'>
+						<dl class="start" v-if='item.date_start*1000-nowTime>=0'>
 							<dt>
 								<span>
-								{{theme.goods.goods[index].date_start*1000-nowTime|timeStyles}}
+								{{item.date_start*1000-nowTime|countdown}}
 								</span>
 								<em>
 									后开始
 								</em>
 							</dt>
-							<dd>
+							<dd @click='goodDetail(item.goods_id)'>
 								立即前往
 							</dd>
 						</dl>
 						<dl class="end" v-else-if='theme.goods.goods[index].date_end*1000-nowTime>=0'>
 							<dt>
 								<span>
-								{{theme.goods.goods[index].date_end*1000-nowTime|timeStyles}}
+								{{theme.goods.goods[index].date_end*1000-nowTime|countdown}}
 								</span>
 								<em>
 									后结束
 								</em>
 							</dt>
-							<dd>
+							<dd @click='goodDetail(item.goods_id)'>
 								立即抢购
 							</dd>
 						</dl>
@@ -80,7 +80,7 @@
 								   已结束
 								</span>
 							</dt>
-							<dd disabled>
+							<dd @click='goodDetail(item.goods_id)'>
 								立即抢购
 							</dd>
 						</dl>
@@ -91,7 +91,7 @@
 	</div>
 </template>
 <script>
-	import {timeStyles,currency} from '../../common/js/filter'
+	import {countdown,currency} from '../../common/js/filter'
 	export default{
 		data(){
 			return {
@@ -113,11 +113,11 @@
 			}
 		},
 		filters: {
-			currency,timeStyles
+			currency,countdown
 		},
 		methods:{
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id='${id}` ;
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			},
 			init(){
 				setInterval(()=>{

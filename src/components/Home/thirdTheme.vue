@@ -18,9 +18,9 @@
 							<img :src="theme.goods.goods[1].cover" @click='goodDetail(theme.goods.goods[1].goods_id)'>
 						</dt>
 						<dd>
-							<div class="show_info" v-text='theme.goods.goods[1].name' style="min-height: 58px;"></div>
+							<div class="show_info" v-text='theme.goods.goods[1].name' style="height: 58px;"></div>
 							<div class="sell_info">
-								<span>{{theme.goods.goods[1].shop_price.toFixed(2)|currency}}</span><em>{{theme.goods.goods[1].sale_count}}人付款</em>
+								<span>{{theme.goods.goods[1].shop_price|currency}}</span><em>{{theme.goods.goods[1].sale_count}}人付款</em>
 							</div>
 						</dd>
 					</dl>
@@ -36,7 +36,7 @@
 						<dd>
 							<div class="show_info" v-text='item.name'></div>
 							<div class="sell_info">
-								<span>{{item.shop_price.toFixed(2)|currency}}</span><em>{{item.sale_count}}人付款</em>
+								<span>{{item.shop_price|currency}}</span><em>{{item.sale_count}}人付款</em>
 							</div>
 						</dd>
 					</dl>
@@ -86,12 +86,12 @@ $text_color: #666;
 		.show_info{
 			width: 100%;
 			line-height: 18px;
-			min-height: 36px;
+			height: 36px;
 			color: #333;
 			overflow : hidden;
 		  	text-overflow: ellipsis;
 		  	display: -webkit-box;
-		  	-webkit-line-clamp: 2;
+		  	-webkit-line-clamp: 3;
 		  	-webkit-box-orient: vertical;
 		}
 	.sell_info{
@@ -173,7 +173,7 @@ $text_color: #666;
 						height: 25%;
 						border-top: 1px solid $border_list;
 						.show_info{
-							min-height: 58px;
+							height: 58px;
 						}
 					}
 				}

@@ -3,7 +3,7 @@
 		<div class="title">
 			您已选择：申请换货或维修
 		</div>
-		<el-form :model="form" label-width="90px" label-position='right' :rules='rules' ref='form' v-if='orderInfo.goods'>
+		<el-form :model="form" label-width="90px" label-position='right' :rules='rules' ref='form' v-if='goodsInfo'>
 	        <el-form-item label="售后原因" prop='reason'>
 		        <el-input v-model="form.reason" style='width:200px;'></el-input>
 		    </el-form-item>
@@ -58,14 +58,9 @@ export default {
 		}
 	},
 	props:{
-		orderInfo:{
+		goodsInfo:{
 			type: Object,
-			required: true,
-			default(){
-				return {
-					goods: null
-				}
-			}
+			required: true
 		}
 	},
 	methods:{

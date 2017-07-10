@@ -73,7 +73,7 @@
 							</dl> -->
 							<dl class="vMiddle" v-show='true' style="height: 20px;">
 								<dd>
-									{{item.price.toFixed(2)|currency}}
+									{{item.price|currency}}
 								</dd>
 							</dl>
 						</div>
@@ -85,7 +85,7 @@
 							</div>
 						</div>
 						<div class="totalCol totalAmount">
-							{{(item.quantity*item.price).toFixed(2)|currency}}
+							{{(item.quantity*item.price)|currency}}
 						</div>
 				    </div>
 				</li>
@@ -97,7 +97,7 @@
 						<el-col :span='21'>
 							<el-input
 							  type="textarea"
-							  v-model='shopItem.remark'
+							  v-model='shop[shopIndex].remark'
 							  :autosize="{ minRows: 2, maxRows: 4}"
 							  placeholder="请输入内容"
 							  ></el-input>
@@ -110,42 +110,45 @@
 							运费
 						</el-col>
 						<el-col :span='5'>
-							{{shopItem.express_fee.toFixed(2)|currency}}
+							{{shop[shopIndex].express_fee|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<el-checkbox size='small' v-model='shop[shopIndex].check'><span>使用优惠券</span></el-checkbox>
+							<img src="../../../static/orderImg/nocheck.png" height="20" width="20" v-show='!shop[shopIndex].coupon' @click='chooseCoupon(shopIndex)'>
+							<img src="../../../static/orderImg/checked.png" height="20" width="20" v-show='shop[shopIndex].coupon' @click='shop[shopIndex].coupon = false; shop[shopIndex].coupon_index= "" ;'>
+							<span>使用优惠券</span>
 						</el-col>
 						<el-col :span='5'>
-							{{0|currency}}
+							-{{shop[shopIndex].coupon_index?shop[storeIndex].couponsList[shop[storeIndex].coupon_index].amount:0|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<span @click='shop[shopIndex].radio = "1"'>
-								<el-radio class="radio" v-model="shop[shopIndex].radio" label="1">
+							<span>
+								<em class="raido" @click='shop[shopIndex].radio=shop[shopIndex].radio==="2"?"0":"2";storeIndex=shopIndex;'>
+									<i v-show='shop[shopIndex].radio==="2"'></i>
+								</em>
 								<span>购物币抵扣</span>
-								</el-radio>
 							</span>
 							<span><em>剩余购物币{{orderInfo.customer.shopping_coin}}，当前可用{{shopItem.max_shopping_coin}}</em></span>
 						</el-col>
 						<el-col :span='5'>
-							{{shopItem.radio==="1"?orderInfo.customer.shopping_coin-0:0|currency}}
+							-{{shop[shopIndex].radio==="2"?shopItem.max_shopping_coin:0|currency}}
 						</el-col>
 					</el-row>
 					<el-row>
 						<el-col :span='18' :offset='1'>
-							<span @click='shop[shopIndex].radio = "2"'>
-								<el-radio class="radio" v-model="shop[shopIndex].radio" label="2">
-								<span @click='shopItem.radio="2"'>积分抵扣</span>
-								</el-radio>
+							<span>
+								<em class="raido" @click='shop[shopIndex].radio=shop[shopIndex].radio==="1"?"0":"1";storeIndex=shopIndex;'>
+									<i v-show='shop[shopIndex].radio==="1"'></i>
+								</em>
+								<span>积分抵扣</span>
 							</span>
-							
 							<span><em>剩余积分{{orderInfo.customer.integration}}，当前可用{{shopItem.max_integration}}</em></span>
 						</el-col>
 						<el-col :span='5'>
-							{{shopItem.radio==='2'?orderInfo.customer.integration-0:0|currency}}
+							-{{shop[shopIndex].radio==='1'?shopItem.max_integration:0|currency}}
 						</el-col>
 					</el-row>
 				</div>
@@ -154,7 +157,7 @@
 		<div class="payWrap" v-if='addressList'>
 			<div class="payBox">
 				<el-row style='padding: 36px 40px;'>
-					<strong>实付款：</strong><i>￥</i><em v-text='orderInfo.total_fee'></em>
+					<strong>实付款：</strong><i>￥</i><em v-text='total_fee'></em>
 				</el-row>
 				<el-row>
 					<strong>收货地：</strong><span>{{addressList[addressIndex].province}}{{addressList[addressIndex].city}}{{addressList[addressIndex].district}}</span>
@@ -169,13 +172,15 @@
 				</el-row>
 			</div>
 		</div>
+		<coupons :coupons-list="couponsList" :coupon-bol='couponBol' @close='couponBol=false' @sendIndex='getIndex'></coupons>
 	</div>
 </template>
 <script>
-import {buy_bal,getAddress,getExpressFee,generate} from '../../common/js/api'
+import {buy,buy_bal,getAddress,getExpressFee,generate,orderCoupons} from '../../common/js/api'
 import {currency} from '../../common/js/filter'
 import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
+import coupons from './coupons'
 	export default{
 		data(){
 			return {
@@ -185,11 +190,25 @@ import {MessageBox} from  'element-ui'
 				entries: 4,
 				goodsList: null,
 				shop: [],
-				reqParams: null
+				storeIndex: '',
+				reqParams: null,
+				couponBol: false,
+				couponsList: []
 			} 
 		},
 		filters:{
 			currency
+		},
+		components:{
+			coupons
+		},
+		watch:{
+			shop:{
+				handler(newVal,oldVal){
+					this.countTotalFee();
+ 				},
+ 				deep: true
+			}
 		},
 		methods:{
 			addressView(){
@@ -227,7 +246,6 @@ import {MessageBox} from  'element-ui'
 		    		_this.addressIndex=index;
 		    	}
 		    	let id = _this.addressList[_this.addressIndex].address_id ;
-		    	console.log("")
 		    	let params = {
 		    		address_id: id
 		    	}
@@ -259,19 +277,53 @@ import {MessageBox} from  'element-ui'
 								let seller_id = content[m].seller_id ;
 								for(let n = 0 ;n<shopArr.length;n++){
 									if (seller_id===shopArr[n].seller_id) {
-										shopArr.express_fee = content[m].express_fee ;
+										this.shop[n].express_fee = content[m].express_fee ;
 									}
 								}
 							}
-							_this.orderInfo.shop = shopArr ;
+							this.countTotalFee();
 						}
 			    	}) 
 		 		}
 		    },
-		    getGoodsInfo(){
+		    initGoodsInfo(){
+		    	let _this = this ;
+		    	let params = {
+			 		access_token: getCookie('access_token'),
+			 		data: new Array
+			 	}
+			 	let shop = _this.orderInfo.shop ;
+			 	for(let i = 0 ;i < shop.length;i++){
+			 		let sellerObj = {
+			 			seller_id: shop[i].seller_id,
+			 			goods: new Array 
+			 		};
+			 		let goods = shop[i].goods ;
+			 		for(let j = 0 ; j< goods.length;j++){
+		 				let goodObj = {
+							goods_id: goods[j].goods_id,
+							option_id: goods[j].option_id,
+							quantity: goods[j].quantity + ''
+		 				}
+		 				sellerObj.goods.push(goodObj);
+			 		}
+			 		params.data.push(sellerObj);
+			 	}
+		 		params.data = JSON.stringify(params.data);
+			 	buy(params).then(res=>{
+			 		let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
+						this.getGoodsInfo(content);
+					}
+			 	})
+			 	
+		    },
+		    getGoodsInfo(id){
 		    	let params = {
 		    		access_token: getCookie('access_token'),
-		    		id: this.reqParams.id
+		    		id: id
 		    	}
 		    	buy_bal(params).then(res=>{
 		    		let {errcode,message,content} = res ;
@@ -280,6 +332,8 @@ import {MessageBox} from  'element-ui'
 					}else{
 						this.orderInfo = content ;
 						this.initOrderInfo();
+						this.initExpressFee();
+						this.countTotalFee();
 					}
 		    	})
 		    },
@@ -288,34 +342,70 @@ import {MessageBox} from  'element-ui'
 		    	let  shopArr = _this.orderInfo.shop ;
 		    	let arr = [] ;
 		    	for(let i = 0 ; i < shopArr.length; i++) {
-		    		shopArr[i].express_fee = 0 ;
-		    		shopArr[i].remark = "" ;
 		    		let  obj = {
-		    			check: false,
-		    			radio: "0"
+		    			coupon: false,
+		    			coupon_index: "",
+		    			couponsList: "",
+		    			limit: "0",
+		    			radio: "0",
+		    			express_fee: '0',
+		    			total_fee: "0",
+		    			remark: ""
 		    		}
 		    		arr.push(obj);
 		    	}
-		    	_this.orderInfo.shop = shopArr ;
 		    	_this.shop = arr ;
 		    	_this.initExpressFee();
 		    },
 		    countTotalFee(){
-		    	let  _this = this ;
-		    	let shopArr = _this.orderInfo.shop ;
-		    	let totalFee = 0 ;
-		    	for(let i = 0 ; i< shopArr.length ;i++) {
-		    		let  goodsArr = shopArr[i].goods ;
-		    		totalFee+= shopArr[i].express_fee ; 
-		    		for(let j = 0 ; j < goodsArr.length; j++){
-		    			let fee = goodsArr[j].price * goodsArr[j].quantity ;
-		    			totalFee+= fee;
-		    		}
-		    	}
-		    	if (_this.orderInfo.full) {
-		    		totalFee = totalFee > _this.orderInfo.full.limit-0?(totalFee-_this.orderInfo.full.amount) : totalFee ;
-		    	}
-		    	_this.orderInfo.total_fee = totalFee ;
+		    	let shopping_coin = this.orderInfo.customer.shopping_coin ;
+				let integration = this.orderInfo.customer.integration ;
+				let arr = this.shop ;
+				let shop = this.orderInfo.shop;
+				let total_fee = this.orderInfo.total_fee ;
+				let countPrice = 0 ;
+				let goodsPrice = 0 ;
+				for(let i = 0 ; i< shop.length; i++){
+					// 计算商品价
+					let good = shop[i].goods ;
+					for(let j = 0 ; j < good.length;j++){
+						goodsPrice += good[j].price*good[j].quantity ;
+					}
+					// 减免优惠券
+					if (arr[i].coupon) {
+						countPrice += (arr[i].couponsList[arr[i].coupon_index].amount-0) ;
+					}
+					// 减免购物币
+					if (arr[i].radio==="2") {
+						shopping_coin -= shop[i].max_shopping_coin;
+						if (shopping_coin<0) {
+							MessageBox.alert('超出用户最大购物币量', '提示', {
+					          	confirmButtonText: '确定'
+						    });
+						    this.shop[this.storeIndex].radio = "0" ;
+						}else{
+							countPrice += (shop[i].max_shopping_coin-0) ;
+						}
+					}
+					// 减免积分
+					if (arr[i].radio==="1") {
+						integration -= shop[i].max_integration;
+						if (integration<0) {
+							MessageBox.alert('超出用户最大积分量', '提示', {
+					          	confirmButtonText: '确定'
+						    });
+						    this.shop[this.storeIndex].radio = "0" ;
+						}else{
+							countPrice += (shop[i].max_integration-0) ;
+						}
+					}
+					countPrice -= (arr[i].express_fee-0) ;
+				}
+				let full = this.orderInfo.full ;
+				if (full) {
+					total_fee > (full.limit-0)?(countPrice+=(full.amount-0)): "" ;
+				}
+				this.total_fee = (goodsPrice - countPrice)>0?(goodsPrice - countPrice):0 ;
 		    },
 		    editGoods(seller_id,item,mask){
 		    	let _this  = this ;
@@ -330,9 +420,52 @@ import {MessageBox} from  'element-ui'
 		    		}
 		    	}
 		    	item.quantity = item.quantity-0>item.stock-0?itwm.stock:item.quantity-0<1?"1":item.quantity ;
-		    	_this.countTotalFee(); 
-		    	_this.initExpressFee();
+		    	_this.initGoodsInfo() ;
 		    	
+		    },
+		    // 选择优惠券
+		    chooseCoupon(index){
+		    	let _this  =  this ;
+		    	_this.storeIndex = index ;
+		    	let params = {
+		    		access_token: getCookie('access_token')
+		    	}
+		    	let  goods = [] ;
+		    	let arr = _this.orderInfo.shop[index].goods;
+		    	for(let i = 0 ;i < arr.length;i++){
+		    		let obj = {
+		    			goods_id: arr[i].goods_id,
+		    			quantity: arr[i].quantity,
+		    			option_id: arr[i].option_id
+		    		}
+		    		goods.push(obj);
+		    	}
+		    	params.goods = JSON.stringify(goods);
+		    	orderCoupons(params).then(res=>{
+		    		let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
+						this.couponsList = content ;
+						this.shop[index].couponsList = content ;
+						if (content.length) {
+							this.couponBol = true;
+						}else{
+							MessageBox.alert('您尚未满足使用优惠券的条件', '提示', {
+					          	confirmButtonText: '确定'
+						    });
+						}
+						
+					}
+		    	})
+		    	
+		    },
+		    // 获取优惠券id
+		    getIndex(index){
+		    	let _this = this ;
+		    	_this.shop[_this.storeIndex].coupon_index = index ;
+		    	_this.couponBol = false ;
+		    	_this.shop[_this.storeIndex].coupon = true ; 
 		    },
 		    submitOrder(){
 		    	let _this = this ; 
@@ -343,11 +476,15 @@ import {MessageBox} from  'element-ui'
 		    	let  data = []
 		    	let shopArr = _this.orderInfo.shop ;
 		    	for(let i = 0 ; i< shopArr.length;i++){
+		    		let coupon_id = "";
+		    		if (this.shop[i].coupon_index) {
+		    			coupon_id = this.shop[i].couponsList[this.shop[i].coupon_index].coupon_id ;
+		    		}
 		    		let  shopObj = {
-			    		remark: shopArr[i].remark,
+			    		remark: this.shop[i].remark,
 			    		seller_id: shopArr[i].seller_id,
 			    		use_type: this.shop[i].radio,
-			    		coupon: '',
+			    		coupon: coupon_id,
 			    		goods: []
 		    		}
 		    		let goodArr = shopArr[i].goods ;
@@ -384,7 +521,8 @@ import {MessageBox} from  'element-ui'
 	        this.$nextTick(()=>{
         		this.getAddressList();
 				this.reqParams = getHashReq() ;
-        		this.getGoodsInfo();
+				let id = this.reqParams.id ;
+        		this.getGoodsInfo(id);
 	        })
 	    }
 	}
@@ -620,6 +758,33 @@ $bg_color: #f9fcff;
 						}
 						em{
 							color: $text_color;
+						}
+						img{
+							cursor: pointer;
+						}
+						.raido{
+							display: inline-block;
+							position: relative; 
+							width: 12px;
+							height: 12px;
+							border: 1px solid $border_color;
+							border-radius: 50%;
+							padding: 2px;
+							cursor: pointer;
+							vertical-align: text-top;
+							i{
+								display: inline-block;
+								position: absolute;
+								top: 0px;
+								right: 0px;
+								bottom: 0px;
+								left: 0px;
+								margin: auto;
+								width: 10px;
+								height: 10px;
+								background-color: $primary;
+								border-radius: 50%;
+							}
 						}
 					}
 					.el-col-5{

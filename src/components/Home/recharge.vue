@@ -26,7 +26,7 @@
 		<el-row>
 			<el-col :span='4'>售价</el-col>
 			<el-col :span='8'>
-				<span>{{price.toFixed(2)|currency}}</span>
+				<span>{{price|currency}}</span>
 			</el-col>
 			<div class="top_up" @click='rechargeFn'>立即充值</div>
 		</el-row>

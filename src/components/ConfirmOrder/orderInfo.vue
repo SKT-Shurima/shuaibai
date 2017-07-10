@@ -61,7 +61,7 @@
 								</dl>
 								<dl class="vMiddle" v-show='true' style="height: 20px;">
 									<dd>
-										{{item.price.toFixed(2)|currency}}
+										{{item.price|currency}}
 									</dd>
 								</dl>
 							</div>
@@ -77,8 +77,8 @@
 							</div>
 							<div class="payCol">
 								<dl>
-									<dt>{{(item.price*item.quantity).toFixed(2)|currency}}</dt>
-									<dd>含运费：{{order.express_amount.toFixed(2)|currency}}</dd>
+									<dt>{{(item.price*item.quantity)|currency}}</dt>
+									<dd>含运费：{{order.express_amount|currency}}</dd>
 								</dl>
 							</div>
 					    </div>

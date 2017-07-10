@@ -14,45 +14,6 @@
 	
 </template>
 <script type="text/javascript">
-	// var small = document.getElementById("small") ;
-	// 		var big = document.getElementById("big") ;
-	// 		var slider = document.getElementById("slider") ;
-	// 		var bigImg = document.getElementsByTagName("img")[1] ;
-	// 		small.onmousemove = function  (e) {
-	// 			var even = e || event ;
-	// 			var x = even.clientX - small.offsetLeft - slider.offsetWidth/2 ;
-	// 			var y = even.clientY - small.offsetTop - slider.offsetHeight/2 ;
-	// 			//水平方向最大临界值
-	// 			var maxX = small.clientWidth - slider.clientWidth ;
-	// 			//竖直方向最大的临界值
-	// 			var maxY = small.clientHeight - slider.clientHeight ;
-	// 			//对超出临界点做处理
-	// 			if (x < 0) {
-	// 				x = 0 ;
-	// 			}
-	// 			if ( x > maxX) {
-	// 				x = maxX ;
-	// 			}
-	// 			if (y < 0 ) {
-	// 				y = 0 ;
-	// 			}
-	// 			if (y > maxY) {
-	// 				y = maxY ;
-	// 			}
-	// 			slider.style.left = x + "px" ;
-	// 			slider.style.top = y + "px" ;
-	// 			big.scrollLeft = x / maxX * (bigImg.offsetWidth - big.clientWidth) ;
-	// 			big.scrollTop = y / maxY * (bigImg.offsetHeight - big.clientHeight) ;
-	// 		}
-	// 		small.onmouseenter = function  () {
-	// 			slider.style.display = "block" ;
-	// 			big.style.display = "block" ;
-	// 		}
-	// 		small.onmouseleave = function  () {
-	// 			slider.style.display = "none" ;
-	// 			big.style.display = "none" ;
-	// 		}
-
 export default {
 	data() {
 		return{
@@ -79,7 +40,6 @@ export default {
 			var even = e || event ;
 				var x = even.clientX - wrap.offsetLeft - slider.offsetWidth/2 ;
 				var y = even.clientY - wrap.offsetTop + document.body.scrollTop - slider.offsetHeight/2 ;
-				// console.log(x,y)
 				//水平方向最大临界值
 				var maxX = small.clientWidth - slider.clientWidth ;
 				//竖直方向最大的临界值

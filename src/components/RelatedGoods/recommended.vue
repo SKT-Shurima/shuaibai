@@ -15,7 +15,7 @@
 							<div class="sellInfo" v-text='item.name'></div>
 							<div class="priceInfo">
 								<span>
-									{{item.shop_price.toFixed(2)|currency}}
+									{{item.shop_price|currency}}
 								</span>
 								<em>
 									{{item.sale_count}}人付款

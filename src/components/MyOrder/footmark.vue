@@ -24,7 +24,7 @@
 								<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 							</dt>
 							<dd>
-								<span>{{item.sale_count.toFixed(2)|currency}}</span>
+								<span>{{item.sale_count|currency}}</span>
 								<!-- <em>{{198.00|currency}}</em> -->
 							</dd>
 						</dl>

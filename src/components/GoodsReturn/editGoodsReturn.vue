@@ -9,7 +9,7 @@
 		    </el-form-item>
 		    <el-form-item label="退货金额" prop='account'>
 		    	<el-input v-model="form.account" style='width:200px;'></el-input>
-		        <span>最多{{orderInfo.goods.price.toFixed(2)|currency}}</span>
+		        <span>最多{{orderInfo.goods.price|currency}}</span>
 		    </el-form-item>
 		    <el-form-item label="退货说明" >
 		        <el-input v-model="form.explain" type='textarea'></el-input>

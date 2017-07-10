@@ -21,7 +21,7 @@
 			<div class="content" v-show='listBol'  @mouseleave='listBol=false;listIndex=""' @mouseenter='listBol=true;listIndex=fIndex'>
 				<div class="detail_list">
 					<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
-						<el-col :span='4'>
+						<el-col :span='5'>
 						    <span v-text='item2.name' @click='checkGoods(`${fIndex},${index2}`,item2.name)'></span>
 						    <em>></em>
 						</el-col>
@@ -38,7 +38,7 @@
 				<dt>
 					<el-carousel height="390px">
 				      <el-carousel-item v-for="item in banners" :key="item">
-				        <img :src="item.image">
+				        <img :src="item.image" @click='detail(item.action)'>
 				      </el-carousel-item>
 				    </el-carousel>
 				</dt>
@@ -46,8 +46,8 @@
 					<div class="left_btn" @click='prev(0)'>
 						<i class="el-icon-arrow-left"></i>
 					</div>   
-					<div class="cont" :style='{width:212.5*banners.length+"px",left: -212.5*sliderIndex+"px"}'>
-						<img :src="item.image" alt="" v-for='item in banners' :key='item' @click='goodDetail(item)'>
+					<div class="cont" :style='{width:207.5*banners.length+"px",left: -207.5*sliderIndex+"px"}'>
+						<img :src="item.image" alt="" v-for='item in banners' :key='item' @click='detail(item.action)'>
 					</div>
 					<div class="right_btn" @click='prev(1)'>
 						<i class="el-icon-arrow-right"></i>
@@ -55,7 +55,7 @@
 				</dd>
 			</dl>
 			<div class="status">
-				<user-info></user-info>
+				<user-info :user-info='userInfo'></user-info>
 				<recharge></recharge>
 			</div>
 			</div>
@@ -79,7 +79,8 @@ import recharge from './recharge'
 			    fIndex: 0,
         	    youLike: null,
         	    reqParams: {result:null},
-        	    sliderIndex: 0
+        	    sliderIndex: 0,
+        	    userInfo: {}
 			}
 		},
 		
@@ -95,9 +96,18 @@ import recharge from './recharge'
 					this.sliderIndex = this.sliderIndex<(len-4)?++this.sliderIndex:(len-4);
 				}
 			},
-			goodDetail(item){
-				let id = item.action.params[1].value;
-				location.href = `detail.html?goods_id=${id}`;
+			detail(action){
+				if (action.jump) {
+					let params = action.params;
+					let  u = "";
+					if (params) {
+						for( let i = 0 ; i < params.length;i++){
+							u += `${params[i].key}=${params[i].value}&` ;
+						}
+					}
+					location.href = `/module${action.jump}?${u}`;
+				}
+				
 			},
 			checkGoods(index,name){
 	     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
@@ -134,6 +144,24 @@ import recharge from './recharge'
 						this.youLike = content;
 					}
 				})
+			},
+			userInfo(mask){
+				let params = {
+					access_token: getCookie('access_token')
+				}
+				getUserInfo(params).then(res=>{
+					let {errcode,message,content} = res;
+					if (errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
+						let userInfo = content ;
+						localStorage.userInfo = JSON.stringify(userInfo);
+						this.userInfo  =content ;
+						if (mask) {
+							location.replace('index.html')
+						}
+					}
+				})
 			}
 		},
 		created(){
@@ -145,11 +173,27 @@ import recharge from './recharge'
 				this.reqParams = getRequest();
 				let  result = this.reqParams.result ;
 				let  access_token = this.reqParams.access_token ;
-				let hasCookie = getCookie('access_token');
 				if (access_token) {
 					delCookie('access_token');
 					setCookie('access_token',access_token,30);
+					let params = {
+						access_token: getCookie('access_token')
+					}
+					getUserInfo(params).then(res=>{
+						let {errcode,message,content} = res;
+						if (errcode!==0) {
+							errorInfo(errcode,message) ;
+						}else{
+							let userInfo = content ;
+							localStorage.userInfo = JSON.stringify(userInfo);
+							this.userInfo  =content ;
+							if (access_token) {
+								location.replace('index.html');
+							}
+						}
+					})
 				}
+				let hasCookie = getCookie('access_token');
 				if (hasCookie) {
 					delCookie('access_token');
 					setCookie('access_token',hasCookie,30);
@@ -161,14 +205,11 @@ import recharge from './recharge'
 						if (errcode!==0) {
 							errorInfo(errcode,message) ;
 						}else{
-							// let userInfo =  localStorage.userInfo ;
-							// if (userInfo) {
-							// 	localStorage.removeItem('userInfo');
-							// }
 							let userInfo = content ;
 							localStorage.userInfo = JSON.stringify(userInfo);
-							if (hasCookie!==access_token) {
-								window.reload();
+							this.userInfo  =content ;
+							if (access_token) {
+								location.replace('index.html');
 							}
 						}
 					})
@@ -257,13 +298,13 @@ $text_color: #666;
 					position: absolute;
 					top: 0px;
 					left: 150px;
-					width: 850px;
+					width: 830px;
 					height: 500px;
 					overflow: hidden;
 					background-color: #fff;
 					z-index: 99;
 					.detail_list{
-						width: 600px;
+						width: 580px;
 						height: 500px;
 						overflow-y: auto;
 						overflow-x: hidden;
@@ -272,7 +313,7 @@ $text_color: #666;
 						float: left;
 						.el-row{
 							margin-bottom: 22px;
-							.el-col-4{
+							.el-col-5{
 								font-weight: 600;
 								span{
 									display: inline-block;
@@ -309,7 +350,7 @@ $text_color: #666;
 					}
 				}
 				.slide_show{
-					width: 850px;
+					width: 830px;
 					height: 390px;
 					float: left;
 					dt{
@@ -328,7 +369,7 @@ $text_color: #666;
 							height: 110px;
 							transition: all .5s;
 							img{
-								width: 212.5px;
+								width: 207.5px;
 								height: 110px;
 								float: left;
 							}
@@ -361,7 +402,7 @@ $text_color: #666;
 					}
 				}
 				.status{
-					width: 250px;
+					width: 270px;
 					height: 500px;
 					padding-left: 16px;
 					padding-right: 16px;

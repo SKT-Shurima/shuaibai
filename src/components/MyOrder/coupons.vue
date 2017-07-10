@@ -16,8 +16,8 @@
 						</div>
 					</div>
 					<ul>
-						<li>使用范围：电脑</li>
-						<li>发行店铺：{{item.name}}</li>
+						<li>{{item.name}}</li>
+						<li>发行方：{{item.issuer}}</li>
 						<li>有效时间：{{(item.date_start-0)*1000|dateStylePoint}}-{{(item.date_end-0)*1000|dateStylePoint}}</li>
 					</ul>
 				</div>

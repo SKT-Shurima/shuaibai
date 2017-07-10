@@ -39,7 +39,6 @@ import {getRequest} from '../../common/js/common'
 		watch: {
 			sellerCat:{
 				handler(newVal,oldVal){
-					console.log(newVal,oldVal)
 					let _this = this ;
 					let catIndex  = _this.reqParams.catIndex ;
 					let catId = _this.reqParams.catId ;
@@ -52,7 +51,6 @@ import {getRequest} from '../../common/js/common'
 						_this.$emit('getCat',id) ;
 					}
 					if (catId) {
-						console.log(catId)
 						_this.$emit('getCat',catId) ;
 					}
 				},

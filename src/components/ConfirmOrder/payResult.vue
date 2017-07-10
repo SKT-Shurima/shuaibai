@@ -19,6 +19,7 @@
 </template>
 <script>
 import {getHashReq} from '../../common/js/common'
+import {getOrderPayStatus} from '../../common/js/api'
 	export default {
 		data(){
 			return {
@@ -37,6 +38,17 @@ import {getHashReq} from '../../common/js/common'
 		created(){
 			this.$nextTick(()=>{
 				this.reqParams = getHashReq() ;
+				let  out_trade_no = this.reqParams.out_trade_no ;
+				if (out_trade_no) {
+					let params = {
+						order_sn: out_trade_no
+					}
+					getOrderPayStatus().then(res=>{
+						let {content} = res;
+						let count = this.reqParams.total_amount ;
+ 						location.replace(`confirmOrder.html#payResult?count=${count}&status=${content}`) ;
+					})
+				}
 			})
 		}
 	}

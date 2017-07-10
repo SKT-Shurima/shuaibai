@@ -69,3 +69,8 @@ button {cursor: pointer;}
 input::-moz-focus-inner { border: none; padding: 0px;}
 
 .clear {clear:both;}
+@media screen and (max-width: 1250px){
+    body{
+      width: 1250px;
+    }
+  }

@@ -64,8 +64,15 @@ $border_list: #f0f0f0;
 						}
 					}
 					dd{
+						width: 100%;
 						margin-top: 8px;
 						line-height: 18px;
+						display: -webkit-box;
+						overflow : hidden;
+					  	text-overflow: ellipsis;
+					  	-webkit-line-clamp: 2;
+					  	-webkit-box-orient: vertical;
+					  	-moz-box-orient: vertical ;
 					}
 				}
 			}

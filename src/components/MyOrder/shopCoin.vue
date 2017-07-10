@@ -24,29 +24,57 @@
 	 			</el-row>
 	 		</li>
 	 	</ul>
+	 	<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
 	</div>
 </template>
 <script>
 import {dateStyle} from '../../common/js/filter'
 import {shoppingCoin,shoppingCoinDetail} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
+import pagination from '../Common/pagination'
   export default {
     data() {
       return {
       	shoppingCoinInfo: {
       		shopping_coin:''
       	},
-      	shopCoinList: null
+      	shopCoinList: null,
+      	page: "1",
+      	pagesize: 1,
       };
     },
     filters:{
     	dateStyle
     },
+    components:{
+		pagination
+	},
     methods: {
     	changeView(view){
 	      	 this.$store.commit('switchView',view);
 	      	 location.hash = view ;
-	      }
+	    },
+	     // 改变页数
+		changePage(page){
+			let _this = this ;
+			_this.page = page + "" ;
+			_this.initList();
+		},
+		initList(){
+			let params  ={
+				access_token: getCookie('access_token'),
+				page: this.page
+			}
+			shoppingCoinDetail(params).then(res=>{
+				let {errcode,message,content,pageSize} = res ;
+				if(errcode !== 0){
+					errorInfo(errcode,message) ;
+				}else {
+					this.shopCoinList = content;
+					this.pagesize = pageSize
+				}
+			})
+		}
     },
     created(){
         this.$nextTick(()=>{
@@ -67,18 +95,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
     	this.$nextTick(()=>{
     		// 是否含有‘猜你喜欢’
     		this.$emit('hasGuess',false);
-    		let params  ={
-				access_token: getCookie('access_token'),
-				page: 0
-			}
-			shoppingCoinDetail(params).then(res=>{
-				let {errcode,message,content} = res ;
-				if(errcode !== 0){
-					errorInfo(errcode,message) ;
-				}else {
-					this.shopCoinList = content;
-				}
-			})
+    		this.initList();
     	})
     }
   }

@@ -17,14 +17,14 @@
 		 	</el-row>
 		 	<el-row class='update_list' v-if='newGoods'>
 		 		<el-col :span='4' v-for='item in newGoods.goods' >
-		 			<dl  @click='detail(item)'>
+		 			<dl>
 		 				<dt>
-		 					<img :src="item.cover">
+		 					<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 		 				</dt>
 		 				<dd>
 		 					<div class="show_info" v-text='item.name'></div>
 		 					<div class="sell_info">
-		 						<span>{{item.shop_price.toFixed(2)|currency}}</span>
+		 						<span>{{item.shop_price|currency}}</span>
 		 						<em>{{item.sale_count}}人付款</em>
 		 					</div>
 		 				</dd>
@@ -90,8 +90,8 @@ import 'common/css/themeTitle.scss'
 			firstTheme,secondTheme,thirdTheme,recommend
 		},
 		methods: {
-			detail(){
-				location.href = 'detail.html';
+			goodDetail(id){
+				location.href = `goodDetail.html?goods_id=${id}` ;
 			},
 			jump(address,type){
 				location.href = `${address}.html?type=${type}` ;
@@ -107,7 +107,10 @@ import 'common/css/themeTitle.scss'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				getNewGoods().then(res=>{
+				let params = {
+					t: 5
+				}
+				getNewGoods(params).then(res=>{
 					let { errcode ,message,content} = res ;
 					if(errcode !== 0 ){
 						errorInfo(errcode,message);
@@ -133,13 +136,15 @@ $red_color: #f24450;
   	.show_info{
 		width: 100%;
 		line-height: 18px;
-		min-height: 36px;
+		height: 36px;
+		margin: 6px 0px;
 		color: #333;
+		display: -webkit-box;
 		overflow : hidden;
 	  	text-overflow: ellipsis;
-	  	display: -webkit-box;
 	  	-webkit-line-clamp: 2;
-	  	-webkit-box-orient: vertical;
+	  	-webkit-box-orient: vertical !important;
+	  	-moz-box-orient: vertical ;
 	}
 	.sell_info{
 		overflow: hidden;
@@ -198,6 +203,7 @@ $red_color: #f24450;
 						height: 180px;
 						img{
 							width: 100%;
+							cursor: pointer;
 						}
 	  				}
 	  			}

@@ -77,7 +77,7 @@
 									<i></i>
 									<span v-text='item.shopping_coin'></span>
 									<em>原价{{item.shop_price|currency}}</em>
-									<el-button @clikc='goodDetail(item.goods_id)' type='text'>
+									<el-button @click='goodDetail(item.goods_id)' type='text'>
 										立即购买
 									</el-button>
 								</div>

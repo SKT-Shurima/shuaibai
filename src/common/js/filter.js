@@ -2,7 +2,7 @@
 export const num_filter = val =>{
 	val = val - 0 ;
      if (val > 9 ) {
-     	return "9"
+     	return "9+"
      }else{
       return val;
      }
@@ -10,6 +10,8 @@ export const num_filter = val =>{
 
 // 前置货币符号
 export const currency = val =>{
+  val -=0 ;
+  val = val.toFixed(2);
 	return '￥' + val;
 }
 

@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		<div class="img_box">
-			<img src="">
+			<img src="../../../static/loginImg/success.png" height="226" width="429">
 		</div>
 		<div style='width:100%;height:80px;line-height: 80px;text-align: center;'>
 			<strong style="font-size: 16px;font-weight: 600;">注册成功，{{time}}s后自动返回商城首页</strong>

@@ -31,7 +31,7 @@
 									 	</div>
 									</div>
 									<div class="originPrice">
-										<div style="text-decoration: line-through;">{{item.shop_price.toFixed(2)|currency}}</div>
+										<div style="text-decoration: line-through;">{{item.shop_price|currency}}</div>
 										<div>积分半价优惠</div>
 									</div>
 									<div class="begin" @click='goodDetail(item.goods_id)'>

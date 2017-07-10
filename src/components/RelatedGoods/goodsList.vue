@@ -40,7 +40,7 @@
 				</el-button>
 			</li>
 		</ul>
-		<ul class="goodsList" v-if='goods'>
+		<ul class="goodsList" v-if='goods.length>0'>
 			<li v-for='(item,index) in goods' class="infoList">
 				<dl>
 					<dt>
@@ -50,7 +50,7 @@
 						<div class="sellInfo" v-text='item.name'></div>
 						<div class="priceInfo">
 							<span>
-								{{item.shop_price.toFixed(2)|currency}}
+								{{item.shop_price|currency}}
 							</span>
 							<em>
 								{{item.sale_count}}人付款
@@ -60,6 +60,9 @@
 				</dl>
 			</li>
 		</ul>
+		<div v-else class="noResult">
+			没有找到与“<em>{{decodeURI(reqParams.keyword)}}</em>”相关的宝贝
+		</div>
 		<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
 	</div>
 </template>
@@ -71,7 +74,9 @@ import pagination from '../Common/pagination'
 	export default {
 		data(){
 			return {
-				reqParams: null,
+				reqParams: {
+					keyword: ""
+				},
 				tabIndex: 1,
 				priceIndex: 0,
 				timeIndex: 0,
@@ -82,7 +87,7 @@ import pagination from '../Common/pagination'
 					category_id:'',
 					sort: ""
 				},
-				goods: null
+				goods: []
 			}
 		},
 		filters:{
@@ -117,13 +122,13 @@ import pagination from '../Common/pagination'
 						_this.tabIndex = 2;
 						_this.priceIndex = 0 ;
 						_this.timeIndex = 0 ; 
-						_this.params['sort'] = mask;
+						_this.params['sort'] = mask+" desc";
 					break ;
 					case 'comments_count':
 						_this.tabIndex = 3;
 						_this.priceIndex = 0 ;
 						_this.timeIndex = 0 ;  
-						_this.params['sort'] = mask;
+						_this.params['sort'] = mask+" desc";
 					break ;
 					case 'shop_price':
 						_this.tabIndex = null ;
@@ -241,14 +246,14 @@ $bg_color: #f5f5f5;
 						overflow: hidden;
 						.sellInfo{
 							height: 36px;
-							line-height: 18px;
-							font-weight: 600;
-							margin-top: 10px;
-							overflow:hidden; 
-							text-overflow:ellipsis;
-							display:-webkit-box; 
-							-webkit-box-orient:vertical;
-							-webkit-line-clamp:2; 
+						    line-height: 18px;
+						    font-weight: 600;
+						    margin-top: 10px;
+						    overflow: hidden;
+						    text-overflow: ellipsis;
+						    display: -webkit-box;
+						    -webkit-line-clamp: 2;
+						    -webkit-box-orient: vertical;
 						}
 						/*价格信息*/
 						.priceInfo{
@@ -269,6 +274,12 @@ $bg_color: #f5f5f5;
 			}
 			.infoList:hover{
 				border:1px solid $primary;
+			}
+		}
+		.noResult{
+			margin-top: 20px;
+			em{
+				color: $primary;
 			}
 		}
 	}

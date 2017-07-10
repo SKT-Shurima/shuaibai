@@ -4,7 +4,8 @@
 			<div class="title">
 				<dl>
 					<dt>
-						<img :src="userInfo.avater">
+						<img :src="userInfo.avater" v-if='userInfo.avater'>
+						<img src="../../../static/centerImg/avaterDefault.jpg" v-else>
 					</dt>
 					<dd>
 						{{userInfo.nickname}}({{userInfo.real_phone}})

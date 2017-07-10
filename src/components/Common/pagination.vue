@@ -61,7 +61,6 @@
 	      },
 	      changePage(mask){
 	      	let _this = this ;
-	      	console.log(mask)
 	      	if (mask) {
 	      		_this.currentPage--;
 	      		if (_this.currentPage<1) {

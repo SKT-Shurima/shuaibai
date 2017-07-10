@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap" v-if='goods'>
 		<v-nav :shopHeader='shop_header'></v-nav>
-		<div class="content" >
+		<div class="container" >
 			<dl class="goodsInfo">
 				<dt>
 					<!-- <img :src="currentImg"> -->
@@ -37,7 +37,7 @@
 								原价
 							</el-col>
 							<el-col :span='20' style='text-decoration: line-through'>
-								{{goods.market_price.toFixed(2)|currency}}
+								{{goods.market_price|currency}}
 							</el-col>
 						</el-row>
 						<div class="totalEval">
@@ -49,7 +49,7 @@
 							     帅柏价
 							</el-col>
 							<el-col :span='20' style='color: #f24450;'>
-								￥<span style="font-size:30px;">{{salePrice*(numInput-0)}}</span>
+								￥<span style="font-size:30px;">{{(salePrice*numInput).toFixed(2)}}</span>
 							</el-col>
 						</el-row>
 						<el-row>
@@ -129,7 +129,7 @@
 					</dd>
 				</dl>
 			</div>
-			<store-info :goods='goods'></store-info>
+			<store-info :goods='goods' @getCol='getColList'></store-info>
 		</div>
 	</div>
 </template>
@@ -163,8 +163,8 @@
 		      	proIndex: 0, // 省份索引
 		        cityIndex: 0, // 城市索引
 		        areaIndex: 0, // 地区索引 
-		        proName: '浙江', // 选择后的地区
-		        cityName: '杭州',
+		        proName: '浙江省', // 选择后的地区
+		        cityName: '杭州市',
 		        addressBol: false, // 三级联动控制开关
 		        params: '',  // 详情页获取数据的请求参数
 		        numInput: 1, // 数量选择
@@ -233,6 +233,10 @@
 			 }
 			},
 		methods: {
+			// 获取收藏列表
+			getColList(){
+				this.$emit('getCol');
+			},
 			// 获取省市区
 			getAddress(id,mask,index){
 				let _this = this ;
@@ -353,6 +357,7 @@
 				          message: '成功添加购物车',
 				          type: 'success'
 				        });
+				        this.$emit('sendShopCar')
 					}
 				})
 			},
@@ -418,10 +423,10 @@ $over_bg: #aaa;
 $title_color: #333;
   .wrap{
       width: 100%;
-      .content{
+      .container{
       	width: 1250px;
+      	height: 500px;
       	margin: 20px auto;
-      	overflow: hidden;
       	.goodsInfo{
       		float: left;
 			width: 420px;

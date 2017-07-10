@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" style="width:100%">
     <v-head></v-head>
     <v-con></v-con>
     <v-foot></v-foot>
@@ -36,10 +36,5 @@ body{
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     position: relative;
-  }
-  @media screen and (min-width: 1250px) {
-    #app{
-      width: 1250px;
-    }
   }
 </style>

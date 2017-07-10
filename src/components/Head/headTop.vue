@@ -13,7 +13,19 @@
 		<ul class="h_right">
 			<li v-show='!userInfo.nickname'><a href="login.html">登录</a>|</li>
 			<li v-show='!userInfo.nickname'><a href="reg.html">注册</a>|</li>
-			<li v-show='userInfo.nickname'><a href="javascript:void(0)" style='color:#c71724;'>Hi,{{userInfo.nickname}}</a>|</li>
+			<li v-show='userInfo.nickname' class="loginInfo">
+				<div class="title" @mouseenter='userBol=true' @mouseleave='userBol=false' @click='personCenter'>Hi!{{userInfo.nickname}}<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":userBol}'></div>|
+				<dl  @mouseenter='userBol=true' @mouseleave='userBol=false' class="loginInfoBox" v-show='userBol'>
+				    <dt>
+				    	<img :src="userInfo.avater" v-if='userInfo.avater' @click='personCenter'>
+				    	<img src="../../../static/centerImg/avaterDefault.jpg" v-else>
+				    </dt>
+				    <dd>
+				    	<span v-text='userInfo.nickname'></span>
+				    	<button @click='quit'>退出登录</button>
+				    </dd>
+				</dl>
+			</li>
 			<li><a href="myOrder.html#view10">我的订单</a>|</li>
 			<li class="collection">
 				<div class="title" @mouseenter='followBol=true' @mouseleave='followBol=false'>我的收藏<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":followBol}'></div>|
@@ -28,7 +40,7 @@
 									<dd>
 										<div class="show_info" v-text='item.name'></div>
 										<div class="sell_info">
-											<span>{{item.price.toFixed(2)|currency}}</span><em @click="delColGood(item.collection_id)">取消收藏</em>
+											<span>{{item.price|currency}}</span><em @click="delColGood(item.collection_id)">取消收藏</em>
 										</div>
 									</dd>
 								</dl>
@@ -45,7 +57,7 @@
 				   	</div>
 				</div>
 			</li>
-			<li><a href="index.html">商家后台</a>|</li>
+			<li><a href="http://shuaibo.zertone1.com/shopadmin">商家后台</a>|</li>
 			<li class="service">
 				<div class="title" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false'>客户服务<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":serviceBol}'></div>
 				<ul class="serviceList" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false' v-show='serviceBol'>
@@ -61,7 +73,7 @@
 import {MessageBox} from  'element-ui'
 import {currency} from '../../common/js/filter'
 import {collection,cancelCollections} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 	export default{
 		data(){
 			return{
@@ -71,6 +83,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 				keyWordsArr: [{
 			   	   keyword:''
 			   }],
+			   userBol: false,
 			   followBol: false,
 			   serviceBol: false,
 			   colList: []
@@ -80,6 +93,14 @@ import {errorInfo,getCookie} from '../../common/js/common'
 			currency
 		},
 		methods:{
+			personCenter(){
+				location.href = `myOrder.html#vip0` ;
+			},
+			quit(){
+				delCookie('access_token');
+				localStorage.removeItem('userInfo');
+				location.href = 'login.html';
+			},
 			addToFavorite() {
 				if (window.external.addFavorite) {
 					window.external.addFavorite(location.href, document.title);
@@ -131,15 +152,18 @@ import {errorInfo,getCookie} from '../../common/js/common'
 				})
 			}
 		},
-		created(){
-			if (localStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
-			}
-			let  access_token = getCookie('access_token');
-			if (access_token) {
-				this.initList();
-			}
+		mounted(){
+			this.$nextTick(()=>{
+				if (localStorage.userInfo) {
+					this.hasUser = true;
+					this.userInfo = JSON.parse(localStorage.userInfo);
+				}
+				let  access_token = getCookie('access_token');
+				if (access_token) {
+					this.initList();
+				}
+			})
+			
 		}
 	}
 </script>
@@ -174,6 +198,60 @@ $bg_color: rgb(217, 193, 191);
 	    			padding-right: 10px;
 	    		}
 	    	}
+	    	.loginInfo{
+	    		position: relative;
+	    		.title{
+	    			cursor: pointer;
+	    			color: $primary;
+	    		}
+	    		.loginInfoBox{
+	    			position: absolute;
+	    			padding: 10px;
+	    			right: 0px;
+	    			width: 240px;
+	    			border: 1px solid $border_color;
+	    			background-color: #fff;
+	    			dt,dd{
+	    				float: left;
+	    			}
+	    			dt{
+	    				width: 60px;
+	    				height: 60px;
+	    				img{
+	    					width: 100%;
+	    					height: 100%;
+	    					border-radius:  50%;
+	    					vertical-align: middle;
+	    					cursor: pointer;
+	    				}
+	    			}
+	    			dd{
+	    				width: 140px;
+	    				margin-left: 10px;
+	    				padding-top: 10px;
+	    				span{
+	    					display: inline-block;
+						    width: 72px;
+						    overflow: hidden;
+						    white-space:nowrap;
+						    text-overflow:ellipsis;
+						    vertical-align: middle;
+						    color: $primary;
+	    				}
+	    				button{
+	    					display: inline-block;
+	    					width: 64px;
+	    					border: none;
+	    					background-color: transparent;
+	    					outline: none;
+	    					vertical-align: middle;
+	    				}
+	    				button:hover{
+	    					color: $primary;
+	    				}
+	    			}
+	    		}
+	    	}
 	    	.downImg{
     			margin-left: 4px;
 				margin-bottom: 4px;
@@ -182,13 +260,11 @@ $bg_color: rgb(217, 193, 191);
     		.transDownImg{
 				transform: rotateZ(180deg);
     		}
-    		.collection,.service{
-    			.title{
-	    			display: inline-block;
-	    			padding-left: 10px;
-	    			padding-right: 10px;
-	    			color: #000;
-	    		}
+			.title{
+				display: inline-block;
+				padding-left: 10px;
+				padding-right: 10px;
+				color: #000;
     		}
 	    	.collection{
 	    		.collectionBox{
@@ -227,8 +303,7 @@ $bg_color: rgb(217, 193, 191);
 	    		.collectionList{
 	    			li{
 	    				width: 100%;
-	    				height: 80px;
-	    				cursor: pointer;
+	    				height: 86px;
 						padding: 10px 0px;
 						border-bottom: 1px solid $border_color;
 						.goods_info{
@@ -242,6 +317,7 @@ $bg_color: rgb(217, 193, 191);
 								img{
 									width: 100%;
 									height: 100%;
+									cursor: pointer;
 								}
 							}
 							dd{
@@ -264,6 +340,7 @@ $bg_color: rgb(217, 193, 191);
 						.sell_info{
 							overflow: hidden;
 							margin-top: 6px;
+							line-height: 16px;
 							span{
 								float: left;
 							}

@@ -5,7 +5,7 @@
 	 			<dl>
 					<dt>
 						<div class="imgBox">
-							<img :src="item.cover">
+							<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 						</div>
 						<div class="editBox">
 							<div @click="delColGood(item.collection_id)">
@@ -18,7 +18,7 @@
 						</div>
 						<div class="priceInfo" >
 							<span>
-								{{item.price.toFixed(2)|currency}}
+								{{item.price|currency}}
 							</span>
 							<em>
 								{{item.sale_count}}人付款
@@ -57,6 +57,9 @@
 			pagination
 		},
 		methods:{
+			goodDetail(id){
+				location.href = `goodDetail.html?goods_id=${id}` ;
+			},
 			// 取消收藏
 			delColGood(ids){
 				MessageBox.confirm('此操作将永久删除该收藏, 是否继续?', '提示', {
@@ -140,7 +143,8 @@ $primary:#c71724;
 						height: 100%;
 						img{
 							width: 100%;
-							height: 100%; 
+							height: 100%;
+							cursor: pointer; 
 						}
 					}
 					.editBox{

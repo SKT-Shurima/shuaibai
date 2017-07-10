@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip71")'>提现</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip80")'>佣金明细</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip81")'>提现</span></h4>
 		<div class="box">
 			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position='right'>
 				<el-form-item label="提现金额" prop="money">
@@ -23,7 +23,7 @@
 		</div>
 		<el-row>
 			<el-col :span='19' :offset='5' style='color:#666;'>
-				当前可提现金额{{userInfo.account|currency}}
+				当前可提现金额{{0|currency}}
 			</el-col>
 		</el-row>
 		<el-row>
@@ -110,7 +110,7 @@ import {withdraw} from '../../common/js/api'
 						realname: this.ruleForm.realname,
 						subbranch: this.ruleForm.subbranch,
 						money: this.ruleForm.money,
-						type: "1"
+						type: "2"
 		            };
 		            withdraw(params).then(res=>{
 		            	let {errcode,message,content} = res;
@@ -135,7 +135,7 @@ import {withdraw} from '../../common/js/api'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (localStorage.userInfo) {
+				if (!localStorage.userInfo) {
 					this.userInfo = JSON.parse(localStorage.userInfo) ;
 				}
 			})

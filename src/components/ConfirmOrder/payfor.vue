@@ -75,7 +75,6 @@ import {getHashReq,getCookie} from '../../common/js/common'
 							location.hash= `payResult?count=${count}&status=${status}` ;
 						}
 						if (_this.typeIndex==='4') {
-							return
 							document.write(content.html_text);
 						}
 						if (_this.typeIndex==='5') {

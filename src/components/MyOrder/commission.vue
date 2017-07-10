@@ -1,22 +1,19 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip80")'>佣金明细</span></h4>
 		<dl class="amountInfo">
-			<dt><span>账户余额</span><em>{{userInfo.account|currency}}</em>
+			<dt><span>店铺佣金</span><em>{{commission|currency}}</em>
 			</dt>
 			<dd>
-				<el-button type='text' size='small' style='width:90px;' @click='changeView("vip70")'>充值</el-button>
-				<el-button type='text' size='small' style='width:90px;' @click='changeView("vip71")'>提现</el-button>
-				<el-button type='text' size='small' style='width:108px;' @click='changeView("vip72")'>购物币详情</el-button>
-				<el-button type='text' size='small' style='width:92px;' @click='changeView("vip73")'>积分详情</el-button>
+				<el-button type='text' size='small' style='width:90px;' @click='changeView("vip81")'>提现</el-button>
 			</dd>
 		</dl>
 		<div class="title">
 	 		<i class="icon"></i>
-	 		<span style="vertical-align: 4px;">资金明细</span>
+	 		<span style="vertical-align: 4px;">佣金明细</span>
 	 	</div>
-	 	<ul class="moneyList" v-if='financeList'>
-	 		<li v-for='item in financeList'>
+	 	<ul class="moneyList" v-if='commissionList'>
+	 		<li v-for='item in commissionList'>
 	 			<el-row>
 	 				<el-col :span='4'>
 	 					{{item.date_add*1000 | dateStyle}}
@@ -35,18 +32,16 @@
 </template>
 <script>
 import {currency,dateStyle} from '../../common/js/filter'
-import {finance} from '../../common/js/api'
+import {commissionDetail,commission} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import pagination from '../Common/pagination'
   export default {
     data() {
       return {
-      	userInfo: {
-      		account: ''
-      	},
       	page: "1",
       	pagesize: 1,
-      	financeList: null
+      	commissionList: null,
+      	commission: "0"
       };
     },
     filters:{
@@ -72,24 +67,21 @@ import pagination from '../Common/pagination'
 				access_token: getCookie('access_token'),
 				page: this.page
 			}
-			finance(params).then(res=>{
-				let {errcode,message,content,pageSize} = res ;
+			commissionDetail(params).then(res=>{
+				let {errcode,message,content} = res ;
 				if(errcode !== 0){
 					errorInfo(errcode,message) ;
 				}else {
-					this.financeList = content;
-					this.pagesize  = pageSize-0 ;
+					this.commissionList = content;
+					// this.pagesize  = pageSize-0 ;
 				}
 			})
 		}
     },
     created(){
         this.$nextTick(()=>{
-        	if (localStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
-			}else{
-				location.href = "login.html";
+        	if (!localStorage.userInfo) {
+        		location.href = "login.html";
 			}
         })
     },
@@ -98,6 +90,17 @@ import pagination from '../Common/pagination'
     		// 是否含有‘猜你喜欢’
     		this.$emit('hasGuess',false);
     		this.initList();
+    		let params = {
+				access_token: getCookie('access_token')
+			}
+			commission(params).then(res=>{
+				let {errcode,message,content} = res ;
+				if(errcode !== 0){
+					errorInfo(errcode,message) ;
+				}else {
+					this.commission = content.commission ;
+				}
+			})
     	})
     }
   }

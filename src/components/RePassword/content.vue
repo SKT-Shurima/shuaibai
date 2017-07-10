@@ -106,7 +106,7 @@ import {hex_md5} from '../../common/js/md5.js'
           ]
         },
         time: -1 ,
-        total_time: 5, 
+        total_time: 60, 
         send_btn: '发送验证码'
       };
     },

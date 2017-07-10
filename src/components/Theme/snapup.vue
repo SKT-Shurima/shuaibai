@@ -29,10 +29,10 @@
 			 		   	    	<div class="info_text" v-text='item.name'></div>
 			 		   	    	<div class="info_price">
 			 		   	    		<span>
-			 		   	    			{{item.kill_price.toFixed(2)|currency}}
+			 		   	    			{{item.kill_price|currency}}
 			 		   	    		</span>
 			 		   	    		<em style="text-decoration: line-through;">
-			 		   	    			{{item.shop_price.toFixed(2)|currency}}
+			 		   	    			{{item.shop_price|currency}}
 			 		   	    		</em>	
 			 		   	    	</div>
 			 		   	    </dt>

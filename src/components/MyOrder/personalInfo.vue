@@ -155,7 +155,10 @@ import {MessageBox} from  'element-ui'
  		this.$nextTick(()=>{
  			if (localStorage.userInfo) {
 				this.userInfo = JSON.parse(localStorage.userInfo);
-				this.userInfo.birthday *= 1000;
+				let bir = this.userInfo.birthday ;
+				bir = parseInt(bir/1000) + "" ;
+				let len = bir.length ;
+				this.userInfo.birthday = len===10?this.userInfo.birthday:this.userInfo.birthday*1000;
 				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
 			}else{
 			    location.href = "login.html";

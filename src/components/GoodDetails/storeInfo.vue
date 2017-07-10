@@ -1,28 +1,28 @@
 <template>
 	<div class="storeInfo">
 		<div class="title">
-			<div class="titleContent">
+			<div class="titleContent" @click='storeDetail'>
 				<div class="slider"></div>
 				<div class="name">{{goods.shop_name}}</div>
 				<div class="slider"></div>
 			</div>
 		</div>
 		<div class="storeContent">
-			<div class="storeName">
+			<div class="storeName" @click='storeDetail'>
 				{{goods.name}}
 			</div>
 			<div class="eval">
 				<dl>
 					<dt>商品</dt>
-					<dd>{{goods.comment.goods_comment.toFixed(2)}}</dd>
+					<dd>{{(goods.comment.goods_comment-0).toFixed(1)}}</dd>
 				</dl>
 				<dl>
 					<dt>服务</dt>
-					<dd>{{goods.comment.service_comment.toFixed(2)}}</dd>
+					<dd>{{(goods.comment.service_comment-0).toFixed(1)}}</dd>
 				</dl>
 				<dl>
 					<dt>物流</dt>
-					<dd>{{goods.comment.logistics_comment.toFixed(2)}}</dd>
+					<dd>{{(goods.comment.logistics_comment-0).toFixed(1)}}</dd>
 				</dl>
 			</div>
 			<dl class="online">
@@ -58,6 +58,11 @@ import {errorInfo,getCookie} from '../../common/js/common'
 		 	}
 		 },
 		 methods: {
+      storeDetail(){
+        let _this = this ;
+        let id = _this.goods.seller_id ;
+        location.href = `storeDetail.html?seller_id=${id}` ;
+      },
       kf(qq){
         window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
       },
@@ -94,6 +99,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 						errorInfo(errcode,message) ;
 					}else {
 						this.goods.is_collection=!this.goods.is_collection;
+            this.$emit('getCol');
 					}
 				})
 			}
@@ -118,6 +124,7 @@ $red_color: #f24450;
   			.titleContent{
   				width: 156px;
   				margin: 0px auto;
+          cursor: pointer;
   				.slider{
       				float: left;
       				width: 28px;
@@ -147,6 +154,7 @@ $red_color: #f24450;
   				text-overflow: ellipsis;
   				white-space: nowrap ;
   				border-bottom: 1px solid $border_color;
+          cursor: pointer;
   			}
   			.eval{
   				padding: 16px 0px;

@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<ul class="small_img">
 		 	<li v-for='(sItem,index) in youLike' :class='{"margin_left":index%2}'>
-		 		<img :src="sItem.cover">
+		 		<img :src="sItem.cover" @click='goodDetail(sItem.goods_id)'>
 		 	</li>
 		 </ul>
 		<!--  <ul class="big_img">
@@ -21,6 +21,11 @@ import {errorInfo} from '../../common/js/common'
 				youLike: null
 			}
 		},
+		methods: {
+			goodDetail(id){
+				location.href = `goodDetail.html?goods_id=${id}` ;
+			}
+		},	
 		mounted(){
 			this.$nextTick(()=>{
 				let  params = {
@@ -41,9 +46,11 @@ import {errorInfo} from '../../common/js/common'
 <style lang='scss' scoped>
 $border_color: #ccc;
 	.wrap{
+		margin-top: 0px;
 		img{
 			width: 100%;
 			height: 110px;
+			cursor: pointer;
 		}
 		.small_img{
 			border-bottom: 1px solid $border_color;

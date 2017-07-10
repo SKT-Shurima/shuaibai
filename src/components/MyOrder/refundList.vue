@@ -46,7 +46,7 @@
 									{{299.00|currency}}
 								</dt> -->
 								<dd>
-									{{item.price.toFixed(2)|currency}}
+									{{item.price|currency}}
 								</dd>
 							</div>
 							<div class="goodsPrice" v-text='item.quantity'></div>
@@ -59,9 +59,9 @@
 					<div class="goodsInfo" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":shopItem.goods.length>1}'>
 						<el-row>
 							<el-col :span='8'>
-								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount.toFixed(2)|currency}}</div>
-								<div style="color:#666;line-height:20px;">含运费:{{shopItem.express_amount.toFixed(2)|currency}}</div>
-								<div style='color:#666;line-height:20px;'>优惠券:{{shopItem.goods_count.toFixed(2)|currency}}</div>
+								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount|currency}}</div>
+								<div style="color:#666;line-height:20px;">含运费:{{shopItem.express_amount|currency}}</div>
+								<div style='color:#666;line-height:20px;'>优惠券:{{shopItem.goods_count|currency}}</div>
 							</el-col>
 							<el-col :span='8' style='line-height:20px;padding-top: 14px;'>
 								<div>

@@ -5,11 +5,11 @@
 				<div class="storeInfo">
 					<dl>
 						<dt>
-							<img :src="shopItem.cover">
+							<img :src="shopItem.cover" @click='storeDetail(shopItem.seller_id)'>
 						</dt>
 						<dd class="name" v-text='shopItem.shop_name'></dd>
 						<dd class="btn">
-							<button @click='escView(attention_id)'>取消关注</button>
+							<button @click='escView(shopItem.attention_id)'>取消关注</button>
 						</dd>
 						<dd class="storeEval">
 							<dl>
@@ -41,11 +41,11 @@
 							<li v-for="(item,index) in shopItem.goodsList" v-if='index>=shopItem.scrollIndex&&index<(shopItem.scrollIndex+5)'>
 								<dl>
 									<dt>
-										<img :src="item.cover">
+										<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 									</dt>
 									<dd>
-										<span>{{item.shop_price.toFixed(2)|currency}}</span>
-										<em>{{item.market_price.toFixed(2)|currency}}</em>
+										<span>{{item.shop_price|currency}}</span>
+										<em>{{item.market_price|currency}}</em>
 									</dd>
 								</dl>
 							</li>
@@ -65,6 +65,7 @@
 	import {errorInfo,getCookie} from '../../common/js/common'
 	import {attention,cancelAttentions} from '../../common/js/api'
 	import pagination from '../Common/pagination'
+	import {Message} from  'element-ui'
 	export default {
 		data(){
 			return {
@@ -80,6 +81,12 @@
 			pagination
 		},
 		methods:{
+			storeDetail(id){
+				location.href = `storeDetail.html?seller_id=${id}` ;
+			},
+			goodDetail(id){
+				location.href = `goodDetail.html?goods_id=${id}` ;
+			},
 			// 改变页数
 			changePage(page){
 				let _this = this ;
@@ -96,7 +103,11 @@
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						this.viewList = content;
+						Message.success({
+				          message: "取消收藏成功",
+				          type: 'success'
+				        });
+				        this.initList();
 					}
 				})
 			},
@@ -156,6 +167,7 @@ $text_color: #666;
 							width: 100%;
 							height: 100%;
 							border-radius: 50%;
+							cursor: pointer;
 						}
 					}
 					.name{
@@ -267,6 +279,7 @@ $text_color: #666;
 									img{
 										width: 100%;
 										height: 100%;
+										cursor: pointer;
 									}
 								}
 								dd{

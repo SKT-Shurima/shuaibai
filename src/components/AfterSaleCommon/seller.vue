@@ -21,7 +21,7 @@
 					退款金额：
 				</el-col>
 				<el-col :span='22'>
-					{{refundInfo.price.toFixed(2)|currency}}
+					{{refundInfo.price|currency}}
 				</el-col>
 			</el-row>
 			<el-row>

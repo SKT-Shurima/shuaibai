@@ -23,8 +23,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
   export default {
     data() {
       return {
-        typeRadio: "4",
-        showBol: false
+        typeRadio: "4"
       };
     },
     props:{

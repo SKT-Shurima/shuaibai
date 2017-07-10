@@ -64,7 +64,7 @@
 						<div class="sellInfo" v-text='item.name'></div>
 						<div class="priceInfo">
 							<span>
-								{{item.shop_price.toFixed(2)|currency}}
+								{{item.shop_price|currency}}
 							</span>
 							<em>
 								{{item.sale_count}}人付款
@@ -134,13 +134,13 @@ import pagination from '../Common/pagination'
 						_this.tabIndex = 2;
 						_this.priceIndex = 0 ;
 						_this.timeIndex = 0 ; 
-						_this.params['sort'] = mask;
+						_this.params['sort'] = mask+" desc";
 					break ;
 					case 'praise_rate':
 						_this.tabIndex = 3;
 						_this.priceIndex = 0 ;
 						_this.timeIndex = 0 ;  
-						_this.params['sort'] = mask;
+						_this.params['sort'] = mask+" desc";
 					break ;
 					case 'shop_price':
 						_this.tabIndex = null ;
@@ -285,6 +285,11 @@ $bg_color: #f5f5f5;
 							line-height: 18px;
 							font-weight: 600;
 							margin-top: 10px;
+							overflow: hidden;
+						    text-overflow: ellipsis;
+						    display: -webkit-box;
+						    -webkit-line-clamp: 2;
+						    -webkit-box-orient: vertical;
 						}
 						/*价格信息*/
 						.priceInfo{

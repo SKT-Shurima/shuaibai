@@ -157,37 +157,7 @@ import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 	   		payfor(){
 	   			let _this = this ;
 	   			let order_sn = _this.reqParams.order_sn ;
-	   			let params = {
-		    		access_token: getCookie('access_token')
-		    	}
-		    	let data =[{
-		    		seller_id: _this.orderInfo.order.seller_id,
-		    		goods: []
-		    	}]
-		    	let goodsArr = _this.orderInfo.order.goods;
-		    	for(let i = 0 ; i<goodsArr.length;i++){
-		 			let goodObj = {
-						goods_id: goodsArr[i].goods_id,
-						option_id: goodsArr[i].option_id,
-						quantity: goodsArr[i].quantity 
-					}
-					data[0].goods.push(goodObj);
-		 		}
-		    	params.data = JSON.stringify(data);
-		    	buy(params).then(res=>{
-			 		let {errcode,message,content} = res ;
-					if(errcode!==0) {
-						errorInfo(errcode,message) ;
-					}else{
-						if(localStorage.orderInfo){
-							localStorage.removeItem('orderInfo');
-						}
-						this.orderInfo = content ;
-						this.goodsList = this.orderInfo.order.shop[0].goods ;
-						content = JSON.stringify(content);
-						location.hash=`payfor?order_sn=${order_sn}`;
-					}
-			 	})
+	   			location.href=`confirmOrder.html#payfor?order_sn=${order_sn}`;
 	   		},
 	   		// 催一催
 	   		urged(){
