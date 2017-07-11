@@ -237,7 +237,6 @@ $border_color: #ccc;
 $text_color: #666;
 	.wrap{
 		width: 100%;
-		margin-top: 32px;
 		.nav_wrap{
 			width: 100%;
 			height: 40px;

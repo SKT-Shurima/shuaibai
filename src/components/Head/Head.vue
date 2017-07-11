@@ -25,6 +25,7 @@ import vHeadsearch from './headSearch.vue'
 <style scoped lang='scss'>
 	.wrap{
 		width: 100%;
+		margin-bottom: 32px;
 		.head_wrap{
 			width: 100%;
 			height: 30px;

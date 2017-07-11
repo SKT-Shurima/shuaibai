@@ -42,14 +42,14 @@
 						</el-row>
 						<div class="totalEval">
 							<span>累计评价</span>
-							<em>{{goods.sale_count}}</em>
+							<em>{{goods.comment.total}}</em>
 						</div>
 						<el-row>
 							<el-col :span='4' style='padding-top: 16px;'>
 							     帅柏价
 							</el-col>
 							<el-col :span='20' style='color: #f24450;'>
-								￥<span style="font-size:30px;">{{(salePrice*numInput).toFixed(2)}}</span>
+								￥<span style="font-size:30px;">{{(salePrice*numInput>(full[0].limit-0)?salePrice*numInput-full[0].amount:salePrice*numInput).toFixed(2)}}</span>
 							</el-col>
 						</el-row>
 						<el-row>

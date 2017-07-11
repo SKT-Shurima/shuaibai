@@ -29,7 +29,7 @@
 			<li><a href="myOrder.html#view10">我的订单</a>|</li>
 			<li class="collection">
 				<div class="title" @mouseenter='followBol=true' @mouseleave='followBol=false'>我的收藏<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":followBol}'></div>|
-				<div  @mouseenter='followBol=true' @mouseleave='followBol=false' class="collectionBox" v-show='followBol&&colList.length'>
+				<div  @mouseenter='followBol=true' @mouseleave='followBol=false' class="collectionBox" v-show='followBol'>
 				    <div class="collectionListBox" v-if='colList.length'>
 				    	<ul class="collectionList">
 							<li v-for='(item,index) in colList'>
@@ -276,12 +276,14 @@ $bg_color: rgb(217, 193, 191);
 		    			background-color: #fff;
 		    		}
 		    		.no_collection{
+		    			position: absolute;
 		    			height: 56px;
 		    			line-height: 56px;
 		    			text-align: center;
-		    			border-top: 1px solid $border_color;
+		    			border-bottom: 1px solid $border_color;
 		    			border-left: 1px solid $border_color;
 		    			border-right: 1px solid $border_color;
+		    			color: $primary;
 		    		}
 	    		}
 	    		.collectionListBox{

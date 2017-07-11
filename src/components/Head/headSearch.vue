@@ -300,7 +300,6 @@ $border_color: #ccc;
     			li{
     				width: 100%;
     				height: 80px;
-    				cursor: pointer;
 					padding: 10px 0px;
 					border-bottom: 1px solid $border_color;
 					.goods_info{
@@ -314,6 +313,7 @@ $border_color: #ccc;
 							img{
 								width: 100%;
 								height: 100%;
+								cursor: pointer;
 							}
 						}
 						dd{
