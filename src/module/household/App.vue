@@ -2,7 +2,6 @@
   <div class="wrap" style="width:100%">
     <v-head></v-head>
     <v-nav></v-nav>
-    <v-slider></v-slider>
     <v-con></v-con>
     <v-foot></v-foot>
   </div>

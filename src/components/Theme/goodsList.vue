@@ -1,6 +1,6 @@
 <template>
 	<ul class="wrap">
-		<li v-for='item in goodst' class="infoList">
+		<li v-for='item in goods' class="infoList">
 			<dl>
 				<dt>
 					<img :src="item.cover" @click='goodDetail(item.goods_id)'>
