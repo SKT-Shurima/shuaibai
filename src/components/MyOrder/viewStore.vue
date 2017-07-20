@@ -1,63 +1,68 @@
 <template>
 	<div class="wrap">
-		<ul class="viewBox" v-if='viewList'>
-			<li class="viewList" v-for='(shopItem,shopIndex) in viewList'>
-				<div class="storeInfo">
-					<dl>
-						<dt>
-							<img :src="shopItem.cover" @click='storeDetail(shopItem.seller_id)'>
-						</dt>
-						<dd class="name" v-text='shopItem.shop_name'></dd>
-						<dd class="btn">
-							<button @click='escView(shopItem.attention_id)'>取消关注</button>
-						</dd>
-						<dd class="storeEval">
-							<dl>
-								<dt>商品</dt>
-								<dd v-text='shopItem.comment.goods_comment'></dd>
-							</dl>
-							<dl>
-								<dt>服务</dt>
-								<dd v-text='shopItem.comment.service_comment'></dd>
-							</dl>
-							<dl>
-								<dt>物流</dt>
-								<dd v-text='shopItem.comment.logistics_comment'></dd>
-							</dl>
-						</dd>
-					</dl>
-				</div>
-				<div class="goodsInfo">
-					<nav class="title">
-						<div @click='shopItem.goodsList=shopItem.week;shopItem.tabIndex=1;shopItem.scrollIndex=0;' :class='{"active":shopItem.tabIndex===1}'>本周上新（{{shopItem.week_count}}）</div>
-						<div @click='shopItem.goodsList=shopItem.coupon;shopItem.tabIndex=2;shopItem.scrollIndex=0;'  :class='{"active":shopItem.tabIndex===2}'>优惠（{{shopItem.coupon_count}}）</div>
-						<div  @click='shopItem.goodsList=shopItem.hot;shopItem.tabIndex=3;shopItem.scrollIndex=0;'  :class='{"active":shopItem.tabIndex===3}'>热销（{{shopItem.hot_count}}）</div>
-					</nav>
-					<div class="listBox">
-						<div class="left_btn" @click='shopItem.scrollIndex=shopItem.scrollIndex>0?--shopItem.scrollIndex:0'>
-							<i class="el-icon-arrow-left"></i>
-						</div> 
-						<ul>
-							<li v-for="(item,index) in shopItem.goodsList" v-if='index>=shopItem.scrollIndex&&index<(shopItem.scrollIndex+5)'>
+		<div class="box" v-if='viewList.length'>
+			<ul class="viewBox" >
+				<li class="viewList" v-for='(shopItem,shopIndex) in viewList'>
+					<div class="storeInfo">
+						<dl>
+							<dt>
+								<img :src="shopItem.cover" @click='storeDetail(shopItem.seller_id)'>
+							</dt>
+							<dd class="name" v-text='shopItem.shop_name'></dd>
+							<dd class="btn">
+								<button @click='escView(shopItem.attention_id)'>取消关注</button>
+							</dd>
+							<dd class="storeEval">
 								<dl>
-									<dt>
-										<img :src="item.cover" @click='goodDetail(item.goods_id)'>
-									</dt>
-									<dd>
-										<span>{{item.shop_price|currency}}</span>
-										<em>{{item.market_price|currency}}</em>
-									</dd>
+									<dt>商品</dt>
+									<dd v-text='shopItem.comment.goods_comment'></dd>
 								</dl>
-							</li>
-						</ul>
-						<div class="right_btn" @click='shopItem.scrollIndex=shopItem.scrollIndex<shopItem.goodsList.length?++shopItem.scrollIndex:shopItem.goodsList.length'>
-							<i class="el-icon-arrow-right"></i>
+								<dl>
+									<dt>服务</dt>
+									<dd v-text='shopItem.comment.service_comment'></dd>
+								</dl>
+								<dl>
+									<dt>物流</dt>
+									<dd v-text='shopItem.comment.logistics_comment'></dd>
+								</dl>
+							</dd>
+						</dl>
+					</div>
+					<div class="goodsInfo">
+						<nav class="title">
+							<div @click='shopItem.goodsList=shopItem.week;shopItem.tabIndex=1;shopItem.scrollIndex=0;' :class='{"active":shopItem.tabIndex===1}'>本周上新（{{shopItem.week_count}}）</div>
+							<div @click='shopItem.goodsList=shopItem.coupon;shopItem.tabIndex=2;shopItem.scrollIndex=0;'  :class='{"active":shopItem.tabIndex===2}'>优惠（{{shopItem.coupon_count}}）</div>
+							<div  @click='shopItem.goodsList=shopItem.hot;shopItem.tabIndex=3;shopItem.scrollIndex=0;'  :class='{"active":shopItem.tabIndex===3}'>热销（{{shopItem.hot_count}}）</div>
+						</nav>
+						<div class="listBox">
+							<div class="left_btn" @click='shopItem.scrollIndex=shopItem.scrollIndex>0?--shopItem.scrollIndex:0'>
+								<i class="el-icon-arrow-left"></i>
+							</div> 
+							<ul>
+								<li v-for="(item,index) in shopItem.goodsList" v-if='index>=shopItem.scrollIndex&&index<(shopItem.scrollIndex+5)'>
+									<dl>
+										<dt>
+											<img :src="item.cover" @click='goodDetail(item.goods_id)'>
+										</dt>
+										<dd>
+											<span>{{item.shop_price|currency}}</span>
+											<em>{{item.market_price|currency}}</em>
+										</dd>
+									</dl>
+								</li>
+							</ul>
+							<div class="right_btn" @click='shopItem.scrollIndex=shopItem.scrollIndex<shopItem.goodsList.length?++shopItem.scrollIndex:shopItem.goodsList.length'>
+								<i class="el-icon-arrow-right"></i>
+							</div>
 						</div>
 					</div>
-				</div>
-			</li>
-		</ul>
-		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
+				</li>
+			</ul>
+			<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
+		</div>
+		<div v-else style='font-size:16px;'>
+			暂无关注店铺
+		</div>
 	</div>
 </template>
 <script>
@@ -69,7 +74,7 @@
 	export default {
 		data(){
 			return {
-			 	viewList: null,
+			 	viewList: [],
 			 	pagesize: 1 ,// 总页数
 				page: "1"
 			}
@@ -82,10 +87,10 @@
 		},
 		methods:{
 			storeDetail(id){
-				location.href = `storeDetail.html?seller_id=${id}` ;
+				window.open(`storeDetail.html?seller_id=${id}`) ;
 			},
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			// 改变页数
 			changePage(page){

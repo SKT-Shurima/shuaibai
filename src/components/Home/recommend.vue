@@ -1,8 +1,8 @@
 <template>
 	<div class="wrap">
-		<div class="show_ad">
+		<!-- <div class="show_ad">
 			<img src="">
-		</div>
+		</div> -->
 		<div class="theme_box" v-if='theme'>
 			<div class="theme" v-for='(item,index) in theme' :class='{"marginLeft":index%2}'>
 				<dl>
@@ -35,7 +35,7 @@
 		},
 		methods:{
 			goodsDeatil(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			}
 		},
 		mounted(){

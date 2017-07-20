@@ -1,6 +1,7 @@
 <template>
   <div class="wrap" style="width:100%">
     <v-head></v-head>
+    <v-slider></v-slider>
     <v-index></v-index>
     <v-content></v-content>
     <v-foot></v-foot>
@@ -10,6 +11,7 @@
 <script>
   import 'common/css/reset.css';
   import vHead from 'components/Head/Head'
+  import VSlider from 'components/Slider/Slider'
   import vIndex from 'components/Home/index'
   import vContent from 'components/Home/content'
   import vFoot from 'components/Foot/Foot'
@@ -18,6 +20,7 @@
     name: 'app',
     components: {
       vHead,
+      VSlider,
       vIndex,
       vContent,
       vFoot

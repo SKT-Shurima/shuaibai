@@ -1,9 +1,10 @@
 <template>
 	<div class="wrap">
-		<div class="bg">
+		<div class="bg" :style="{backgroundImage: `url(${adImage})`}">
 			
 		</div>
 		<div class="content_layout">
+			<a :href="adParams" class="cd"></a>
 			<div class="login_box">
 				<dl class="border_input margin_bottom">
 					<dt>
@@ -64,8 +65,8 @@
 	</div>
 </template>
 <script>
-import {createToken,login} from '../../common/js/api'
-import {setCookie,getCookie,delCookie} from '../../common/js/common'
+import {createToken,login,getLoginAd} from '../../common/js/api'
+import {setCookie,getCookie,delCookie,errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
 export default {
@@ -76,7 +77,9 @@ export default {
 			verify_code: '',
 			remember: true,
 			token: '',
-			imgSrc: ""
+			imgSrc: "",
+			adImage: "",
+			adParams: ""
 		}
 	},
 	methods:{
@@ -99,7 +102,7 @@ export default {
 					let accountInfo ;
 					if(this.remember){
 						accountInfo = this.username + "&" + this.passwd;  
-						setCookie('accountInfo',accountInfo,30);  
+						setCookie('accountInfo',accountInfo,30*24);  
 					}else {
 						let hasUserInfo = getCookie('accountInfo');
 						if (hasUserInfo) {
@@ -107,14 +110,19 @@ export default {
 						}
 					}
 					// 本地存储登录后返回信息
-					if(localStorage.userInfo) {
-						localStorage.removeItem('userInfo');
+					if(sessionStorage.userInfo) {
+						sessionStorage.removeItem('userInfo');
 						delCookie('access_token');
 					}
-					setCookie('access_token',content.access_token,30);
+					setCookie('access_token',content.access_token,5);
 					content  = JSON.stringify(content);
-					localStorage.setItem('userInfo',content);
-					location.href = 'index.html' ;
+					sessionStorage.setItem('userInfo',content);
+					var lastUrl =  document.referrer ;
+					if (window.history.length>1&&lastUrl.indexOf("module")>=0) {
+						window.history.go(-1);
+					}else{
+						location.href = 'index.html' ;
+					}
 				}
 			})
 		},
@@ -130,6 +138,30 @@ export default {
 				}
 			})
 		},
+		initAd(){
+			let params = {
+				t: "5"
+			}
+			getLoginAd(params).then(res=>{
+				let {errcode,message,content} = res ;
+				if(errcode !== 0){
+					errorInfo(errcode,message) ;
+				}else {
+					this.adImage = content.ads[0].image ;
+					let params = content.ads[0].action.params ;
+					let query = "" ;
+					if (params) {
+						for(let i =0 ; i <params.length ; i++){
+							let key = params[i].key ;
+							let val  =params[i].value ;
+							query += `${key}=${val}&` ;
+						}
+					}
+					let url = content.ads[0].action.jump ;
+					this.adParams = `${url}?${query}` ;
+				}
+			})
+		}
 		
 	},
 	mounted(){
@@ -139,6 +171,7 @@ export default {
 			accountInfo = accountInfo.split("&");
 			this.username = accountInfo[0];
 			this.passwd = accountInfo[1];
+			this.initAd();
 		})
 	}
 }
@@ -159,7 +192,8 @@ $red_color: #f24450;
 		    background-position: center center;
 		    width: 100%;
 		    height: 600px;
-		    background: url('../../../static/loginImg/bg.jpg') no-repeat;
+		    min-width: 1250px;
+		    background-repeat: no-repeat;
 		}
 		.content_layout{
 		    width: 1200px;
@@ -171,7 +205,7 @@ $red_color: #f24450;
 		    .login_box{
 	    	    position: absolute;
 			    top: 70px;
-			    right: 78px;
+			    right: 0px;
 			    width: 372px;
 			    height: 420px;
 			    border-radius: 4px;
@@ -287,6 +321,14 @@ $red_color: #f24450;
 					}
 				}	
 		    }
+		}
+		.cd{
+			display: block;
+			position: absolute;
+			top: 78px;
+			left: 78px;
+			width: 630px;
+			height: 440px;
 		}
 	}
 </style>

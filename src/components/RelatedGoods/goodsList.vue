@@ -42,9 +42,9 @@
 		</ul>
 		<ul class="goodsList" v-if='goods.length>0'>
 			<li v-for='(item,index) in goods' class="infoList">
-				<dl>
+				<dl @click='goodDetail(item.goods_id)'>
 					<dt>
-						<img :src="item.cover"  @click='goodDetail(item.goods_id)'>
+						<img :src="item.cover">
 					</dt>
 					<dd>
 						<div class="sellInfo" v-text='item.name'></div>
@@ -98,7 +98,7 @@ import pagination from '../Common/pagination'
 		},
 		methods:{
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			// 改变页数
 			changePage(page){
@@ -174,21 +174,22 @@ import pagination from '../Common/pagination'
 </script>
 <style lang='scss' scoped>
 $text_color: #666;
-$border_color: #ccc;
+$border_color: #f0f0f0;
+$opera_color: #ccc;
 $primary:#c71724;
 $bg_color: #f5f5f5;
 	.wrap{
 		width: 100%;
 		.opera{
 			overflow: hidden;
-			border: 1px solid $border_color;
+			border: 1px solid $opera_color;
 			li{
 				float: left;
 				text-align: center;
 				height: 36px;
 				line-height: 36px;
 				color: $text_color;
-				border-right: 1px solid $border_color;
+				border-right: 1px solid $opera_color;
 				background-color: $bg_color;
 			}
 			li:last-child{
@@ -218,8 +219,6 @@ $bg_color: #f5f5f5;
 		.goodsList{
 			width: 1002px;
 			margin-top: 20px;
-			border-top:1px solid $border_color;
-			border-left: 1px solid $border_color;
 			overflow: hidden;
 			.infoList{
 				float: left;
@@ -227,18 +226,15 @@ $bg_color: #f5f5f5;
 				height: 330px;
 				padding: 14px;
 				cursor: pointer;
-				border-top: 1px solid transparent;
-				border-left: 1px solid transparent;
-				border-right: 1px solid $border_color;
-				border-bottom: 1px solid $border_color;
+				border: 1px solid transparent;
 				dl{
+					cursor: pointer;
 					dt{
 						width: 220px;
 						height: 220px;
 						img{
 							width: 100%;
 							height: 100%;
-							cursor: pointer; 
 						}
 					}
 					dd{
@@ -247,7 +243,6 @@ $bg_color: #f5f5f5;
 						.sellInfo{
 							height: 36px;
 						    line-height: 18px;
-						    font-weight: 600;
 						    margin-top: 10px;
 						    overflow: hidden;
 						    text-overflow: ellipsis;
@@ -260,7 +255,6 @@ $bg_color: #f5f5f5;
 							margin-top: 6px;
 							span{
 								font-size: 18px;
-								font-weight: 600;
 								color: $primary;
 							}
 							em{
@@ -273,7 +267,8 @@ $bg_color: #f5f5f5;
 				}
 			}
 			.infoList:hover{
-				border:1px solid $primary;
+				border-color: $border_color;
+				box-shadow: 0 0 2px 2px $border_color; 
 			}
 		}
 		.noResult{

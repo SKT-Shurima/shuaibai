@@ -7,9 +7,9 @@
 	 	</div>
 	 	<ul v-if='storeRecommend'>
 	 		<li class="infoList" v-for='item in storeRecommend'>
-	 			<dl>
+	 			<dl @click='goodDetail(item.goods_id)'>
 					<dt>
-						<img :src="item.cover" @click='goodDetail(item.goods_id)'>
+						<img :src="item.cover">
 					</dt>
 					<dd>
 						<div class="sellInfo">
@@ -51,7 +51,7 @@ import {currency} from '../../common/js/filter'
 		},
 		methods:{
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}`  ;
+				window.open(`goodDetail.html?goods_id=${id}`)  ;
 			},
 			init(){
 				let params ={
@@ -78,6 +78,7 @@ import {currency} from '../../common/js/filter'
 $text_color: #666;
 $primary:#c71724;
 $bg_title: #f5f5f5;
+$border_color: #f0f0f0; 
 	 .recommend{
 	 	width: 100%;
 	 	overflow: hidden;
@@ -113,15 +114,24 @@ $bg_title: #f5f5f5;
 		ul{
 			width: 100%;
 			overflow: hidden;
+			margin-top: 10px;
 			.infoList{
 				width: 25%;
 				height: 320px;
 				float: left;
 				padding: 15px;
+				border: 1px solid transparent;
+				dl{
+					cursor: pointer;
+				}
 				dt{
 					width: 216px;
 					height: 216px;
 				}
+			}
+			.infoList:hover{
+				border-color: $border_color;
+				box-shadow: 0 0 2px 2px $border_color; 
 			}
 		}
 		.youLove{

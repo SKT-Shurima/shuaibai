@@ -147,10 +147,10 @@ import pagination from '../Common/pagination'
 		},
 	    methods: {
 	    	goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}`  ;
+				window.open(`goodDetail.html?goods_id=${id}`)  ;
 			},
 			kf(qq){
-	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);
 	        },
 	        handleSelect(key, keyPath) {
 	            console.log(key, keyPath);
@@ -177,15 +177,15 @@ import pagination from '../Common/pagination'
 	   	 	// 申请售后
 	   	 	applyRefund(order_sn,goods_id,option_id){
 	   	 		option_id = option_id?option_id:"";
-	   	 		location.href = `afterSale.html#applyType?order_sn=${order_sn}&goods_id=${goods_id}&option_id=${option_id}`;
+	   	 		window.open(`afterSale.html#applyType?order_sn=${order_sn}&goods_id=${goods_id}&option_id=${option_id}`);
 	   	 	},
 	   	 	// 查看订单详情  物流信息
 	   	 	checkOrder(order_sn){
-	   	 		location.href = `orderDetail.html#?order_sn=${order_sn}`;
+	   	 		window.open(`orderDetail.html#?order_sn=${order_sn}`);
 	   	 	},
 	   	 	// 立即付款
 	   	 	payFor(order_sn){
-	   	 		location.href = `confirmOrder.html#payfor?order_sn=${order_sn}` ;
+	   	 		window.open(`confirmOrder.html#payfor?order_sn=${order_sn}`) ;
 	   	 	},
 	   	 	// 提醒发货
 	   	 	remind(order_sn){
@@ -213,11 +213,11 @@ import pagination from '../Common/pagination'
 	   	 	},
 	   	 	// 再次购买
 	   	 	buyAgain(id){
-	   	 		location.href = `goodDetail.html?goods_id=${id}`;
+	   	 		window.open(`goodDetail.html?goods_id=${id}`);
 	   	 	},
 	   	 	// 评价
 	   	 	toEval(order_sn){
-	   	 		location.href = `eval.html?order_sn=${order_sn}`;
+	   	 		window.open(`eval.html?order_sn=${order_sn}`);
 	   	 	},
 	   	 	// 确认收货
 	   	 	confirmGet(order_sn){

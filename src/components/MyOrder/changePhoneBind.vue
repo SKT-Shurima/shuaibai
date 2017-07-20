@@ -130,7 +130,7 @@ import {hex_md5} from '../../common/js/md5.js'
 	    },
 	    changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 localStorage.currentView = view ;
+	      	 sessionStorage.currentView = view ;
 	    },
       	submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -152,7 +152,7 @@ import {hex_md5} from '../../common/js/md5.js'
 			          	confirmButtonText: '确定',
 			          	callback: action => {
 				            this.$store.commit('switchView','view10');
-				            localStorage.currentView = 'view10';
+				            sessionStorage.currentView = 'view10';
 				        }
 				    });
             	}
@@ -168,9 +168,9 @@ import {hex_md5} from '../../common/js/md5.js'
     },
     created(){
         this.$nextTick(()=>{
-        	if (localStorage.userInfo) {
+        	if (sessionStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}
         })
     }

@@ -22,11 +22,12 @@
 				    </dt>
 				    <dd>
 				    	<span v-text='userInfo.nickname'></span>
+				    	<em>|</em>
 				    	<button @click='quit'>退出登录</button>
 				    </dd>
 				</dl>
 			</li>
-			<li><a href="myOrder.html#view10">我的订单</a>|</li>
+			<li><a href="javascript:window.open('myOrder.html#view10')">我的订单</a>|</li>
 			<li class="collection">
 				<div class="title" @mouseenter='followBol=true' @mouseleave='followBol=false'>我的收藏<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":followBol}'></div>|
 				<div  @mouseenter='followBol=true' @mouseleave='followBol=false' class="collectionBox" v-show='followBol'>
@@ -57,22 +58,15 @@
 				   	</div>
 				</div>
 			</li>
-			<li><a href="http://shuaibo.zertone1.com/shopadmin">商家后台</a>|</li>
-			<li class="service">
-				<div class="title" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false'>客户服务<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":serviceBol}'></div>
-				<ul class="serviceList" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false' v-show='serviceBol'>
-					<!-- <li>售前服务</li>
-					<li>售后服务</li> -->
-					<li><a href="myOrder.html#vip6">投诉中心</a></li>
-				</ul>
-			</li>
+			<li><a href="javascript:window.open('http://shuaibo.zertone1.com/shopadmin')">商家后台</a>|</li>
+			<li><a href="javascript:window.open('myOrder.html#vip6')">投诉中心</a></li>
 		</ul>
 	</div>
 </template>
 <script>
 import {MessageBox} from  'element-ui'
 import {currency} from '../../common/js/filter'
-import {collection,cancelCollections} from '../../common/js/api'
+import {collection,cancelCollections,getUserInfo} from '../../common/js/api'
 import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 	export default{
 		data(){
@@ -94,11 +88,11 @@ import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 		},
 		methods:{
 			personCenter(){
-				location.href = `myOrder.html#vip0` ;
+				window.open(`myOrder.html#view10`) ;
 			},
 			quit(){
 				delCookie('access_token');
-				localStorage.removeItem('userInfo');
+				sessionStorage.removeItem('userInfo');
 				location.href = 'login.html';
 			},
 			addToFavorite() {
@@ -111,7 +105,7 @@ import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 				}
 			},
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			// 取消收藏
 			delColGood(ids){
@@ -154,12 +148,25 @@ import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (localStorage.userInfo) {
-					this.hasUser = true;
-					this.userInfo = JSON.parse(localStorage.userInfo);
-				}
 				let  access_token = getCookie('access_token');
 				if (access_token) {
+					if (sessionStorage.userInfo) {
+						this.hasUser = true;
+						this.userInfo = JSON.parse(sessionStorage.userInfo);
+					}else{
+						let params = {
+							access_token: access_token
+						}
+						getUserInfo(params).then(res=>{
+							let {errcode,message,content} = res ;
+							if(errcode !== 0){
+								errorInfo(errcode,message) ;
+							}else {
+								this.userInfo = content;
+								sessionStorage.userInfo = JSON.stringify(content) ;
+							}
+						})
+					}
 					this.initList();
 				}
 			})
@@ -208,9 +215,9 @@ $bg_color: rgb(217, 193, 191);
 	    			position: absolute;
 	    			padding: 10px;
 	    			right: 0px;
-	    			width: 240px;
+	    			width: 254px;
 	    			border: 1px solid $border_color;
-	    			background-color: #fff;
+	    			background-color: #f7f7f7;
 	    			dt,dd{
 	    				float: left;
 	    			}
@@ -226,7 +233,7 @@ $bg_color: rgb(217, 193, 191);
 	    				}
 	    			}
 	    			dd{
-	    				width: 140px;
+	    				width: 160px;
 	    				margin-left: 10px;
 	    				padding-top: 10px;
 	    				span{
@@ -237,6 +244,10 @@ $bg_color: rgb(217, 193, 191);
 						    text-overflow:ellipsis;
 						    vertical-align: middle;
 						    color: $primary;
+	    				}
+	    				em{
+							vertical-align: baseline;
+							padding-left: 6px;
 	    				}
 	    				button{
 	    					display: inline-block;
@@ -354,32 +365,6 @@ $bg_color: rgb(217, 193, 191);
 								color: $primary;
 							}
 						}
-	    			}
-	    		}
-	    	}
-	    	.service{
-	    		position: relative;
-	    		.serviceList{
-	    			position: absolute;
-	    			left: 0px;
-	    			top: 30px;
-	    			border: 1px solid $border_color;
-	    			padding: 0px 14px;
-	    			background-color: #fff;
-	    			li{
-	    				height: 30px;
-	    				line-height: 30px;
-	    				color: #000;
-	    				cursor: pointer;
-	    			}
-	    			li:hover{
-	    				color: $primary;
-	    			}
-	    			a{
-	    				padding: 0px;
-	    			}
-	    			a:hover{
-	    				color: $primary;
 	    			}
 	    		}
 	    	}

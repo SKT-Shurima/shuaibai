@@ -102,7 +102,7 @@ import {MessageBox} from  'element-ui'
             	} else {
             		this.userInfo.email = content;
             		this.userInfo.has_email = true ;
-            		localStorage.userInfo = JSON.stringify(this.userInfo) ;
+            		sessionStorage.userInfo = JSON.stringify(this.userInfo) ;
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
@@ -122,9 +122,9 @@ import {MessageBox} from  'element-ui'
     },
     created(){
         this.$nextTick(()=>{
-        	if (localStorage.userInfo) {
+        	if (sessionStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}
         })
     }

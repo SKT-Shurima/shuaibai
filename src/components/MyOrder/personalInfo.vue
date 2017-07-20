@@ -85,7 +85,7 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.nickname = content ;
-	    			localStorage.userInfo = JSON.stringify(_this.userInfo);
+	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			_this.editBirthday();
 	    		} 
 	    	});
@@ -103,7 +103,7 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.birthday = content ;
-	    			localStorage.userInfo = JSON.stringify(_this.userInfo);
+	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			_this.editSex();
 	    		} 
 	    	});
@@ -121,7 +121,7 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.sex = content ;
-	    			localStorage.userInfo = JSON.stringify(_this.userInfo);
+	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			MessageBox.alert('信息保存成功', '提示', {
 			          	confirmButtonText: '确定',
 			          	type: 'success',
@@ -153,8 +153,8 @@ import {MessageBox} from  'element-ui'
 	},
  	mounted(){
  		this.$nextTick(()=>{
- 			if (localStorage.userInfo) {
-				this.userInfo = JSON.parse(localStorage.userInfo);
+ 			if (sessionStorage.userInfo) {
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 				let bir = this.userInfo.birthday ;
 				bir = parseInt(bir/1000) + "" ;
 				let len = bir.length ;

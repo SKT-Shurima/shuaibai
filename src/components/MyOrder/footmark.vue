@@ -1,38 +1,43 @@
 <template>
 	<div class="wrap" ref='box'>
-		<h4 class="title">
-			以下是您最近30天的浏览记录
-		</h4>
-		<ul class="recordList" v-if='markList'>
-			<li v-for='(dayItem,index) in markList' :key='item'>
-				<dl class="time">
-					<dt>
-						{{dayItem[0].date_add*1000|dateStyle}}
-					</dt>
-					<dd>
-					   {{dayItem[0].date_add-0 === todayTime?"今天":dayItem[0].date_add-0 ===todayTime-86400?'昨天':dayItem[0].date_add-0 === todayTime-86400*2?'前天':""}}
-					</dd>
-				</dl>
-				<dl class="progress">
-					<dt></dt>
-					<dd></dd>
-				</dl>
-				<ul>
-					<li v-for="(item,index) in dayItem" :class='{"isNoTop":index>4}'>
-						<dl>
-							<dt>
-								<img :src="item.cover" @click='goodDetail(item.goods_id)'>
-							</dt>
-							<dd>
-								<span>{{item.sale_count|currency}}</span>
-								<!-- <em>{{198.00|currency}}</em> -->
-							</dd>
-						</dl>
-					</li>
-				</ul>
-			</li>
-		</ul>
-		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
+		<div class="box" v-if='markList.length'>
+			<h4 class="title">
+				以下是您最近30天的浏览记录
+			</h4>
+			<ul class="recordList">
+				<li v-for='(dayItem,index) in markList' :key='item'>
+					<dl class="time">
+						<dt>
+							{{dayItem[0].date_add*1000|dateStyle}}
+						</dt>
+						<dd>
+						   {{dayItem[0].date_add-0 === todayTime?"今天":dayItem[0].date_add-0 ===todayTime-86400?'昨天':dayItem[0].date_add-0 === todayTime-86400*2?'前天':""}}
+						</dd>
+					</dl>
+					<dl class="progress">
+						<dt></dt>
+						<dd></dd>
+					</dl>
+					<ul>
+						<li v-for="(item,index) in dayItem" :class='{"isNoTop":index>4}'>
+							<dl>
+								<dt>
+									<img :src="item.cover" @click='goodDetail(item.goods_id)'>
+								</dt>
+								<dd>
+									<span>{{item.sale_count|currency}}</span>
+									<!-- <em>{{198.00|currency}}</em> -->
+								</dd>
+							</dl>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
+		</div>
+		<div v-else style='font-size:16px;'>
+			暂无足迹
+		</div>
 	</div>
 </template>
 <script >
@@ -43,7 +48,7 @@ import pagination from '../Common/pagination'
 	export default{
 		data(){
 			return{
-				markList: null,
+				markList: [],
 				todayTime: new Date(new Date().setHours(0, 0, 0, 0)) / 1000,
 				page: "1",
 				pagesize: 1 ,// 总页数
@@ -57,7 +62,7 @@ import pagination from '../Common/pagination'
 		},
 		methods:{
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}`  ;
+				window.open(`goodDetail.html?goods_id=${id}`)  ;
 			},
 			deleteFoots(id){
 				MessageBox.confirm('此操作将永久删除该记录, 是否继续?', '提示', {

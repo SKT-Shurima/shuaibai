@@ -13,7 +13,7 @@
 		<el-row>
 			<el-col :span='4'>数额</el-col>
 			<el-col :span='10'>
-				<select v-model="value" placeholder="请选择" size='mini' class='select' @change='chooseVal(value)'>
+				<select v-model="value" placeholder="请选择"  class='select' @change='chooseVal(value)'>
 				    <option
 				      v-for="(item,index) in options"
 				      :key="item.mobile_recharge_fee_id"
@@ -89,6 +89,7 @@ import rechargeType from './rechargeType'
 						errorInfo(errcode,message) ;
 					}else{
 						this.order = content ;
+						this.order.price = this.price ;
 						this.payBol = true;
 					}
 				})

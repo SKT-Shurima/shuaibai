@@ -2,20 +2,20 @@
 	<div class="wrap">
 		<div class="box">
 			<div class="theme_img" v-if='special'>
-				<img :src="special[0].image" @click='goodDetail(special[0].params.goods_id)'>
+				<a :href="url"><img :src="special[0].image"></a>
 			</div>
 			<div class="theme_box">
 				<el-row class="themeTitle">
-			 		<el-col :span='7'>
+			 		<el-col :span='6'>
 			 			<div class="slider"></div>
 			 		</el-col>
-			 		<el-col :span='10'>
+			 		<el-col :span='10' :offset='1'>
 			 			<div class="text">
 			 				<img src="../../../static/themeImg/snapup.png" height="24" width="24">
 			 				一元抢购
 			 			</div>
 			 		</el-col>
-			 		<el-col :span='7' :offset='1'>
+			 		<el-col :span='6' :offset='1'>
 			 			<div class="slider"></div>
 			 		</el-col>
 			 	</el-row>
@@ -91,7 +91,8 @@ import {MessageBox} from  'element-ui'
 				pagesize: 1,
 				goodsList: null,
 				nowTime: 0 ,
-				reqParams: null
+				reqParams: null,
+				url: ""
 			}
 		},
 		filters:{
@@ -107,12 +108,12 @@ import {MessageBox} from  'element-ui'
 				_this.initList();
 			},
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			initList(){
 				let _this = this ;
 				let params = {
-					type: _this.reqParams.type,
+					type: "1",
 					page: _this.currentPage 
 				}
 				getThematicActivities(params).then(res=>{
@@ -123,6 +124,8 @@ import {MessageBox} from  'element-ui'
 						this.goodsList = content.goods.goods ;
 						this.pagesize = content.goods.pagesize ;
 						this.special = content.special ;
+						let special = content.special ;
+						this.url = `${special[0].web_param}?goods_id=${special[0].params.goods_id}`;
 					}
 				})
 			},
@@ -142,8 +145,7 @@ import {MessageBox} from  'element-ui'
   }
 </script>
 <style scoped lang='scss'>
-$border_list: #f0f0f0;
-$border_color: #ccc;
+$border_color: #f0f0f0;
 $linethrough_color: #999;
 $btn_bg: #fff882;
 $start_bg: #00bf8b;
@@ -175,13 +177,10 @@ $primary:#c71724;
   		width: 100%;
   		overflow: hidden;
   		margin-top: 20px;
-  		border-bottom: 1px solid $border_list;
   		.list_unit{
-  			width: 20%;
+  			width: 25%;
   			float: left;
-  			border: 1px solid $border_list;
-  			margin-right: -1px;
-  			margin-bottom: -1px;
+  			border: 1px solid transparent;
   			dt{
   				padding-top: 14px;
   				padding-left: 14px;
@@ -189,21 +188,26 @@ $primary:#c71724;
   				.info_img{
 					width: 100%;
 					img{
-						width: 220px;
-						height: 220px;
+						width: 100%;
 						cursor: pointer;
 					}
   				}
   				.info_text{
 					width: 100%;
-					height: 54px;
-					padding-top: 8px;
-					padding-bottom: 8px;
+					height: 36px;
+					margin-top: 8px;
+					margin-bottom: 8px;
 					line-height: 18px;
+					overflow: hidden;
+				 	text-overflow: ellipsis;
+				 	display: -webkit-box;
+				 	-webkit-line-clamp: 3;
+				 	-webkit-box-orient: vertical;
+
   				}
   				.info_price{
   					overflow: hidden;
-  					height: 16px;
+  					height: 20px;
                     margin-bottom: 10px;
   					span{
   						color: $primary;
@@ -258,6 +262,10 @@ $primary:#c71724;
 	  			.over{
 	  				background-color: $over_bg;
 	  			}
+  			}
+  			.list_unit:hover{
+  				border-color: $border_color;
+				box-shadow: 0 0 2px 2px $border_color;
   			}
   		}
 	}

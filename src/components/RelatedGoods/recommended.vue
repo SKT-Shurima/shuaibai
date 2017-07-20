@@ -7,7 +7,7 @@
 	 	</div>
 			<ul v-if='hightGoods'>
 				<li v-for='(item,index) in hightGoods' class="infoList" :key='item'>
-					<dl>
+					<dl  @click='goodDetail(item.goods_id)'>
 						<dt>
 							<img :src="item.cover">
 						</dt>
@@ -41,6 +41,11 @@ import {getHighGoods} from '../../common/js/api'
 		filters:{
 			currency
 		},
+		methods:{
+			goodDetail(id){
+				window.open(`goodDetail.html?goods_id=${id}`) ;
+			}
+		},
 		mounted(){
 			this.$nextTick(()=>{
 				this.reqParams = getRequest();
@@ -67,6 +72,7 @@ $primary:#c71724;
 $bg_title: #f5f5f5;
 .infoList{
 	dl{
+		cursor: pointer;
 		dt{
 			width: 210px;
 			height: 210px;

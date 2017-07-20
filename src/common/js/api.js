@@ -22,6 +22,10 @@ export const reg = params => {
 	params = trans(params);
 	return axios.post(`${base}/customerAction/register`,params).then( res => res.data);
 }
+// 注册协议
+export const  getBaseData = () =>{
+	return axios.get(`${base}/initAction/getBaseData`).then(res=>res.data);
+}
 // 完善信息
 export const  perInfomation = params =>{
 	params = trans(params);
@@ -38,6 +42,11 @@ export const sendCode = params =>{
 export const login = params =>{
 	params = trans(params);
 	return axios.get(`${base}/customerAction/login?`+params).then( res=> res.data);
+}
+// 登录广告
+export const getLoginAd= params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/AdvertisementAction/getLoginAd`,params).then(res=>res.data) ;
 }
 
 //  生成验证码token
@@ -199,6 +208,11 @@ export const getOrders = params => {
 	params = trans(params);
 	return axios.post(`${base}/orderAction/getOrders`,params).then(res=>res.data); 
 } 
+// 话费流浪充值列表
+export const mobileOrders = params =>{
+	params =  trans(params);
+	return axios.post(`${base}/orderAction/mobileOrders`,params).then(res=>res.data);
+}
 
 // 商品收藏列表
 export const collection = params =>{
@@ -396,7 +410,11 @@ export const cancelFollow= params=>{
 	params =trans(params);
 	return axios.post(`${base}/shopAction/cancelFollow`,params).then(res=>res.data);
 }
-
+// 店铺信息
+export const  getShopInfo= params =>{
+	params = trans(params);
+	return axios.get(`${base}/shopAction/getSellerInfo?${params}`).then(res=>res.data);
+}
 
 // 店铺详情
 export const getSellerInfo =  params => {

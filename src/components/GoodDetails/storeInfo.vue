@@ -64,7 +64,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
         location.href = `storeDetail.html?seller_id=${id}` ;
       },
       kf(qq){
-        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+        window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);
       },
 			follow(){
 				let _this = this ;
@@ -129,7 +129,7 @@ $red_color: #f24450;
       				float: left;
       				width: 28px;
       				height: 1px;
-      			    margin-top: 10px;
+    			    margin-top: 12px;
       				background-color: #fff;
       			}
       			.name{
@@ -139,6 +139,9 @@ $red_color: #f24450;
       				text-align: center;
       				color: #fff;
       				font-size: 20px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
       			}
   			}
   		}
@@ -199,7 +202,7 @@ $red_color: #f24450;
   				}
   			}
   			.collectBtn{
-  				margin-top: 24px;
+  				margin-top: 18px;
   				text-align: center;
   				.el-button{
   					border: 1px solid $red_color;

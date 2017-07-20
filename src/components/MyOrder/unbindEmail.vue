@@ -101,7 +101,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
             	} else {
             		this.userInfo.email = "";
             		this.userInfo.has_email = false ;
-            		localStorage.userInfo = JSON.stringify(this.userInfo) ;
+            		sessionStorage.userInfo = JSON.stringify(this.userInfo) ;
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
@@ -121,9 +121,9 @@ import {errorInfo,getCookie} from '../../common/js/common'
     },
     created(){
         this.$nextTick(()=>{
-        	if (localStorage.userInfo) {
+        	if (sessionStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}
         })
     }

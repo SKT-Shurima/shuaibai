@@ -24,7 +24,8 @@ import {getRequest} from '../../common/js/common'
 			return {
 				reqParams: null,
 				fIndex: null,
-				sIndex: null
+				sIndex: null,
+				once: true
 			}
 		},
 		props:{
@@ -39,20 +40,24 @@ import {getRequest} from '../../common/js/common'
 		watch: {
 			sellerCat:{
 				handler(newVal,oldVal){
-					let _this = this ;
-					let catIndex  = _this.reqParams.catIndex ;
-					let catId = _this.reqParams.catId ;
-					if (catIndex) {
-						let cat = catIndex.split(',') ;
-						_this.fIndex = cat[0] -0 ;
-						_this.sIndex = cat[1] -0 ;
-						_this.sellerCat[_this.fIndex].bol = true ;
-						let id = _this.sellerCat[_this.fIndex].child_category[_this.sIndex].seller_cat_id ;
-						_this.$emit('getCat',id) ;
+					let once = this.once ;
+					if (once) {
+						let _this = this ;
+						let catIndex  = _this.reqParams.catIndex ;
+						let catId = _this.reqParams.catId ;
+						if (catIndex) {
+							let cat = catIndex.split(',') ;
+							_this.fIndex = cat[0] -0 ;
+							_this.sIndex = cat[1] -0 ;
+							_this.sellerCat[_this.fIndex].bol = true ;
+							let id = _this.sellerCat[_this.fIndex].child_category[_this.sIndex].seller_cat_id ;
+							_this.$emit('getCat',id) ;
+						}
+						if (catId) {
+							_this.$emit('getCat',catId) ;
+						}
 					}
-					if (catId) {
-						_this.$emit('getCat',catId) ;
-					}
+					this.once = false ;
 				},
 				deep: true
 			}
@@ -61,9 +66,9 @@ import {getRequest} from '../../common/js/common'
 			checkStore(mask){
 	     		let id = this.sellerId ;
 	     		if (true) {
-	     			location.href = `storeDetail.html?seller_id=${id}&is_recommend=1` ;
+	     			window.open(`storeDetail.html?seller_id=${id}&is_recommend=1`) ;
 	     		}else{
-	     			location.href = `storeDetail.html?seller_id=${id}` ;
+	     			window.open(`storeDetail.html?seller_id=${id}`) ;
 	     		}
 	     		
 	     	},
@@ -73,11 +78,11 @@ import {getRequest} from '../../common/js/common'
 				let sellerId = _this.sellerId ;
 				_this.fIndex= sellerIndex;
 				_this.sIndex = index;
-				location.href= `storeDetail.html?seller_id=${sellerId}&catIndex=${catIndex}`
+				window.open(`storeDetail.html?seller_id=${sellerId}&catIndex=${catIndex}`);
 			},
 			checkCatId(catId){
 				let id = this.sellerId ;
-				location.href= `storeDetail.html?seller_id=${id}&catId=${catId}`;
+				window.open(`storeDetail.html?seller_id=${id}&catId=${catId}`);
 			}
 		},
 		mounted(){
@@ -96,7 +101,6 @@ $bg_title: #f5f5f5;
 		width: 100%;
 		.navList{
 			width: 220px;
-			margin-left: 10px;
 			border-left: 1px solid $border_color;
 			border-right: 1px solid $border_color;
 			border-top: 1px solid $border_color;

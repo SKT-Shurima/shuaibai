@@ -86,9 +86,9 @@
 					<img src="../../../static/indexImg/message.png" height="16" width="16">
 					优惠快讯
 				</span>
-				<em>
+			<!-- 	<em>
 					更多<img src="../../../static/commonImg/leftArrow.png" height="10" width="5" alt="">
-				</em>
+				</em> -->
 			</div>
 			<ul class="msg_list">
 				<li>伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶</li>
@@ -99,12 +99,16 @@
 	</div>
 </template>
 <script>
+import {getUserInfo} from '../../common/js/api'
+import {getCookie} from '../../common/js/common'
 import {num_filter} from '../../common/js/filter'
 	export default{
-		props:{
-			userInfo: {
-				type: Object,
-				required: true 
+		data(){
+			return {
+				userInfo: {
+					avater: "",
+					nickname: ""
+				}
 			}
 		},
 		filters:{
@@ -112,14 +116,38 @@ import {num_filter} from '../../common/js/filter'
 		},
 		methods: {
 			personCenter(){
-				location.href = `myOrder.html#vip0` ;
+				window.open(`myOrder.html#view10`) ;
 			},
 			afterSale(){
-				location.href = `myOrder.html#view01`;
+				window.open(`myOrder.html#view01`);
 			},
 			checkOrder(index){
-				location.href = `myOrder.html#view0?orderIndex=${index}`;
+				window.open(`myOrder.html#view0?orderIndex=${index}`);
 			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				let  access_token = getCookie('access_token');
+				if (access_token) {
+					if (sessionStorage.userInfo) {
+						this.hasUser = true;
+						this.userInfo = JSON.parse(sessionStorage.userInfo);
+					}else{
+						let params = {
+							access_token: access_token
+						}
+						getUserInfo(params).then(res=>{
+							let {errcode,message,content} = res ;
+							if(errcode !== 0){
+								errorInfo(errcode,message) ;
+							}else {
+								this.userInfo = content;
+								sessionStorage.userInfo = JSON.stringify(content) ;
+							}
+						})
+					}
+				}
+			})
 		}
 	}
 </script>
@@ -131,13 +159,15 @@ $text_color: #666;
 	margin-top: 0px;
 	.info_box{
 		width: 100%;
-		height: 254px;
+		height: 240px;
 		dl{
-			width: 100%;
-			height: 130px;
-			padding-top: 22px;
-			padding-bottom: 10px;
-			cursor: pointer;
+		    width: 100%;
+		    height: 118px;
+		    margin-top: 12px;
+		    padding-top: 10px;
+		    padding-bottom: 10px;
+		    cursor: pointer;
+		    background-color: #f2f2f2;
 			dt{
 				width: 70px;
 				margin: 0px auto;
@@ -175,7 +205,7 @@ $text_color: #666;
 			.info_money{
 				width: 100%;
 				height: 44px;
-				padding-bottom: 10px;
+				padding-top: 4px;
 				border-bottom: 1px solid $border_color;
 				text-align: center;
 				.info_num{

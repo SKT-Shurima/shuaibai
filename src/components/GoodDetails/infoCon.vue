@@ -8,7 +8,6 @@
 					<magnifying-glass :currentImg='currentImg'></magnifying-glass>
 				</dt>
 				<dd>
-					<div class="leftBtn" @click='imgListIndex--;'><i class="el-icon-caret-left"></i></div>
 					<div class="imgList">
 						<ul>
 							<li v-for='(item,index) in goods.images' @click='imgListIndex=index;currentImg=item;' :class='{"isClick":imgListIndex===index}'> 
@@ -16,7 +15,6 @@
 							</li>
 						</ul>
 					</div>
-					<div class="rightBtn" @click='imgListIndex++;'><i class="el-icon-caret-right"></i></div>
 				</dd>
 			</dl>
 			<div class="shopInfo">
@@ -49,7 +47,7 @@
 							     帅柏价
 							</el-col>
 							<el-col :span='20' style='color: #f24450;'>
-								￥<span style="font-size:30px;">{{(salePrice*numInput>(full[0].limit-0)?salePrice*numInput-full[0].amount:salePrice*numInput).toFixed(2)}}</span>
+								￥<span style="font-size:30px;">{{(salePrice-0).toFixed(2)}}</span>
 							</el-col>
 						</el-row>
 						<el-row>
@@ -152,7 +150,7 @@
 				addBol: true, //  加入购物车开关
 				goods: null, // 请求成功后的商品信息
 				full: null, // 满减
-				imgListIndex: 0, // 详细展示图列表索引 默认为0
+				imgListIndex: 0, 
 				currentImg: "" , // 当前详情页的大图
 				salePrice: 0, // 帅柏价
 				version: '', 
@@ -338,7 +336,8 @@
 				let _this = this ;
 				if (_this.goods.options.length&&!_this.option_id) {
 					MessageBox.alert("请选择商品规格", '提示', {
-			          	confirmButtonText: '确定'
+			          	confirmButtonText: '确定',
+			          	type: 'warning'
 				    });
 				    return ;
 				}
@@ -353,10 +352,10 @@
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						Message.success({
-				          message: '成功添加购物车',
-				          type: 'success'
-				        });
+						MessageBox.alert(message, '提示', {
+				          	confirmButtonText: '确定',
+				          	type: 'success'
+					    });
 				        this.$emit('sendShopCar')
 					}
 				})
@@ -368,7 +367,7 @@
 				date_start*=1000;
 				setInterval(()=>{
 					this.nowTime = new Date().getTime() ;
-					date_start-this.nowTime>0?(this.payBol= false):date_end-this.nowTime>0?(this.payBol=true):(this.payBol=false,this.addBol=false) 
+					date_start-this.nowTime>0?(this.payBol= false):date_end-this.nowTime>0?(this.payBol=true):(this.payBol=false,this.addBol=false) ;
 				},1000)
 			}
 		},
@@ -440,34 +439,21 @@ $title_color: #333;
 			dd{
 				margin-top: 30px;
 				overflow: hidden;
-				.leftBtn,.rightBtn{
-					float: left;
-					cursor: pointer;
-					width: 20px;
-					height: 60px;
-					text-align: center;
-					background-color: #f5f5f5;
-					border-radius: 4px;
-					i{
-						line-height: 60px;
-						color: #aaa;
-					}
-				}
 				.imgList{
 					float: left;
-					width: 356px;
+					width: 400px;
 					margin-left: 12px;
 					margin-right: 12px;
 					overflow: hidden;
 					li{
 						float: left;
-						width: 60px;
-						height: 60px;
+						width: 80px;
+						height: 80px;
 						margin-right: 14px;
 						border: 2px solid transparent;
 						img{
-							width: 58px;
-							height: 58px;
+							width: 78px;
+							height: 78px;
 							cursor: pointer;
 						}
 					}

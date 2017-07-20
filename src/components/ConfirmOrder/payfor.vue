@@ -55,7 +55,7 @@ import {getHashReq,getCookie} from '../../common/js/common'
 					          	confirmButtonText: '确定',
 					          	callback: action => {
 					          		if (action==='confirm') {
-					          			window.location.href = 'login.html';
+					          			location.href = 'login.html';
 					          		}
 					          	}
 						    });
@@ -69,9 +69,9 @@ import {getHashReq,getCookie} from '../../common/js/common'
 						status = 0 ;
 						count = content.amount;
 						if (_this.typeIndex==="1") {
-							let userInfo =  JSON.parse(localStorage.userInfo) ;
+							let userInfo =  JSON.parse(sessionStorage.userInfo) ;
 							userInfo.account -= count ;
-							localStorage.userInfo = JSON.stringify(userInfo);
+							sessionStorage.userInfo = JSON.stringify(userInfo);
 							location.hash= `payResult?count=${count}&status=${status}` ;
 						}
 						if (_this.typeIndex==='4') {

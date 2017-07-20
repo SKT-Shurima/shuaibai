@@ -1,37 +1,42 @@
 <template>
 	<div class="wrap">
 		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view20")'>消息</span></h4>
-		<ul class="orderMsg" v-if='msgList.length>0'>
-			<li v-for='(item,index) in msgList' :key='item'>
-				<el-row>
-					<el-col :span='4'>
-						订单消息
-					</el-col>
-					<el-col :span='10'>
-						您的订单有新的动态
-					</el-col>
-					<el-col :span='10' style='text-align: right;padding-right: 34px;'>
-						{{item.date_add*1000 | timeTrans}}
-					</el-col>
-				</el-row>
-				<dl>
-					<dt>
-						<img :src="item.goods_cover">
-					</dt>
-					<dd style="width:240px;line-height:70px;">
-						订单号: {{item.order_sn}}
-					</dd>
-					<dd style="width:80px;line-height:70px;" v-text='item.state_name'></dd>
-					<dd style="padding-top:24px; ">
-						<el-button size='mini' type='primary' @click='checkDetail(item.order_sn)'>
-							去看看
-						</el-button>
-					</dd>
-				</dl>
-			</li>
-		</ul>
+		<div v-if='msgList!==""'>
+			<ul class="orderMsg" v-if='msgList.length>0'>
+				<li v-for='(item,index) in msgList' :key='item'>
+					<el-row>
+						<el-col :span='4'>
+							订单消息
+						</el-col>
+						<el-col :span='10'>
+							您的订单有新的动态
+						</el-col>
+						<el-col :span='10' style='text-align: right;padding-right: 34px;'>
+							{{item.date_add*1000 | timeTrans}}
+						</el-col>
+					</el-row>
+					<dl>
+						<dt>
+							<img :src="item.goods_cover">
+						</dt>
+						<dd style="width:240px;line-height:70px;">
+							订单号: {{item.order_sn}}
+						</dd>
+						<dd style="width:80px;line-height:70px;" v-text='item.state_name'></dd>
+						<dd style="padding-top:24px; ">
+							<el-button size='mini' type='primary' @click='checkDetail(item.order_sn)'>
+								去看看
+							</el-button>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+			<div v-else class="noMsg">
+				暂无消息
+			</div>
+		</div>
 		<div v-else class="noMsg">
-			暂无消息
+			正在请求数据请稍后。。。
 		</div>
 		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
 	</div>
@@ -44,7 +49,7 @@ import pagination from '../Common/pagination'
 	export default {
 		data(){
 			return {
-				msgList: [],
+				msgList: "",
 				page: "1",
 				pagesize: 1 ,// 总页数
 			}
@@ -61,7 +66,7 @@ import pagination from '../Common/pagination'
 		      	 location.hash = view ;
 		    },
 		    checkDetail(order_sn){
-		    	location.href = `orderDetail.html#?order_sn=${order_sn}` ; 
+		    	window.open(`orderDetail.html#?order_sn=${order_sn}`) ; 
 		    },
 		    // 改变页数
 			changePage(page){

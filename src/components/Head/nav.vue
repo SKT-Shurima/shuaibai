@@ -5,7 +5,7 @@
 				<dl>
 					<dt @mouseleave='listBol=false;listConBol=false'>
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
-						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-if='listConBol'>
+						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-show='listConBol'>
 							<li v-for='(item,index) in category' :key='item' @click='checkGoods(index,item.name)'  @mouseenter='listIndex=index;fIndex=index' :class='{"checkUnit":listIndex===index}'>
 								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
 								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
@@ -55,7 +55,7 @@ import guessLike from '../Common/guessLike'
     },
     methods:{
     	checkGoods(index,name){
-     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
+     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`) ;
      	},
     	initLevel(cat){
     		let _this = this ;
@@ -127,7 +127,8 @@ $border_color: #ccc;
 						height: 500px;
 						background-color: #c81623;
 						color: #fff;
-						text-align: center;
+						text-indent: 16px;
+						text-align: left;
 						z-index: 100;
 						li{
 							width: 100%;

@@ -103,7 +103,7 @@ import pagination from '../Common/pagination'
 		},
 	    methods: {
 	    	goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}`  ;
+				window.open(`goodDetail.html?goods_id=${id}`)  ;
 			},
 	        handleSelect(key, keyPath) {
 	            console.log(key, keyPath);
@@ -126,9 +126,9 @@ import pagination from '../Common/pagination'
 	   	 	// 查看售后详情
 	   	 	checkRefund(refund_sn,type){
 	   	 		if (type==="1") {
-	   	 			location.href = `moneyReturn.html#seller?refund_sn=${refund_sn}`;
+	   	 			window.open(`moneyReturn.html#seller?refund_sn=${refund_sn}`);
 	   	 		}else {
-	   	 			location.href = `goodsReturn.html#seller?refund_sn=${refund_sn}`;
+	   	 			window.open(`goodsReturn.html#seller?refund_sn=${refund_sn}`);
 	   	 		}
 	   	 		
 	   	 	},

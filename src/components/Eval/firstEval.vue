@@ -76,13 +76,11 @@
 		<div class="evalBtn">
 			<el-button type='primary' @click='sendComment' >发表评论</el-button>
 		</div>
-		<upload-tips></upload-tips>
 	</div>
 </template>
 <script >
 import {getRequest,errorInfo,getCookie} from '../../common/js/common'
 import {commentGoods} from '../../common/js/api'
-import uploadTips from '../Common/uploadTips'
 import {MessageBox,Message} from  'element-ui'
 	export default{
 		data(){

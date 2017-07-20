@@ -38,7 +38,7 @@ export default {
 	},
 	methods:{
 		goBack(){
-			location.replace(`myOrder.html#vip70`);
+			window.history.go(-1);
 		},
 		countStatus(){
 			let _this = this ;

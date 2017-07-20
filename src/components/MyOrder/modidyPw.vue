@@ -17,7 +17,7 @@
 			    <el-input v-model="ruleForm.confirm_passwd" type='password'></el-input>
 			  </el-form-item>
 		</div>
-		<div style="width:500px;margin:50px 100px;">
+		<div style="width:300px;margin:50px 100px;">
 			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.verify_code&&ruleForm.passwd&&ruleForm.confirm_passwd)'>重制密码并重新登录</el-button>
 		</div>	  
 	</el-form>
@@ -25,7 +25,7 @@
 </template>
 <script>
 import {modifyPassword,sendCode} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5.js'
   export default {
@@ -60,11 +60,10 @@ import {hex_md5} from '../../common/js/md5.js'
 	      var validatePass = (rule, value, callback) => {
 	        if (value === '') {
 	          callback(new Error('请输入密码'));
-	        } else {
-	          if (this.ruleForm.confirm_passwd !== '') {
-	            this.$refs.ruleForm.validateField('confirm_passwd');
-	          }
-	          callback();
+	        } else if(value.length<6){
+	        	callback(new Error('密码长度至少六位'));
+	        }else{
+	        	callback();
 	        }
 	      };
 	      // 确认密码验证
@@ -151,11 +150,14 @@ import {hex_md5} from '../../common/js/md5.js'
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
-				            this.$store.commit('switchView','view10');
-				            localStorage.currentView = 'view10';
+				            let userInfo = sessionStorage.userInfo;
+				            if (userInfo) {
+				            	sessionStorage.removeItem("userInfo");
+				            	delCookie('access_token');
+				            }
+				            location.href = 'login.html' ;
 				        }
 				    });
-            		
             	}
             })
           } else {
@@ -169,9 +171,9 @@ import {hex_md5} from '../../common/js/md5.js'
     },
     created(){
         this.$nextTick(()=>{
-        	if (localStorage.userInfo) {
+        	if (sessionStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}
         })
     }

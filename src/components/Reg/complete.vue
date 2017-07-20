@@ -58,11 +58,10 @@ import {hex_md5} from '../../common/js/md5'
 	      var validatePass = (rule, value, callback) => {
 	        if (value === '') {
 	          callback(new Error('请输入密码'));
-	        } else {
-	          if (this.ruleForm.confirm_passwd !== '') {
-	            this.$refs.ruleForm.validateField('confirm_passwd');
-	          }
-	          callback();
+	        } else if(value.length<6){
+	        	callback(new Error('密码长度至少六位'));
+	        }else{
+	        	callback();
 	        }
 	      };
 	      // 确认密码验证
@@ -159,7 +158,7 @@ import {hex_md5} from '../../common/js/md5'
             		let userInfo = content ; 
             		let access_token= content.access_token ;
             		userInfo = JSON.stringify(userInfo);
-            		localStorage.userInfo = userInfo ;
+            		sessionStorage.userInfo = userInfo ;
             		location.href = 'index.html' ;
             	}
             })

@@ -29,7 +29,7 @@ export const getRequest = ()=>{
  // 设置cookie  
 export const setCookie = (c_name,value,expTime)=>{  
     var exdate = new Date();  
-    exdate.setTime(exdate.getTime() + expTime *24 *3600 * 1000);  
+    exdate.setTime(exdate.getTime() + expTime *3600 * 1000);  
     document.cookie= c_name + "=" + escape(value)+((expTime==null) ? "" : ";expires="+exdate.toGMTString());  
 }
 // 读取cookie  
@@ -61,12 +61,15 @@ export const delCookie = (c_name)=>{
 import {MessageBox} from  'element-ui'
 export const errorInfo= (errcode,message)=>{
 	if (errcode === 99) {
-		MessageBox.alert(message, '提示', {
-          	confirmButtonText: '确定',
-          	callback: action => {
-          		window.location.href = 'login.html';
-          	}
-	    });
+        MessageBox.confirm(message, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            window.location.href = 'login.html';
+        }).catch(() => {
+            return false ;
+        });
 	}else{
 		MessageBox.alert(message, '提示', {
           	confirmButtonText: '确定'

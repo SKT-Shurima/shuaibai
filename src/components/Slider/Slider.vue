@@ -9,7 +9,9 @@
 					</div>
 				</li>
 				<li>
-					在线客服
+					<a href="javascript:window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);">
+						在线客服
+					</a>
 				</li>
 				<li @click='check("vip3")'>
 					<dl>
@@ -113,13 +115,13 @@
 			   }
 			},
 			check(view){
-				location.href = `myOrder.html#${view}`;
+				window.open(`myOrder.html#${view}`);
 			}
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (localStorage.userInfo) {
-					this.userInfo = JSON.parse(localStorage.userInfo);
+				if (sessionStorage.userInfo) {
+					this.userInfo = JSON.parse(sessionStorage.userInfo);
 				}
 			})
 		}
@@ -157,6 +159,9 @@
 					cursor: pointer;
 					padding: 16px 2px;
 					border-bottom: 1px solid #555;
+				}
+				a{
+					color: #fff;
 				}
 			}
 			.bakcTop{

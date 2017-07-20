@@ -58,6 +58,7 @@
 	import {MessageBox} from  'element-ui'
     import orderList from './orderList'
     import refundList from './refundList'
+    import mobileOrder from './mobileOrder'
 	import personalCenter from './personalCenter' ;
 	import address from './address'
 	import editAddress from './editAddress'
@@ -119,7 +120,8 @@
 		        	{name: '待发货订单'},
 		        	{name: '待收货订单'},
 		        	{name: '待评价订单'},
-		        	{name: '退款/售后'}
+		        	{name: '退款/售后'},
+		        	{name: '充值订单'}
 		        ],
 		        reqParams: null
 		    };
@@ -134,6 +136,7 @@
 			youLike,
 			"view0": orderList,
 			'view01': refundList,
+			'view02': mobileOrder,
 			"view10": personalCenter,
 			"view100": address,
 			"view101": editAddress,
@@ -170,7 +173,7 @@
 	    		let keyword = _this.searchInput ;
 	    		keyword = keyword.trim();
 	    		if (keyword) {
-	    			location.href = `relatedGoods.html?keyword=${keyword}`;
+	    			window.open(`relatedGoods.html?keyword=${keyword}`);
 	    		}else {
 	    			MessageBox.alert('请输入关键字', '提示', {
 			          	confirmButtonText: '确定'
@@ -206,9 +209,12 @@
 	      			// 切换当前视图
 	      			_this.changeView(`view0?orderIndex=${index}`);
 	      		}
-	      	}else{
-	      		// 切换当前视图
+	      	}else if(index === 5){
+	      		// 售后
 	      		_this.changeView('view01');
+	      	}else if(index===6){
+	      		// 充值订单
+	      		_this.changeView('view02');
 	      	}
 	      },
 	      init(){
@@ -233,6 +239,9 @@
 				if (view==='view01'){
 					this.orderIndex = 5;
 				}
+				if (view==='view02'){
+					this.orderIndex = 6;
+				}
 				this.changeView(view,hash);
 			}else {
 				this.changeView('view10');
@@ -242,7 +251,7 @@
 		created(){
 			this.$nextTick(()=>{
 				let  access_token = getCookie('access_token');
-				let  userInfo = localStorage.userInfo ;
+				let  userInfo = sessionStorage.userInfo ;
 	            if(!access_token||!userInfo){
 	                location.href = 'login.html';
 	            }

@@ -72,10 +72,10 @@ import pagination from '../../components/Common/pagination'
 		},
 		methods: {
 			storeDetail(id){
-				location.href = `storeDetail.html?seller_id=${id}` ;
+				window.open(`storeDetail.html?seller_id=${id}`) ;
 			},
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			// 改变页数
 			changePage(page){

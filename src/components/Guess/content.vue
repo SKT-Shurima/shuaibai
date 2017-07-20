@@ -43,7 +43,7 @@
 		},
 		methods: {
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			init(){
 				let params = {
@@ -127,14 +127,12 @@ $bg_title: #f5f5f5;
 						.sellInfo{
 							height: 36px;
 							line-height: 18px;
-							font-weight: 600;
 							margin-top: 10px;
 						}
 						.priceInfo{
 							margin-top: 6px;
 							span{
 								font-size: 18px;
-								font-weight: 600;
 								color: $primary;
 							}
 							em{

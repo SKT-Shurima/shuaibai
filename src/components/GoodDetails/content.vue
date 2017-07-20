@@ -41,9 +41,6 @@ import {getRequest,errorInfo,getCookie} from '../../common/js/common'
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
-						content.goods.comment.goods_comment -= 0;
-						content.goods.comment.logistics_comment -= 0;
-						content.goods.comment.service_comment -= 0;
 						this.deliveryInfo.goodsInfo = content ;
 					}
 				})

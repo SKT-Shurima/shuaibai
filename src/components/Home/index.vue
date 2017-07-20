@@ -3,10 +3,10 @@
 		<div class="nav_wrap">
 			<nav class="nav_box">
 				<a href="javascript:void(0)">全部商品分类</a>
-				<a href="integral.html">积分半价</a>
-				<a href="shoppingCoin.html">购物币专区</a>
-				<a href="cities.html">百城万店</a>
-				<a href="grandCeremony.html">世尊印</a>
+				<a href="javascript: window.open('integral.html')">积分半价</a>
+				<a href="javascript: window.open('shoppingCoin.html')">购物币专区</a>
+				<a href="javascript: window.open('cities.html')">百城万店</a>
+				<a href="javascript: window.open('grandCeremony.html')">世尊印</a>
 			</nav>
 		</div>
 		<div class="con_wrap">
@@ -55,7 +55,7 @@
 				</dd>
 			</dl>
 			<div class="status">
-				<user-info :user-info='userInfo'></user-info>
+				<user-info></user-info>
 				<recharge></recharge>
 			</div>
 			</div>
@@ -79,11 +79,9 @@ import recharge from './recharge'
 			    fIndex: 0,
         	    youLike: null,
         	    reqParams: {result:null},
-        	    sliderIndex: 0,
-        	    userInfo: {}
+        	    sliderIndex: 0
 			}
 		},
-		
 		components: {
 			recharge,userInfo,guessLike 
 		},
@@ -105,12 +103,12 @@ import recharge from './recharge'
 							u += `${params[i].key}=${params[i].value}&` ;
 						}
 					}
-					location.href = `/module${action.jump}?${u}`;
+					window.open(`/module${action.jump}?${u}`);
 				}
 				
 			},
 			checkGoods(index,name){
-	     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
+	     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`) ;
 	     	},
 			homePage(){
 				let params = {
@@ -144,24 +142,6 @@ import recharge from './recharge'
 						this.youLike = content;
 					}
 				})
-			},
-			userInfo(mask){
-				let params = {
-					access_token: getCookie('access_token')
-				}
-				getUserInfo(params).then(res=>{
-					let {errcode,message,content} = res;
-					if (errcode!==0) {
-						errorInfo(errcode,message) ;
-					}else{
-						let userInfo = content ;
-						localStorage.userInfo = JSON.stringify(userInfo);
-						this.userInfo  =content ;
-						if (mask) {
-							location.replace('index.html')
-						}
-					}
-				})
 			}
 		},
 		created(){
@@ -175,44 +155,8 @@ import recharge from './recharge'
 				let  access_token = this.reqParams.access_token ;
 				if (access_token) {
 					delCookie('access_token');
-					setCookie('access_token',access_token,30);
-					let params = {
-						access_token: getCookie('access_token')
-					}
-					getUserInfo(params).then(res=>{
-						let {errcode,message,content} = res;
-						if (errcode!==0) {
-							errorInfo(errcode,message) ;
-						}else{
-							let userInfo = content ;
-							localStorage.userInfo = JSON.stringify(userInfo);
-							this.userInfo  =content ;
-							if (access_token) {
-								location.replace('index.html');
-							}
-						}
-					})
-				}
-				let hasCookie = getCookie('access_token');
-				if (hasCookie) {
-					delCookie('access_token');
-					setCookie('access_token',hasCookie,30);
-					let params = {
-						access_token: getCookie('access_token')
-					}
-					getUserInfo(params).then(res=>{
-						let {errcode,message,content} = res;
-						if (errcode!==0) {
-							errorInfo(errcode,message) ;
-						}else{
-							let userInfo = content ;
-							localStorage.userInfo = JSON.stringify(userInfo);
-							this.userInfo  =content ;
-							if (access_token) {
-								location.replace('index.html');
-							}
-						}
-					})
+					setCookie('access_token',access_token,.5);
+					location.replace('index.html');
 				}
 				if (result==='false') {
 					let wx_web_openid = this.reqParams.wx_web_openid ;
@@ -273,7 +217,7 @@ $text_color: #666;
 					width: 150px;
 					background-color: #c81623;
 					color: #fff;
-					text-align: center;
+					text-indent: 16px;
 					float: left;
 					li{
 						width: 100%;

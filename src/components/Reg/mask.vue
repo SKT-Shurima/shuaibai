@@ -1,6 +1,7 @@
 <template>
 	<div class="wrap" v-show='bol'>
 		<div class="box">
+			<a href="javascript:window.history.back()" class="el-icon-close"></a>
 			<h2>注册协议</h2>
 			<p><strong>【审慎阅读】</strong>您在申请注册流程中点击同意前，应当认真阅读以下协议。<strong style="text-decoration: underline;">请您务必审慎阅读、充分理解协议中相关条款内容，其中包括：</strong></p>
 			<ol>
@@ -11,20 +12,37 @@
 			<p>如您对协议有任何疑问，可向平台客服咨询。</p>
 			<p style="line-height:18px;"><strong>【特别提示】</strong>当您按照注册页面提示填写信息、阅读并同意协议且完成全部注册程序后，即表示您已充分阅读、理解并接受协议的全部内容。如您因平台服务于帅柏发生争执的，适用《帅柏商城服务协议》处理。如您在使用平台服务过程中与其他用户发生争执的，依您与其他用户达成的协议处理。</p>
 			<p style="text-decoration: underline;font-weight:600;">阅读协议的过程中，如果您不同意相关协议或其中任何条款约定，您应立即停止注册程序。</p>
-			<p><a href="">《帅柏商城服务协议》</a></p>
-			<p><a href="">《法律声明及隐私政策》</a></p>
-			<div style="width：100%;text-align: center;">
+			<p style="margin-top: 10px;"><a :href="service_protocol" target='_blank'>《帅柏商城服务协议》</a></p>
+			<p><a :href="law_protocol" target='_blank'>《法律声明及隐私政策》</a></p>
+			<div style="width：100%;text-align: center;margin-top: 20px;">
 				<el-button type='primary' style='width: 300px;' @click='bol=false'>同意协议</el-button>
 			</div>
 		</div>
 	</div>	
 </template>
 <script >
+import {getBaseData} from '../../common/js/api'
+import {errorInfo} from '../../common/js/common'
 	export default {
 		data(){
 			return {
-				bol: true
+				bol: true,
+				service_protocol:"",
+				law_protocol:""
 			}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				getBaseData().then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						this.service_protocol = content.service_protocol ;
+						this.law_protocol = content.law_protocol ;
+					}
+				})
+			})
 		}
 	}
 </script>
@@ -36,7 +54,7 @@ $red_color: #f24450;
 		position: absolute;
 		top: 0px;
 		left: 0px;
-		z-index: 99;
+		z-index: 200;
 		background-color: rgba(0,0,0,.5);
 		.box{
 			width: 742px;
@@ -52,6 +70,13 @@ $red_color: #f24450;
 			padding-left: 36px;
 			padding-right: 30px;
 			padding-bottom: 30px;
+		}
+		.el-icon-close{
+			position: absolute;
+			right: 26px;
+			top: 26px;
+			font-size: 16px;
+			color:#999;
 		}
 		a{
 			color: $red_color;

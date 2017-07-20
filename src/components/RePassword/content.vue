@@ -28,9 +28,10 @@
 	</div>
 </template>
 <script>
-import {resetPasswd,sendCode} from '../../common/js/api.js' 
+import {resetPasswd,sendCode} from '../../common/js/api' 
 import {MessageBox} from  'element-ui'
-import {hex_md5} from '../../common/js/md5.js'
+import {hex_md5} from '../../common/js/md5'
+import {errorInfo,delCookie} from '../../common/js/common'
   export default {
     data() {
     	// 手机验证
@@ -61,14 +62,13 @@ import {hex_md5} from '../../common/js/md5.js'
 	    };
 	    // 密码验证
         var validatePass = (rule, value, callback) => {
-	          if (value === '') {
-		          callback(new Error('请输入密码'));
-		        } else {
-		          if (this.ruleForm.confirm_passwd !== '') {
-		            this.$refs.ruleForm.validateField('confirm_passwd');
-		          }
-		          callback();
-		        }
+			if (value === '') {
+	          callback(new Error('请输入密码'));
+	        } else if(value.length<6){
+	        	callback(new Error('密码长度至少六位'));
+	        }else{
+	        	callback();
+	        }
 	      };
 	      // 确认密码验证
 	     var validatePass2 = (rule, value, callback) => {
@@ -155,16 +155,21 @@ import {hex_md5} from '../../common/js/md5.js'
             resetPasswd(params).then(res=>{
             	let {errcode,message} = res;
             	if (errcode !== 0) {
-            		MessageBox.alert(message,'提示',{
-            			confirmButtonText: '确定'
-            		});
+            		errorInfo(errcode,message);
             	} else {
-            		window.location.href = 'login.html' ;
+					MessageBox.alert(message, '提示', {
+			          	confirmButtonText: '确定',
+			          	callback: action => {
+				            let userInfo = sessionStorage.userInfo;
+				            if (userInfo) {
+				            	sessionStorage.removeItem("userInfo");
+				            	delCookie('access_token');
+				            }
+				            location.href = 'login.html' ;
+				        }
+				    });
             	}
             })
-          } else {
-            console.log('error submit!!');
-            return false;
           }
         });
       }

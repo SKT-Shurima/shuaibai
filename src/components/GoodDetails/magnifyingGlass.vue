@@ -59,8 +59,8 @@ export default {
 				}
 				this.sliderLeft = x;
 				this.sliderTop =y ;
-				this.bigTop = -y/200*200 ;
-				this.bigLeft = -x/200*200 ;
+				this.bigTop = -y/260*260 ;
+				this.bigLeft = -x/260*260 ;
 		}
 	}
 }
@@ -71,8 +71,8 @@ export default {
 		position: relative;
 	}
 	#small{
-			width: 300px;
-			height: 300px;
+			width: 420px;
+			height: 420px;
 			position: relative;
 		}
 		#small>img{
@@ -80,23 +80,23 @@ export default {
 			height: 100%;
 		}
 		#slider{
-			width: 100px;
-			height: 100px;
+			width: 160px;
+			height: 160px;
 			background: rgba(255,255,0,0.3);
 			position: absolute;
 			top: 0;
 		}
 		#big{
-			width: 300px;
-			height: 300px;
+			width: 420px;
+			height: 420px;
 			position: absolute;
 			top: 0;
-			left:340px ;
+			left: 450px ;
 			z-index: 10;
 			overflow: hidden;
 			img{
-				width: 500px;
-				height: 500px;
+				width: 640px;
+				height: 640px;
 				position: absolute;
 			}
 		}

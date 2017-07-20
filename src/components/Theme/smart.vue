@@ -2,20 +2,20 @@
 	<div class="wrap">
 		<div class="box">
 			<div class="theme_img" v-if='special'>
-				<img :src="special[0].image" @click='goodDetail(special[0].params.goods_id)'>
+				<a :href="url"><img :src="special[0].image"></a>
 			</div>
 			<div class="theme_box">
 				<el-row class="themeTitle">
-			 		<el-col :span='7'>
+			 		<el-col :span='6'>
 			 			<div class="slider"></div>
 			 		</el-col>
-			 		<el-col :span='10'>
+			 		<el-col :span='10' :offset='1'>
 			 			<div class="text">
 			 				<img src="../../../static/themeImg/smart.png" height="24" width="24">
 			 				中国智造
 			 			</div>
 			 		</el-col>
-			 		<el-col :span='7' :offset='1'>
+			 		<el-col :span='6' :offset='1'>
 			 			<div class="slider"></div>
 			 		</el-col>
 			 	</el-row>
@@ -39,7 +39,8 @@ import pagination from '../Common/pagination'
 				pagesize: 1,
 				reqParams: null,
 				special: null,
-				goods: new Array
+				goods: new Array,
+				url: ""
 			}
 		},
 		components:{
@@ -53,8 +54,9 @@ import pagination from '../Common/pagination'
 			},
 			initList(){
 				let _this = this ;
+				let  href = location.href ;
 				let params = {
-					type: _this.reqParams.type,
+					type: "3",
 					page: _this.currentPage 
 				}
 				getThematicActivities(params).then(res=>{
@@ -65,6 +67,8 @@ import pagination from '../Common/pagination'
 						this.goods = content.goods.goods ;
 						this.pagesize = content.goods.pagesize ;
 						this.special = content.special ;
+						let special = content.special ;
+						this.url = `${special[0].web_param}?goods_id=${special[0].params.goods_id}`;
 					}
 				})
 			}

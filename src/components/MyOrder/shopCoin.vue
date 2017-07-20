@@ -9,22 +9,27 @@
 	 		<i class="icon"></i>
 	 		<span style="vertical-align: 4px;">购物币明细</span>
 	 	</div>
-	 	<ul class="moneyList" v-if='shopCoinList'>
-	 		<li v-for='item in shopCoinList'>
-	 			<el-row>
-	 				<el-col :span='4'>
-	 					{{item.date_add*1000 | dateStyle}}
-	 				</el-col>
-	 				<el-col :span='4'>
-	 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
-	 				</el-col>
-	 				<el-col :span='16'>
-	 					{{item.comments}}
-	 				</el-col>
-	 			</el-row>
-	 		</li>
-	 	</ul>
-	 	<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
+	 	<div v-if='shopCoinList.length'>
+	 		<ul class="moneyList">
+		 		<li v-for='item in shopCoinList'>
+		 			<el-row>
+		 				<el-col :span='4'>
+		 					{{item.date_add*1000 | dateStyle}}
+		 				</el-col>
+		 				<el-col :span='4'>
+		 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
+		 				</el-col>
+		 				<el-col :span='16'>
+		 					{{item.comments}}
+		 				</el-col>
+		 			</el-row>
+		 		</li>
+		 	</ul>
+		 	<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
+	 	</div>
+	 	<div v-else style='font-size:16px;margin-top: 16px;'>
+			暂无购物币明细
+		</div>
 	</div>
 </template>
 <script>

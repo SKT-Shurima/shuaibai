@@ -61,7 +61,8 @@ import {errorInfo,getCookie} from '../../common/js/common'
 						let  order_number = this.order.balance ;
 						code_url = code_url.split("?");
 						code_url = code_url.join("&");
-						location.replace(`myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}`);
+						let count = this.order.price ;
+						location.href = `myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}&count=${count}`;
 					}
 				}
 			})

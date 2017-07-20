@@ -8,9 +8,9 @@
 			</div>
 			<ul v-if='hotList'>
 				<li v-for='item in hotList' class="infoList">
-					<dl>
+					<dl @click='goodDetail(item.goods_id)'>
 						<dt>
-							<img :src="item.cover" @click='goodDetail(item.goods_id)'>
+							<img :src="item.cover">
 						</dt>
 						<dd>
 							<div class="sellInfo" v-text='item.name'></div>
@@ -29,7 +29,6 @@
 		</div>
 </template>
 <script>
-import 'common/css/goodsList.scss'
 import {currency} from '../../common/js/filter'
 import {goodsDetail,getHotGoods} from '../../common/js/api'
 import {errorInfo} from '../../common/js/common'
@@ -49,7 +48,7 @@ import {errorInfo} from '../../common/js/common'
 		},
 		methods:{
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			}
 		},
 		mounted(){
@@ -71,9 +70,8 @@ import {errorInfo} from '../../common/js/common'
 </script>
 
 <style lang='scss' scoped>
-
 $text_color: #666;
-$border_color: #ccc;
+$border_color: #f0f0f0;
 $primary:#c71724;
 	/*热销*/
 	.hotSell{
@@ -87,8 +85,8 @@ $primary:#c71724;
 			.slider{
 				width: 46px;
 				height: 1px;
-				margin-top: 6px;
-				background-color: $border_color;
+				margin-top: 12px;
+				background-color: #ccc;
 			}
 			.text{
 				width: 100px;
@@ -108,6 +106,42 @@ $primary:#c71724;
 			}
 			li:last-child{
 				   border-bottom: none; 
+			}
+		}
+	}
+	.infoList{
+		dl{
+			cursor: pointer;
+		}
+		dt{
+			width: 210px;
+			height: 210px;
+			img{
+				width: 100%;
+				height: 100%;
+				cursor: pointer; 
+			}
+		}
+		dd{
+			width: 100%;
+			overflow: hidden;
+			.sellInfo{
+				height: 36px;
+				line-height: 18px;
+				margin-top: 10px;
+			}
+			/*价格信息*/
+			.priceInfo{
+				margin-top: 6px;
+				span{
+					font-size: 18px;
+					color: #c71724;
+				}
+				em{
+					margin-top: 4px;
+					float: right;
+					color: #999;
+				}
 			}
 		}
 	}

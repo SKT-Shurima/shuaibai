@@ -55,8 +55,8 @@
 			</li>
 		</ul>
 		<ul class="goodsList" v-if='goods.seller_goods'>
-			<li v-for='(item,index) in goods.seller_goods' class="infoList" @click='goodDetail(item.goods_id)'>
-				<dl>
+			<li v-for='(item,index) in goods.seller_goods' class="infoList" >
+				<dl @click='goodDetail(item.goods_id)'>
 					<dt>
 						<img :src="item.cover">
 					</dt>
@@ -162,21 +162,21 @@ import pagination from '../Common/pagination'
 				_this.$emit('getGoods',_this.params);
 			},
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			}
 		}
 	}
 </script>
 <style lang='scss' scoped>
 $text_color: #666;
-$border_color: #ccc;
+$border_color: #f0f0f0;
 $primary:#c71724;
 $bg_color: #f5f5f5;
 	.wrap{
 		width: 100%;
 		.opera{
 			overflow: hidden;
-			border: 1px solid $border_color;
+			border: 1px solid #ccc;
 			li{
 				float: left;
 				text-align: center;
@@ -184,7 +184,7 @@ $bg_color: #f5f5f5;
 				line-height: 36px;
 				cursor: pointer;
 				color: $text_color;
-				border-right: 1px solid $border_color;
+				border-right: 1px solid #ccc;
 				background-color: $bg_color;
 			}
 			li:last-child{
@@ -257,18 +257,15 @@ $bg_color: #f5f5f5;
 		.goodsList{
 			width: 1002px;
 			margin-top: 20px;
-			border-top:1px solid $border_color;
-			border-left: 1px solid $border_color;
 			overflow: hidden;
 			.infoList{
 				float: left;
 				width: 250px;
 				height: 330px;
 				padding: 14px;
-				cursor: pointer;
-				border-right: 1px solid $border_color;
-				border-bottom: 1px solid $border_color;
+				border: 1px solid transparent; 
 				dl{
+					cursor: pointer;
 					dt{
 						width: 220px;
 						height: 220px;
@@ -283,7 +280,6 @@ $bg_color: #f5f5f5;
 						.sellInfo{
 							height: 36px;
 							line-height: 18px;
-							font-weight: 600;
 							margin-top: 10px;
 							overflow: hidden;
 						    text-overflow: ellipsis;
@@ -296,7 +292,6 @@ $bg_color: #f5f5f5;
 							margin-top: 6px;
 							span{
 								font-size: 18px;
-								font-weight: 600;
 								color: $primary;
 							}
 							em{
@@ -309,7 +304,8 @@ $bg_color: #f5f5f5;
 				}
 			}
 			.infoList:hover{
-				border:1px solid $primary;
+				border-color: $border_color;
+				box-shadow: 0 0 2px 2px $border_color; 
 			}
 		}
 	}

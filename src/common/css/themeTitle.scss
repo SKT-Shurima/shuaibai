@@ -1,16 +1,15 @@
-$border_color: #ccc;
 .themeTitle{
 		width: 352px;
 		height: 24px;
 		margin: 0px auto;
 		overflow: hidden;
-		.el-col-7{
+		.el-col-6{
 			float: left;
 			.slider{
 				width: 100%;
 				height: 1px;
 				margin-top: 14px;
-				background-color: $border_color;
+				background-color: #ccc;
 			}
 			
 		}

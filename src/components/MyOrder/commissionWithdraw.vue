@@ -135,8 +135,8 @@ import {withdraw} from '../../common/js/api'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (!localStorage.userInfo) {
-					this.userInfo = JSON.parse(localStorage.userInfo) ;
+				if (!sessionStorage.userInfo) {
+					this.userInfo = JSON.parse(sessionStorage.userInfo) ;
 				}
 			})
 		}

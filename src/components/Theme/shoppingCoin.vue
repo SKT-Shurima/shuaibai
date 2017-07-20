@@ -112,7 +112,7 @@ import special from '../ThemeCommon/special'
 		},
 		methods: {
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			initList(){
 				let page = this.page + "" ;

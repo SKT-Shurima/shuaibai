@@ -46,7 +46,10 @@ import {MessageBox,Message} from  'element-ui'
 						if(errcode !== 0){
 							errorInfo(errcode,message) ;
 						}else {
-							Message.success({message:message}) ;
+							 MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	type: 'success'
+						    });
 							this.initList();
 						}
 					})
@@ -66,7 +69,7 @@ import {MessageBox,Message} from  'element-ui'
 			initList(){
 				let  access_token = getCookie('access_token') ;
 				let params = {
-					access_token: access_token?access_token:""
+					access_token: access_token?access_token:"",
 				}
 				getShopCoupons(params).then(res=>{
 					let {errcode,message,content} = res ;

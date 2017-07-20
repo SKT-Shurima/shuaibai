@@ -106,10 +106,10 @@ import {errorInfo} from '../../common/js/common'
 		},
 		methods: {
 			storeDetail(id){
-				location.href = `storeDetail.html?seller_id=${id}` ;
+				window.open(`storeDetail.html?seller_id=${id}`) ;
 			},
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			// 改变页数
 			changePage(page){
@@ -216,12 +216,12 @@ $text_color: #ffd3d8;
 					div{
 						float: left;
 						width: 400px;
-						height: 50px;
+						height: 54px;
 						line-height: 50px;
 						color: #fff;
-						font-size: 20px;
-						text-align: center;
-						border-top-right-radius: 50px;
+						font-size: 28px;
+						text-indent: 16px;
+						border-top-right-radius: 54px;
 						margin-bottom: -1px;
 						background-color: $red_color;
 					}
@@ -281,7 +281,7 @@ $text_color: #ffd3d8;
 						overflow: hidden;
 						border: 1px solid $border_color;
 						margin-top: 18px; 
-						margin-bottom: 7px;
+						margin-bottom: 11px;
 						dt,dd{
 							float: left;
 							width: 149px;

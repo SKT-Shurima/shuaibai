@@ -9,21 +9,27 @@
 	 		<i class="icon"></i>
 	 		<span style="vertical-align: 4px;">积分明细</span>
 	 	</div>
-	 	<ul class="moneyList" v-if='integrationList'>
-	 		<li v-for='item in integrationList'>
-	 			<el-row>
-	 				<el-col :span='4'>
-	 					{{item.date_add*1000 | dateStyle}}
-	 				</el-col>
-	 				<el-col :span='4'>
-	 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
-	 				</el-col>
-	 				<el-col :span='16'>
-	 					{{item.comments}}
-	 				</el-col>
-	 			</el-row>
-	 		</li>
-	 	</ul>
+	 	<div v-if='integrationList.length'>
+	 		<ul class="moneyList" >
+		 		<li v-for='item in integrationList'>
+		 			<el-row>
+		 				<el-col :span='4'>
+		 					{{item.date_add*1000 | dateStyle}}
+		 				</el-col>
+		 				<el-col :span='4'>
+		 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
+		 				</el-col>
+		 				<el-col :span='16'>
+		 					{{item.comments}}
+		 				</el-col>
+		 			</el-row>
+		 		</li>
+		 	</ul>
+		 	<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
+	 	</div>
+	 	<div v-else style='font-size:16px;margin-top: 16px;'>
+			暂无积分明细
+		</div>
 	</div>
 </template>
 <script>
@@ -36,13 +42,34 @@ import {MessageBox} from  'element-ui'
       	inteInfo: {
       		integration: ''
       	},
-      	integrationList: null
+      	integrationList: [],
+      	page: "1"
       };
     },
     methods: {
+    	 // 改变页数
+		changePage(page){
+			let _this = this ;
+			_this.page = page + "" ;
+			_this.initList();
+		},
     	changeView(view){
 	      	this.$store.commit('switchView',view);
 	      	location.hash = view ;
+	    },
+	    initList(){
+	    	let params = {
+	    		access_token: getCookie('access_token'),
+	    		page: this.page
+	    	}
+	    	integrationDetail(params).then(res=>{
+	    		let {errcode,message,content} = res;
+        		if (errcode !== 0) {
+        			errorInfo(errcode,message) ;
+        		}else {
+        			this.integrationList = content ;
+        		}
+	    	})
 	    }
     },
     created(){

@@ -55,7 +55,7 @@ import guessLike from '../Common/guessLike'
     },
     methods:{
     	checkGoods(index,name){
-     		location.href = `relatedGoods.html?cat=${index}&keyword=${name}` ;
+     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`) ;
      	},
     	initLevel(cat){
     		let _this = this ;
@@ -127,7 +127,7 @@ $border_color: #ccc;
 						height: 500px;
 						background-color: #c81623;
 						color: #fff;
-						text-align: center;
+						text-indent: 16px;
 						z-index: 100;
 						li{
 							width: 100%;

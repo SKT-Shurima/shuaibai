@@ -11,6 +11,8 @@
 			<div class="slider">
 				<recommended></recommended>
 			</div>
+			<!-- 猜你喜欢 -->
+		 	<you-love></you-love>
 		</div>
 	</div>
 </template>
@@ -18,6 +20,7 @@
 import {getRequest} from '../../common/js/common'
 import vNav from '../Head/nav'
 import goodsList from '../RelatedGoods/goodsList'
+import youLove from '../../components/Guess/content'
 import recommended from './recommended'
 	export default {
 		data(){
@@ -27,7 +30,7 @@ import recommended from './recommended'
 			}
 		},
 		components:{
-			vNav,goodsList,recommended
+			vNav,goodsList,recommended,youLove
 		},
 		methods:{
 			checkGoods(index,name){
@@ -35,7 +38,7 @@ import recommended from './recommended'
 				let cat = req.cat.split(',');
 				cat = cat.slice(0, index+1);
 				cat = cat.join(',');
-				location.href=`relatedGoods.html?cat=${cat}&keyword=${name}`;
+				window.open(`relatedGoods.html?cat=${cat}&keyword=${name}`);
 	     	},
 			getSellerInfo(info){
 				let _this =this ;

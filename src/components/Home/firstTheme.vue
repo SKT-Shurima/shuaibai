@@ -7,28 +7,39 @@
 						<img :src="theme.goods.goods[0].cover" width="100%" height="100%">
 					</dt>
 					<dd>
-						<div class="show_info" style='margin-top:8px;' v-text='theme.goods.goods[0].name'
-						></div>
+						<div class="show_info" style='margin-top:8px;' v-text='theme.goods.goods[0].name'></div>
 	 					<div class="sell_info">
 	 						<span>￥1.00</span>
 	 						<em>{{theme.goods.goods[0].shop_price|currency}}</em>
 	 					</div>
 	 					<div class="snapup_btn_box" :class='theme.goods.goods[0].date_start*1000-nowTime >= 0?"start":theme.goods.goods[0].date_end*1000-nowTime >= 0?"end":"over"'>
-	 						<div class="snapup_time" v-if='theme.goods.goods[0].date_start*1000-nowTime>=0'>
-	 							<span>{{theme.goods.goods[0].date_start*1000-nowTime|countdown}}</span>
-	 							<em>后开始</em>
-	 						</div>
-	 						<div class="snapup_time" v-else-if='theme.goods.goods[0].date_end*1000-nowTime>= 0'>
-	 							<span>{{theme.goods.goods[0].date_end*1000-nowTime|countdown}}</span>
-	 							<em>后结束</em>
-	 						</div>
-	 						<div class="snapup_time" v-else>
-	 							<span>已结束</span>
-	 						</div>
-	 						<div class="snapup_btn">
-	 							<el-button type='text' :disabled='theme.goods.goods[0].date_end*1000-nowTime<0' @click='goodDetail(theme.goods.goods[0].goods_id)'>立即抢购</el-button>
-	 						</div>
-	 					</div>
+		 					<dl v-if='theme.goods.goods[0].date_start*1000-nowTime>=0'>
+		 						<dt class="snapup_time">
+		 							<span>{{theme.goods.goods[0].date_start*1000-nowTime|countdown}}</span>
+		 							<em>后开始</em>
+		 						</dt>
+		 						<dd class="snapup_btn">
+		 							<el-button type='text'  @click='goodDetail(theme.goods.goods[0].goods_id)'>立即前往</el-button>
+		 						</dd>
+	 						</dl>
+	 						<dl v-else-if='theme.goods.goods[0].date_end*1000-nowTime>= 0'>
+	 							<dt class="snapup_time">
+		 							<span>{{theme.goods.goods[0].date_end*1000-nowTime|countdown}}</span>
+		 							<em>后结束</em>
+		 						</dt>
+		 						<dd class="snapup_btn">
+		 							<el-button type='text'  @click='goodDetail(theme.goods.goods[0].goods_id)'>立即抢购</el-button>
+		 						</dd>
+	 						</dl>
+	 						<dl v-else>
+	 							<dt class="snapup_time">
+		 							<span>已结束</span>
+		 						</dt>
+		 						<dd class="snapup_btn">
+		 							<el-button type='text'  @click='goodDetail(theme.goods.goods[0].goods_id)'>立即查看</el-button>
+		 						</dd>
+	 						</dl>
+ 						</div>
 					</dd>
 				</dl>
 			</el-col>
@@ -81,7 +92,7 @@
 								</span>
 							</dt>
 							<dd @click='goodDetail(item.goods_id)'>
-								立即抢购
+								立即查看
 							</dd>
 						</dl>
 					</li>
@@ -117,7 +128,7 @@
 		},
 		methods:{
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			init(){
 				setInterval(()=>{
@@ -209,7 +220,7 @@ $border_list: #f0f0f0;
 	  							text-align: center;
 	  							color: #fff;
 	  							span{
-	  								font-size: 28px;
+	  								font-size: 24px;
 	  							}
 	  							em{
 	  								vertical-align: baseline;
@@ -279,7 +290,7 @@ $border_list: #f0f0f0;
 								}
 							}
 						}
-						.start,.end{
+						.start,.end,.over{
 							width: 100%;
 							height: 40px;
 							padding-left: 14px;

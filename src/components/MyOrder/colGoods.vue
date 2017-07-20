@@ -1,39 +1,44 @@
 <template>	
 	 <div class="wrap">
-	 	<ul v-if='colList'>
-	 		<li v-for='(item,index) in colList'>
-	 			<dl>
-					<dt>
-						<div class="imgBox">
-							<img :src="item.cover" @click='goodDetail(item.goods_id)'>
-						</div>
-						<div class="editBox">
-							<div @click="delColGood(item.collection_id)">
-							<i class="el-icon-delete"></i>删除</div>
-						</div>
-					</dt>
-					<dd>
-						<div class="sellInfo">
-							{{item.name}}
-						</div>
-						<div class="priceInfo" >
-							<span>
-								{{item.price|currency}}
-							</span>
-							<em>
-								{{item.sale_count}}人付款
-							</em>
-						</div>
-						<div class="update" v-show='false'>
-							<div>
-								<img src="" alt="">商品已失效
+	 	<div class="box" v-if='colList.length'>
+	 		<ul >
+		 		<li v-for='(item,index) in colList'>
+		 			<dl>
+						<dt>
+							<div class="imgBox">
+								<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 							</div>
-						</div>
-					</dd>
-				</dl>
-	 		</li>
-	 	</ul>
-		<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
+							<div class="editBox">
+								<div @click="delColGood(item.collection_id)">
+								<i class="el-icon-delete"></i>删除</div>
+							</div>
+						</dt>
+						<dd>
+							<div class="sellInfo">
+								{{item.name}}
+							</div>
+							<div class="priceInfo" >
+								<span>
+									{{item.price|currency}}
+								</span>
+								<em>
+									{{item.sale_count}}人付款
+								</em>
+							</div>
+							<div class="update" v-show='false'>
+								<div>
+									<img src="" alt="">商品已失效
+								</div>
+							</div>
+						</dd>
+					</dl>
+		 		</li>
+		 	</ul>
+			<pagination :pagesize='pagesize' @changePage='changePage'></pagination>
+	 	</div>
+	 	<div v-else style='font-size:16px;'>
+			暂无商品收藏
+		</div>
 	 </div>
 </template>
 <script>
@@ -45,7 +50,7 @@
 	export default {
 		data(){
 			return{
-				colList: null,
+				colList: [],
 				pagesize: 1 ,// 总页数
 				page: "1"
 			}
@@ -58,7 +63,7 @@
 		},
 		methods:{
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			// 取消收藏
 			delColGood(ids){

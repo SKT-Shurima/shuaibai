@@ -91,7 +91,7 @@ function trans (val){
         time-=0;
         var date = new Date(time);
          let {hh,mm} = {hh:date.getHours(),mm:date.getMinutes()};
-         var newDate = new Date(time);
+         var newDate = new Date();
          let {h,m} = {h:newDate.getHours(),m:newDate.getMinutes()};
            h=hh-h;
            m = mm -m ;
@@ -105,13 +105,9 @@ function trans (val){
 // 倒计时
 export const countdown = time =>{
     time /= 1000 ;
-    let {d,h,m,s}={d:parseInt(time/(24*3600)),h:parseInt(time/3600%24),m:parseInt(time/60%60),s:parseInt(time%60)};
+    let {d,h,m,s}={h:parseInt(time/3600),m:parseInt(time/60%60),s:parseInt(time%60)};
     h = trans(h);
     m = trans(m);
     s = trans(s);
-    if (d===0) {
-      return `${h}:${m}:${s}` ;
-    }else{
-      return `${d}天`;
-    }
+    return `${h}:${m}:${s}` ;
 }

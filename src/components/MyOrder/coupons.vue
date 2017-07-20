@@ -3,7 +3,7 @@
 		<h4 class="title">
 			我的优惠券
 		</h4>
-		<ul class="couponsListBox" v-if='couponsList'>
+		<ul class="couponsListBox" v-if='couponsList.length'>
 			<li v-for='(item,index) in couponsList' :class='{"noMarginRight":(index+1)%3===0}' class="couponsList">
 				<div class="info">
 					<div class="limit">
@@ -27,6 +27,9 @@
 				</div> -->
 			</li>
 		</ul>
+		<div v-else style='font-size:16px;'>
+			暂无优惠券
+		</div>
 	</div>
 </template>
 <script >
@@ -36,7 +39,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 	export default{
 		data(){
 			return{
-				couponsList: null
+				couponsList: []
 			}
 		},
 		filters:{

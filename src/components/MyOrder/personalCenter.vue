@@ -92,10 +92,10 @@ import orderList from './orderList'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (localStorage.userInfo) {
+				if (sessionStorage.userInfo) {
 					this.hasUser = true;
 					// 读取用户信息
-					this.userInfo = JSON.parse(localStorage.userInfo);
+					this.userInfo = JSON.parse(sessionStorage.userInfo);
 					// 获取订单信息
 					this.order = this.userInfo.order;
 				}else{

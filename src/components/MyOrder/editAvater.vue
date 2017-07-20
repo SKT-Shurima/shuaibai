@@ -107,7 +107,7 @@ import {Message} from  'element-ui'
 	    		if (errcode!==0) {
     			    errorInfo(errcode,message) ;
 	    		}else{
-	    			localStorage.userInfo = JSON.stringify(_this.userInfo);
+	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			 Message.success({
 			            message: '修改成功',
 			            type: 'success'
@@ -118,8 +118,8 @@ import {Message} from  'element-ui'
 	},
  	mounted(){
  		this.$nextTick(()=>{
- 			if (localStorage.userInfo) {
-				this.userInfo = JSON.parse(localStorage.userInfo);
+ 			if (sessionStorage.userInfo) {
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}else{
 				location.href = "login.html";
 			}

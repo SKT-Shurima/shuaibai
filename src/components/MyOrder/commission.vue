@@ -80,7 +80,7 @@ import pagination from '../Common/pagination'
     },
     created(){
         this.$nextTick(()=>{
-        	if (!localStorage.userInfo) {
+        	if (!sessionStorage.userInfo) {
         		location.href = "login.html";
 			}
         })

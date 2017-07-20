@@ -60,7 +60,7 @@
 	</div>
 </template>
 <script>
-    import {getKeyWord,getCarts,removeCart} from "../../common/js/api"
+    import {getKeyWord,getCarts,removeCart,getUserInfo} from "../../common/js/api"
     import {MessageBox} from 'element-ui'
 	import {currency} from '../../common/js/filter'
 	import {errorInfo,getCookie} from '../../common/js/common'
@@ -121,7 +121,7 @@
 				}
 				_this.totalPrice = totalPrice ;
 				_this.userInfo.cart_num = totalNum ;
-				localStorage.userInfo = JSON.stringify(_this.userInfo) ;
+				sessionStorage.userInfo = JSON.stringify(_this.userInfo) ;
 			},
 			goodDetail(id){
 				window.open(`goodDetail.html?goods_id=${id}`)
@@ -165,13 +165,26 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (localStorage.userInfo) {
-					this.hasUser = true;
-					this.userInfo = JSON.parse(localStorage.userInfo);
-				}
 				this.keyWords();
 				let  access_token = getCookie('access_token');
 				if (access_token) {
+					if (sessionStorage.userInfo) {
+						this.hasUser = true;
+						this.userInfo = JSON.parse(sessionStorage.userInfo);
+					}else{
+						let params = {
+							access_token: access_token
+						}
+						getUserInfo(params).then(res=>{
+							let {errcode,message,content} = res ;
+							if(errcode !== 0){
+								errorInfo(errcode,message) ;
+							}else {
+								this.userInfo = content;
+								sessionStorage.userInfo = JSON.stringify(content) ;
+							}
+						})
+					}
 					this.initList();
 				}
 			})

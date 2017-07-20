@@ -1,9 +1,9 @@
 <template>
 	<ul class="wrap">
 		<li v-for='item in goods' class="infoList">
-			<dl>
+			<dl @click='goodDetail(item.goods_id)'>
 				<dt>
-					<img :src="item.cover" @click='goodDetail(item.goods_id)'>
+					<img :src="item.cover" >
 				</dt>
 				<dd>
 					<div class="sellInfo" v-text='item.name'></div>
@@ -22,6 +22,7 @@
 </template>
 <script>
 import {currency} from '../../common/js/filter'
+import 'common/css/goodsList.scss'
 	export default {
 		props: {
 			goods: {
@@ -34,26 +35,28 @@ import {currency} from '../../common/js/filter'
 		},
 		methods: {
 			goodDetail(id){
-		   		location.href = `goodDetail.html?goods_id=${id}` ;
+		   		window.open(`goodDetail.html?goods_id=${id}`) ;
 		   	}
 		}
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
+$border_color: #f0f0f0;
 	.wrap{
 		overflow: hidden;
 		margin-top: 20px;
-		border-left: 1px solid $border_color ;
-		border-top: 1px solid $border_color;
 		.infoList{
 			float: left;
-			width: 250px;
-			height: 330px;
+			width: 25%;
 			padding: 20px;
-			border: 1px solid $border_color;
-			margin-left: -1px;
-			margin-top: -1px;
+			border: 1px solid transparent;
+			dl{
+				cursor: pointer;
+			}
+		}
+		.infoList:hover{
+			border-color: $border_color;
+			box-shadow: 0 0 2px 2px $border_color; 
 		}
 	}
 </style>

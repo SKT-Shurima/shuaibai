@@ -3,7 +3,8 @@
 		<v-nav :shopHeader='shop_header'></v-nav>
 		<div class="container">
 			<div class="slider">
-				<classify :sellerCat='seller_cat' @getCat='getCatId' :seller-id='seller_id'></classify>
+				<store-info></store-info>
+				<classify :sellerCat='seller_cat' @getCat='getCatId' :seller-id='seller_id' style='margin-top: 40px;'></classify>
 				<hot-sell></hot-sell>
 			</div>
 			<div class="listWrap">
@@ -16,6 +17,7 @@
 import {getSellerInfo} from '../../common/js/api'
 import {getRequest,errorInfo} from '../../common/js/common'
 import vNav from '../StoreCommon/nav'
+import storeInfo  from '../StoreCommon/storeInfo'
 import hotSell from '../StoreCommon/hotSell'
 import classify from '../StoreCommon/classify'
 import goodsList from '../storeDetail/goodsList'
@@ -39,7 +41,7 @@ import goodsList from '../storeDetail/goodsList'
 			}
 		},
 		components:{
-			vNav,hotSell,classify,goodsList
+			vNav,storeInfo,hotSell,classify,goodsList
 		},
 		methods:{
 			commonAPI(){

@@ -34,19 +34,19 @@
 		</div>
 		<ul class="theme_box">
 			<li>
-				<div class="title" :style='{backgroundImage: `url(${firstTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%" v-if='firstTheme.img' @click='jump("snap",1)'></div>
+				<div class="title" :style='{backgroundImage: `url(${firstTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%" v-if='firstTheme.img' @click='jump("snap")'></div>
 				<first-theme :theme='firstTheme'></first-theme>
 			</li>
 			<li style="margin-left:26px;">
-				<div class="title" :style='{backgroundImage: `url(${secondTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  v-if='secondTheme.img' @click='jump("food",2)'></div>
+				<div class="title" :style='{backgroundImage: `url(${secondTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  v-if='secondTheme.img' @click='jump("food")'></div>
 				<second-theme :theme='secondTheme'></second-theme>
 			</li>
 			<li>
-				<div class="title" :style='{backgroundImage: `url(${thirdTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%"  v-if='thirdTheme.img' @click='jump("smart",3)'></div>
+				<div class="title" :style='{backgroundImage: `url(${thirdTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%"  v-if='thirdTheme.img' @click='jump("smart")'></div>
 				<third-theme :theme='thirdTheme'></third-theme>
 			</li>
 			<li style="margin-left:26px;">
-				<div class="title" :style='{backgroundImage: `url(${fourthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" v-if='fourthTheme.img' @click='jump("household",4)'></div>
+				<div class="title" :style='{backgroundImage: `url(${fourthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" v-if='fourthTheme.img' @click='jump("household")'></div>
 				<second-theme :theme='fourthTheme'></second-theme>
 			</li>
 		</ul>
@@ -91,10 +91,10 @@ import 'common/css/themeTitle.scss'
 		},
 		methods: {
 			goodDetail(id){
-				location.href = `goodDetail.html?goods_id=${id}` ;
+				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
-			jump(address,type){
-				location.href = `${address}.html?type=${type}` ;
+			jump(address){
+				window.open(`${address}.html`) ;
 			},
 			getTheme() {
 				getActivity().then(res=>{

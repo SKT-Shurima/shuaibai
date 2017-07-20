@@ -40,42 +40,42 @@
 				 				{{deliveryInfo.goodsInfo.goods.comment.praise_rate*100}}%
 				 			</div>
 				 			<div class="evalInfo">
-				 				<el-row>
-				 				   		<el-col :span='10'>
-				 				   			商品评价（{{deliveryInfo.goodsInfo.goods.comment.goods_comment.toFixed(1)}}）
-				 				   		</el-col>
-				 				   		<el-col :span='14'>
-				 				   			<el-rate
-											  v-model="deliveryInfo.goodsInfo.goods.comment.goods_comment"
-											  disabled
-											  text-color="#ff9900">
-											</el-rate>
-				 				   		</el-col>
-				 				   </el-row>
-				 				   <el-row>
-				 				   		<el-col :span='10'>
-				 				   			服务评价（{{deliveryInfo.goodsInfo.goods.comment.service_comment.toFixed(1)}}）
-				 				   		</el-col>
-				 				   		<el-col :span='14'>
-				 				   			<el-rate
-											  v-model="deliveryInfo.goodsInfo.goods.comment.service_comment"
-											  disabled
-											  text-color="#ff9900">
-											</el-rate>
-				 				   		</el-col>
-				 				   </el-row>
-				 				   <el-row>
-				 				   		<el-col :span='10'>
-				 				   			物流评价（{{deliveryInfo.goodsInfo.goods.comment.logistics_comment.toFixed(1)}}）
-				 				   		</el-col>
-				 				   		<el-col :span='14'>
-				 				   			<el-rate
-											  v-model="deliveryInfo.goodsInfo.goods.comment.logistics_comment"
-											  disabled
-											  text-color="#ff9900">
-											</el-rate>
-				 				   		</el-col>
-				 				   </el-row>
+		 						<el-row>
+			 				   		<el-col :span='10'>
+			 				   			商品评价（{{(comment.goods_comment-0).toFixed(1)}}）
+			 				   		</el-col>
+			 				   		<el-col :span='14'>
+			 				   			<el-rate
+										  v-model="comment.goods_comment"
+										  disabled
+										  text-color="#ff9900">
+										</el-rate>
+			 				   		</el-col>
+			 				   </el-row>
+			 				   <el-row>
+			 				   		<el-col :span='10'>
+			 				   			服务评价（{{(comment.service_comment-0).toFixed(1)}}）
+			 				   		</el-col>
+			 				   		<el-col :span='14'>
+			 				   			<el-rate
+										  v-model="comment.service_comment"
+										  disabled
+										  text-color="#ff9900">
+										</el-rate>
+			 				   		</el-col>
+			 				   </el-row>
+			 				   <el-row>
+			 				   		<el-col :span='10'>
+			 				   			物流评价（{{(comment.logistics_comment-0).toFixed(1)}}）
+			 				   		</el-col>
+			 				   		<el-col :span='14'>
+			 				   			<el-rate
+										  v-model="comment.logistics_comment"
+										  disabled
+										  text-color="#ff9900">
+										</el-rate>
+			 				   		</el-col>
+			 				   </el-row>
 				 			</div>
 				 		</div>
 				 	</dd>
@@ -101,7 +101,7 @@
 				 					<div class="avatar">
 				 						<img :src="item.image">
 				 					</div>
-				 					<div v-text='item.nickName'></div>
+				 					<div v-text='item.nickname' class="name"></div>
 				 				</dt>
 				 				<dd>
 				 					<p v-text='item.content' class="evalContent"></p>
@@ -119,7 +119,7 @@
 					 							{{item.date|dateStyleCh}}&nbsp;{{item.date|timeStyle}}
 					 						</span>
 					 						<strong>
-					 							颜色分类：{{item.option_name}}
+					 							规格：{{item.option_name}}
 					 						</strong>
 					 					</div>
 					 					<!-- 已经登录显示状态 -->
@@ -179,7 +179,7 @@
 <script>
 	import {dateStyleCh,timeStyle} from '../../common/js/filter'
 	import {getRecommend,getComments,replyContent,usefulComment,getSellerInfo} from '../../common/js/api'
-	import {errorInfo,getCookie} from '../../common/js/common'
+	import {errorInfo,getCookie,getRequest} from '../../common/js/common'
 	import {MessageBox} from  'element-ui'
 	import youLove from '../../components/Guess/content'
 	import coupons from './coupons.vue'
@@ -195,6 +195,11 @@
 				infoTabIndex: 1,  // 切换商品详情和评价 初始加载商品详情
 				evalTabIndex: null, // 评论分类标识
 				storeRecommend: null, // 店铺推荐
+				comment: {
+					goods_comment: "",
+					logistics_comment: "",
+					service_comment: ""
+				},
 				commentList: null, // 评价列表
 				replyList:[], // 获取回复列表
 				params: "",
@@ -225,7 +230,12 @@
 					if (newVal.goodsInfo) {
 						this.getComment(0,1);
 						let id = this.deliveryInfo.goodsInfo.goods.seller_id ;
-						this.getCat(id);
+						if (id) {
+							this.getCat(id);
+						}
+						this.comment.goods_comment = this.deliveryInfo.goodsInfo.goods.comment.goods_comment - 0; 
+						this.comment.logistics_comment = this.deliveryInfo.goodsInfo.goods.comment.logistics_comment - 0; 
+						this.comment.service_comment = this.deliveryInfo.goodsInfo.goods.comment.service_comment - 0;
 						let description = this.deliveryInfo.goodsInfo.goods.description ;
 						description = this.escape2Html(description) ;
 						this.deliveryInfo.goodsInfo.goods.description  = description ;
@@ -353,7 +363,7 @@
 	}
 </script>
 <style lang='scss' scoped>
-$text_color: #666;
+$text_color: #999;
 $border_color: #ccc;
 $primary:#c71724;
 $bg_title: #f5f5f5;
@@ -493,6 +503,7 @@ $bg_title: #f5f5f5;
 		.detailsList{
 			.storeImg{
 				margin-top: 32px;
+				text-align: center;
 			}
 		}
 		/*评论列表*/
@@ -536,14 +547,18 @@ $bg_title: #f5f5f5;
 								img{
 									width: 100%;
 									height: 100%;
+									border-radius: 50%
 								}
+							}
+							.name{
+								margin-top: 4px;
 							}
 						}
 						dd{
 							float: left;
 							width: 870px;
 							.evalContent{
-								font-size: 14px;
+								font-size: 16px;
 								line-height: 20px;
 								margin-bottom: 18px;
 							}

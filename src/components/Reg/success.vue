@@ -26,7 +26,7 @@ export default {
   				this.time-- ;
   				if (this.time === 0) {
   					clearInterval(timer);
-  					window.location.href = 'index.html'
+  					location.href = 'index.html'
   				}
   			},1000)
   		})

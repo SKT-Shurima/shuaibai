@@ -38,9 +38,9 @@
 		},
 		created(){
         this.$nextTick(()=>{
-        	if (localStorage.userInfo) {
+        	if (sessionStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}
         })
     }

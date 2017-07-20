@@ -138,13 +138,12 @@ import vmask from './mask'
 	    };
 	    // 密码验证
 	      var validatePass = (rule, value, callback) => {
-	        if (value === '') {
+	         if (value === '') {
 	          callback(new Error('请输入密码'));
-	        } else {
-	          if (this.ruleForm.confirm_passwd !== '') {
-	            this.$refs.ruleForm.validateField('confirm_passwd');
-	          }
-	          callback();
+	        } else if(value.length<6){
+	        	callback(new Error('密码长度至少六位'));
+	        }else{
+	        	callback();
 	        }
 	      };
 	      // 确认密码验证

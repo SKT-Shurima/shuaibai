@@ -13,15 +13,8 @@
 					</dd>
 				</dl>
 				<ul class="h_right">
-					<li><a href="http://shuaibo.zertone1.com/shopadmin">商家后台</a>|</li>
-					<li class="service">
-						<div class="title" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false'>客户服务<img src="../../../static/headImg/down.png" height="7" width="10" class="downImg" style='cursor:pointer;' :class='{"transDownImg":serviceBol}'></div>
-						<ul class="serviceList" @mouseenter='serviceBol=true' @mouseleave='serviceBol=false' v-show='serviceBol'>
-							<!-- <li>售前服务</li>
-							<li>售后服务</li> -->
-							<li><a href="myOrder.html#vip6">投诉中心</a></li>
-						</ul>
-					</li>
+					<li><a href="javascript:window.open('http://shuaibo.zertone1.com/shopadmin')">商家后台</a>|</li>
+					<li><a href="javascript:window.open('myOrder.html#vip6')">投诉中心</a></li>
 				</ul>
 			</div>
 		</div>
@@ -59,7 +52,7 @@ $border_color: #ccc;
 			border-bottom: #eee solid 1px;
 			line-height: 30px;
 			position: relative;
-			z-index: 99999999;
+			z-index: 100;
 			.head_box{
 				width: 1250px;
 				margin:0px auto;
@@ -87,48 +80,6 @@ $border_color: #ccc;
 	    			color: #000;
 	    			padding-left: 10px;
 	    			padding-right: 10px;
-	    		}
-	    	}
-	    	.downImg{
-    			margin-left: 4px;
-				margin-bottom: 4px;
-				transition: all .3s ;
-    		}
-    		.transDownImg{
-				transform: rotateZ(180deg);
-    		}
-    		.service{
-    			.title{
-	    			display: inline-block;
-	    			padding-left: 10px;
-	    			padding-right: 10px;
-	    			color: #000;
-	    		}
-    		}
-	    	.service{
-	    		position: relative;
-	    		.serviceList{
-	    			position: absolute;
-	    			left: 0px;
-	    			top: 30px;
-	    			border: 1px solid $border_color;
-	    			padding: 0px 14px;
-	    			background-color: #fff;
-	    			li{
-	    				height: 30px;
-	    				line-height: 30px;
-	    				color: #000;
-	    				cursor: pointer;
-	    			}
-	    			li:hover{
-	    				color: $primary;
-	    			}
-	    			a{
-	    				padding: 0px;
-	    			}
-	    			a:hover{
-	    				color: $primary;
-	    			}
 	    		}
 	    	}
 	    }

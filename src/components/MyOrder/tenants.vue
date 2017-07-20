@@ -123,7 +123,7 @@
 		    	<el-col :span='16'><img src="../../../static/centerImg/idCard2.png" width="160" height="102"></el-col>
 		    </el-row>
 		    <el-form-item style='padding-top: 30px;'>
-		  	    <el-checkbox v-model='complete'>我已阅读并同意<a href="" style="color:#0058b2;">《帅柏商城商家入驻协议》</a></el-checkbox>
+		  	    <el-checkbox v-model='complete'>我已阅读并同意<a :href="url" target="_blank" style="color:#0058b2;">《帅柏商城商家入驻协议》</a></el-checkbox>
 		    </el-form-item>
 			<el-row>
 				<el-col :span='16' :offset='8'>
@@ -251,7 +251,8 @@ import {MessageBox,Message} from  'element-ui'
 			    	cate : 'idCard2', 
 			    	access_token: getCookie('access_token')
 			    },
-		         fileList2: []
+		         fileList2: [],
+		         url: ""
 			}
 		},
 		methods:{
@@ -430,6 +431,9 @@ import {MessageBox,Message} from  'element-ui'
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
+						if (content.errcode=== -100) {
+							this.url = content.url ;
+						}
 						if (content.errcode=== -101) {
 							this.changeView("vip800?status=101");
 						}

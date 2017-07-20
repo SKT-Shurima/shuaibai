@@ -15,22 +15,27 @@
 	 		<i class="icon"></i>
 	 		<span style="vertical-align: 4px;">资金明细</span>
 	 	</div>
-	 	<ul class="moneyList" v-if='financeList'>
-	 		<li v-for='item in financeList'>
-	 			<el-row>
-	 				<el-col :span='4'>
-	 					{{item.date_add*1000 | dateStyle}}
-	 				</el-col>
-	 				<el-col :span='4'>
-	 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
-	 				</el-col>
-	 				<el-col :span='16'>
-	 					{{item.comments}}
-	 				</el-col>
-	 			</el-row>
-	 		</li>
-	 	</ul>
-	 	<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
+	 	<div v-if='financeList.length'>
+	 		<ul class="moneyList">
+		 		<li v-for='item in financeList'>
+		 			<el-row>
+		 				<el-col :span='4'>
+		 					{{item.date_add*1000 | dateStyle}}
+		 				</el-col>
+		 				<el-col :span='4'>
+		 					<span :class='{"expent":item.title-0<0}'>{{item.title}}</span>
+		 				</el-col>
+		 				<el-col :span='16'>
+		 					{{item.comments}}
+		 				</el-col>
+		 			</el-row>
+		 		</li>
+		 	</ul>
+		 	<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
+	 	</div>
+	 	<div v-else style='font-size:16px;margin-top: 16px;'>
+			暂无资金明细
+		</div>
 	</div>
 </template>
 <script>
@@ -46,7 +51,7 @@ import pagination from '../Common/pagination'
       	},
       	page: "1",
       	pagesize: 1,
-      	financeList: null
+      	financeList: []
       };
     },
     filters:{
@@ -85,9 +90,9 @@ import pagination from '../Common/pagination'
     },
     created(){
         this.$nextTick(()=>{
-        	if (localStorage.userInfo) {
+        	if (sessionStorage.userInfo) {
 				this.hasUser = true;
-				this.userInfo = JSON.parse(localStorage.userInfo);
+				this.userInfo = JSON.parse(sessionStorage.userInfo);
 			}else{
 				location.href = "login.html";
 			}
