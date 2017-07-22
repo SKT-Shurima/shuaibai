@@ -72,6 +72,10 @@ export const getHomePage = params => {
 	params = trans(params);
 	return axios.post(`${base}/initAction/getHomePage`,params).then( res=> res.data);
 }
+// 首页资讯
+export const getHomeInformations = () =>{
+	return axios.post(`${base}/initAction/getHomeInformations`).then(res=>res.data) ;
+}
 // 手机面额充值
 export const  getActualFee = params =>{
 	params = trans(params);
@@ -127,6 +131,11 @@ export const  getThematicActivities = params =>{
 export const getUserInfo = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/getUserInfo`,params).then(res=>res.data);
+}
+// 获取未读消息数量
+export const getMessageCount = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/MessageAction/getMessageCount`,params).then(res=>res.data) ; 
 }
 // 保存地址
 export const saveAddress = params =>{
@@ -415,6 +424,10 @@ export const  getShopInfo= params =>{
 	params = trans(params);
 	return axios.get(`${base}/shopAction/getSellerInfo?${params}`).then(res=>res.data);
 }
+// 客服信息 
+export const getKFInfo = () =>{
+	return axios.post(`${base}/initAction/getKFInfo`).then(res=>res.data) ;
+}
 
 // 店铺详情
 export const getSellerInfo =  params => {
@@ -564,4 +577,11 @@ export const refundMessage = params => {
 export const refundRemind = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/orderAction/refundRemind`,params).then(res=>res.data) ; 
+}
+
+
+// 资讯
+export const getInformations = params =>{
+	params = trans(params); 
+	return axios.post(`${base}/initAction/getInformations`,params).then(res=>res.data); 
 }

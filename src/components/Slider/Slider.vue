@@ -8,10 +8,8 @@
 						<img src="../../../static/centerImg/avaterDefault.jpg" style="width:100%;height: 100%;" v-else>
 					</div>
 				</li>
-				<li>
-					<a href="javascript:window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);">
-						在线客服
-					</a>
+				<li @click='kf'>
+					在线客服
 				</li>
 				<li @click='check("vip3")'>
 					<dl>
@@ -73,10 +71,15 @@
 	</div>
 </template>
 <script>
+import {getKFInfo} from '../../common/js/api'
 	export default{
 		data(){
 			return{
-				userInfo: null
+				userInfo: null,
+				kfInfo: {
+		        	qq:"",
+		        	weixin: ""
+		        }
 			}
 		},
 		methods:{
@@ -116,13 +119,26 @@
 			},
 			check(view){
 				window.open(`myOrder.html#${view}`);
-			}
+			},
+			kf(){
+		        let _this =this ;
+		        let qq = _this.kfInfo.qq ;
+		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+	      	}
 		},
 		mounted(){
 			this.$nextTick(()=>{
 				if (sessionStorage.userInfo) {
 					this.userInfo = JSON.parse(sessionStorage.userInfo);
 				}
+				getKFInfo().then(res=>{
+		          let {errcode,message,content} = res ;
+		          if(errcode !== 0){
+		            errorInfo(errcode,message) ;
+		          }else {
+		            this.kfInfo=content; 
+		          }
+		        })
 			})
 		}
 	}
@@ -159,9 +175,6 @@
 					cursor: pointer;
 					padding: 16px 2px;
 					border-bottom: 1px solid #555;
-				}
-				a{
-					color: #fff;
 				}
 			}
 			.bakcTop{

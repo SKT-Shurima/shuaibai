@@ -61,7 +61,7 @@
 			</li>
 		</ul>
 		<div v-else class="noResult">
-			没有找到与“<em>{{decodeURI(reqParams.keyword)}}</em>”相关的宝贝
+			没有找到相关的宝贝
 		</div>
 		<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
 	</div>
@@ -273,9 +273,7 @@ $bg_color: #f5f5f5;
 		}
 		.noResult{
 			margin-top: 20px;
-			em{
-				color: $primary;
-			}
+			color: $primary;
 		}
 	}
 </style>

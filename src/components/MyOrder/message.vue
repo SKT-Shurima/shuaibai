@@ -88,6 +88,7 @@ import pagination from '../Common/pagination'
 					}else {
 						this.msgList = content.content ;
 						this.pagesize = content.pageSize ;
+						this.$emit('hasRead');
 					}
 				})
 			}

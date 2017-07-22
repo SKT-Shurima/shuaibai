@@ -1,9 +1,11 @@
 $border_color: #ccc;
 $text_color: #666;
 $red_color: #f24450;
+%br{
+  border-radius: 12px;
+}
 	.storeInfo{
   		width: 200px;
-  		height: 340px;
   		border: 1px solid $border_color;
   		.title{
   			width: 198px;
@@ -14,11 +16,12 @@ $red_color: #f24450;
   			.titleContent{
   				width: 156px;
   				margin: 0px auto;
+          cursor: pointer;
   				.slider{
       				float: left;
       				width: 28px;
       				height: 1px;
-      			    margin-top: 10px;
+    			    margin-top: 12px;
       				background-color: #fff;
       			}
       			.name{
@@ -28,6 +31,9 @@ $red_color: #f24450;
       				text-align: center;
       				color: #fff;
       				font-size: 20px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
       			}
   			}
   		}
@@ -69,7 +75,7 @@ $red_color: #f24450;
   				}
   			}
   			.online{
-  				padding: 8px 0px 24px;
+  				padding: 8px 0px 16px;
   				text-align: center;
   				border-bottom: 1px solid $border_color;
   				dt{
@@ -77,18 +83,31 @@ $red_color: #f24450;
   					line-height: 40px;
   				}
   				dd{
-  					width: 80px;
-  					height: 24px;
   					line-height: 24px;
-  					margin: 0px auto; 
-  					border-radius: 12px;
             cursor: pointer;
-  					background-color: #38b8fc;
-  					color: #fff;
+            img{
+              vertical-align: -2px;
+            }
   				}
+          .qqkf,.wxkf{
+            width: 80px;
+            height: 24px;
+            margin: 0px auto 10px; 
+          }
+          .qqkf{
+            background-color: #38b8fc;
+            color: #fff;
+            @extend %br;
+          }
+          .wxkf{
+            background-color: #fff;
+            border: 1px solid #38b8fc;
+            color: #38b8fc;
+            @extend %br;
+          }
   			}
   			.collectBtn{
-  				margin-top: 16px;
+  				margin: 12px 0px 10px; 
   				text-align: center;
   				.el-button{
   					border: 1px solid $red_color;

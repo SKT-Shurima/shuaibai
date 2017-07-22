@@ -84,7 +84,7 @@
 		},
 		methods:{
 			relatedGoods(keyword){
-				location.href = `relatedGoods.html?keyword=${keyword}`; 
+				window.open(`relatedGoods.html?keyword=${keyword}`); 
 			},
 			keyWords(){
 				getKeyWord().then(res=>{

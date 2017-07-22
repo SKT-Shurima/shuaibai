@@ -89,17 +89,18 @@ function trans (val){
 // 时间大于一个小时显示多少小时前
  export const timeTrans  = time =>{
         time-=0;
-        var date = new Date(time);
-         let {hh,mm} = {hh:date.getHours(),mm:date.getMinutes()};
-         var newDate = new Date();
-         let {h,m} = {h:newDate.getHours(),m:newDate.getMinutes()};
-           h=hh-h;
-           m = mm -m ;
-           if (h >= 1) {
-            return `${h}小时前`
-           }else{
-            return m + '分钟前'
-           }
+        let difTime = new Date().getTime() - time ;
+        let {h,m} = {h:parseInt(difTime/(3600*1000)),m:parseInt(difTime/(60*1000))}; 
+        let msg = "" ;
+        if (h<1) {
+          msg =  `${m}分钟前`;
+        }else if(h>=1&&h<=24){
+          msg = `${h}小时前`;
+        }else if(h>24){
+            h = parseInt(h/24)
+            msg =`${h}天前`;
+        }
+        return msg ;
 }
 
 // 倒计时

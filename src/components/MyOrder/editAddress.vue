@@ -58,7 +58,7 @@
 				</el-form-item>
 			</div>
 			<div style="width:300px;margin:20px 100px 70px;">
-			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.province!==""&&ruleForm.city!==""&&ruleForm.address&&ruleForm.name&&ruleForm.phone)'>保存</el-button>
+			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.province!==""&&ruleForm.city!==""&&ruleForm.address&&ruleForm.name&&ruleForm.phone)' >保存</el-button>
 			</div>	  
 		</el-form>
 		<div class="addressList" v-if='addressList'>

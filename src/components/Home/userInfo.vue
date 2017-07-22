@@ -80,26 +80,24 @@
 				</el-row>
 			</div>
 		</div>
-		<div class="pre_msg">
+		<div class="pre_msg"  v-if='infoList.length'>
 			<div class="info_title">
 				<span>
 					<img src="../../../static/indexImg/message.png" height="16" width="16">
 					优惠快讯
 				</span>
-			<!-- 	<em>
+				<a href='javascript:window.open()'>
 					更多<img src="../../../static/commonImg/leftArrow.png" height="10" width="5" alt="">
-				</em> -->
+				</a>
 			</div>
 			<ul class="msg_list">
-				<li>伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶伊利牛奶</li>
-				<li>伊利牛奶</li>
-				<li>伊利牛奶</li>
+				<li v-for='(item,index) in infoList' v-text='item.name' :key='index' v-if='index<3'></li>
 			</ul>
 		</div>
 	</div>
 </template>
 <script>
-import {getUserInfo} from '../../common/js/api'
+import {getUserInfo,getHomeInformations} from '../../common/js/api'
 import {getCookie} from '../../common/js/common'
 import {num_filter} from '../../common/js/filter'
 	export default{
@@ -108,7 +106,8 @@ import {num_filter} from '../../common/js/filter'
 				userInfo: {
 					avater: "",
 					nickname: ""
-				}
+				},
+				infoList: []
 			}
 		},
 		filters:{
@@ -123,6 +122,16 @@ import {num_filter} from '../../common/js/filter'
 			},
 			checkOrder(index){
 				window.open(`myOrder.html#view0?orderIndex=${index}`);
+			},
+			initMsg(){
+				getHomeInformations().then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						this.infoList = content.infos ;
+					}
+				})
 			}
 		},
 		mounted(){
@@ -147,6 +156,7 @@ import {num_filter} from '../../common/js/filter'
 						})
 					}
 				}
+				this.initMsg();
 			})
 		}
 	}
@@ -248,6 +258,10 @@ $text_color: #666;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 -o-text-overflow: ellipsis;
+                border-bottom:1px solid $border_color;
+			}
+			li:last-child{
+				border-bottom: none;
 			}
 		}
 	}
@@ -261,7 +275,7 @@ $text_color: #666;
 			float: left;
 			font-weight: 600;
 		}
-		em{
+		a{
 			float: right;
 			cursor: pointer;
 			color: $text_color;

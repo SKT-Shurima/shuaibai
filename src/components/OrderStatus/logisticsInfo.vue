@@ -69,6 +69,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 	   	  orderInfo :{
 	   	  	handler(newVal,oldVal){
 	   	  		let _this = this ;
+	   	  		console.log(_this.orderInfo.order.express_sn)
 	   	  		_this.getEpress();
 	   	  	}
 	   	  }

@@ -27,10 +27,20 @@
 			</div>
 			<dl class="online">
 				<dt>在线客服</dt>
-				<dd  @click='kf(goods.kf_qq)'>
+				<dd  @click='kf' class="qqkf">
           <img src ="../../../static/commonImg/qq.png" height="14" width="12">
-          客服天天
+          客服
 				</dd>
+        <dd>
+          <div  class="wxkf">
+            <img src ="../../../static/commonImg/weixin.png" height="14" width="14">
+          客服
+          </div>
+          <div>
+            <img :src="kfInfo.weixin" style="width:100px;height: 100px;">
+          </div>
+          
+        </dd>
 			</dl>
 			<div class="collectBtn">
 				<el-button type='text' size='small' @click='follow' :class='{"isView":goods.is_seller_collection}'>
@@ -48,9 +58,18 @@
 	</div>
 </template>
 <script>
-import {collectionGoods,addFollow,cancelFollow} from '../../common/js/api'
+import '../../common/css/storeInfo.scss'
+import {collectionGoods,addFollow,cancelFollow,getKFInfo} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 	export default {
+    data(){
+      return {
+        kfInfo: {
+          qq:"",
+          weixin: ""
+        }
+      }
+    },
 		 props: {
 		 	goods: {
 		 		type: Object,
@@ -63,8 +82,10 @@ import {errorInfo,getCookie} from '../../common/js/common'
         let id = _this.goods.seller_id ;
         location.href = `storeDetail.html?seller_id=${id}` ;
       },
-      kf(qq){
-        window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);
+      kf(){
+        let _this =this ;
+        let qq = _this.kfInfo.qq ;
+        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
       },
 			follow(){
 				let _this = this ;
@@ -103,116 +124,23 @@ import {errorInfo,getCookie} from '../../common/js/common'
 					}
 				})
 			}
-		 }
+		 },
+     mounted(){
+      this.$nextTick(()=>{
+        getKFInfo().then(res=>{
+          let {errcode,message,content} = res ;
+          if(errcode !== 0){
+            errorInfo(errcode,message) ;
+          }else {
+            this.kfInfo=content; 
+          }
+        })
+      })
+     }
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$text_color: #666;
-$red_color: #f24450;
-	.storeInfo{
-  		float: left;
-  		width: 200px;
-  		height: 340px;
-  		border: 1px solid $border_color;
-  		.title{
-  			width: 198px;
-  			height: 40px;
-  			padding-top: 10px;
-  			overflow: hidden;
-  			background: -webkit-linear-gradient(top,#cd2b2d,#cd4b2a) ;
-  			.titleContent{
-  				width: 156px;
-  				margin: 0px auto;
-          cursor: pointer;
-  				.slider{
-      				float: left;
-      				width: 28px;
-      				height: 1px;
-    			    margin-top: 12px;
-      				background-color: #fff;
-      			}
-      			.name{
-      				float: left;
-      				width: 100px;
-      				padding: 0px 10px;
-      				text-align: center;
-      				color: #fff;
-      				font-size: 20px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-      			}
-  			}
-  		}
-  		.storeContent{
-  			width: 198px;
-  			padding: 0px 10px;
-  			.storeName{
-  				height: 56px;
-  				line-height: 56px;
-  				font-size: 16px;
-  				text-align: center;
-  				overflow: hidden;
-  				text-overflow: ellipsis;
-  				white-space: nowrap ;
-  				border-bottom: 1px solid $border_color;
-          cursor: pointer;
-  			}
-  			.eval{
-  				padding: 16px 0px;
-  				text-align: center;
-  				overflow: hidden;
-  				border-bottom: 1px solid $border_color;
-  				dl{
-  					float: left;
-  					width: 33.33%;
-  					border-right: 1px solid $border_color;
-  					dt{
-  						font-size: 14px;
-      					color: $text_color;
-      					margin-bottom: 14px;
-      				}
-      				dd{
-      					font-size: 16px;
-      					color: $red_color;
-      				}
-  				}
-  				dl:last-child{
-  					border-right: none;
-  				}
-  			}
-  			.online{
-  				padding: 8px 0px 24px;
-  				text-align: center;
-  				border-bottom: 1px solid $border_color;
-  				dt{
-  					height: 40px;
-  					line-height: 40px;
-  				}
-  				dd{
-  					width: 80px;
-  					height: 24px;
-  					line-height: 24px;
-  					margin: 0px auto; 
-  					border-radius: 12px;
-            cursor: pointer;
-  					background-color: #38b8fc;
-  					color: #fff;
-  				}
-  			}
-  			.collectBtn{
-  				margin-top: 18px;
-  				text-align: center;
-  				.el-button{
-  					border: 1px solid $red_color;
-  					padding: 6px;
-  				}
-  				.isView{
-  					color: #666;
-  				}
-  			}
-  		}
-  		
-  	} 
+.storeInfo{
+  float: left;
+}
 </style>

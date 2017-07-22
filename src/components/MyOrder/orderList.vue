@@ -150,7 +150,7 @@ import pagination from '../Common/pagination'
 				window.open(`goodDetail.html?goods_id=${id}`)  ;
 			},
 			kf(qq){
-	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);
+	       		window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
 	        },
 	        handleSelect(key, keyPath) {
 	            console.log(key, keyPath);

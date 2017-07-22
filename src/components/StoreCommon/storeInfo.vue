@@ -26,10 +26,19 @@
 			</div>
 			<dl class="online">
 				<dt>在线客服</dt>
-				<dd  @click='kf(shopInfo.kf_qq)'>
-          <img src ="../../../static/commonImg/qq.png" height="14" width="12">
-          客服天天
+				<dd  @click='kf' class="qqkf">
+		            <img src ="../../../static/commonImg/qq.png" height="14" width="12">
+		            客服
 				</dd>
+		        <dd>
+		            <div  class="wxkf">
+		            	<img src ="../../../static/commonImg/weixin.png" height="14" width="14">
+		           		 客服
+		            </div>
+		         	<div>
+		            	<img :src="kfInfo.weixin" style="width:100px;height: 100px;">
+		          	</div>
+		        </dd>
 			</dl>
 			<div class="collectBtn">
 				<el-button type='text' size='small' @click='follow' :class='{"isView":shopInfo.is_follow}'>
@@ -43,61 +52,67 @@
 </template>
 <script>
 import '../../common/css/storeInfo.scss'
-import {collectionGoods,addFollow,cancelFollow,getShopInfo} from '../../common/js/api'
+import {collectionGoods,addFollow,cancelFollow,getShopInfo,getKFInfo} from '../../common/js/api'
 import {errorInfo,getCookie,getRequest} from '../../common/js/common'
 	export default {
     data(){
       return {
         shopInfo: null,
-        reqParams: null
+        reqParams: null,
+        kfInfo: {
+        	qq:"",
+        	weixin: ""
+        }
       }
     },
-		 methods: {
-      storeDetail(){
-        let _this = this ;
-        let id = _this.reqParams.seller_id ;
-        window.open(`storeDetail.html?seller_id=${id}`) ;
-      },
-      kf(qq){
-        window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);
-      },
-			follow(){
-				let _this = this ;
-				let fn ;
-				if(_this.shopInfo.is_follow){
-					fn = cancelFollow;
+    methods: {
+        storeDetail(){
+	        let _this = this ;
+	        let id = _this.reqParams.seller_id ;
+	        window.open(`storeDetail.html?seller_id=${id}`) ;
+      	},
+     	kf(){
+	        let _this =this ;
+	        let qq = _this.kfInfo.qq ;
+	        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+      	},
+		follow(){
+			let _this = this ;
+			let fn ;
+			if(_this.shopInfo.is_follow){
+				fn = cancelFollow;
+			}else {
+				fn = addFollow;
+			}
+			let params ={
+				access_token: getCookie('access_token'),
+				seller_id: _this.reqParams.seller_id
+			}
+			fn(params).then(res=>{
+				let {errcode,message,content} = res ;
+				if(errcode !== 0){
+					errorInfo(errcode,message) ;
 				}else {
-					fn = addFollow;
+					this.initInfo();
 				}
-				let params ={
-					access_token: getCookie('access_token'),
-					seller_id: _this.reqParams.seller_id
+			})
+		},
+		collection(){
+			let _this = this;
+			let params = {
+				access_token: getCookie('access_token'),
+				goods_id: _this.goods.goods_id
+			}
+			collectionGoods(params).then(res=>{
+				let {errcode,message,content} = res ;
+				if(errcode !== 0){
+					errorInfo(errcode,message) ;
+				}else {
+					this.goods.is_collection=!this.goods.is_collection;
+        this.$emit('getCol');
 				}
-				fn(params).then(res=>{
-					let {errcode,message,content} = res ;
-					if(errcode !== 0){
-						errorInfo(errcode,message) ;
-					}else {
-						this.initInfo();
-					}
-				})
-			},
-			collection(){
-				let _this = this;
-				let params = {
-					access_token: getCookie('access_token'),
-					goods_id: _this.goods.goods_id
-				}
-				collectionGoods(params).then(res=>{
-					let {errcode,message,content} = res ;
-					if(errcode !== 0){
-						errorInfo(errcode,message) ;
-					}else {
-						this.goods.is_collection=!this.goods.is_collection;
-            this.$emit('getCol');
-					}
-				})
-			},
+			})
+		},
       initInfo(){
          let seller_id = this.reqParams.seller_id ;
         let params = {
@@ -117,6 +132,18 @@ import {errorInfo,getCookie,getRequest} from '../../common/js/common'
      created(){
       this.reqParams = getRequest();
       this.initInfo();
-      }
+      },
+       mounted(){
+      this.$nextTick(()=>{
+        getKFInfo().then(res=>{
+          let {errcode,message,content} = res ;
+          if(errcode !== 0){
+            errorInfo(errcode,message) ;
+          }else {
+            this.kfInfo=content; 
+          }
+        })
+      })
+     }
 	}
 </script>

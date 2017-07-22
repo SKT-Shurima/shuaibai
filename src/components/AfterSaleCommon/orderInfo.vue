@@ -81,7 +81,7 @@ import {MessageBox} from  'element-ui'
 		},
 		methods:{
 			kf(qq){
-		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=1211065934&site=qq&menu=yes`);
+		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
 		    }
 		},
 		mounted(){

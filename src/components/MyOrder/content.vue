@@ -16,7 +16,7 @@
 								<li @click='changeView("view13")'>邮箱绑定</li>
 							</ul>
 						</li>
-						<li><div @click='changeView("view20")'>消息</div></li>
+						<li><div @click='changeView("view20")'>消息<span v-text='msgNum' v-show='msgNum-0' style="margin-left: 6px;"></span></div></li>
 					</ul>
 				</div>
 				<div class="searchBox">
@@ -44,7 +44,7 @@
 			</div>
 			<div class="container">
 				<div class="orderList">
-					<component :is='currentView' @hasGuess='hasGuess(msg)' ref='orderList'></component>
+					<component :is='currentView' @hasGuess='hasGuess(msg)' ref='orderList' @hasRead='msgNum=0'></component>
 				</div>
 			</div>
 		</div>
@@ -55,6 +55,7 @@
 </template>
 <script>
 	import {getHashReq,getCookie} from '../../common/js/common'
+	import {getMessageCount,errorInfo} from '../../common/js/api'
 	import {MessageBox} from  'element-ui'
     import orderList from './orderList'
     import refundList from './refundList'
@@ -123,7 +124,8 @@
 		        	{name: '退款/售后'},
 		        	{name: '充值订单'}
 		        ],
-		        reqParams: null
+		        reqParams: null,
+		        msgNum: 0
 		    };
 		},
 		computed:{
@@ -254,7 +256,20 @@
 				let  userInfo = sessionStorage.userInfo ;
 	            if(!access_token||!userInfo){
 	                location.href = 'login.html';
+	            }else{
+	            	let params = {
+	            		access_token: access_token
+	            	}
+	            	getMessageCount(params).then(res=>{
+	            		let {errcode,message,content} = res;
+				 		if(errcode!==0) {
+							errorInfo(errcode,message) ;
+						}else{
+							this.msgNum = content ;
+						}
+	            	})
 	            }
+
 	        })
 		},
 		mounted(){

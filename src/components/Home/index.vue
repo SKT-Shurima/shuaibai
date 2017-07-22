@@ -12,21 +12,21 @@
 		<div class="con_wrap">
 		<div class="con_box">
 			<ul class="con_list" @mouseenter='listBol=true' @mouseleave='listBol=false;listIndex=""'>
-				<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index' :class='{"checkUnit":listIndex===index}' @click='checkGoods(index,item.name)'>
+				<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index' :class='{"checkUnit":listIndex===index}' @click='checkGoods(index,item.category_id)'>
 					<img :src="item.selected_icon" v-show='listBol&&listIndex===index'>
 					<img :src="item.icon" v-show='!(listBol&&listIndex===index)'>
 					{{item.name}}
 				</li>
 			</ul>
 			<div class="content" v-show='listBol'  @mouseleave='listBol=false;listIndex=""' @mouseenter='listBol=true;listIndex=fIndex'>
-				<div class="detail_list">
-					<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2'>
+				<div class="detail_list"> 
+					<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2' v-if='item2.child_category.length'>
 						<el-col :span='5'>
-						    <span v-text='item2.name' @click='checkGoods(`${fIndex},${index2}`,item2.name)'></span>
+						    <span v-text='item2.name' @click='checkGoods(`${fIndex},${index2}`,item2.category_id)'></span>
 						    <em>></em>
 						</el-col>
 						<el-col :span='16' :offset="1">
-							<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(`${fIndex},${index2},${index3}`,item3.name)'></span>
+							<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(`${fIndex},${index2},${index3}`,item3.category_id)'></span>
 						</el-col>
 					</el-row>
 				</div>
@@ -107,8 +107,8 @@ import recharge from './recharge'
 				}
 				
 			},
-			checkGoods(index,name){
-	     		window.open(`relatedGoods.html?cat=${index}&keyword=${name}`) ;
+			checkGoods(index,id){
+	     		window.open(`relatedGoods.html?cat=${index}&category_id=${id}`) ;
 	     	},
 			homePage(){
 				let params = {

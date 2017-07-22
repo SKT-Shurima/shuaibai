@@ -50,7 +50,8 @@ import {getHighGoods} from '../../common/js/api'
 			this.$nextTick(()=>{
 				this.reqParams = getRequest();
 				let params = {
-					keyword: this.reqParams.keyword ? this.reqParams.keyword : " "
+					keyword: this.reqParams.keyword ? this.reqParams.keyword : " ",
+					category_id: this.reqParams.category_id?this.reqParams.category_id:""
 				}
 				getHighGoods(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -67,15 +68,15 @@ import {getHighGoods} from '../../common/js/api'
 
 <style lang='scss' scoped>
 $text_color: #666;
-$border_color: #ccc;
+$border_color: #f1f1f1;
 $primary:#c71724;
 $bg_title: #f5f5f5;
 .infoList{
 	dl{
 		cursor: pointer;
 		dt{
-			width: 210px;
-			height: 210px;
+			width: 198px;
+			height: 198px;
 			img{
 				width: 100%;
 				height: 100%; 
@@ -128,8 +129,9 @@ $bg_title: #f5f5f5;
 			}
 		}
 		ul{
-			width: 240px;
+			width: 230px;
 			border: 1px solid $border_color;
+			margin-top: 10px;
 			li{
 				width: 100%;
 				height: 310px;

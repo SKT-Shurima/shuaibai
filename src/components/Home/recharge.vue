@@ -122,7 +122,8 @@ import rechargeType from './rechargeType'
 $primary:#c71724;
 	.recharge{
 		width: 100%;
-		height: 130px;
+		height: 124px;
+		margin-top: 8px;
 		.recharge_title{
 			width: 100%;
 			div{
