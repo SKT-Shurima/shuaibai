@@ -127,7 +127,7 @@
 					</dd>
 				</dl>
 			</div>
-			<store-info :goods='goods' @getCol='getColList'></store-info>
+			<store-info :goods='goods'></store-info>
 		</div>
 	</div>
 </template>
@@ -231,10 +231,6 @@
 			 }
 			},
 		methods: {
-			// 获取收藏列表
-			getColList(){
-				this.$emit('getCol');
-			},
 			// 获取省市区
 			getAddress(id,mask,index){
 				let _this = this ;
@@ -352,11 +348,11 @@
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
+						this.$store.commit('switchShopCar');
 						MessageBox.alert(message, '提示', {
 				          	confirmButtonText: '确定',
 				          	type: 'success'
 					    });
-				        this.$emit('sendShopCar')
 					}
 				})
 			},

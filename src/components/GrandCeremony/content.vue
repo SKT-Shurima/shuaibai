@@ -66,7 +66,7 @@
 	</div>
 </template>
 <script>
-import vNav from './nav'
+import vNav from '../Head/nav.vue'
 	export default{
 		data(){
 			return {

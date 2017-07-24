@@ -62,31 +62,31 @@ import '../../common/css/storeInfo.scss'
 import {collectionGoods,addFollow,cancelFollow,getKFInfo} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 	export default {
-    data(){
-      return {
-        kfInfo: {
-          qq:"",
-          weixin: ""
-        }
-      }
-    },
-		 props: {
+    	data(){
+	      	return {
+	        	kfInfo: {
+	          		qq:"",
+	          		weixin: ""
+	        	}
+	        }
+    	},
+		props: {
 		 	goods: {
 		 		type: Object,
 		 		required: true 
 		 	}
-		 },
-		 methods: {
-      storeDetail(){
-        let _this = this ;
-        let id = _this.goods.seller_id ;
-        location.href = `storeDetail.html?seller_id=${id}` ;
-      },
-      kf(){
-        let _this =this ;
-        let qq = _this.kfInfo.qq ;
-        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
-      },
+		},
+		methods: {
+	        storeDetail(){
+		        let _this = this ;
+		        let id = _this.goods.seller_id ;
+		        location.href = `storeDetail.html?seller_id=${id}` ;
+	        },
+	        kf(){
+		        let _this =this ;
+		        let qq = _this.kfInfo.qq ;
+		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+	      	},
 			follow(){
 				let _this = this ;
 				let fn ;
@@ -120,7 +120,7 @@ import {errorInfo,getCookie} from '../../common/js/common'
 						errorInfo(errcode,message) ;
 					}else {
 						this.goods.is_collection=!this.goods.is_collection;
-            this.$emit('getCol');
+           				this.$store.commit('switchCol');
 					}
 				})
 			}

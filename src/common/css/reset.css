@@ -11,7 +11,7 @@ body {
     // font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
     font-family: 'Microsoft Yahei', arial, sans-serif ;
 }
-body,div,dl,dt,dd,ul,li,p,h4,h1,p{
+body,div,dl,dt,dd,ul,li,p,h4,h1,h2,p{
   margin: 0px;
   padding: 0px;
 }

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<info-con :delivery-info='deliveryInfo' @sendShopCar='getShopCar'  @getCol='getColList'></info-con>
+		<info-con :delivery-info='deliveryInfo'></info-con>
 		<eval-con :delivery-info='deliveryInfo'></eval-con>
 	</div>
 </template>
@@ -22,14 +22,6 @@ import {getRequest,errorInfo,getCookie} from '../../common/js/common'
 			infoCon,evalCon
 		},
 		methods:{
-			// 获取收藏列表
-			getColList(){
-				this.$emit('getCol');
-			},
-			// 初始化获取商品详情
-			getShopCar(){
-				this.$emit('sendShopCar')
-			},
 			init(){
 				this.deliveryInfo.params = getRequest();
 				let params = {

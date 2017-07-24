@@ -76,7 +76,7 @@
 							<div class="normalCol">
 								<dl class="vMiddle">
 									<dt>
-										<button @click='colGoods(goodItem.goods_id)'>移入收藏夹</button>
+										<button @click='colGoods(goodItem.goods_id,goodItem.collection_id)'>{{goodItem.collection_id-0?"移出收藏夹":"移入收藏夹"}}</button>
 									</dt>
 									<dd>
 										<button @click='remove(goodItem.cart_id,false,sellerIndex,goodsIndex)'>删除</button>
@@ -95,8 +95,6 @@
 			<ul class="footOpera">
 				<li>全选</li>
 				<li class="pointer" @click='remove("",true)'>删除</li>
-				<li class="pointer">清除失效商品</li>
-				<li class="pointer">移入收藏夹</li>
 			</ul>
 			<div class="shopInfo">
 				<div class="checkNum">
@@ -116,7 +114,7 @@
 import {currency} from "../../common/js/filter"
 import {getCarts,removeCart,editCart,buy,collectionGoods}  from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
-import {MessageBox,Message} from  'element-ui'
+import {MessageBox} from  'element-ui'
 	export default{
 		data(){
 			return{
@@ -130,7 +128,16 @@ import {MessageBox,Message} from  'element-ui'
 		filters: {
 			currency
 		},
+		computed:{
+			colState(){
+				let bol = this.$store.state.colBol ;
+				return bol;
+			}
+		},
 		watch: {
+			colState(){
+				this.initList(false);
+			},
 			checkList: {
 				handler(){
 					let _this = this ;
@@ -349,7 +356,18 @@ import {MessageBox,Message} from  'element-ui'
 		 	}
 		 },
 		 // 移入收藏夹
-		 colGoods(id){
+		 colGoods(id,colId){
+		 	if (colId-0>0) {
+		 		MessageBox.confirm('此操作将永久删除该收藏, 是否继续?', '提示', {
+		            confirmButtonText: '确定',
+		            cancelButtonText: '取消',
+		            type: 'warning'
+		        }).then(() => {
+			       
+		        }).catch(() => {
+		            return false;          
+		        });
+		 	}
 		 	let params = {
 		 		access_token: getCookie('access_token'),
 		 		goods_id: id
@@ -359,10 +377,12 @@ import {MessageBox,Message} from  'element-ui'
 				if(errcode!==0) {
 					errorInfo(errcode,message) ;
 				}else{
-					Message.success({
-			          message: message,
-			          type: 'success'
-			        });
+					this.$store.commit('switchCol');
+					MessageBox.alert(message, '提示', {
+			          	confirmButtonText: '确定',
+			          	type: 'success'
+				    });
+				    this.initList(false);
 				}
 		 	})
 		 },

@@ -2,11 +2,11 @@
 	<div class="wrap">
 		<div class="head_wrap">
 		    <div class="headTop">
-		    	<v-headtop ref='headTop'></v-headtop>
+		    	<v-headtop></v-headtop>
 		    </div>
 		</div>
 		<div class="headSearch">
-			<v-headsearch ref='search'></v-headsearch>
+			<v-headsearch></v-headsearch>
 		</div>
 	</div>
 </template>

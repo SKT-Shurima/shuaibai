@@ -86,7 +86,7 @@
 					<img src="../../../static/indexImg/message.png" height="16" width="16">
 					优惠快讯
 				</span>
-				<a href='javascript:window.open()'>
+				<a href='javascript:window.open("infomation.html")'>
 					更多<img src="../../../static/commonImg/leftArrow.png" height="10" width="5" alt="">
 				</a>
 			</div>

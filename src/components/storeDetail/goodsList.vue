@@ -18,7 +18,7 @@
 				<img src="../../../static/detailImg/soreup.png" height="14" width="14" v-else-if='priceIndex===1'>
 				<img src="../../../static/detailImg/sortDefault.png" height="14" width="14" v-else>
 			</li>
-			<li style="width:110px;" @click='sortType("date_on_sale")'>
+			<li style="width:110px;" :class='{"isclick":timeIndex>0}' @click='sortType("date_on_sale")'>
 				上架时间 
 				<img src="../../../static/detailImg/sortdown.png" height="14" width="14" v-if='timeIndex===2'>
 				<img src="../../../static/detailImg/soreup.png" height="14" width="14" v-else-if='timeIndex===1'>

@@ -96,7 +96,7 @@
 	export  default {
 		data() {
 		 	window.addEventListener("popstate",()=>{
-		 		this.init();
+		 		this.initView();
 		 	})
 		    return {
 		    	searchInput: "", 
@@ -219,7 +219,7 @@
 	      		_this.changeView('view02');
 	      	}
 	      },
-	      init(){
+	      initView(){
 	      	let hash = location.hash ;
 			let view ;
 			this.reqParams = null ;
@@ -274,7 +274,7 @@
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				this.init();
+				this.initView();
 			});
 		}
 	}

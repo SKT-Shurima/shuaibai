@@ -48,10 +48,6 @@ import recommended from './recommended'
 				let _this = this ;
 				_this.level = arr;
 			}
-		},
-		mounted(){
-			this.$nextTick(()=>{
-			})
 		}
 	}
 </script>

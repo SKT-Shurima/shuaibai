@@ -82,6 +82,17 @@
 		filters:{
 			currency
 		},
+		computed:{
+			carBol(){
+				let  bol = this.$store?this.$store.state.shopCarBol:"" ;
+				return bol ;
+			}
+		},
+		watch:{
+			carBol(){
+				this.initList();
+			}
+		},
 		methods:{
 			relatedGoods(keyword){
 				window.open(`relatedGoods.html?keyword=${keyword}`); 

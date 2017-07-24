@@ -585,3 +585,8 @@ export const getInformations = params =>{
 	params = trans(params); 
 	return axios.post(`${base}/initAction/getInformations`,params).then(res=>res.data); 
 }
+//资讯详情
+export const getInformationsDetail = params =>{
+	params = trans(params); 
+	return axios.post(`${base}/initAction/getInformationsDetail`,params).then(res=>res.data) ;
+}

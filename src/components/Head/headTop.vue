@@ -86,6 +86,17 @@ import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 		filters:{
 			currency
 		},
+		computed:{
+			colState(){
+				let bol = this.$store?this.$store.state.colBol :"";
+				return bol ;
+			}
+		},
+		watch:{
+			colState(){
+				this.initList(); 
+			}
+		},
 		methods:{
 			personCenter(){
 				window.open(`myOrder.html#view10`) ;
@@ -124,6 +135,7 @@ import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 							errorInfo(errcode,message) ;
 						}else {
 							this.initList();
+							this.$store.commit('switchCol');
 						}
 			        })
 		        }).catch(() => {
