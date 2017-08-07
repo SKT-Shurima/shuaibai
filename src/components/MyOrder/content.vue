@@ -253,8 +253,7 @@
 		created(){
 			this.$nextTick(()=>{
 				let  access_token = getCookie('access_token');
-				let  userInfo = sessionStorage.userInfo ;
-	            if(!access_token||!userInfo){
+	            if(!access_token){
 	                location.href = 'login.html';
 	            }else{
 	            	let params = {

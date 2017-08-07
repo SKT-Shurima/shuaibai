@@ -150,7 +150,7 @@ import pagination from '../Common/pagination'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
+$border_color: #f0f0f0;
 $primary:#c71724;
 $text_color: #666;
 	.wrap{

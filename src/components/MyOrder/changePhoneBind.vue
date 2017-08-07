@@ -27,8 +27,8 @@
 <script>
 import {changePhoneBind,sendCode} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
+import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
-import {hex_md5} from '../../common/js/md5.js'
   export default {
     data() {
     	// 手机验证
@@ -81,6 +81,7 @@ import {hex_md5} from '../../common/js/md5.js'
         send_btn2: '发送验证码'
       };
     },
+    mixins: [userInfo],
     methods: {
     	timeInterval(mark){
     		let _this = this ;
@@ -130,7 +131,6 @@ import {hex_md5} from '../../common/js/md5.js'
 	    },
 	    changeView(view){
 	      	 this.$store.commit('switchView',view);
-	      	 sessionStorage.currentView = view ;
 	    },
       	submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -152,7 +152,6 @@ import {hex_md5} from '../../common/js/md5.js'
 			          	confirmButtonText: '确定',
 			          	callback: action => {
 				            this.$store.commit('switchView','view10');
-				            sessionStorage.currentView = 'view10';
 				        }
 				    });
             	}
@@ -165,14 +164,6 @@ import {hex_md5} from '../../common/js/md5.js'
           }
         });
       }
-    },
-    created(){
-        this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}
-        })
     }
   }
 </script>

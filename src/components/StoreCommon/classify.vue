@@ -99,6 +99,7 @@ $primary:#c71724;
 $bg_title: #f5f5f5;
 	.wrap{
 		width: 100%;
+		margin-top: 0px;
 		.navList{
 			width: 220px;
 			border-left: 1px solid $border_color;

@@ -37,11 +37,11 @@
 			<div id="service_2017">
 				<div class="service_2017 fix">
                 	<dl>
-						<dt><a href="javascript:;"><strong>购物指南</strong></a></dt>
+						<dt><a href="javascript:void(0);"><strong>购物指南</strong></a></dt>
 						<dd>
 							<ul>
-								<li><a  title="购物流程">购物流程</a></li>
-								<li><a  title="账号管理">账号管理</a></li>
+								<li><a href="javascript:window.open('shoppingProcess.html')" title="购物流程">购物流程</a></li>
+								<li><a href="javascript:window.open('myOrder.html#view10')" title="账号管理">账号管理</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -49,10 +49,10 @@
 						<dt><a href="javascript:void(0);"><strong>售后无忧</strong></a></dt>
 						<dd>
 							<ul>
-                                <li><a  title="售后服务">售后服务</a></li>
-                                <li><a  title="退款说明">退款说明</a></li>
-                                <li><a  title="返修/退换货">返修/退换货</a></li>
-                                <li><a  title="取消订单">取消订单</a></li>
+                                <li><a href="javascript:window.open('afterSaleService.html')" title="售后服务">售后服务</a></li>
+                                <li><a href="javascript:window.open('refundInstructions.html')" title="退款说明">退款说明</a></li>
+                                <li><a href="javascript:window.open('returnGoods.html')" title="返修/退换货">返修/退换货</a></li>
+                                <li><a href="javascript:window.open('cancelOrder.html')" title="取消订单">取消订单</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -60,7 +60,7 @@
 						<dt><a href="javascript:void(0);"><strong>7天无理由退换货</strong></a></dt>
 						<dd>
 							<ul>
-								<li><a  title="7天无理由退换货">7天无理由退换货</a></li>
+								<li><a href="javascript: window.open('noReason.html')" title="7天无理由退换货">7天无理由退换货</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -68,8 +68,7 @@
 						<dt><a href="javascript:void(0);"><strong>商家服务</strong></a></dt>
 						<dd>
 							<ul>
-								<li><a  title="商家中心">商家中心</a></li>
-								<li><a  title="运营服务">运营服务</a></li>
+								<li><a href="javascript:window.open('http://shuaibo.zertone1.com/shopadmin')" title="商家中心">商家中心</a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -77,9 +76,8 @@
 						<dt><a href="javascript:void(0);"><strong>联系我们 </strong></a></dt>
 						<dd>
 							<ul>
-								<li><a  title="客服咨询">客服咨询</a></li>
-								<li><a  title="0571-22853930">0571-22853930</a></li>
-                                <li><a  title="156-0653-7001">156-0653-7001</a></li>
+								<li><a href="javascript:void(0);" title="客服咨询" @click='kf'>客服咨询</a></li>
+								<li><a  v-text='kfInfo.tel'></a></li>
 							</ul>
 						</dd>
 					</dl>
@@ -117,7 +115,37 @@
 </div>
 </template>
 
-<script></script>
+<script>
+import {getKFInfo} from '../../common/js/api'
+	export default {
+		data(){
+			return {
+				kfInfo:{
+					qq:"",
+					tel: ""
+				}
+			}
+		},
+		methods:{
+			kf(){
+		        let qq = this.kfInfo.qq ;
+		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+	      	}
+		},
+		mounted(){
+			this.$nextTick(()=>{
+				getKFInfo().then().then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						this.kfInfo = content ;	
+					}
+				})
+			})
+		}
+	}
+</script>
 
 <style scoped lang='scss'>
 	.wrap{

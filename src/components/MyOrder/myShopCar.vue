@@ -355,19 +355,7 @@ import {MessageBox} from  'element-ui'
 		 		_this.removeAPI(params,removeIndex);
 		 	}
 		 },
-		 // 移入收藏夹
-		 colGoods(id,colId){
-		 	if (colId-0>0) {
-		 		MessageBox.confirm('此操作将永久删除该收藏, 是否继续?', '提示', {
-		            confirmButtonText: '确定',
-		            cancelButtonText: '取消',
-		            type: 'warning'
-		        }).then(() => {
-			       
-		        }).catch(() => {
-		            return false;          
-		        });
-		 	}
+		 colGoodsFn(id){
 		 	let params = {
 		 		access_token: getCookie('access_token'),
 		 		goods_id: id
@@ -385,6 +373,23 @@ import {MessageBox} from  'element-ui'
 				    this.initList(false);
 				}
 		 	})
+		 },
+		 // 移入收藏夹
+		 colGoods(id,colId){
+		 	if (colId-0>0) {
+		 		MessageBox.confirm('此操作将永久删除该收藏, 是否继续?', '提示', {
+		            confirmButtonText: '确定',
+		            cancelButtonText: '取消',
+		            type: 'warning'
+		        }).then(() => {
+			       this.colGoodsFn(id);
+		        }).catch(() => {
+		            return false;          
+		        });
+		 	}else{
+		 		this.colGoodsFn(id);
+		 	}
+		 	
 		 },
 		 settlement(){
 		 	let _this = this ;

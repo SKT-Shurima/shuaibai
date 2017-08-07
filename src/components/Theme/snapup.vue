@@ -177,18 +177,25 @@ $primary:#c71724;
   		width: 100%;
   		overflow: hidden;
   		margin-top: 20px;
+  		border-top: 1px solid $border_color ;
+  		border-left: 1px solid $border_color;
   		.list_unit{
   			width: 25%;
   			float: left;
-  			border: 1px solid transparent;
+  			border: {
+  				right:1px solid $border_color;
+  				bottom:1px solid $border_color;
+  			}
   			dt{
   				padding-top: 14px;
   				padding-left: 14px;
   				padding-right: 14px;
   				.info_img{
-					width: 100%;
+					width: 282px;
+  					height: 282px;
 					img{
 						width: 100%;
+						height: 100%;
 						cursor: pointer;
 					}
   				}

@@ -3,7 +3,9 @@ import axios from 'axios'
 // 开发
 // let base = '/shuaibo' ;
 // 正式
-let base = 'http://shuaibo.zertone1.com/web'
+// let base = 'http://shuaibo.zertone1.com/web'
+// 线上
+let base = 'http://app.strongmall.net/web'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -589,4 +591,31 @@ export const getInformations = params =>{
 export const getInformationsDetail = params =>{
 	params = trans(params); 
 	return axios.post(`${base}/initAction/getInformationsDetail`,params).then(res=>res.data) ;
+}
+
+
+// 底部链接
+// 购物流程
+export const b_buy_process =()=>{
+	return axios.post(`${base}/BottomAction/buy_process`).then(res=>res.data);
+}
+// 售后服务
+export const b_after_sale =()=>{
+	return axios.post(`${base}/BottomAction/after_sale`).then(res=>res.data);
+}
+// 退款说明
+export const b_refund_info =()=>{
+	return axios.post(`${base}/BottomAction/refund_info`).then(res=>res.data);
+}
+// 返修/退换货
+export const b_return_goods =()=>{
+	return axios.post(`${base}/BottomAction/return_goods`).then(res=>res.data);
+}
+// 取消订单
+export const b_cancel_order =()=>{
+	return axios.post(`${base}/BottomAction/cancel_order`).then(res=>res.data);
+}
+// 七天无理由
+export const b_seven_day =()=>{
+	return axios.post(`${base}/BottomAction/seven_day`).then(res=>res.data);
 }

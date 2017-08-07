@@ -219,6 +219,7 @@ $red_color: #f24450;
 		li{
 			float: left;
 			width: 612px;
+			height: 548px;
 			margin-top: 22px;
 		}
 		.title{

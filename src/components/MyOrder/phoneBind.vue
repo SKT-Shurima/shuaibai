@@ -14,6 +14,7 @@
 	</div>
 </template>
 <script>
+import {userInfo} from '../../common/js/mixins'
 	export default {
 		data(){
 			return {
@@ -23,6 +24,7 @@
 				}
 			}
 		},
+		mixins: [userInfo], 
 		methods:{
 			changeView(view){
 		      	 this.$store.commit('switchView',view);
@@ -35,15 +37,7 @@
 		    		this.changeView("view120");
 		    	}
 		    }
-		},
-		created(){
-        this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}
-        })
-    }
+		}
 	}
 </script>
 <style lang='scss' scoped>

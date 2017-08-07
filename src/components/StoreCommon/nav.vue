@@ -93,7 +93,6 @@ $border_color: #ccc;
 	margin-top: 36px;
 	.storeLogoWrap{
       	width: 100%;
-      	background-color: #f2f2f2;
       	.storeLogoBox{
       		width: 1250px;
       		margin: 0px auto;
@@ -134,8 +133,8 @@ $border_color: #ccc;
 						z-index: 100;
 						li{
 							width: 100%;
-							height: 50px;
-							line-height: 50px;
+							height: 45.46px;
+							line-height: 45.46px;
 							font-weight: bolder;
 							cursor: pointer;
 						}

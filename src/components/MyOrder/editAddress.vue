@@ -106,6 +106,7 @@
 <script>
 import {getOneAddress,saveAddress,defaultAddress,linkage} from '../../common/js/api'
 import {errorInfo,getHashReq,getCookie} from '../../common/js/common'
+import {userInfo} from '../../common/js/mixins'
 import {MessageBox,Message} from  'element-ui'
   export default {
     data() {
@@ -179,6 +180,7 @@ import {MessageBox,Message} from  'element-ui'
         send_btn: '发送验证码'
       };
     },
+    mixins: [userInfo],
     methods: {
     	getOneAddressAPI(){
     		let _this =  this ;
@@ -373,9 +375,8 @@ import {MessageBox,Message} from  'element-ui'
     },
     mounted(){
     	this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
+    		let access_token = getCookie('access_token');
+        	if (access_token) {
 				this.reqParams = getHashReq();
 				this.getOneAddressAPI();
 			}else{

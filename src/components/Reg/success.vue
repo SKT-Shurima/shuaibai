@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		<div class="img_box">
-			<img src="../../../static/loginImg/success.png" height="226" width="429">
+			<img src="../../../static/loginImg/success.png" height="230" width="430">
 		</div>
 		<div style='width:100%;height:80px;line-height: 80px;text-align: center;'>
 			<strong style="font-size: 16px;font-weight: 600;">注册成功，{{time}}s后自动返回商城首页</strong>
@@ -37,12 +37,12 @@ export default {
 $primary:#c71724;
 $red_color: #f24450;
 	.wrap{
-		width: 390px;
+		width: 430px;
 		height: 546px;
 		margin: 70px auto 0px;
 	    .img_box{
 	    	width: 100%;
-	    	height: 250px;
+	    	height: 230px;
 	    	img{
 	    		width: 100%;
 	    		height: 100%;

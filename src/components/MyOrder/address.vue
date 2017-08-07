@@ -47,6 +47,7 @@
 <script>
 import {getAddress,delAddress,defaultAddress} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
+import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
 import addAddress from '../Common/addAddress'
   export default {
@@ -60,6 +61,7 @@ import addAddress from '../Common/addAddress'
     components: {
     	addAddress
     },
+    mixins: [userInfo],
     methods: {
 	    changeView(view,id){
 	      	 this.$store.commit('switchView',view);
@@ -103,13 +105,12 @@ import addAddress from '../Common/addAddress'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-				this.initList();
-			}else{
-			    location.href = "login.html";
-			}
+        	let access_token = getCookie('access_token');
+        	if (!access_token) {
+        		location.href = 'login.html' ;
+        	}else{
+        		this.initList();
+        	}
         })
     }
   }

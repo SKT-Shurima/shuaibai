@@ -3,7 +3,7 @@
 		<h4>
 			选择收货地址
 		</h4>
-		<ul class="addressList" v-if='addressList'>
+		<ul class="addressList" v-if='addressList.length'>
 			<li v-for= '(item,index) in addressList' :class='{"isAddress":addressIndex===index}' :key='item' @click='initExpressFee(index)' v-if='index<entries'>
 				<dl>
 					<dt>
@@ -35,6 +35,9 @@
 				</div>
 			</li>
 		</ul>
+		<div v-else  style="color:#c71724">
+			您暂无设置收货地址，请选择“使用新地址”，并填写收货地址！
+		</div>
 		<div class="opera">
 			<el-button type='text' size='small' @click='entries=entries===4?addressList.length:4'>{{entries<=4?"显示全部地址":"显示部分地址"}}</el-button>
 			<el-button type='text' size='small' @click='addressView'>管理收货地址</el-button>
@@ -131,7 +134,7 @@
 							-{{shop[shopIndex].coupon_index+""?shop[storeIndex].couponsList[shop[storeIndex].coupon_index].amount:0|currency}}
 						</strong>
 					</li>
-					<li v-show='orderInfo.customer.shopping_coin-0&&shopItem.max_shopping_coin-0'>
+					<li v-show='orderInfo.customer.shopping_coin-0>=shopItem.max_shopping_coin-0&&shopItem.max_shopping_coin-0'>
 						<div  class="discountRow">
 						    <span>
 								<em class="raido" @click='shop[shopIndex].radio=shop[shopIndex].radio==="2"?"0":"2";storeIndex=shopIndex;'>
@@ -147,7 +150,7 @@
 							您剩余购物币{{orderInfo.customer.shopping_coin}}，当前店铺最多可用{{shopItem.max_shopping_coin}}
 						</div>
 					</li>
-					<li v-show='orderInfo.customer.integration-0&&shopItem.max_integration-0'>
+					<li v-show='orderInfo.customer.integration-0>=shopItem.max_integration-0&&shopItem.max_integration-0'>
 						<div  class="discountRow">
 						    <span>
 								<em class="raido" @click='shop[shopIndex].radio=shop[shopIndex].radio==="1"?"0":"1";storeIndex=shopIndex;'>
@@ -166,11 +169,16 @@
 				</ul>
 			</div>
 		</div>
-		<div class="payWrap" v-if='addressList'>
+		<div class="payWrap" v-if='addressList.length'>
 			<div class="payBox">
 				<el-row style='padding: 36px 40px;'>
-					<span v-if='orderInfo.full' class="full">满{{orderInfo.full.limit}}减{{orderInfo.full.amount}}</span>
-					<strong>实付款：</strong><i>￥</i><em>{{(total_fee-0).toFixed(2)}}</em>
+					<div style="overflow:hidden;">
+						<span v-if='orderInfo.full' class="full">满{{orderInfo.full.limit}}减{{orderInfo.full.amount}}</span>
+					</div>
+					<div>
+						<strong>实付款：</strong><i>￥</i><em>{{(total_fee-0).toFixed(2)}}</em>
+					</div>
+					
 				</el-row>
 				<!-- <el-row>
 					<strong>收货地：</strong><span>{{addressList[addressIndex].province}}{{addressList[addressIndex].city}}{{addressList[addressIndex].district}}{{addressList[addressIndex].address}}}</span>
@@ -196,7 +204,7 @@ import addAddress from './addAddress'
 	export default{
 		data(){
 			return {
-				addressList: null,
+				addressList: [],
 				orderInfo: null,
 				addressIndex: "",
 				entries: 4,
@@ -259,12 +267,10 @@ import addAddress from './addAddress'
 		      	 		errorInfo(errcode,message) ;
 		      	 	}else{
 		      	 		if (content.length===0) {
-		      	 			MessageBox.alert('请先填写收货地址', '提示', {
-					          	confirmButtonText: '确定',
-					          	callback: action => {
-					          		location.replace('myOrder.html#view100');
-					          	}
+		      	 			MessageBox.alert('您暂无设置收货地址，请在“选择收货地址”中选择“使用新地址”，并填写收货地址', '提示', {
+					          	confirmButtonText: '确定'
 						    });
+						    return false;
 		      	 		}
 		      	 		this.addressList = content;
 		      	 		let index = 0 ;
@@ -282,20 +288,20 @@ import addAddress from './addAddress'
 		      	 		if (index===this.addressList.length) {
 		      	 			this.addressIndex = 0 ;
 		      	 		}
+		      	 		this.initExpressFee();
 		      	 	}
 		       })
 		    },
-		    initExpressFee(index){
-		    	let _this= this ;
-		    	if(index>=0){
-		    		_this.addressIndex=index;
+		    initExpressFee(){
+		    	if (!this.addressList.length) {
+		    		return false;
 		    	}
-		    	let id = _this.addressList[_this.addressIndex].address_id ;
+		    	let id = this.addressList[this.addressIndex].address_id ;
 		    	let params = {
 		    		address_id: id
 		    	}
 		    	let shops = [] ;
-		    	let shopArr = _this.orderInfo.shop ;
+		    	let shopArr = this.orderInfo.shop ;
 		    	for(let i = 0 ; i< shopArr.length;i++){
 		    		let  shopObj = {
 			    		seller_id: shopArr[i].seller_id,
@@ -332,12 +338,11 @@ import addAddress from './addAddress'
 		 		}
 		    },
 		    initGoodsInfo(){
-		    	let _this = this ;
 		    	let params = {
 			 		access_token: getCookie('access_token'),
 			 		data: new Array
 			 	}
-			 	let shop = _this.orderInfo.shop ;
+			 	let shop = this.orderInfo.shop ;
 			 	for(let i = 0 ;i < shop.length;i++){
 			 		let sellerObj = {
 			 			seller_id: shop[i].seller_id,
@@ -363,7 +368,6 @@ import addAddress from './addAddress'
 						this.getGoodsInfo(content);
 					}
 			 	})
-			 	
 		    },
 		    getGoodsInfo(id){
 		    	let params = {
@@ -377,14 +381,12 @@ import addAddress from './addAddress'
 					}else{
 						this.orderInfo = content ;
 						this.initOrderInfo();
-						this.initExpressFee();
 						this.countTotalFee();
 					}
 		    	})
 		    },
 		    initOrderInfo(){
-		    	let _this = this;
-		    	let  shopArr = _this.orderInfo.shop ;
+		    	let  shopArr = this.orderInfo.shop ;
 		    	let arr = [] ;
 		    	for(let i = 0 ; i < shopArr.length; i++) {
 		    		let  obj = {
@@ -399,9 +401,9 @@ import addAddress from './addAddress'
 		    		}
 		    		arr.push(obj);
 		    	}
-		    	_this.shop = arr ;
-		    	_this.initExpressFee();
-		    	_this.countTotalFee();
+		    	this.shop = arr ;
+		    	this.initExpressFee();
+		    	this.countTotalFee();
 		    },
 		    countTotalFee(){
 		    	let shopping_coin = this.orderInfo.customer.shopping_coin-0  ;
@@ -454,7 +456,6 @@ import addAddress from './addAddress'
 				this.total_fee = (goodsPrice - countPrice)>0?(goodsPrice - countPrice):0 ;
 		    },
 		    editGoods(seller_id,item,mask){
-		    	let _this  = this ;
 		    	if(mask>0){
 		    		item.quantity++;
 		    	}else if(mask<0){
@@ -466,18 +467,16 @@ import addAddress from './addAddress'
 		    		}
 		    	}
 		    	item.quantity = item.quantity-0>item.stock-0?itwm.stock:item.quantity-0<1?"1":item.quantity ;
-		    	_this.initGoodsInfo() ;
-		    	
+		    	this.initGoodsInfo() ;
 		    },
 		    // 选择优惠券
 		    chooseCoupon(index){
-		    	let _this  =  this ;
-		    	_this.storeIndex = index ;
+		    	this.storeIndex = index ;
 		    	let params = {
 		    		access_token: getCookie('access_token')
 		    	}
 		    	let  goods = [] ;
-		    	let arr = _this.orderInfo.shop[index].goods;
+		    	let arr = this.orderInfo.shop[index].goods;
 		    	for(let i = 0 ;i < arr.length;i++){
 		    		let obj = {
 		    			goods_id: arr[i].goods_id,
@@ -501,26 +500,22 @@ import addAddress from './addAddress'
 						}else{
 							this.shop[index].coupon = true;
 						}
-						
 					}
 		    	})
-		    	
 		    },
 		    // 获取优惠券id
 		    getIndex(index){
-		    	let _this = this ;
-		    	_this.shop[_this.storeIndex].coupon_index = index ;
-		    	_this.addressBol = false ;
-		    	_this.shop[_this.storeIndex].coupon = true ; 
+		    	this.shop[this.storeIndex].coupon_index = index ;
+		    	this.addressBol = false ;
+		    	this.shop[this.storeIndex].coupon = true ; 
 		    },
 		    submitOrder(){
-		    	let _this = this ; 
 		    	let params = {
 		    		access_token: getCookie('access_token'),
-		    		address_id: _this.addressList[_this.addressIndex].address_id
+		    		address_id: this.addressList[this.addressIndex].address_id
 		    	}
 		    	let  data = []
-		    	let shopArr = _this.orderInfo.shop ;
+		    	let shopArr = this.orderInfo.shop ;
 		    	for(let i = 0 ; i< shopArr.length;i++){
 		    		let coupon_id = "";
 		    		if (typeof this.shop[i].coupon_index==="number") {
@@ -883,7 +878,7 @@ $bg_color: #f9fcff;
 				}
 			}
 			.full{
-				margin-right: 20px;
+				float: right;
 				color: $primary;
 			}
 		}

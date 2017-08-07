@@ -32,7 +32,7 @@
 						</dd>
 					</dl>
 					<div class="vertify_box">
-						<img :src="imgSrc">
+						<img :src="imgSrc" @click='initToken'>
 						<el-button type='text' size='mini' @click='initToken'>看不清楚？换一张</el-button>
 					</div>
 				</div>
@@ -69,6 +69,8 @@ import {createToken,login,getLoginAd} from '../../common/js/api'
 import {setCookie,getCookie,delCookie,errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
+import {hex_sha1} from '../../common/js/sha1'
+import {base64encode,utf16to8,utf8to16,base64decode} from '../../common/js/base64'
 export default {
 	data(){
 		return {
@@ -87,7 +89,7 @@ export default {
 			let params = {
 				oauth: 'Web',
 				param: this.username,
-				passwd: hex_md5(this.passwd),
+				passwd: hex_md5(hex_sha1(this.passwd)),
 				verify_code: this.verify_code,
 				token: this.token
 			};
@@ -97,29 +99,29 @@ export default {
 					MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定'
 			        });
+			        this.initToken() ;
 				} else {
 					//  判断是否记住密码
 					let accountInfo ;
 					if(this.remember){
-						accountInfo = this.username + "&" + this.passwd;  
-						setCookie('accountInfo',accountInfo,30*24);  
+						let username = base64encode(utf16to8(this.username));
+						let passwd = base64encode(utf16to8(this.passwd));
+						accountInfo = username + "&" + passwd;  
+						setCookie('accountInfo',accountInfo,7*24);  
 					}else {
 						let hasUserInfo = getCookie('accountInfo');
 						if (hasUserInfo) {
 							delCookie('accountInfo');
 						}
 					}
-					// 本地存储登录后返回信息
-					if(sessionStorage.userInfo) {
-						sessionStorage.removeItem('userInfo');
-						delCookie('access_token');
-					}
-					setCookie('access_token',content.access_token,5);
-					content  = JSON.stringify(content);
-					sessionStorage.setItem('userInfo',content);
+					setCookie('access_token',content.access_token,.5);
 					var lastUrl =  document.referrer ;
 					if (window.history.length>1&&lastUrl.indexOf("module")>=0) {
-						window.history.go(-1);
+						if (lastUrl.indexOf('reg')>=0) {
+							location.href = 'index.html' ;
+						} else {
+							window.history.go(-1);
+						}
 					}else{
 						location.href = 'index.html' ;
 					}
@@ -134,7 +136,11 @@ export default {
 
 				} else {
 					this.token = content.token;
-					this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
+					// 测试
+					// this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
+					// 正式
+					this.imgSrc = 'http://app.strongmall.net/web/customerAction/createVerify?token=' + this.token ;
+					
 				}
 			})
 		},
@@ -148,17 +154,7 @@ export default {
 					errorInfo(errcode,message) ;
 				}else {
 					this.adImage = content.ads[0].image ;
-					let params = content.ads[0].action.params ;
-					let query = "" ;
-					if (params) {
-						for(let i =0 ; i <params.length ; i++){
-							let key = params[i].key ;
-							let val  =params[i].value ;
-							query += `${key}=${val}&` ;
-						}
-					}
-					let url = content.ads[0].action.jump ;
-					this.adParams = `${url}?${query}` ;
+					this.adParams = content.ads[0].link ;
 				}
 			})
 		}
@@ -168,9 +164,11 @@ export default {
 		this.$nextTick(()=>{
 			this.initToken();
 			let accountInfo = getCookie('accountInfo');
-			accountInfo = accountInfo.split("&");
-			this.username = accountInfo[0];
-			this.passwd = accountInfo[1];
+			if (accountInfo) {
+				accountInfo = accountInfo.split("&");
+				this.username = utf8to16(base64decode(accountInfo[0]));
+				this.passwd = utf8to16(base64decode(accountInfo[1]));
+			}
 			this.initAd();
 		})
 	}
@@ -245,7 +243,7 @@ $red_color: #f24450;
 			    		input{
 			    			border: none;
 			    			width: 100%;
-			    			height: 34px;
+			    			height: 32px;
 			    			outline: none;
 			    		}
 			    	}
@@ -260,6 +258,7 @@ $red_color: #f24450;
 			    		height: 34px;
 			    		border: 1px solid #ccc;
 			    		border-radius: 4px;
+			    		cursor: pointer;
 			    	}
 			    	.el-button{
 			    		position: absolute;

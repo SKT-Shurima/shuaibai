@@ -115,12 +115,19 @@ $border_color: #f0f0f0;
 			width: 100%;
 			overflow: hidden;
 			margin-top: 10px;
+			border: {
+				left:1px solid $border_color;
+				top:1px solid $border_color;
+			}
 			.infoList{
 				width: 25%;
 				height: 320px;
 				float: left;
 				padding: 15px;
-				border: 1px solid transparent;
+				border: {
+	  				right:1px solid $border_color;
+	  				bottom:1px solid $border_color;
+	  			}
 				dl{
 					cursor: pointer;
 				}

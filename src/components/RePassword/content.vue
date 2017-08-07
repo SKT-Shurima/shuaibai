@@ -31,6 +31,7 @@
 import {resetPasswd,sendCode} from '../../common/js/api' 
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
+import {hex_sha1} from '../../common/js/sha1'
 import {errorInfo,delCookie} from '../../common/js/common'
   export default {
     data() {
@@ -143,37 +144,32 @@ import {errorInfo,delCookie} from '../../common/js/common'
 			      	})
 		      	}
 		      },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let params = {
-            	param: this.ruleForm.phone,
-            	verify: this.ruleForm.verify,
-            	passwd: hex_md5(this.ruleForm.passwd),
-            	confirm_passwd: hex_md5(this.ruleForm.confirm_passwd)
-            };
-            resetPasswd(params).then(res=>{
-            	let {errcode,message} = res;
-            	if (errcode !== 0) {
-            		errorInfo(errcode,message);
-            	} else {
-					MessageBox.alert(message, '提示', {
-			          	confirmButtonText: '确定',
-			          	callback: action => {
-				            let userInfo = sessionStorage.userInfo;
-				            if (userInfo) {
-				            	sessionStorage.removeItem("userInfo");
-				            	delCookie('access_token');
-				            }
-				            location.href = 'login.html' ;
-				        }
-				    });
-            	}
-            })
-          }
-        });
-      }
-    }
+		      submitForm(formName) {
+		        this.$refs[formName].validate((valid) => {
+		          if (valid) {
+		            let params = {
+		            	param: this.ruleForm.phone,
+		            	verify: this.ruleForm.verify,
+		            	passwd: hex_md5(hex_sha1(this.ruleForm.passwd)),
+		            	confirm_passwd: hex_md5(hex_sha1(this.ruleForm.confirm_passwd))
+		            };
+		            resetPasswd(params).then(res=>{
+		            	let {errcode,message} = res;
+		            	if (errcode !== 0) {
+		            		errorInfo(errcode,message);
+		            	} else {
+							MessageBox.alert(message, '提示', {
+					          	confirmButtonText: '确定',
+					          	callback: action => {
+						            location.href = 'login.html' ;
+						        }
+						    });
+		            	}
+		            })
+		          }
+		        });
+		      }
+    	}
   }
 </script>
 <style lang='scss' scoped>

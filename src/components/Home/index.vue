@@ -177,7 +177,7 @@ import recharge from './recharge'
 <style scoped lang='scss'>
 $primary:#c71724;
 $theme: #d63d3f;
-$border_color: #ccc;
+$border_color: #f0f0f0;
 $text_color: #666;
 	.wrap{
 		width: 100%;
@@ -221,8 +221,8 @@ $text_color: #666;
 					float: left;
 					li{
 						width: 100%;
-						height: 50px;
-						line-height: 50px;
+						height: 45.46px;
+						line-height: 45.46px;
 						font-size: 14px;
 						font-weight: bolder;
 						cursor: pointer;
@@ -352,6 +352,7 @@ $text_color: #666;
 					float: left;
 					color: #000;
 					background-color: #fff;
+					border: 1px solid $border_color;
 				}
 			}
 		}

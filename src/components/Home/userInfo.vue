@@ -100,6 +100,7 @@
 import {getUserInfo,getHomeInformations} from '../../common/js/api'
 import {getCookie} from '../../common/js/common'
 import {num_filter} from '../../common/js/filter'
+import {userInfo} from '../../common/js/mixins'
 	export default{
 		data(){
 			return {
@@ -113,6 +114,7 @@ import {num_filter} from '../../common/js/filter'
 		filters:{
 			num_filter
 		},
+		mixins: [userInfo],
 		methods: {
 			personCenter(){
 				window.open(`myOrder.html#view10`) ;
@@ -136,26 +138,6 @@ import {num_filter} from '../../common/js/filter'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				let  access_token = getCookie('access_token');
-				if (access_token) {
-					if (sessionStorage.userInfo) {
-						this.hasUser = true;
-						this.userInfo = JSON.parse(sessionStorage.userInfo);
-					}else{
-						let params = {
-							access_token: access_token
-						}
-						getUserInfo(params).then(res=>{
-							let {errcode,message,content} = res ;
-							if(errcode !== 0){
-								errorInfo(errcode,message) ;
-							}else {
-								this.userInfo = content;
-								sessionStorage.userInfo = JSON.stringify(content) ;
-							}
-						})
-					}
-				}
 				this.initMsg();
 			})
 		}

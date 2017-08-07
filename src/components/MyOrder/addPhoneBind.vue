@@ -22,7 +22,7 @@
 import {phoneBind,sendCode} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
-import {hex_md5} from '../../common/js/md5.js'
+import {userInfo} from '../../common/js/mixins'
   export default {
     data() {
     	// 手机验证
@@ -119,7 +119,6 @@ import {hex_md5} from '../../common/js/md5.js'
 			          	confirmButtonText: '确定',
 			          	callback: action => {
 				            this.$store.commit('switchView','view10');
-				            sessionStorage.currentView = 'view10';
 				        }
 				    });
             	}
@@ -132,14 +131,6 @@ import {hex_md5} from '../../common/js/md5.js'
           }
         });
       }
-    },
-    created(){
-        this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}
-        })
     }
   }
 </script>

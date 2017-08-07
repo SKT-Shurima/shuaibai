@@ -90,8 +90,9 @@ $bg_color: #f5f5f5;
 .paginationWrap {
     padding: 30px 0 80px;
     overflow: hidden;
+    text-align: center;
     .paginationBox{
-    	float: right;
+    	display: inline-block;
     	div{
     		float: right;
     		span{

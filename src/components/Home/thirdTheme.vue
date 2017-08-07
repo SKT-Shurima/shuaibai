@@ -1,6 +1,6 @@
 <template>
-	<div class="theme">
-	    <el-row v-if='theme.goods'>
+	<div class="theme" v-if='showBol'>
+	    <el-row
 			<el-col :span='12' class='make_left'>
 				<dl>
 					<dt style="width:270px;height: 270px;margin-bottom: 8px;">
@@ -13,7 +13,7 @@
 	 						<em>{{theme.goods.goods[0].sale_count}}人付款</em>
 	 					</div>
 					</dd>
-					<dl class="goods_info">
+					<dl class="goods_info" v-if='theme.goods.goods.length>1'>
 						<dt>
 							<img :src="theme.goods.goods[1].cover" @click='goodDetail(theme.goods.goods[1].goods_id)'>
 						</dt>
@@ -49,18 +49,26 @@
 <script>
 import {currency} from '../../common/js/filter'
 	export default {
+		data(){
+			return {
+				showBol: false
+			}
+		},
 		filters: {
 			currency
 		},
 		props: {
 			theme: {
 				type: Object,
-				required: true ,
-				default(){
-					return {
-						goods: null
-					}
+				required: true 
+			}
+		},
+		watch: {
+			theme(newVal,oldVal){
+				if (newVal.goods.goods.length) {
+					this.showBol =  true;
 				}
+				
 			}
 		},
 		methods: {
@@ -75,6 +83,8 @@ $border_list: #f0f0f0;
 $primary:#c71724;
 $text_color: #666;
 	.theme{
+		height: 498px;
+		margin-top: 10px;
 		em{
 			a{
 				color: #fff;
@@ -141,8 +151,9 @@ $text_color: #666;
 			.show_info{
 				line-height: 18px;
 			}
-			.make_left{
-				padding: 20px;
+		}
+		.make_left{
+				padding: 18px;
 				height: 100%;
 				border-top: 1px solid $border_list;
 				border-left: 1px solid $border_list;
@@ -178,6 +189,5 @@ $text_color: #666;
 					}
 				}
 			}
-		}
 	}
 </style>

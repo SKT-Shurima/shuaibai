@@ -45,11 +45,18 @@ $border_color: #f0f0f0;
 	.wrap{
 		overflow: hidden;
 		margin-top: 20px;
+		border: {
+			left:1px solid $border_color;
+			top:1px solid $border_color;
+		}
 		.infoList{
 			float: left;
 			width: 25%;
 			padding: 20px;
-			border: 1px solid transparent;
+			border: {
+  				right:1px solid $border_color;
+  				bottom:1px solid $border_color;
+  			}
 			dl{
 				cursor: pointer;
 			}

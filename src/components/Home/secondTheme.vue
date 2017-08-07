@@ -1,6 +1,6 @@
 <template>
-	<div class="theme">
-		<ul v-if='theme.goods'>
+	<div class="theme" v-if='showBol'>
+		<ul>
 			<li v-for='item in theme.goods.goods' @click='goodDetail(item.goods_id)'>
 				<dl>
 					<dt>
@@ -15,15 +15,20 @@
 </template>
 <script>
 	export default {
+		data(){
+			return{
+				showBol: false
+			}
+		},
 		props: {
 			theme: {
 				type: Object,
-				required: true ,
-				default(){
-					return {
-						goods: null
-					}
-				}
+				required: true 
+			}
+		},
+		watch:{
+			theme(){
+				this.showBol = true;
 			}
 		},
 		methods:{
@@ -37,6 +42,7 @@
 $border_list: #f0f0f0;
 	.theme{
 		width: 100%;
+		height: 498px;
 		img{
 			cursor: pointer;
 		}

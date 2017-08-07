@@ -62,7 +62,7 @@
 								</ul>
 							</el-col>
 						</el-row>
-						<el-row>
+						<el-row v-if='full.length'>
 							<el-col :span='4'>
 								促销
 							</el-col>

@@ -27,7 +27,9 @@
 import {modifyPassword,sendCode} from '../../common/js/api'
 import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
-import {hex_md5} from '../../common/js/md5.js'
+import {userInfo} from '../../common/js/mixins'
+import {hex_md5} from '../../common/js/md5'
+import {hex_sha1} from '../../common/js/sha1'
   export default {
     data() {
     	// 手机验证
@@ -103,6 +105,7 @@ import {hex_md5} from '../../common/js/md5.js'
         send_btn: '发送验证码'
       };
     },
+    mixins: [userInfo],
     methods: {
     	send_code(){
 	      	let _this = this ;
@@ -139,8 +142,8 @@ import {hex_md5} from '../../common/js/md5.js'
             	access_token: getCookie('access_token'),
             	phone: this.userInfo.real_phone,
             	code: this.ruleForm.verify_code,
-            	passwd: hex_md5(this.ruleForm.passwd),
-            	confirm_passwd: hex_md5(this.ruleForm.confirm_passwd)
+            	passwd: hex_md5(hex_sha1(this.ruleForm.passwd)),
+            	confirm_passwd: hex_md5(hex_sha1(this.ruleForm.confirm_passwd))
             };
             modifyPassword(params).then(res=>{
             	let {errcode,message} = res ;
@@ -150,11 +153,6 @@ import {hex_md5} from '../../common/js/md5.js'
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
-				            let userInfo = sessionStorage.userInfo;
-				            if (userInfo) {
-				            	sessionStorage.removeItem("userInfo");
-				            	delCookie('access_token');
-				            }
 				            location.href = 'login.html' ;
 				        }
 				    });
@@ -168,14 +166,6 @@ import {hex_md5} from '../../common/js/md5.js'
           }
         });
       }
-    },
-    created(){
-        this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}
-        })
     }
   }
 </script>

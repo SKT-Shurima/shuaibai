@@ -58,6 +58,7 @@
 <script>
 import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
+import {userInfo} from '../../common/js/mixins'
 import {Message} from  'element-ui'
  export  default{
  	data(){
@@ -72,6 +73,7 @@ import {Message} from  'element-ui'
 		    },
  		}
  	},
+ 	mixins: [userInfo],
  	methods:{
  		changeView(view){
 	      	 this.$store.commit('switchView',view);
@@ -107,7 +109,6 @@ import {Message} from  'element-ui'
 	    		if (errcode!==0) {
     			    errorInfo(errcode,message) ;
 	    		}else{
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			 Message.success({
 			            message: '修改成功',
 			            type: 'success'
@@ -116,11 +117,10 @@ import {Message} from  'element-ui'
 	    	});
 	    }
 	},
- 	mounted(){
+ 	created(){
  		this.$nextTick(()=>{
- 			if (sessionStorage.userInfo) {
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}else{
+ 			let access_token = getCookie('access_token') ;
+ 			if (!access_token) {
 				location.href = "login.html";
 			}
  		})

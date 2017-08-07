@@ -217,16 +217,23 @@ $bg_color: #f5f5f5;
 			}
 		}
 		.goodsList{
-			width: 1002px;
+			width: 1001px;
 			margin-top: 20px;
 			overflow: hidden;
+			border: {
+				left:1px solid $border_color;
+				top:1px solid $border_color;
+			}
 			.infoList{
 				float: left;
 				width: 250px;
 				height: 330px;
 				padding: 14px;
 				cursor: pointer;
-				border: 1px solid transparent;
+				border: {
+	  				right:1px solid $border_color;
+	  				bottom:1px solid $border_color;
+	  			} 
 				dl{
 					cursor: pointer;
 					dt{

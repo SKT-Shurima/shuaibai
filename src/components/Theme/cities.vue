@@ -1,6 +1,8 @@
 <template>
 	<div class="wrap">
+		<div class="special" :style="{backgroundImage: `url(${special[0].image})`}"  v-if='special' @click='specialLink'></div>
 		<div class="box">
+				
 			<div class="container">
 				<ul class="topSeller">
 					<li v-for='(item,index) in topSeller' :class='{"noMargin":index===4}'>
@@ -95,6 +97,7 @@ import {errorInfo} from '../../common/js/common'
 	export default {
 		data(){
 			return {
+				special: null,
 				topSeller: null,
 				area: null,
 				excellent_shop: null,
@@ -105,6 +108,9 @@ import {errorInfo} from '../../common/js/common'
 			}
 		},
 		methods: {
+			specialLink(){
+
+			},
 			storeDetail(id){
 				window.open(`storeDetail.html?seller_id=${id}`) ;
 			},
@@ -127,6 +133,7 @@ import {errorInfo} from '../../common/js/common'
 					if(errcode !== 0){
 						errorInfo(errcode,message) ;
 					}else {
+						this.special = content.special ;
 						this.topSeller = content.top_seller.seller ;
 						this.area = content.area ;
 						this.excellent_shop = content.excellent_shop ;
@@ -154,9 +161,17 @@ $pink_color: #f61d4a;
 $text_color: #ffd3d8;
 	.wrap{
 		width: 100%;
+		.special{
+			width: 100%;
+			height: 460px;
+			background:{
+				repeat: no-repeat;
+				size: 100% 100%;
+			}
+		}
 		.box{
 			width: 1210px;
-			margin: 0px auto;
+			margin: 20px auto;
 			.container{
 				.topSeller{
 					padding: 10px;

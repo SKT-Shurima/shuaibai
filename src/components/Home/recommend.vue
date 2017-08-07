@@ -4,7 +4,7 @@
 			<img src="">
 		</div> -->
 		<div class="theme_box" v-if='theme'>
-			<div class="theme" v-for='(item,index) in theme' :class='{"marginLeft":index%2}'>
+			<div class="theme" v-for='(item,index) in theme' :class='{"marginLeft":index%2}' v-if='item.goods.goods.length'>
 				<dl>
 					<dt>
 						<div class="title" :style='{background: `url(${item.img})`}'>
@@ -30,7 +30,13 @@
 	export default{
 		data(){
 			return{
-			  theme: null
+			    theme: [
+			    	{
+			    		goods: {
+			    			goods: []
+			    		}
+			    	}
+			    ]
 			}
 		},
 		methods:{
@@ -84,12 +90,11 @@ $border_list: #f0f0f0;
         		}
         		dd{
         			overflow: hidden;
-        			height: 507px;
+        			height: 424px;
 	        		.theme_left{
-						width: 248px;
-						height: 498px;
+						width: 252px;
+						height: 424px;
 						float: left;
-						border: 1px solid $border_list;
 						margin-top: 10px;
 						img{
 							width: 100%;
@@ -103,11 +108,8 @@ $border_list: #f0f0f0;
 						margin-top: 10px;
 						li{
 							width: 180px;
-							height: 249px;
+							height: 210px;
 							float: left;
-							border-top: 1px  solid $border_list;
-							border-right: 1px solid $border_list;
-							border-bottom: 1px solid $border_list;
 							img{
 								width: 100%;
 								height: 100%;

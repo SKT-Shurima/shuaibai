@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<div class="userInfo">
+		<div class="userInfo" v-if='userInfo'>
 			<div class="title">
 				<dl>
 					<dt>
@@ -31,10 +31,10 @@
 			</div>
 			<div class="shopInfo">
 				 <ul>
-				 	<li @click='getOrders(1)'>待付款<i>{{order.wait_pay_count | num_filter}}</i></li>
-				 	<li @click='getOrders(2)'>待发货<i>{{order.wait_delivery_count | num_filter}}</i></li>
-				 	<li @click='getOrders(3)'>待收货<i>{{order.wait_receive_count | num_filter}}</i></li>
-				 	<li @click='getOrders(4)'>待评价<i>{{order.wait_comment_count | num_filter}}</i></li>
+				 	<li @click='getOrders(1)'>待付款<i>{{userInfo.order.wait_pay_count | num_filter}}</i></li>
+				 	<li @click='getOrders(2)'>待发货<i>{{userInfo.order.wait_delivery_count | num_filter}}</i></li>
+				 	<li @click='getOrders(3)'>待收货<i>{{userInfo.order.wait_receive_count | num_filter}}</i></li>
+				 	<li @click='getOrders(4)'>待评价<i>{{userInfo.order.wait_comment_count | num_filter}}</i></li>
 				 	<li @click='getOrders(5)'>退款/售后</li>
 				 </ul>
 				 <div class="lastLogin">
@@ -48,24 +48,13 @@
 <script>
 import {num_filter,dateStyleCh,timeStyle} from '../../common/js/filter'
 import {getOrders} from '../../common/js/api'
+import {getCookie} from '../../common/js/common'
 import orderList from './orderList'
+import {userInfo} from '../../common/js/mixins'
 	export default {
 		data() {
 		    return {
-		        userInfo: {
-		        	shopping_coin: '',
-		        	integration: '',
-		        	nickname: '',
-		        	real_phone: '',
-		        	unread_count: '',
-		        	last_check_date: 0
-		        },
-		        order:{
-		        	wait_comment_count: '',
-		        	wait_delivery_count: '',
-		        	wait_pay_count: '',
-		        	wait_receive_count: ''
-		        }
+		        userInfo: null
 		    };
 		},
 		components:{
@@ -76,6 +65,7 @@ import orderList from './orderList'
 			dateStyleCh,
 			timeStyle
 		},
+		mixins: [userInfo],
 		methods:{
 			changeView(view){
 		      	 this.$store.commit('switchView',view);
@@ -90,16 +80,11 @@ import orderList from './orderList'
 		    	
 		    }
 		},
-		mounted(){
+		created(){
 			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.hasUser = true;
-					// 读取用户信息
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
-					// 获取订单信息
-					this.order = this.userInfo.order;
-				}else{
-					location.href = 'login.html'
+				let access_token = getCookie('access_token') ;
+				if (!access_token) {
+					location.href = 'login.html' ;
 				}
 			})
 		}

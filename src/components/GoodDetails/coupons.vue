@@ -1,5 +1,5 @@
 <template>
-	<ul class="coupons">
+	<ul class="coupons" v-if='couponsList.length'>
 		<li v-for='item in couponsList' >
 			<dl>
 				<dt>
@@ -30,7 +30,7 @@ import {MessageBox,Message} from  'element-ui'
 	export default {
 		data(){
 			return {
-				couponsList: null
+				couponsList: []
 			}
 		},
 		methods:{
@@ -93,7 +93,7 @@ $primary:#c71724;
 	.coupons{
 		width: 220px;
 		margin-left: 10px;
-		margin-bottom: 14px;
+		margin-bottom: 70px;
 		li{
 			width: 220px;
 			height: 116px;

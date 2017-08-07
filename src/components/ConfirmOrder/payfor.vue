@@ -69,9 +69,6 @@ import {getHashReq,getCookie} from '../../common/js/common'
 						status = 0 ;
 						count = content.amount;
 						if (_this.typeIndex==="1") {
-							let userInfo =  JSON.parse(sessionStorage.userInfo) ;
-							userInfo.account -= count ;
-							sessionStorage.userInfo = JSON.stringify(userInfo);
 							location.hash= `payResult?count=${count}&status=${status}` ;
 						}
 						if (_this.typeIndex==='4') {

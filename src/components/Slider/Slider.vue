@@ -72,6 +72,7 @@
 </template>
 <script>
 import {getKFInfo} from '../../common/js/api'
+import {userInfo} from '../../common/js/mixins'
 	export default{
 		data(){
 			return{
@@ -82,6 +83,7 @@ import {getKFInfo} from '../../common/js/api'
 		        }
 			}
 		},
+		mixins: [userInfo], 
 		methods:{
 			gotoTop(acceleration,stime){
 			   acceleration = acceleration || 0.1;
@@ -128,9 +130,6 @@ import {getKFInfo} from '../../common/js/api'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.userInfo = JSON.parse(sessionStorage.userInfo);
-				}
 				getKFInfo().then(res=>{
 		          let {errcode,message,content} = res ;
 		          if(errcode !== 0){

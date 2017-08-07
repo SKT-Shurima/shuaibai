@@ -16,7 +16,7 @@
 			  <el-form-item label="确认密码" prop="confirm_passwd">
 			    <el-input v-model="ruleForm.confirm_passwd" type='password'></el-input>
 			  </el-form-item>
-			  <el-form-item label="绑定邮箱" prop="email" style='margin-bottom:40px;'>
+			  <el-form-item label="绑定邮箱" prop="email" style='margin-bottom:40px;' class='indent'>
 			    <el-input v-model="ruleForm.email"></el-input>
 			  </el-form-item>
 			  <el-form-item>
@@ -28,7 +28,7 @@
 	  		<el-form-item label="推荐编号" prop="userid">
 			    <el-input v-model="ruleForm.userid"></el-input>
 			</el-form-item>
-			<el-form-item label="安置编号" >
+			<el-form-item label="安置编号" class='indent'>
 			    <el-input v-model="ruleForm.anzhibum"></el-input>
 			</el-form-item>
 			<div class="title">个人基本信息</div>
@@ -92,12 +92,13 @@
 					</el-col>
 				</el-row>
 			</el-form-item>
-			<el-form-item label="详细地址">
+			<el-form-item label="详细地址" class='indent'>
 			    <el-input v-model="ruleForm.address"></el-input>
 			</el-form-item>
 		</div>
-		<div style="width:500px;margin:50px auto;text-align:center;">
-			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;'>注册</el-button>
+		<div class="regBtn">
+			<el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;'>注册</el-button>
+			<span class='hasAccount'>已有账号？<a href="login.html">请登录</a></span>
 		</div>	  
 	</el-form>
 	<vmask></vmask>
@@ -107,6 +108,7 @@
 import {reg,sendCode,linkage} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
+import {hex_sha1} from '../../common/js/sha1'
 import vmask from './mask'
   export default {
     data() {
@@ -365,8 +367,8 @@ import vmask from './mask'
             	oauth: 'Web',
             	phone: this.ruleForm.phone,
             	verify_code: this.ruleForm.verify_code,
-            	passwd: hex_md5(this.ruleForm.passwd),
-            	confirm_passwd: hex_md5(this.ruleForm.confirm_passwd),
+            	passwd: hex_md5(hex_sha1(this.ruleForm.passwd)),
+            	confirm_passwd: hex_md5(hex_sha1(this.ruleForm.confirm_passwd)),
             	email: this.ruleForm.email
             };
             // 获取推荐人信息
@@ -437,6 +439,9 @@ $red_color: #f24450;
     	padding-top: 40px;
     	color: #000;
     }
+    .indent{
+    	text-indent: 15px;
+    }
     .referees_box{
 		width: 500px;
 		margin: 0px auto;
@@ -467,6 +472,17 @@ $red_color: #f24450;
 				    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 				    width: 100%;
 			    }
+			}
+		}
+	}
+	.regBtn{
+		width:500px;
+		margin:50px auto;
+		padding-left:156px;
+		.hasAccount{
+			margin-left: 10px;
+			a{
+				color: $primary;
 			}
 		}
 	}

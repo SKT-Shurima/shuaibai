@@ -21,6 +21,7 @@
 import {bindEamil,sendCode} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
+import {userInfo} from '../../common/js/mixins'
   export default {
     data() {
 	      // 验证码验证
@@ -58,6 +59,7 @@ import {MessageBox} from  'element-ui'
         send_btn: '发送验证码'
       };
     },
+    mixins: [userInfo],
     methods: {
     	send_code(){
 	      	let _this = this ;
@@ -102,7 +104,6 @@ import {MessageBox} from  'element-ui'
             	} else {
             		this.userInfo.email = content;
             		this.userInfo.has_email = true ;
-            		sessionStorage.userInfo = JSON.stringify(this.userInfo) ;
             		MessageBox.alert(message, '提示', {
 			          	confirmButtonText: '确定',
 			          	callback: action => {
@@ -119,14 +120,6 @@ import {MessageBox} from  'element-ui'
           }
         });
       }
-    },
-    created(){
-        this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}
-        })
     }
   }
 </script>

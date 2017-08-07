@@ -26,6 +26,7 @@ import {perInfomation,sendCode} from '../../common/js/api'
 import {getHashReq} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
+import {hex_sha1} from '../../common/js/sha1'
   export default {
     data() {
     	// 手机验证
@@ -145,8 +146,8 @@ import {hex_md5} from '../../common/js/md5'
             	wx_unionid: this.reqParams.wx_unionid,
             	phone: this.ruleForm.phone,
             	verify_code: this.ruleForm.verify_code,
-            	passwd: hex_md5(this.ruleForm.passwd),
-            	confirm_passwd: hex_md5(this.ruleForm.confirm_passwd)
+            	passwd: hex_md5(hex_sha1(this.ruleForm.passwd)),
+            	confirm_passwd: hex_md5(hex_sha1(this.ruleForm.confirm_passwd))
             };
             perInfomation(params).then(res=>{
             	let {errcode,message,content} = res ;
@@ -155,10 +156,6 @@ import {hex_md5} from '../../common/js/md5'
 			          	confirmButtonText: '确定'
 				    });
             	} else {
-            		let userInfo = content ; 
-            		let access_token= content.access_token ;
-            		userInfo = JSON.stringify(userInfo);
-            		sessionStorage.userInfo = userInfo ;
             		location.href = 'index.html' ;
             	}
             })

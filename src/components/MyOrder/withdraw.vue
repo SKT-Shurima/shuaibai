@@ -41,6 +41,7 @@
 <script >
 import {currency} from '../../common/js/filter'
 import {errorInfo,getCookie} from '../../common/js/common' 
+import {userInfo} from '../../common/js/mixins'
 import {Message} from  'element-ui'
 import {withdraw} from '../../common/js/api'
 	export default{
@@ -96,6 +97,7 @@ import {withdraw} from '../../common/js/api'
 				}
 			}
 		},
+		mixins: [userInfo],
 		methods:{
 			changeView(view){
 		      	this.$store.commit('switchView',view);
@@ -132,13 +134,6 @@ import {withdraw} from '../../common/js/api'
 		            })
 		        });
 		      }
-		},
-		mounted(){
-			this.$nextTick(()=>{
-				if (sessionStorage.userInfo) {
-					this.userInfo = JSON.parse(sessionStorage.userInfo) ;
-				}
-			})
 		}
 	}
 </script>

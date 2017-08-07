@@ -1,6 +1,6 @@
 <template>
-	<div class="theme">
-		<el-row v-if='showBol'>
+	<div class="theme" v-if='showBol'>
+		<el-row>
 			<el-col :span='12' class='snapup_left'>
 				<dl>
 					<dt style="width:270px;height:270px;">
@@ -116,11 +116,9 @@
 				required: true 
 			}
 		},
-		watch:{
-			theme: {
-				handler(newVal,oldVal){
-					this.showBol = true; 
-				}
+		watch: {
+			theme(newVal,oldVal) {
+				this.showBol = true;
 			}
 		},
 		filters: {
@@ -152,6 +150,7 @@ $btn_bg: #fff882;
 $text_color: #666;
 $border_list: #f0f0f0;
 	.theme{
+		height: 498px;
 		.start{
 			background-color: $start_bg;
 		}
@@ -273,6 +272,7 @@ $border_list: #f0f0f0;
 							dd{
 								float: left;
 								margin-left: 10px;
+								width: 182px;
 								.show_info{
 									width: 100%;
 									height: 36px;

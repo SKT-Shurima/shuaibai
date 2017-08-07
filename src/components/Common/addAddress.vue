@@ -65,6 +65,7 @@
 <script>
 import {saveAddress,linkage} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
+import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
   export default {
     data() {
@@ -134,6 +135,7 @@ import {MessageBox} from  'element-ui'
         }
       };
     },
+    mixins: [userInfo],
     methods: {
     	getLinkage(mask,id){
     		let params = {
@@ -228,13 +230,14 @@ import {MessageBox} from  'element-ui'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-				this.getLinkage('pro');
-			}else{
-			    location.href = "login.html";
-			}
+        	this.$nextTick(()=>{
+				let access_token = getCookie('access_token') ;
+				if (!access_token) {
+					location.href = 'login.html' ;
+				}else{
+					this.getLinkage("pro","")
+				}
+			})
         })
     }
   }

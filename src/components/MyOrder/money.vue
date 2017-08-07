@@ -42,6 +42,7 @@
 import {currency,dateStyle} from '../../common/js/filter'
 import {finance} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
+import {userInfo} from '../../common/js/mixins'
 import pagination from '../Common/pagination'
   export default {
     data() {
@@ -61,6 +62,7 @@ import pagination from '../Common/pagination'
     components:{
 		pagination
 	},
+	mixins: [userInfo], 
     methods: {
     	changeView(view){
 	      	 this.$store.commit('switchView',view);
@@ -90,10 +92,8 @@ import pagination from '../Common/pagination'
     },
     created(){
         this.$nextTick(()=>{
-        	if (sessionStorage.userInfo) {
-				this.hasUser = true;
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-			}else{
+        	let access_token = getCookie('access_token') ;
+        	if (!access_token) {
 				location.href = "login.html";
 			}
         })

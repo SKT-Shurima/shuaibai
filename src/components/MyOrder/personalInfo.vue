@@ -44,6 +44,7 @@
 <script>
 import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
+import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
  export  default{
  	data(){
@@ -67,6 +68,19 @@ import {MessageBox} from  'element-ui'
 		    },
  		}
  	},
+ 	watch: {
+ 		userInfo: {
+ 			handler(){
+				let bir = this.userInfo.birthday ;
+				bir = parseInt(bir/1000) + "" ;
+				let len = bir.length ;
+				this.userInfo.birthday = len===10?this.userInfo.birthday:this.userInfo.birthday*1000;
+				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
+ 			},
+ 			deep: true
+ 		}
+ 	},
+ 	mixins: [userInfo], 
  	methods:{
  		changeView(view){
 	      	 this.$store.commit('switchView',view);
@@ -85,7 +99,6 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.nickname = content ;
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			_this.editBirthday();
 	    		} 
 	    	});
@@ -103,7 +116,6 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.birthday = content ;
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			_this.editSex();
 	    		} 
 	    	});
@@ -121,7 +133,6 @@ import {MessageBox} from  'element-ui'
 	    			errorInfo(errcode,message) ;
 	    		}else{
 	    			_this.userInfo.sex = content ;
-	    			sessionStorage.userInfo = JSON.stringify(_this.userInfo);
 	    			MessageBox.alert('信息保存成功', '提示', {
 			          	confirmButtonText: '确定',
 			          	type: 'success',
@@ -151,18 +162,12 @@ import {MessageBox} from  'element-ui'
 	    	} 
 	    }
 	},
- 	mounted(){
+ 	created(){
  		this.$nextTick(()=>{
- 			if (sessionStorage.userInfo) {
-				this.userInfo = JSON.parse(sessionStorage.userInfo);
-				let bir = this.userInfo.birthday ;
-				bir = parseInt(bir/1000) + "" ;
-				let len = bir.length ;
-				this.userInfo.birthday = len===10?this.userInfo.birthday:this.userInfo.birthday*1000;
-				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
-			}else{
-			    location.href = "login.html";
-			}
+ 			let access_token = getCookie('access_token');
+ 			if (!access_token) {
+ 				location.href = "login.html";
+ 			}
  		})
  	}
  	

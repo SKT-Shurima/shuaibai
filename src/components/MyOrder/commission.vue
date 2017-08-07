@@ -73,14 +73,14 @@ import pagination from '../Common/pagination'
 					errorInfo(errcode,message) ;
 				}else {
 					this.commissionList = content;
-					// this.pagesize  = pageSize-0 ;
 				}
 			})
 		}
     },
     created(){
         this.$nextTick(()=>{
-        	if (!sessionStorage.userInfo) {
+        	let access_token = getCookie('access_token');
+        	if (!access_token) {
         		location.href = "login.html";
 			}
         })
