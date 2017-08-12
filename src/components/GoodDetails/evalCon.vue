@@ -25,11 +25,11 @@
 					 		</div>
 					 		<ul class="productInfo">
 					 			<li v-for='item in deliveryInfo.goodsInfo.goods.params'>
-					 				<el-row>
-					 					<el-col :span='6' v-text='item.name'></el-col>
-					 					<el-col :span='18' v-text='item.value'></el-col>
-					 				</el-row>
-					 			</li>
+                                    <el-row>
+                                        <el-col :span='6' v-text='item.name'></el-col>
+                                        <el-col :span='18' v-text='item.value'></el-col>
+                                    </el-row>
+                                </li>
 					 		</ul>
 				 		</div>
 				 		<div class="evalCon" v-show='infoTabIndex===2'>

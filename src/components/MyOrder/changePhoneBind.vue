@@ -29,6 +29,7 @@ import {changePhoneBind,sendCode} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
+import {hex_md5} from '../../common/js/md5'
   export default {
     data() {
     	// 手机验证
@@ -112,14 +113,20 @@ import {MessageBox} from  'element-ui'
     	},
     	send_code(mark){
 	      	let _this = this ;
+	      	let time = parseInt(new Date()/1000) +"";
+	      	let sign ;
 	      	let params = {
-	      		type: '9'
+	      		type: '9',
+	      		time: time
 	      	};
 	      	if (mark) {
 	      		params.param = _this.ruleForm.phone ;
+	      		sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=9`;
 	      	}else {
 	      		params.param = _this.userInfo.real_phone ;
+	      		sign = `content=ShuaiBo2017&param=${this.userInfo.real_phone}&time=${time}&type=9`;
 	      	}
+	      	params.sign = hex_md5(sign);
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
 	      		if (errcode !== 0) {

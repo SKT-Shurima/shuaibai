@@ -22,7 +22,7 @@
 			      type="date"
 			      placeholder="选择日期"
 			      :picker-options="pickerOptions" size='small' style='width:100%'
-			      @change='userInfo.birthday=userInfo.birthday'>
+			      @change='changBirthday'>
 			    </el-date-picker>
 			</el-col>
 		</el-row>
@@ -62,6 +62,7 @@ import {MessageBox} from  'element-ui'
 	        },
  			radio: '',
  			avater: '',
+ 			birthday: "",
 		    form: {
 		    	cate : 'avater', 
 		    	access_token: getCookie('access_token')
@@ -76,12 +77,19 @@ import {MessageBox} from  'element-ui'
 				let len = bir.length ;
 				this.userInfo.birthday = len===10?this.userInfo.birthday:this.userInfo.birthday*1000;
 				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
+				this.birthday = this.userInfo.birthday ;
  			},
- 			deep: true
+ 			// deep: true
  		}
  	},
  	mixins: [userInfo], 
  	methods:{
+ 		changBirthday(){
+ 			let birthday = this.userInfo.birthday;
+ 			if (typeof birthday === 'object') {
+ 				this.birthday = this.userInfo.birthday.getTime();
+ 			}
+ 		},
  		changeView(view){
 	      	 this.$store.commit('switchView',view);
 	      	 location.hash = view ;
@@ -108,7 +116,7 @@ import {MessageBox} from  'element-ui'
 	    	let _this = this ;
 	    	let paramsBirth = {
 	    		access_token: getCookie('access_token'),
-	    		birthday: _this.userInfo.birthday-0
+	    		birthday: parseInt(this.birthday/1000)
 	    	}
 	    	changeBirthday(paramsBirth).then(res=>{
 	    		let {errcode,message,content} = res;

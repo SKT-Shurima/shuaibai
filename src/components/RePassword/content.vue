@@ -119,9 +119,13 @@ import {errorInfo,delCookie} from '../../common/js/common'
 			          confirmButtonText: '确定'
 			        });
 		      	} else {
+		      		let time = parseInt(new Date()/1000) +"";
+	      			let sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=1`;
 		      		let params = {
 			      		param: _this.ruleForm.phone,
-			      		type: '1'
+			      		type: '1',
+			      		time: time,
+			      		sign: hex_md5(sign)
 			      	};
 			      	sendCode(params).then( res=>{
 			      		let {errcode,message} = res ;

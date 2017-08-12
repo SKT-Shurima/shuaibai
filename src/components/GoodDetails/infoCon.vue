@@ -94,7 +94,7 @@
 								</div>
 								<div class="expressInfo">
 									<span>快递</span>
-									<em>免运费</em>
+									<em> {{express_fee-0?"￥"+express_fee:"免运费"}}</em>
 								</div>
 							</el-col>
 						</el-row>
@@ -135,7 +135,7 @@
 <script>
  	import {currency,countdown} from '../../common/js/filter'
  	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
- 	import {linkage,goodsDetail,addCart,buy} from '../../common/js/api'
+ 	import {linkage,goodsDetail,getExpressFees,addCart,buy} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import magnifyingGlass from './magnifyingGlass'
  	import storeInfo from './storeInfo'
@@ -164,6 +164,7 @@
 		        proName: '浙江省', // 选择后的地区
 		        cityName: '杭州市',
 		        addressBol: false, // 三级联动控制开关
+		        express_fee: "",//运费
 		        params: '',  // 详情页获取数据的请求参数
 		        numInput: 1, // 数量选择
 		        option_id: "", // 规格id
@@ -265,37 +266,55 @@
 			},
 	        // 选择完毕
 	        chooseOver(index) {
-	            let _this = this ;
-	            _this.areaIndex = index;
-	            _this.proName = _this.provinceArr[_this.proIndex].name ;
-	            _this.cityName = _this.cityArr[_this.cityIndex].name;
-	            if (_this.proName === _this.cityName) {
-	            	_this.proName = _this.cityArr[_this.cityIndex].name;
-	           		_this.cityName = _this.areaArr[_this.areaIndex].name;
+	            this.areaIndex = index;
+	            this.proName = this.provinceArr[this.proIndex].name ;
+	            this.cityName = this.cityArr[this.cityIndex].name;
+	            if (this.proName === this.cityName) {
+	            	this.proName = this.cityArr[this.cityIndex].name;
+	           		this.cityName = this.areaArr[this.areaIndex].name;
 	            }
-	            _this.addressBol = false;
+	            let shops = [{
+            		seller_id: this.goods.seller_id ,
+            		goods: [{
+            			goods_id: this.goods.goods_id,
+						option_id: this.option_id ,
+						quantity: this.numInput+"",
+            		}]
+            	}];
+            	shops =  JSON.stringify(shops);
+	            let params = {
+	            	province_id: this.provinceArr[this.proIndex].zone_id-0,
+	            	shops: shops
+	            }
+	            getExpressFees(params).then(res=>{
+	            	let {errcode,message,content} = res ;
+					if(errcode!==0) {
+						errorInfo(errcode,message) ;
+					}else{
+						this.express_fee = content[0].express_fee ;
+						this.addressBol = false;
+					}
+	            })
 	        },
 			changeNum(mask){
-				let _this = this ;
 				if (mask) {
-					_this.numInput++;
-					if (_this.numInput>_this.stockNum) {
-							_this.numInput = _this.stockNum;
+					this.numInput++;
+					if (this.numInput>this.stockNum) {
+							this.numInput = this.stockNum;
 					}
 				}else {
-					_this.numInput-- ;
-					if (_this.numInput<1) {
-						_this.numInput=1;
+					this.numInput-- ;
+					if (this.numInput<1) {
+						this.numInput=1;
 					}
 				}
 			},
 			// 初始化
 			init(){
-				let _this = this ;
-				_this.stockNum = _this.goods.stock ;
-				_this.specs = _this.goods.specs;
-				_this.salePrice = _this.goods.shop_price;
-				_this.currentImg = _this.goods.cover;
+				this.stockNum = this.goods.stock ;
+				this.specs = this.goods.specs;
+				this.salePrice = this.goods.shop_price;
+				this.currentImg = this.goods.cover;
 			},
 			// 立即购买
 			settlement(){

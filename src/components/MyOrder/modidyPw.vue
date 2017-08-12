@@ -109,9 +109,13 @@ import {hex_sha1} from '../../common/js/sha1'
     methods: {
     	send_code(){
 	      	let _this = this ;
+	      	let time = parseInt(new Date()/1000) +"";
+	      	let sign = `content=ShuaiBo2017&param=${this.userInfo.real_phone}&time=${time}&type=6`;
       		let params = {
 	      		param: _this.userInfo.real_phone,
-	      		type: '6'
+	      		type: '6',
+	      		time: time,
+	      		sign: hex_md5(sign)
 	      	};
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;

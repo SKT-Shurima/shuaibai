@@ -108,6 +108,7 @@ import {getOneAddress,saveAddress,defaultAddress,linkage} from '../../common/js/
 import {errorInfo,getHashReq,getCookie} from '../../common/js/common'
 import {userInfo} from '../../common/js/mixins'
 import {MessageBox,Message} from  'element-ui'
+import {hex_md5} from '../../common/js/md5'
   export default {
     data() {
     	// 地区选择
@@ -276,9 +277,13 @@ import {MessageBox,Message} from  'element-ui'
     	},
     	send_code(){
 	      	let _this = this ;
+	      	let time = parseInt(new Date()/1000) +"";
+	      	let sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=8`;
       		let params = {
 	      		param: _this.ruleForm.phone,
-	      		type: '8'
+	      		type: '8',
+	      		time: time,
+	      		sign: hex_md5(sign)
 	      	};
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;

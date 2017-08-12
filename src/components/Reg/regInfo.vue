@@ -303,9 +303,13 @@ import vmask from './mask'
 		          confirmButtonText: '确定'
 		        });
 	      	} else {
+	      		let time = parseInt(new Date()/1000) +"";
+	      		let sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=0`;
 	      		let params = {
 		      		param: _this.ruleForm.phone,
-		      		type: '0'
+		      		type: '0',
+		      		time: time,
+		      		sign: hex_md5(sign)
 		      	};
 		      	sendCode(params).then( res=>{
 		      		let {errcode,message} = res ;

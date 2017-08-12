@@ -91,7 +91,7 @@
 				</a>
 			</div>
 			<ul class="msg_list">
-				<li v-for='(item,index) in infoList' v-text='item.name' :key='index' v-if='index<3'></li>
+				<li v-for='(item,index) in infoList' v-text='item.name' :key='index' v-if='index<3' @click='msgDetail(item.id,index)'></li>
 			</ul>
 		</div>
 	</div>
@@ -124,6 +124,9 @@ import {userInfo} from '../../common/js/mixins'
 			},
 			checkOrder(index){
 				window.open(`myOrder.html#view0?orderIndex=${index}`);
+			},
+			msgDetail(id,index){
+				window.open(`infomation.html#infoDetail?id=${id}&index=${index}&page=1`);
 			},
 			initMsg(){
 				getHomeInformations().then(res=>{
@@ -240,6 +243,7 @@ $text_color: #666;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 -o-text-overflow: ellipsis;
+                cursor: pointer;
                 border-bottom:1px solid $border_color;
 			}
 			li:last-child{

@@ -371,6 +371,11 @@ export const goodsDetail = params =>{
 	params = trans(params);
 	return axios.post(`${base}/goodsAction/goodsDetail`,params).then(res=>res.data);
 }
+// 选取地址查运费
+export const getExpressFees = params =>{
+	params = trans(params);
+	return axios.post(`${base}/orderAction/getExpressFees`,params).then(res=>res.data);
+}
 // 精品推荐
 export const getHighGoods = params =>{
 	params = trans(params);

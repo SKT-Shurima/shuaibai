@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		<div class="imgBox">
-			<img src="">
+			<img :src="image">
 		</div>
 		<div class="container">
 			<el-row class="themeTitle">
@@ -46,6 +46,7 @@ import pagination from '../Common/pagination'
 		data(){
 			return{
 				infoList: [],
+				image: '',
 				page: "1",
 				pageSize: "1"
 			}
@@ -77,6 +78,7 @@ import pagination from '../Common/pagination'
 					} else{
 						this.infoList = content.infos;
 						this.pagesize = content.pageSize ;
+						this.image = content.image;
 					}
 				});
 			}

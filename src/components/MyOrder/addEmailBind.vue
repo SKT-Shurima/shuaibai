@@ -22,6 +22,7 @@ import {bindEamil,sendCode} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {userInfo} from '../../common/js/mixins'
+import {hex_md5} from '../../common/js/md5'
   export default {
     data() {
 	      // 验证码验证
@@ -63,9 +64,13 @@ import {userInfo} from '../../common/js/mixins'
     methods: {
     	send_code(){
 	      	let _this = this ;
+	      	let time = parseInt(new Date()/1000) +"";
+	      	let sign = `content=ShuaiBo2017&param=${this.ruleForm.email}&time=${time}&type=5`;
       		let params = {
 	      		param: _this.ruleForm.email,
-	      		type: '5'
+	      		type: '5',
+	      		time: time,
+	      		sign: hex_md5(sign)
 	      	};
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;

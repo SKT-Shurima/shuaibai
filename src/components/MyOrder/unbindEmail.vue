@@ -23,6 +23,7 @@ import {unbindEmail,sendCode} from '../../common/js/api'
 import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
 import {errorInfo,getCookie} from '../../common/js/common'
+import {hex_md5} from '../../common/js/md5'
   export default {
     data() {
 	      // 验证码验证
@@ -60,9 +61,13 @@ import {errorInfo,getCookie} from '../../common/js/common'
     methods: {
     	send_code(){
 	      	let _this = this ;
+	      	let time = parseInt(new Date()/1000) +"";
+	      	let sign = `content=ShuaiBo2017&param=${this.userInfo.email}&time=${time}&type=7`;
       		let params = {
 	      		param: _this.userInfo.email,
-	      		type: '7'
+	      		type: '7',
+	      		time: time,
+	      		sign: hex_md5(sign)
 	      	};
 	      	sendCode(params).then( res=>{
 	      		let {errcode,message} = res ;
