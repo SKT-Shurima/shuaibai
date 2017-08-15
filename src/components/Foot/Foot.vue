@@ -68,7 +68,7 @@
 						<dt><a href="javascript:void(0);"><strong>商家服务</strong></a></dt>
 						<dd>
 							<ul>
-								<li><a href="javascript:window.open('http://shuaibo.zertone1.com/shopadmin')" title="商家中心">商家中心</a></li>
+								<li><a href="javascript:window.open('http://app.shuaibomall.net/shopadmin/login/index')" title="商家中心">商家中心</a></li>
 							</ul>
 						</dd>
 					</dl>

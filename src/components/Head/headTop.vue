@@ -58,7 +58,7 @@
 				   	</div>
 				</div>
 			</li>
-			<li><a href="javascript:window.open('http://shuaibo.zertone1.com/shopadmin')">商家后台</a>|</li>
+			<li><a href="javascript:window.open('http://app.shuaibomall.net/shopadmin/login/index')">商家后台</a>|</li>
 			<li><a href="javascript:window.open('myOrder.html#vip6')">投诉中心</a></li>
 		</ul>
 	</div>
