@@ -51,7 +51,7 @@
 								</dd>
 							</div>
 							<div class="goodsPrice" v-text='item.quantity'></div>
-							<div class="goodsPrice" style='cursor:pointer;' @click='applyRefund(shopItem.order_sn,item.goods_id,item.option_id)' v-show='shopItem.order_state!=="1"'>
+							<div class="goodsPrice" style='cursor:pointer;' @click='applyRefund(shopItem.order_sn,item.goods_id,item.option_id)' v-show='shopItem.order_state!=="1"&&shopItem.order_state!=="6"'>
 								申请售后
 							</div>
 						</div>

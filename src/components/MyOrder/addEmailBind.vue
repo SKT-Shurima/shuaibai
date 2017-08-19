@@ -8,7 +8,7 @@
 				</el-form-item>
 				<el-form-item label="邮箱验证码 " prop="code">
 				    <el-input v-model="ruleForm.code" style='width:178px;'></el-input>
-				    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
+				    <el-button type='primary' style='float: right;width:110px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
 				</el-form-item>
 			</div>
 			<div style="width:500px;margin:50px 100px;">

@@ -7,7 +7,7 @@
 			  </el-form-item>
 			  <el-form-item label="短信验证码" prop="verify_code">
 			    <el-input v-model="ruleForm.verify_code" style='width:178px;'></el-input>
-			    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
+			    <el-button type='primary' style='float: right;width:110px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
 			  </el-form-item>
 			  <el-form-item label="设置密码" prop="passwd">
 			    <el-input v-model="ruleForm.passwd" type="password"></el-input>
@@ -26,7 +26,7 @@ import {perInfomation,sendCode} from '../../common/js/api'
 import {getHashReq} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
-import {hex_sha1} from '../../common/js/sha1'
+
   export default {
     data() {
     	// 手机验证
@@ -150,8 +150,8 @@ import {hex_sha1} from '../../common/js/sha1'
             	wx_unionid: this.reqParams.wx_unionid,
             	phone: this.ruleForm.phone,
             	verify_code: this.ruleForm.verify_code,
-            	passwd: hex_md5(hex_sha1(this.ruleForm.passwd)),
-            	confirm_passwd: hex_md5(hex_sha1(this.ruleForm.confirm_passwd))
+            	passwd: this.ruleForm.passwd,
+            	confirm_passwd: this.ruleForm.confirm_passwd
             };
             perInfomation(params).then(res=>{
             	let {errcode,message,content} = res ;

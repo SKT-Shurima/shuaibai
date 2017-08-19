@@ -68,8 +68,6 @@
 import {createToken,login,getLoginAd} from '../../common/js/api'
 import {setCookie,getCookie,delCookie,errorInfo} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
-import {hex_md5} from '../../common/js/md5'
-import {hex_sha1} from '../../common/js/sha1'
 import {base64encode,utf16to8,utf8to16,base64decode} from '../../common/js/base64'
 export default {
 	data(){
@@ -89,7 +87,7 @@ export default {
 			let params = {
 				oauth: 'Web',
 				param: this.username,
-				passwd: hex_md5(hex_sha1(this.passwd)),
+				passwd: this.passwd,
 				verify_code: this.verify_code,
 				token: this.token
 			};
@@ -137,9 +135,9 @@ export default {
 				} else {
 					this.token = content.token;
 					// 测试
-					// this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
+					this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
 					// 正式
-					this.imgSrc = 'http://app.strongmall.net/web/customerAction/createVerify?token=' + this.token ;
+					// this.imgSrc = 'http://app.shuaibomall.net/web/customerAction/createVerify?token=' + this.token ;
 					
 				}
 			})

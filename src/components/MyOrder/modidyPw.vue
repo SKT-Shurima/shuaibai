@@ -8,7 +8,7 @@
 			  </el-form-item>
 			  <el-form-item label="短信验证码" prop="verify_code">
 			    <el-input v-model="ruleForm.verify_code" style='width:178px;'></el-input>
-			    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
+			    <el-button type='primary' style='float: right;width:110px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
 			  </el-form-item>
 			  <el-form-item label="设置密码" prop="passwd">
 			    <el-input v-model="ruleForm.passwd" type="password"></el-input>
@@ -29,7 +29,7 @@ import {errorInfo,getCookie,delCookie} from '../../common/js/common'
 import {MessageBox} from  'element-ui'
 import {userInfo} from '../../common/js/mixins'
 import {hex_md5} from '../../common/js/md5'
-import {hex_sha1} from '../../common/js/sha1'
+
   export default {
     data() {
     	// 手机验证
@@ -146,8 +146,8 @@ import {hex_sha1} from '../../common/js/sha1'
             	access_token: getCookie('access_token'),
             	phone: this.userInfo.real_phone,
             	code: this.ruleForm.verify_code,
-            	passwd: hex_md5(hex_sha1(this.ruleForm.passwd)),
-            	confirm_passwd: hex_md5(hex_sha1(this.ruleForm.confirm_passwd))
+            	passwd: this.ruleForm.passwd,
+            	confirm_passwd: this.ruleForm.confirm_passwd
             };
             modifyPassword(params).then(res=>{
             	let {errcode,message} = res ;

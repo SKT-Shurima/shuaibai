@@ -8,7 +8,7 @@
 			  </el-form-item>
 			  <el-form-item label="短信验证码" prop="verify_code">
 			    <el-input v-model="ruleForm.verify_code" style='width:178px;'></el-input>
-			    <el-button type='primary' style='float: right;width:102px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
+			    <el-button type='primary' style='float: right;width:110px;padding:10px;text-align:center;' @click='send_code' v-text='send_btn' :disabled='time>=0'></el-button>
 			  </el-form-item>
 			  <el-form-item label="设置密码" prop="passwd">
 			    <el-input v-model="ruleForm.passwd" type="password"></el-input>
@@ -25,11 +25,11 @@
 		</div>
 		<div class="referees_box" v-if='complete'>
 	  		<div class="title">推荐人会员号</div>
-	  		<el-form-item label="推荐编号" prop="userid">
-			    <el-input v-model="ruleForm.userid"></el-input>
+	  		<el-form-item label="推荐编号" prop="tuijian">
+			    <el-input v-model="ruleForm.tuijian"></el-input>
 			</el-form-item>
 			<el-form-item label="安置编号" class='indent'>
-			    <el-input v-model="ruleForm.anzhibum"></el-input>
+			    <el-input v-model="ruleForm.anzhi"></el-input>
 			</el-form-item>
 			<div class="title">个人基本信息</div>
 			<el-form-item label="姓名" prop="name">
@@ -108,7 +108,6 @@
 import {reg,sendCode,linkage} from '../../common/js/api'
 import {MessageBox} from  'element-ui'
 import {hex_md5} from '../../common/js/md5'
-import {hex_sha1} from '../../common/js/sha1'
 import vmask from './mask'
   export default {
     data() {
@@ -233,7 +232,7 @@ import vmask from './mask'
           email: [
             { type: 'email', message: '请输入正确邮箱', trigger: 'blur' }
           ],
-          userid: [
+          tuijian: [
             { required: true, message: '请输入推荐编号', trigger: 'blur' }
           ],
           name: [
@@ -371,20 +370,22 @@ import vmask from './mask'
             	oauth: 'Web',
             	phone: this.ruleForm.phone,
             	verify_code: this.ruleForm.verify_code,
-            	passwd: hex_md5(hex_sha1(this.ruleForm.passwd)),
-            	confirm_passwd: hex_md5(hex_sha1(this.ruleForm.confirm_passwd)),
+            	passwd: this.ruleForm.passwd,
+            	confirm_passwd: this.ruleForm.confirm_passwd,
             	email: this.ruleForm.email
             };
             // 获取推荐人信息
             if(this.complete) {
             	this.recommend = {
-            		userid: this.ruleForm.userid,
-					tuijian: '',
-					anzhi: '',
+            		method_name: 'Add_MemberInfo',
+            		userid: this.ruleForm.phone,
+					tuijian: this.ruleForm.tuijian,
+					anzhi: this.ruleForm.anzhi,
 					name: this.ruleForm.name,
 					petname: this.ruleForm.petname, 
-					loginpass: '',
+					loginpass: this.ruleForm.passwd,
 					birthday: this.transDate(this.ruleForm.birthday),
+					registerdate: this.transDate(new Date().getTime()),
 					sex: this.ruleForm.sex -0, 
 					mobiletele: this.ruleForm.mobiletele,
 					country: '中国',
@@ -394,7 +395,7 @@ import vmask from './mask'
 					address: this.ruleForm.address,
 					papernumber: this.ruleForm.papernumber
             	};
-            	params.recommend = this.recommend ;
+            	params.recommend = JSON.stringify(this.recommend);
             }
             reg(params).then(res=>{
             	let {errcode,message} = res ;
@@ -438,7 +439,7 @@ $red_color: #f24450;
 		margin-bottom: 30px;
 	}
     .reg_box{
-    	width: 390px;
+    	width: 400px;
     	margin: 0px auto;
     	padding-top: 40px;
     	color: #000;

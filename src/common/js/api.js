@@ -3,9 +3,9 @@ import axios from 'axios'
 // 开发
 // let base = '/shuaibo' ;
 // 正式
-// let base = 'http://shuaibo.zertone1.com/web'
+let base = 'http://shuaibo.zertone1.com/web'
 // 线上
-let base = 'http://app.strongmall.net/web'
+// let base = 'http://app.shuaibomall.net/web'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
