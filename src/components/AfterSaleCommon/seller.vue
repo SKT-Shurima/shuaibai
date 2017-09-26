@@ -34,7 +34,7 @@
 			<el-row>
 				<el-col :span='22' :offset='2'>
 					<ul class="imgList">
-						<li v-for='(item,index) in refundInfo.images' :key='item'>
+						<li v-for='(item,index) in refundInfo.images' :key='index'>
 							<img :src="item">
 						</li>
 					</ul>
@@ -42,7 +42,7 @@
 			</el-row>
 		</div>
 		<ul class="dialogue" v-if='refundInfo'>
-			<li v-for='(item,index) in refundInfo.messages' :key='item'>
+			<li v-for='(item,index) in refundInfo.messages' :key='index'>
 				<el-row>
 					<el-col :span='3'>
 						{{item.date_add*1000|dateStyle}}&nbsp;{{item.date_add*1000|timeStyle}}
@@ -81,7 +81,7 @@
 					<el-form :model="form" label-width="70px" ref='expressForm'>
 					    <el-form-item label="物流公司">
 						    <select v-model="expressForm.name" placeholder="请选择" size='small' style='width:100%;' class="el-select">
-						        <option :label='item.express_name' :value="item.code" v-for='item in express' :key='item'></option>
+						        <option :label='item.express_name' :value="item.code" v-for='(item,index) in express' :key='index'></option>
 						    </select>
 				        </el-form-item>
 				        <el-form-item label="物流单号">

@@ -5,7 +5,7 @@
 				以下是您最近30天的浏览记录
 			</h4>
 			<ul class="recordList">
-				<li v-for='(dayItem,index) in markList' :key='item'>
+				<li v-for='(dayItem,index) in markList' :key='index'>
 					<dl class="time">
 						<dt>
 							{{dayItem[0].date_add*1000|dateStyle}}
@@ -19,7 +19,7 @@
 						<dd></dd>
 					</dl>
 					<ul>
-						<li v-for="(item,index) in dayItem" :class='{"isNoTop":index>4}'>
+						<li v-for="(item,index) in dayItem" :key='item.goods_id' :class='{"isNoTop":index>4}'>
 							<dl>
 								<dt>
 									<img :src="item.cover" @click='goodDetail(item.goods_id)'>

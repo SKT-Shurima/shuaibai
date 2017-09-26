@@ -25,12 +25,13 @@
 </template>
 <script>
 import {getShopCoupons,receiveCoupon} from '../../common/js/api'
-import {errorInfo,getCookie} from '../../common/js/common'
+import {getRequest,errorInfo,getCookie} from '../../common/js/common'
 import {MessageBox,Message} from  'element-ui'
 	export default {
 		data(){
 			return {
-				couponsList: []
+				couponsList: [],
+				params: {}
 			}
 		},
 		props:{
@@ -75,7 +76,7 @@ import {MessageBox,Message} from  'element-ui'
 				let  access_token = getCookie('access_token') ;
 				let params = {
 					access_token: access_token?access_token:"",
-					seller_id: this.seller_id
+					goods_id:  this.params.goods_id
 				}
 				getShopCoupons(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -86,6 +87,9 @@ import {MessageBox,Message} from  'element-ui'
 					}
 				})
 			}
+		},
+		created(){
+			this.params = getRequest();
 		},
 		mounted(){
 			this.$nextTick(()=>{

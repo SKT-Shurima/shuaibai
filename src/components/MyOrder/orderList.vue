@@ -11,7 +11,7 @@
 				<el-col :span='3'>交易操作</el-col>
 			</el-row>
 		</div>
-		<div class="shopInfoList" v-for='(shopItem,shopIndex) in order' v-if='order'>
+		<div class="shopInfoList" v-for='(shopItem,shopIndex) in order' :key='shopIndex' v-if='order'>
 			<div class="title">
 				<el-row>
 					<el-col :span='9'>
@@ -29,7 +29,7 @@
 			<div class="list">
 				<div class='listContent'>
 				 	<div class="goodsListBox">
-				 		<div v-for='(item,index) in shopItem.goods' :key='item' class="goodsList">
+				 		<div v-for='(item,index) in shopItem.goods' :key='item.goods_id' class="goodsList">
 					 		<dl class="goodsMsg">
 								<dt>
 									<img :src="item.image" @click='goodDetail(item.goods_id)'>

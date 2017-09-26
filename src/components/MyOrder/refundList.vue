@@ -11,7 +11,7 @@
 				<el-col :span='3'>售后操作</el-col>
 			</el-row>
 		</div>
-		<div class="shopInfoList" v-for='(shopItem,index) in refunds' v-if='refunds'>
+		<div class="shopInfoList" v-for='(shopItem,index) in refunds' :key='index' v-if='refunds'>
 			<div class="title">
 				<el-row>
 					<el-col :span='9'>
@@ -29,7 +29,7 @@
 			<div class="list">
 				<div class='listContent'>
 				 	<div class="goodsListBox">
-				 		<div v-for='(item,index) in shopItem.goods' :key='item' class="goodsList">
+				 		<div v-for='(item,index) in shopItem.goods' :key='item.goods_id' class="goodsList">
 					 		<dl class="goodsMsg">
 								<dt>
 									<img :src="item.cover" @click='goodDetail(item.goods_id)'>

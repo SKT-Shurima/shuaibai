@@ -36,7 +36,7 @@
 					<div class="payCol">应付金额</div>
 				</div>
 				<ul class="orderInfoList">
-					<li v-for='(item,index) in order.goods' :key='item'>
+					<li v-for='(item,index) in order.goods' :key='index'>
 					    <div class="goodsInfo">
 					    	<dl class="goodsMsg goodsCol">
 								<dt class="titleCol">

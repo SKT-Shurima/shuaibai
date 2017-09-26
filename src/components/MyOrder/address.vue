@@ -7,7 +7,7 @@
 				已经保存了{{addressList.length}}条地址，还可以保存{{20-addressList.length}}条地址
 			</div>
 			<ul v-if='addressList'>
-				<li v-for= '(item,index) in addressList' :class='{"isDefault":item.status==="1"}' :key='item'>
+				<li v-for= '(item,index) in addressList' :class='{"isDefault":item.status==="1"}' :key='index'>
 					<dl>
 						<dt>
 							<span v-text='item.name'>

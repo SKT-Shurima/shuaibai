@@ -11,7 +11,7 @@
 					<dt @mouseleave='listBol=false;listConBol=false'>
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 						<ul class="con_list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-show='listConBol'>
-							<li v-for='(item,index) in category' :key='item' @mouseenter='listIndex=index;fIndex=index' :class='{"checkUnit":listIndex===index}' @click='checkGoods(index,item.category_id)'>
+							<li v-for='(item,index) in category' :key='item.category_id' @mouseenter='listIndex=index;fIndex=index' :class='{"checkUnit":listIndex===index}' @click='checkGoods(index,item.category_id)'>
 								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
 								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
 								{{item.name}}
@@ -19,13 +19,13 @@
 						</ul>
 						<div class="content" v-show='listBol'  @mouseleave='listBol=false;listConBol=false' @mouseenter='listBol=true;listConBol=true'>
 							<div class="detail_list">
-								<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2' v-if='item2.child_category.length'>
+								<el-row v-for='(item2,index2) in category[fIndex].child_category' :key='item2.category_id' v-if='item2.child_category.length'>
 									<el-col :span='4'>
 									    <span v-text='item2.name' @click='checkGoods(`${fIndex},${index2}`,item2.category_id)'></span>
 									    <em>></em>
 									</el-col>
 									<el-col :span='16' :offset="1">
-										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3' v-text='item3.name' @click='checkGoods(`${fIndex},${index2},${index3}`,item3.category_id)'></span>
+										<span v-for='(item3,index3) in category[fIndex].child_category[index2].child_category' :key='item3.category_id' v-text='item3.name' @click='checkGoods(`${fIndex},${index2},${index3}`,item3.category_id)'></span>
 									</el-col>
 								</el-row>
 							</div>

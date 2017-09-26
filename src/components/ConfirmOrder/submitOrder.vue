@@ -4,7 +4,7 @@
 			选择收货地址
 		</h4>
 		<ul class="addressList" v-if='addressList.length'>
-			<li v-for= '(item,index) in addressList' :class='{"isAddress":addressIndex===index}' :key='item' @click='initExpressFee(index)' v-if='index<entries'>
+			<li v-for= '(item,index) in addressList' :class='{"isAddress":addressIndex===index}' :key='index' @click='initExpressFee(index)' v-if='index<entries'>
 				<dl>
 					<dt>
 						<span v-text='item.name'>
@@ -47,7 +47,7 @@
 		<h4>
 			订单信息
 		</h4>
-		<div class="orderInfo" v-for='(shopItem,shopIndex) in orderInfo.shop'>
+		<div class="orderInfo" v-for='(shopItem,shopIndex) in orderInfo.shop' :key='shopIndex'>
 			<div class="shopTitle" v-text='shopItem.shopName'></div>
 			<div class="orderTitle">
 				<div class="infoCol">商品信息</div>
@@ -56,7 +56,7 @@
 				<div class="totalCol">小计</div>
 			</div>
 			<ul class="orderInfoList">
-				<li v-for='(item,index) in shopItem.goods'>
+				<li v-for='(item,index) in shopItem.goods' :key='item.goods_id'>
 				    <div class="goodsInfo">
 				    	<dl class="goodsMsg infoCol">
 							<dt class="titleCol">
@@ -205,7 +205,7 @@ import addAddress from './addAddress'
 		data(){
 			return {
 				addressList: [],
-				orderInfo: null,
+				orderInfo: {shop:[]},
 				addressIndex: "",
 				entries: 4,
 				goodsList: null,
@@ -558,7 +558,7 @@ import addAddress from './addAddress'
 		    	})
 		    }
 		},
-		created(){
+		mounted(){
 	        this.$nextTick(()=>{
         		this.initList();
 				this.reqParams = getHashReq() ;

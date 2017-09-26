@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		<ul>
-			<li v-for='(item,index) in type' :key='item' v-text='item.name' @click='chooseType(index)'></li>
+			<li v-for='(item,index) in type' :key='index' v-text='item.name' @click='chooseType(index)'></li>
 		</ul>
 	</div>
 </template>

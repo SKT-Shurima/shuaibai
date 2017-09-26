@@ -8,7 +8,7 @@
 			<dl>
 				<dt class="main">
 					<ul class="mainListBox">
-						<li class="mainList" v-for='(item,index) in agents' :key='item'>
+						<li class="mainList" v-for='(item,index) in agents' :key='index'>
 							<div class="mainImg">
 								<img src="../../../static/grandImg/main.jpg" height="322" width="564">
 							</div>

@@ -3,9 +3,9 @@ import axios from 'axios'
 // 开发
 // let base = '/shuaibo' ;
 // 正式
-let base = 'http://shuaibo.zertone1.com/web'
+// let base = 'http://shuaibo.zertone1.com/web'
 // 线上
-// let base = 'http://app.shuaibomall.net/web'
+let base = 'http://app.shuaibomall.net/web'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -506,7 +506,7 @@ export const delOrder = params => {
 // 店铺可用优惠券
 export const getShopCoupons = params =>{
 	params = trans(params) ;
-	return axios.post(`${base}/shopAction/getCoupons`,params).then(res=>res.data); 
+	return axios.post(`${base}/shopAction/getGoodsCoupons`,params).then(res=>res.data); 
 }
 // 领取优惠券
 export const receiveCoupon = params =>{

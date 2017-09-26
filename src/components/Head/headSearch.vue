@@ -14,7 +14,7 @@
                     </form>
 				</div>
 				<ul class="hot_words">
-					<li v-for='item in keyWordsArr'  :key='item' v-text='item.keyword' @click='relatedGoods(item.keyword)'></li>
+					<li v-for='(item,index) in keyWordsArr'  :key='index' v-text='item.keyword' @click='relatedGoods(item.keyword)'></li>
 				</ul>
 			</div>
 			 <div class="shopping_cart" @mouseenter='cartBol=true' @mouseleave='cartBol=false'>

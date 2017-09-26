@@ -3,7 +3,7 @@
 		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view20")'>消息</span></h4>
 		<div v-if='msgList!==""'>
 			<ul class="orderMsg" v-if='msgList.length>0'>
-				<li v-for='(item,index) in msgList' :key='item'>
+				<li v-for='(item,index) in msgList' :key='index'>
 					<el-row>
 						<el-col :span='4'>
 							订单消息

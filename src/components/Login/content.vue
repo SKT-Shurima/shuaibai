@@ -135,9 +135,9 @@ export default {
 				} else {
 					this.token = content.token;
 					// 测试
-					this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
+					// this.imgSrc = 'http://shuaibo.zertone1.com/web/customerAction/createVerify?token=' + this.token ;
 					// 正式
-					// this.imgSrc = 'http://app.shuaibomall.net/web/customerAction/createVerify?token=' + this.token ;
+					this.imgSrc = 'http://app.shuaibomall.net/web/customerAction/createVerify?token=' + this.token ;
 					
 				}
 			})

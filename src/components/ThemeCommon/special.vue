@@ -1,7 +1,7 @@
 <template>
  <div class="wrap">
  	<el-carousel height="500px">
-      <el-carousel-item v-for="item in special" :key="item">
+      <el-carousel-item v-for="(item,index) in special" :key="index">
        	<img :src="item.image" @click='goodDetail(item.params.goods_id)'>
       </el-carousel-item>
     </el-carousel>

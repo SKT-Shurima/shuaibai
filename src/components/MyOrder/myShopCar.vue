@@ -14,7 +14,7 @@
 			</ul>
 		</div>
 		<ul class="shopList" v-if='shopList&&checkList.length>0'  >
-			<li v-for='(item,sellerIndex) in shopList' :key='item'>
+			<li v-for='(item,sellerIndex) in shopList' :key='sellerIndex'>
 				<div class="title">
 					<div class="checkAll">
 				    	<el-checkbox v-model='checkList[sellerIndex].sellerBol'></el-checkbox>
@@ -29,7 +29,7 @@
 				    </div>
 				</div>
 				<ul class="goodsList">
-					<li v-for='(goodItem,goodsIndex) in  item.goods' :key='goodItem'>
+					<li v-for='(goodItem,goodsIndex) in  item.goods' :key='goodItem.goods_id'>
 						<div class="checkAll">
 					    	<el-checkbox v-model='checkList[sellerIndex].goods[goodsIndex].goodsBol'></el-checkbox>
 

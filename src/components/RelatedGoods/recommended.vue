@@ -6,7 +6,7 @@
 	 		<span style="vertical-align: 4px;">精品推荐</span>
 	 	</div>
 			<ul v-if='hightGoods'>
-				<li v-for='(item,index) in hightGoods' class="infoList" :key='item'>
+				<li v-for='(item,index) in hightGoods' class="infoList" :key='index'>
 					<dl  @click='goodDetail(item.goods_id)'>
 						<dt>
 							<img :src="item.cover">
