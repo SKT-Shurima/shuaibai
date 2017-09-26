@@ -1,5 +1,5 @@
 <template>
-	<div class="wrap" v-if='order'>
+	<div class="orderwrap" v-if='order'>
 		<div class="orderInfoBox">
 			<h4>
 				<div class="title">
@@ -109,10 +109,9 @@ import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 		},
 		methods: {
 			orderDetail(){
-	   			let _this = this ;
 				let req = location.hash.split("?")[1];
-				_this.reqParams = getHashReq() ;
-				let order_sn = 	_this.reqParams.order_sn;
+				this.reqParams = getHashReq() ;
+				let order_sn = this.reqParams.order_sn;
 	   			let params = {
 	   				access_token: getCookie('access_token'),
 	   				order_sn: order_sn
@@ -140,7 +139,7 @@ import {getHashReq,errorInfo,getCookie} from '../../common/js/common'
 	$text_color: #666;
 	$border_color: #ddd;
 	$bg_color: #f5f5f5;
-	.wrap{
+	.orderwrap{
 		width: 100%;
 		.status{
 			text-align: center;

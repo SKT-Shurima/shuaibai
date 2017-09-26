@@ -4,7 +4,7 @@
 			<!-- 店铺小信息列表 -->
 			<div class="sliderBox">
 				<!-- 优惠券 -->
-				<coupons></coupons>
+				<coupons :seller_id='deliveryInfo.goodsInfo.goods.seller_id'></coupons>
 				<!-- 分类 -->
 				<classify  :sellerCat='sellerCat' :seller-id='deliveryInfo.goodsInfo.goods.seller_id'></classify>
 				<!-- 热销排行 -->
@@ -200,6 +200,7 @@
 					logistics_comment: "",
 					service_comment: ""
 				},
+				seller_id: '',
 				commentList: null, // 评价列表
 				replyList:[], // 获取回复列表
 				params: "",
@@ -229,14 +230,15 @@
 				handler(newVal,oldVal){
 					if (newVal.goodsInfo) {
 						this.getComment(0,1);
-						let id = this.deliveryInfo.goodsInfo.goods.seller_id ;
+						let id = newVal.goodsInfo.goods.seller_id ;
 						if (id) {
 							this.getCat(id);
+							this.seller_id  = id;
 						}
-						this.comment.goods_comment = this.deliveryInfo.goodsInfo.goods.comment.goods_comment - 0; 
-						this.comment.logistics_comment = this.deliveryInfo.goodsInfo.goods.comment.logistics_comment - 0; 
-						this.comment.service_comment = this.deliveryInfo.goodsInfo.goods.comment.service_comment - 0;
-						let description = this.deliveryInfo.goodsInfo.goods.description ;
+						this.comment.goods_comment = newVal.goodsInfo.goods.comment.goods_comment - 0; 
+						this.comment.logistics_comment = newVal.goodsInfo.goods.comment.logistics_comment - 0; 
+						this.comment.service_comment = newVal.goodsInfo.goods.comment.service_comment - 0;
+						let description = newVal.goodsInfo.goods.description ;
 						description = this.escape2Html(description) ;
 						this.deliveryInfo.goodsInfo.goods.description  = description ;
 					}

@@ -33,6 +33,11 @@ import {MessageBox,Message} from  'element-ui'
 				couponsList: []
 			}
 		},
+		props:{
+			seller_id: {
+				type: String
+			}
+		},
 		methods:{
 			getCoupon(id){
 				let  access_token  = getCookie('access_token');
@@ -70,6 +75,7 @@ import {MessageBox,Message} from  'element-ui'
 				let  access_token = getCookie('access_token') ;
 				let params = {
 					access_token: access_token?access_token:"",
+					seller_id: this.seller_id
 				}
 				getShopCoupons(params).then(res=>{
 					let {errcode,message,content} = res ;

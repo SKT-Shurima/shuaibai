@@ -50,13 +50,23 @@
 						收藏
 					</div>
 				</li>
-				<li>
+				<li class="codeBox">
 					<div class="singleCol">
 						<img src="../../../static/headImg/QRcode.png" height="18" width="18">
 					</div>
 					<div>
 						扫码下载APP
 					</div>
+					<dl class="codeImg">
+						<dt>
+							<div class="android"></div>
+							<div>android</div>
+						</dt>
+						<dd>
+							<div class="ios"></div>
+							<div>ios</div>
+						</dd>
+					</dl>
 				</li>
 			</ul>
 			<dl class="bakcTop" @click='gotoTop'>
@@ -183,6 +193,38 @@ import {userInfo} from '../../common/js/mixins'
 				margin-top: 10px;
 				cursor: pointer;
 				background-color: #c81623;
+			}
+		}
+		.codeBox{
+			position: relative;
+		}
+		.codeBox:hover .codeImg{
+			display: block;
+		}
+		.codeImg{
+			display: none;
+			position: absolute;
+			bottom: 0px;
+			right: 40px;
+			padding: 10px;
+			border: 1px solid #c71724;
+			color: #000;
+			dt{
+				margin-bottom: 10px;
+			}
+			.android,.ios{
+				width: 80px;
+				height: 80px;
+			}
+			.android{
+				background-image: url('../../../static/commonImg/android.png');
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+			}
+			.ios{
+				background-image: url('../../../static/commonImg/ios.png');
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
 			}
 		}
 	}

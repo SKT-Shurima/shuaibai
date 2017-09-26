@@ -88,8 +88,11 @@ $bg_title: #f5f5f5;
 			.sellInfo{
 				height: 36px;
 				line-height: 18px;
-				font-weight: 600;
 				margin-top: 10px;
+			    display: -webkit-box;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				-webkit-line-clamp: 2;
 			}
 			/*价格信息*/
 			.priceInfo{

@@ -1,5 +1,5 @@
 <template>
-	<div class="wrap">
+	<div class="orderwrap">
 		<div class="box" v-if='refundInfo'>
 			<dl class="goodsInfo">
 				<dt>
@@ -114,7 +114,7 @@ import {MessageBox} from  'element-ui'
 $primary:#c71624;
 $border_color: #ddd;
 $text_color: #666;
-	.wrap{
+	.orderwrap{
 		width: 100%;
 		.goodsInfo{
 			padding-bottom: 10px;

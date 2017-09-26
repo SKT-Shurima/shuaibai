@@ -261,7 +261,7 @@ $text_color: #666;
 			float: left;
 			font-weight: 600;
 		}
-		a{
+		a,em{
 			float: right;
 			cursor: pointer;
 			color: $text_color;
