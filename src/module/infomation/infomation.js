@@ -3,8 +3,8 @@ import App from './App'
 import Vuex from 'vuex'
 import store from '../../common/vuex/store.js'
 import {Row,Col,Button,Pagination} from  'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-import '../../../theme/index.css'
+
+
 
 Vue.use(Vuex)
 Vue.use(Row)

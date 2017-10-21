@@ -13726,7 +13726,7 @@
 .el-message-box__close {
     display: inline-block;
     position: absolute;
-    top: 19px;
+    top: 0px;
     right: 20px;
     color: #999;
     cursor: pointer;
@@ -13734,7 +13734,7 @@
     text-align: center;
 }
 .el-message-box__close:hover {
-    color: #e43a3d;
+    color: rgb(217, 193, 191);
 }
 .el-message-box__input {
     padding-top: 15px;

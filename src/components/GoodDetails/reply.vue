@@ -64,8 +64,7 @@ import {Message} from  'element-ui'
 <style lang='scss'>
 .el-dialog__wrapper{
 	.el-dialog {
-		width: 360px;
-		height: 240px;
+		width: 400px;
 		box-shadow: 0px 0px;
 		border-radius: 4px;
 	}

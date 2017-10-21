@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import 'common/css/reset.css';
+  
   import vHead from 'components/Head/LoginHeader'
   import vCon from 'components/RePassword/content'
   import vFoot from 'components/Foot/LoginFoot'

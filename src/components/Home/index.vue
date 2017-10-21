@@ -4,7 +4,7 @@
 			<nav class="nav_box">
 				<a href="javascript:void(0)">全部商品分类</a>
 				<a href="javascript: window.open('integral.html')">积分半价</a>
-				<a href="javascript: window.open('shoppingCoin.html')">购物币专区</a>
+				<a href="javascript: window.open('shoppingCoin.html')">会员积分专区</a>
 				<a href="javascript: window.open('cities.html')">百城万店</a>
 				<a href="javascript: window.open('grandCeremony.html')">世尊印</a>
 			</nav>

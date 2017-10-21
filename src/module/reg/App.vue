@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import 'common/css/reset.css';
+  
   import vHead from 'components/Head/LoginHeader'
   import vCon from 'components/Reg/content'
   import vMask from 'components/Reg/mask'

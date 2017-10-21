@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import 'common/css/reset.css';
+  
   import vHead from 'components/Head/Head'
   import vContent from 'components/FootLink/noReason'
   import vFoot from 'components/Foot/Foot'

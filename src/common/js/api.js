@@ -286,12 +286,12 @@ export const integrationDetail = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/integrationDetail`,params).then(res=>res.data);
 }
-// 请求购物币
+// 请求会员积分
 export const shoppingCoin = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/shoppingCoin`,params).then(res=>res.data);
 } 
-// 购物币明细
+// 会员积分明细
 export const shoppingCoinDetail = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/userAction/shoppingCoinDetail`,params).then(res=>res.data);
@@ -441,6 +441,18 @@ export const getSellerInfo =  params => {
 	params = trans(params);
 	return axios.get(`${base}/sellerAction/getSellerInfo?${params}`).then(res=>res.data); 
 }
+
+// 获取商家认证信息
+export  const check_real_customer = params=>{
+	params = trans(params);
+	return axios.get(`${base}/userAction/check_real_customer?${params}`).then(res=>res.data);
+}
+// 商家认证
+export const authentication = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/authentication`,params).then(res=>res.data);
+}
+
 
 // 订单相关
 // 获取购买需要购买商品信息

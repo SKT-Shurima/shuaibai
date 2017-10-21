@@ -1,13 +1,13 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip72")'>购物币</span></h4>
+		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip72")'>会员积分</span></h4>
 		<dl class="amountInfo">
-			<dt><span>当前购物币</span><em v-text='shoppingCoinInfo.shopping_coin'></em>
+			<dt><span>当前会员积分</span><em v-text='shoppingCoinInfo.shopping_coin'></em>
 			</dt>
 		</dl>
 		<div class="title">
 	 		<i class="icon"></i>
-	 		<span style="vertical-align: 4px;">购物币明细</span>
+	 		<span style="vertical-align: 4px;">会员积分明细</span>
 	 	</div>
 	 	<div v-if='shopCoinList.length'>
 	 		<ul class="moneyList">
@@ -28,7 +28,7 @@
 		 	<pagination :pagesize='pagesize' @changePage='changePage' ref='pagination'></pagination>
 	 	</div>
 	 	<div v-else style='font-size:16px;margin-top: 16px;'>
-			暂无购物币明细
+			暂无会员积分明细
 		</div>
 	</div>
 </template>

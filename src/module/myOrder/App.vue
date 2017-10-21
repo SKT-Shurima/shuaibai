@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import 'common/css/reset.css';
+  
   import vHead from 'components/Head/headTop'
   import vContent from 'components/MyOrder/content'
   import vFoot from 'components/Foot/Foot'

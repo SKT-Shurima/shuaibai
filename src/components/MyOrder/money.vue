@@ -7,7 +7,7 @@
 			<dd>
 				<el-button type='text' size='small' style='width:90px;' @click='changeView("vip70")'>充值</el-button>
 				<el-button type='text' size='small' style='width:90px;' @click='changeView("vip71")'>提现</el-button>
-				<el-button type='text' size='small' style='width:108px;' @click='changeView("vip72")'>购物币详情</el-button>
+				<el-button type='text' size='small' style='width:108px;' @click='changeView("vip72")'>会员积分详情</el-button>
 				<el-button type='text' size='small' style='width:92px;' @click='changeView("vip73")'>积分详情</el-button>
 			</dd>
 		</dl>

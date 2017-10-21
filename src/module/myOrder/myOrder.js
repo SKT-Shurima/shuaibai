@@ -3,8 +3,8 @@ import App from './App'
 import Vuex from 'vuex'
 import store from '../../common/vuex/store.js'
 import {Button,Row,Col,Form,FormItem,Input,Checkbox,Upload,Radio,DatePicker,Select,Option,Pagination,Dialog} from  'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-import '../../../theme/index.css'
+
+
 
 Vue.use(Vuex)
 Vue.use(Button)

@@ -17,7 +17,7 @@
 						<span>{{userInfo.account}}</span>
 					</li>
 					<li>
-						<em>购物币</em>
+						<em>会员积分</em>
 						<span>{{userInfo.shopping_coin}}</span>
 					</li>
 					<li>

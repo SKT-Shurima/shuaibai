@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import 'common/css/reset.css';
+  
   import vHead from 'components/Head/LoginHeader'
   import vCon from 'components/Login/content'
   import vFoot from 'components/Foot/LoginFoot'

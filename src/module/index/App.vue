@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import 'common/css/reset.css';
+  
   import vHead from 'components/Head/Head'
   import VSlider from 'components/Slider/Slider'
   import vIndex from 'components/Home/index'

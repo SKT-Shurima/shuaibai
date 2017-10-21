@@ -7,7 +7,6 @@
 </template>
 
 <script>
-  import 'common/css/reset.css';
   import vHead from 'components/Head/submitHead'
   import vCon from 'components/AfterSale/content'
   import vFoot from 'components/Foot/Foot'

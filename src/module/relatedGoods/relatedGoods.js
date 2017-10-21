@@ -2,8 +2,8 @@ import Vue from 'vue'
 import App from './App'
 
 import {Button,Row,Col,Rate,Dialog,Input,Pagination} from  'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-import '../../../theme/index.css'
+
+
 
 
 Vue.use(Button)

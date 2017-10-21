@@ -37,7 +37,7 @@
 							<div class="info_num" v-text='userInfo.shopping_coin'>
 							</div>
 							<div>
-								购物币
+								会员积分
 							</div>
 						</el-col>
 						<el-col :span='8'>

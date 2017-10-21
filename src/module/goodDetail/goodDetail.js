@@ -3,9 +3,9 @@ import App from './App'
 
 import Vuex from 'vuex'
 import store from '../../common/vuex/store.js'
-import {Button,Row,Col,Rate,Dialog,Input,Pagination} from  'element-ui'
-import 'element-ui/lib/theme-default/index.css'
-import '../../../theme/index.css'
+import {Button,Row,Col,Rate,Dialog,Input,Pagination,Form,FormItem} from  'element-ui'
+// 
+// 
 
 Vue.use(Vuex)
 Vue.use(Button)
@@ -15,6 +15,8 @@ Vue.use(Rate)
 Vue.use(Dialog)
 Vue.use(Input)
 Vue.use(Pagination)
+Vue.use(Form)
+Vue.use(FormItem)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

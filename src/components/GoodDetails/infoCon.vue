@@ -57,7 +57,7 @@
 							<el-col :span='20'>
 								<ul>
 									<li>可使用&nbsp;{{goods.max_integration}}&nbsp;积分</li>
-									<li>可使用&nbsp;{{goods.max_shopping_coin}}&nbsp;购物币</li>
+									<li>可使用&nbsp;{{goods.max_shopping_coin}}&nbsp;会员积分</li>
 									<li>可使用&nbsp;{{goods.pv}}&nbsp;PV</li>
 								</ul>
 							</el-col>
@@ -127,6 +127,27 @@
 					</dd>
 				</dl>
 			</div>
+			<!-- 验证弹框 -->
+			<el-dialog title="实名认证" :visible.sync="verifyBol">
+				<el-form ref="verifyForm" :model="verifyForm" :rules="verifyRules" label-width="100px">
+				  	<el-form-item label="姓名" prop='name'>
+				    	<el-input v-model="verifyForm.name"></el-input>
+				  	</el-form-item>
+				  	<el-form-item label="电话" prop='phone'>
+				    	<el-input v-model="verifyForm.phone"></el-input>
+				  	</el-form-item>
+				  	<el-form-item label="交易商账号" prop='trade_num'>
+				    	<el-input v-model="verifyForm.trade_num" placeholder="请输入交易商账号,没有填无"></el-input>
+				  	</el-form-item>
+				  	<el-form-item label="详细地址" prop='address'>
+				    	<el-input v-model="verifyForm.address"></el-input>
+				  	</el-form-item>
+				</el-form>
+			  <div slot="footer" class="dialog-footer">
+			    <el-button @click="verifyBol = false">返 回</el-button>
+			    <el-button type="primary" @click="verify('verifyForm')">确 定</el-button>
+			  </div>
+			</el-dialog>
 			<store-info :goods='goods'></store-info>
 		</div>
 	</div>
@@ -135,13 +156,28 @@
 <script>
  	import {currency,countdown} from '../../common/js/filter'
  	import {getRequest,errorInfo,getCookie} from '../../common/js/common'
- 	import {linkage,goodsDetail,getExpressFees,addCart,buy} from '../../common/js/api'
+ 	import {linkage,goodsDetail,getExpressFees,addCart,buy,authentication,check_real_customer} from '../../common/js/api'
  	import {MessageBox,Message} from  'element-ui'
  	import magnifyingGlass from './magnifyingGlass'
  	import storeInfo from './storeInfo'
  	import vNav from '../StoreCommon/nav'
 	export default{
 		data(){
+			// 交易商账号验证
+    		var check_trad_num = (rule, value, callback) => {
+    			if (value==='无') {
+    				callback();
+    			}else if (value === ''){
+	    	 		callback(new Error('请输入交易商账号,没有填无'));
+	    	 	} else {
+	    	 		let reg = /^079\d{9}$/ ;
+			        if ( !reg.test(value)) {
+			          	callback(new Error('请输入正确交易商账号'));
+			        } else{
+			        	callback();
+			        }
+	    	 	}
+		      };
 			return {
 				shop_header: "",
 				special: null, // 特殊商品 如一元抢购
@@ -169,7 +205,30 @@
 		        numInput: 1, // 数量选择
 		        option_id: "", // 规格id
 		        stockNum: 0, // 库存
-		        specs: null  // 类型
+		        specs: null,  // 类型
+		        verify_origin: '',
+		        check_real_customer_bol: false,
+		        verifyBol: false, // 实名认证弹框
+		        verifyForm: {
+		        	name: '',
+		        	phone: "",
+		        	trade_num: "",
+		        	address: ''
+		        },
+		        verifyRules: {
+		          	name: [
+		            	{ required: true, message: '请输入活动名称', trigger: 'blur' }
+		          	],
+		          	phone: [
+		          		{ required: true, message: '请输入电话号码', trigger: 'blur' }
+		          	],
+		          	trade_num: [
+		          		{ required: true, validator: check_trad_num, trigger: 'blur' }
+		          	],
+		          	address: [
+		          		{ required: true, message: '请输入详细地址', trigger: 'blur' }
+		          	]
+		        }
 			}
 		},
 		filters: {
@@ -316,9 +375,42 @@
 				this.salePrice = this.goods.shop_price;
 				this.currentImg = this.goods.cover;
 			},
+			verify(formName) {
+		        this.$refs[formName].validate((valid) => {
+		          	if (valid) {
+			            let params = {
+			            	access_token: getCookie('access_token'),
+			            	name: this.verifyForm.name,
+			            	phone: this.verifyForm.phone,
+			            	trade_num: this.verifyForm.trade_num,
+			            	address: this.verifyForm.address
+			            };
+			            authentication(params).then(res=>{
+			            	let {errcode,message} = res ;
+			            	if (errcode !== 0 ) {
+			            		MessageBox.alert(message, '提示', {
+						          	confirmButtonText: '确定'
+							    });
+			            	} else {
+			            		this.check_real_customer_bol=true;
+			            		if (this.verify_origin===0) {
+			            			this.settlement();
+			            		}else{
+			            			this.addShopCar();
+			            		}
+			            	}
+			            });
+			        }
+		        });
+		    },
 			// 立即购买
 			settlement(){
 				let _this = this ;
+				if (this.goods.is_verify==="1"&&!this.check_real_customer_bol) {
+					this.verifyBol = true;
+					this.verify_origin = 0;
+					return false;
+				}
 				if (_this.goods.options.length&&!_this.option_id) {
 					MessageBox.alert("请选择商品规格", '提示', {
 			          	confirmButtonText: '确定'
@@ -349,6 +441,11 @@
 			// 添加购物车
 			addShopCar(){
 				let _this = this ;
+				if (this.goods.is_verify==="1"&&!this.check_real_customer_bol) {
+					this.verifyBol = true;
+					this.verify_origin = 1;
+					return false;
+				}
 				if (_this.goods.options.length&&!_this.option_id) {
 					MessageBox.alert("请选择商品规格", '提示', {
 			          	confirmButtonText: '确定',
@@ -416,8 +513,19 @@
 						this.shop_header = shop_header ;
 						// 初始化结构数据
 						this.init();
+						if (this.goods.is_verify==="1") {
+							let checkParams = {
+								access_token: getCookie('access_token')
+							}
+							check_real_customer(checkParams).then(res=>{
+								let {errcode,message} = res ;
+								if (errcode===0) {
+									this.check_real_customer_bol = true;
+								}
+							})
+						}
 					}
-				})
+				});
 			})
 		}
 	}
