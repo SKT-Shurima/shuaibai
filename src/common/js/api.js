@@ -286,12 +286,12 @@ export const integrationDetail = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/integrationDetail`,params).then(res=>res.data);
 }
-// 请求会员积分
+// 请求购物积分
 export const shoppingCoin = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/shoppingCoin`,params).then(res=>res.data);
 } 
-// 会员积分明细
+// 购物积分明细
 export const shoppingCoinDetail = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/userAction/shoppingCoinDetail`,params).then(res=>res.data);

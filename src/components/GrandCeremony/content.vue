@@ -13,7 +13,7 @@
 								<img src="../../../static/grandImg/main.jpg" height="322" width="564">
 							</div>
 							<ul class="infoList">
-								<li class="infoTitle">世尊印</li>
+								<li class="infoTitle">鸿府</li>
 								<li v-text='item.name' class="info"></li>
 								<li class="info">代理人 ：{{item.agent}}</li>
 								<li class="info">TEL ：{{item.tel}}</li>
@@ -24,11 +24,11 @@
 				</dt>
 				<dd class="slider">
 					<div class="message">
-						<h1>世尊印高端会所</h1>
+						<h1>鸿府高端会所</h1>
 						<div class="intro">
 							<p>以全国连锁形式打造中国文化主题会所标杆；</p>
 							<p>以文化金融为杠杆实现艺术品自动化市场流通；</p>
-							<p>以打造国际知名品牌‘世尊印’为营运战略；</p>
+							<p>以打造国际知名品牌‘鸿府’为营运战略；</p>
 							<p>以高端艺术品差异化、趋势化、细分化、为精准品牌定位；</p>
 							<p>以打造百亿级品牌为核心目标，终而进入资本市场。</p>
 						</div>
@@ -116,7 +116,7 @@ import vNav from '../Head/nav.vue'
 					{info:'恭喜葛**先生签约成为新野县(区)代'},
 					{info:'恭喜施**女士签约成为永康市(区)代'},
 					{info:'恭喜王**女士签约成为杭州市拱墅区代'},
-					{info:'恭喜世尊印新人业务起航培训会圆满完成'}
+					{info:'恭喜鸿府新人业务起航培训会圆满完成'}
 				],
 				timeStep: 0,
 				h: 0

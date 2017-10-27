@@ -140,14 +140,14 @@
 								<em class="raido" @click='shop[shopIndex].radio=shop[shopIndex].radio==="2"?"0":"2";storeIndex=shopIndex;'>
 									<i v-show='shop[shopIndex].radio==="2"'></i>
 								</em>
-								会员积分抵扣
+								购物积分抵扣
 						    </span>
 							<strong>
 								-{{shop[shopIndex].radio==="2"?(orderInfo.customer.shopping_coin-0)>(shopItem.max_shopping_coin-0)?shopItem.max_shopping_coin:orderInfo.customer.shopping_coin:0|currency}}
 							</strong>
 						</div>
 						<div class="discountInfo">
-							您剩余会员积分{{orderInfo.customer.shopping_coin}}，当前店铺最多可用{{shopItem.max_shopping_coin}}
+							您剩余购物积分{{orderInfo.customer.shopping_coin}}，当前店铺最多可用{{shopItem.max_shopping_coin}}
 						</div>
 					</li>
 					<li v-show='orderInfo.customer.integration-0>=shopItem.max_integration-0&&shopItem.max_integration-0'>
@@ -423,10 +423,10 @@ import addAddress from './addAddress'
 					if (arr[i].coupon&&arr[i].coupon_index+"") {
 						countPrice += (arr[i].couponsList[arr[i].coupon_index].amount-0) ;
 					}
-					// 减免会员积分
+					// 减免购物积分
 					if (arr[i].radio==="2") {
 						if (shopping_coin<0) {
-							MessageBox.alert('超出用户最大会员积分量', '提示', {
+							MessageBox.alert('超出用户最大购物积分量', '提示', {
 					          	confirmButtonText: '确定'
 						    });
 						    this.shop[this.storeIndex].radio = "0" ;

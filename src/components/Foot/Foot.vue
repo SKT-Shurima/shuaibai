@@ -104,7 +104,7 @@
                         </li>
                         <li>&copy; 2005-2017 帅柏商城 版权所有，并保留所有权利。浙江 杭州 萧山区北塘路38号 ICP备案证书号：浙ICP备15014916号</li>
                         <div style="width:230px;margin:0 auto; padding:20px 0;">
-		 		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010902000853" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010902000853号</p></a>
+		 		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010902000853" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="../../../static/commonImg/police.png" width="14" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33010902000853号</p></a>
 		 	</div>
                     </ul>
                 </div>

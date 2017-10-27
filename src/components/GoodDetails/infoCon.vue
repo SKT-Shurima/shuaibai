@@ -57,7 +57,7 @@
 							<el-col :span='20'>
 								<ul>
 									<li>可使用&nbsp;{{goods.max_integration}}&nbsp;积分</li>
-									<li>可使用&nbsp;{{goods.max_shopping_coin}}&nbsp;会员积分</li>
+									<li>可使用&nbsp;{{goods.max_shopping_coin}}&nbsp;购物积分</li>
 									<li>可使用&nbsp;{{goods.pv}}&nbsp;PV</li>
 								</ul>
 							</el-col>
@@ -406,6 +406,11 @@
 			// 立即购买
 			settlement(){
 				let _this = this ;
+				let access_token = getCookie('access_token');
+				if (!access_token) {
+					errorInfo(99,"请先登录");
+					return false;
+				}
 				if (this.goods.is_verify==="1"&&!this.check_real_customer_bol) {
 					this.verifyBol = true;
 					this.verify_origin = 0;
@@ -418,7 +423,7 @@
 				    return ;
 				}
 			 	let params = {
-			 		access_token: getCookie('access_token'),
+			 		access_token: access_token,
 			 		data: [{
 			 			seller_id: _this.goods.seller_id,
 			 			goods: [{
@@ -441,6 +446,11 @@
 			// 添加购物车
 			addShopCar(){
 				let _this = this ;
+				let access_token = getCookie('access_token');
+				if (!access_token) {
+					errorInfo(99,"请先登录");
+					return false;
+				}
 				if (this.goods.is_verify==="1"&&!this.check_real_customer_bol) {
 					this.verifyBol = true;
 					this.verify_origin = 1;
@@ -454,7 +464,7 @@
 				    return ;
 				}
 				let params = {
-				    access_token: getCookie('access_token'),
+				    access_token: access_token,
 					goods_id: _this.params.goods_id,
 					option_id: _this.option_id,
 					quantity: _this.numInput
@@ -491,8 +501,9 @@
 		mounted(){
 			this.$nextTick(()=>{
 				this.params = getRequest();
+				let access_token = getCookie('access_token');
 				let params = {
-					access_token: getCookie('access_token'),
+					access_token: access_token,
 					goods_id: this.params.goods_id
 				}
 				goodsDetail(params).then(res=>{
@@ -513,9 +524,9 @@
 						this.shop_header = shop_header ;
 						// 初始化结构数据
 						this.init();
-						if (this.goods.is_verify==="1") {
+						if (this.goods.is_verify==="1"&&access_token) {
 							let checkParams = {
-								access_token: getCookie('access_token')
+								access_token: access_token
 							}
 							check_real_customer(checkParams).then(res=>{
 								let {errcode,message} = res ;

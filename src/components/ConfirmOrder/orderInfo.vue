@@ -72,7 +72,7 @@
 								<ul>
 									<li>优惠券：{{order.coupon_amount}}</li>
 									<li>积分抵：{{order.max_integration}}</li>
-									<li>会员积分抵：{{order.max_shopping_coin}}</li>
+									<li>购物积分抵：{{order.max_shopping_coin}}</li>
 								</ul>
 							</div>
 							<div class="payCol">
