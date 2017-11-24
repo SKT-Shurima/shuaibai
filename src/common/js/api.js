@@ -5,7 +5,7 @@ import axios from 'axios'
 // 正式
 // let base = 'http://shuaibo.zertone1.com/web'
 // 线上
-let base = 'http://app.shuaibomall.net/web'
+let base = 'http://app.shuaibomall.net/web';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 

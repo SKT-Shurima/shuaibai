@@ -2,16 +2,17 @@
 	<div class="wrap">
 		<div class="update_box">
 			<el-row class="themeTitle">
-		 		<el-col :span='7'>
+		 		<el-col :span='6' :offset='1'>
 		 			<div class="slider"></div>
 		 		</el-col>
 		 		<el-col :span='10'>
 		 			<div class="text">
+		 				<a href="specialActivities.html" style='color:#656565;'>
 		 				<img src="../../../static/indexImg/newDay.png" height="24" width="24">
-		 				每日上新
+		 				双十二活动</a>
 		 			</div>
 		 		</el-col>
-		 		<el-col :span='7'>
+		 		<el-col :span='6' :offset='1'>
 		 			<div class="slider"></div>
 		 		</el-col>
 		 	</el-row>
