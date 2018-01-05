@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 
-import {Row,Col,Button,Input,Form,FormItem,Checkbox,Radio,DatePicker,Select,Option} from  'element-ui'
+import {Row,Col,Button,Input,Form,FormItem,Checkbox,Radio,DatePicker,Select,Option,Dialog} from  'element-ui'
 
 
 Vue.use(Row)
@@ -15,6 +15,7 @@ Vue.use(Radio)
 Vue.use(DatePicker)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Dialog)
 // Vue.use(MessageBox)
 // console.log(MessageBox)
 /* eslint-disable no-new */

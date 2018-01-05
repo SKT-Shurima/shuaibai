@@ -1,10 +1,10 @@
 <template>
 	<div class="wrap">
-		<div class="imgBox">
+		<div class="img-box">
 			<img :src="image">
 		</div>
 		<div class="container">
-			<el-row class="themeTitle">
+			<el-row class="theme-title">
 		 		<el-col :span='6'>
 		 			<div class="slider"></div>
 		 		</el-col>
@@ -18,7 +18,7 @@
 		 			<div class="slider"></div>
 		 		</el-col>
 		 	</el-row>
-		 	<ul class="infoList">
+		 	<ul class="info-list">
 		 		<li v-for='(item,index) in infoList' :key='index'>
 		 			<dl>
 		 				<dt>
@@ -59,9 +59,8 @@ import pagination from '../Common/pagination'
 		},
 		methods: {
 			changePage(page){
-				let _this = this ;
-				_this.page = page ;
-				_this.initList();
+				this.page = page ;
+				this.initList();
 			},
 			infoDetail(id,index){
 				let page = this.page ;
@@ -91,64 +90,60 @@ import pagination from '../Common/pagination'
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #f1f1f1;
-$text_color: #999;
 	.wrap{
 		width: 1250px;
 		margin: 0px auto;
-		.imgBox{
+	}
+	.img-box{
+		height: 500px;
+		img{
 			width: 100%;
-			height: 500px;
+			height: 100%;
+		}
+	}
+	.container{
+		margin-top: 20px;
+	}
+	.info-list{
+		margin-top: 20px;
+		border-top: 1px solid #f1f1f1;
+		li{
+			padding: 28px 20px;
+			border-bottom: 1px solid #f1f1f1;
+		}
+		dl{
+			overflow: hidden;
+		}
+		dt,dd{
+			float: left;
+		}
+		dt{
+			width: 200px;
+			height: 120px;
 			img{
 				width: 100%;
 				height: 100%;
 			}
 		}
-		.container{
-			margin-top: 20px;
-		}
-		.infoList{
-			margin-top: 20px;
-			border-top: 1px solid $border_color;
-			li{
-				padding: 28px 20px;
-				border-bottom: 1px solid $border_color;
-			}
-			dl{
+		dd{
+			margin-left: 20px;
+			width: 980px;
+			h2{
 				overflow: hidden;
-				dt,dd{
-					float: left;
+				span{
+					color: #999;
+					float: right;
+					font-size: 14px;
 				}
-				dt{
-					width: 200px;
-					height: 120px;
-					img{
-						width: 100%;
-						height: 100%;
-					}
-				}
-				dd{
-					margin-left: 20px;
-					width: 980px;
-					h2{
-						overflow: hidden;
-						span{
-							color: $text_color;
-							float: right;
-							font-size: 14px;
-						}
-					}
-					p{
-						margin-top: 20px;
-						line-height: 24px;
-						color: #000;
-						em{
-							margin-left: 10px;
-							cursor: pointer;
-							color: $primary;
-						}
-					}
+			}
+			p{
+				margin-top: 20px;
+				line-height: 24px;
+				color: #000;
+				em{
+					margin-left: 10px;
+					cursor: pointer;
+					color: #c71724;
 				}
 			}
 		}

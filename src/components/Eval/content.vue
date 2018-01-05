@@ -23,11 +23,9 @@ import {MessageBox} from  'element-ui'
 		},
 		methods:{
 			orderDetail(){
-				let _this = this ;
-				let order_sn = 	_this.reqParams.order_sn;
 	   			let params = {
 	   				access_token: getCookie('access_token'),
-	   				order_sn: order_sn
+	   				order_sn: this.reqParams.order_sn
 	   			}
 	   			getOrderDetail(params).then(res=>{
 	   				let {errcode,message,content} = res ;

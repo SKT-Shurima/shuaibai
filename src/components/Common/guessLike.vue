@@ -5,11 +5,6 @@
 		 		<img :src="sItem.cover" @click='goodDetail(sItem.goods_id)'>
 		 	</li>
 		 </ul>
-		<!--  <ul class="big_img">
-		 	<li v-for= '(bItem,index) in youLike' v-if='index>=4'>
-		 		<img src="">
-		 	</li>
-		 </ul> -->
 	</div>
 </template>
 <script>
@@ -44,7 +39,6 @@ import {errorInfo} from '../../common/js/common'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
 	.wrap{
 		margin-top: 0px;
 		img{
@@ -53,7 +47,7 @@ $border_color: #ccc;
 			cursor: pointer;
 		}
 		.small_img{
-			border-bottom: 1px solid $border_color;
+			border-bottom: 1px solid #ccc;
 			overflow: hidden;
 			li{
 				float: left;

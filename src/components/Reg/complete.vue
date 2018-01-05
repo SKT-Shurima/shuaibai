@@ -1,6 +1,6 @@
 <template>
 	<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position='left'>
-		<div class="reg_box">
+		<div class="reg-box">
 			<div class="title">请完善登录信息</div>
 			  <el-form-item label="手机号码" prop="phone">
 			    <el-input v-model="ruleForm.phone"></el-input>
@@ -105,8 +105,7 @@ import {hex_md5} from '../../common/js/md5'
     },
     methods: {
     	send_code(){
-	      	let _this = this ;
-	      	if (_this.ruleForm.phone === '') {
+	      	if (this.ruleForm.phone === '') {
 	      		MessageBox.alert('请输入手机号', '提示', {
 		          confirmButtonText: '确定'
 		        });
@@ -114,7 +113,7 @@ import {hex_md5} from '../../common/js/md5'
 	      		let time = parseInt(new Date()/1000) +"";
 	      		let sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=0`;
 	      		let params = {
-		      		param: _this.ruleForm.phone,
+		      		param: this.ruleForm.phone,
 		      		type: '0',
 		      		time: time,
 		      		sign: hex_md5(sign)
@@ -126,13 +125,13 @@ import {hex_md5} from '../../common/js/md5'
 				          confirmButtonText: '确定'
 					    });
 		      		} else {
-		      			_this.time = _this.total_time ;
+		      			this.time = this.total_time ;
 		      			let timer = setInterval(()=>{
-				      		_this.time--;
-				      		_this.send_btn = _this.time + 's后重新发送';
-				      		if (_this.time < 0) {
-				      			_this.time = -1;
-				      			_this.send_btn = '发送验证码';
+				      		this.time--;
+				      		this.send_btn = this.time + 's后重新发送';
+				      		if (this.time < 0) {
+				      			this.time = -1;
+				      			this.send_btn = '发送验证码';
 				      			clearInterval(timer);
 				      		}
 				      	},1000)
@@ -180,22 +179,20 @@ import {hex_md5} from '../../common/js/md5'
   }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$red_color: #f24450;
- .title{
+ 	.title{
 		font-size: 20px;
 		color: #f24450;
 		text-align: center;
 		font-weight: 600;
 		margin-bottom: 30px;
 	}
-    .reg_box{
+    .reg-box{
     	width: 390px;
     	margin: 0px auto;
     	padding-top: 40px;
     	color: #000;
     }
-    .referees_box{
+    .referees-box{
 		width: 500px;
 		margin: 0px auto;
     	padding-top: 40px;
@@ -203,29 +200,29 @@ $red_color: #f24450;
     	padding-left: 56px;
     	padding-right: 56px;
     	color: #000;
-		border: 1px solid $red_color;
-		.area{
-			overflow: hidden;
-			.el-col{
-				float: left;
-				width: 90px;
-			    select{
-			    	background-color: #fff;
-				    background-image: none;
-				    border-radius: 4px;
-				    border: 1px solid rgb(217, 193, 191);
-				    box-sizing: border-box;
-				    color: rgb(61, 33, 31);
-				    display: block;
-				    font-size: inherit;
-				    height: 36px;
-				    line-height: 1;
-				    outline: none;
-				    padding: 3px 10px;
-				    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-				    width: 100%;
-			    }
-			}
+		border: 1px solid #f24450;
+	}
+	.area{
+		overflow: hidden;
+		.el-col{
+			float: left;
+			width: 90px;
+		    select{
+		    	background-color: #fff;
+			    background-image: none;
+			    border-radius: 4px;
+			    border: 1px solid rgb(217, 193, 191);
+			    box-sizing: border-box;
+			    color: rgb(61, 33, 31);
+			    display: block;
+			    font-size: inherit;
+			    height: 36px;
+			    line-height: 1;
+			    outline: none;
+			    padding: 3px 10px;
+			    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+			    width: 100%;
+		    }
 		}
 	}
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="storeInfo">
+	<div class="storeInfo" style='float: left;'>
 		<div class="title">
 			<div class="titleContent" @click='storeDetail'>
 				<div class="slider"></div>
@@ -78,26 +78,23 @@ import {errorInfo,getCookie} from '../../common/js/common'
 		},
 		methods: {
 	        storeDetail(){
-		        let _this = this ;
-		        let id = _this.goods.seller_id ;
+		        let id = this.goods.seller_id ;
 		        location.href = `storeDetail.html?seller_id=${id}` ;
 	        },
 	        kf(){
-		        let _this =this ;
-		        let qq = _this.kfInfo.qq ;
+		        let qq = this.kfInfo.qq ;
 		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
 	      	},
 			follow(){
-				let _this = this ;
 				let fn ;
-				if(_this.goods.is_seller_collection){
+				if(this.goods.is_seller_collection){
 					fn = cancelFollow;
 				}else {
 					fn = addFollow;
 				}
 				let params ={
 					access_token: getCookie('access_token'),
-					seller_id: _this.goods.seller_id
+					seller_id: this.goods.seller_id
 				}
 				fn(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -109,10 +106,9 @@ import {errorInfo,getCookie} from '../../common/js/common'
 				})
 			},
 			collection(){
-				let _this = this;
 				let params = {
 					access_token: getCookie('access_token'),
-					goods_id: _this.goods.goods_id
+					goods_id: this.goods.goods_id
 				}
 				collectionGoods(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -125,22 +121,17 @@ import {errorInfo,getCookie} from '../../common/js/common'
 				})
 			}
 		 },
-     mounted(){
-      this.$nextTick(()=>{
-        getKFInfo().then(res=>{
-          let {errcode,message,content} = res ;
-          if(errcode !== 0){
-            errorInfo(errcode,message) ;
-          }else {
-            this.kfInfo=content; 
-          }
-        })
-      })
-     }
+	     mounted(){
+	      	this.$nextTick(()=>{
+	        	getKFInfo().then(res=>{
+	          		let {errcode,message,content} = res ;
+          			if(errcode !== 0){
+            			errorInfo(errcode,message) ;
+          			}else {
+            			this.kfInfo=content; 
+          			}
+	        	})
+	      	})
+	    }
 	}
 </script>
-<style lang='scss' scoped>
-.storeInfo{
-  float: left;
-}
-</style>

@@ -46,8 +46,3 @@ import {errorInfo} from '../../common/js/common'
 		}
 	}
 </script>
-<style lang='scss' scoped>
-	.wrap{
-		width: 100%;
-	}
-</style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<div class="shopInfoHead">
+		<div class="border-c f5-bg shop-info-head">
 			<el-row>
 				<el-col :span='9'>商品信息</el-col>
 				<el-col :span='2'>单价</el-col>
@@ -11,8 +11,8 @@
 				<el-col :span='3'>交易操作</el-col>
 			</el-row>
 		</div>
-		<div class="shopInfoList" v-for='(shopItem,shopIndex) in order' :key='shopIndex' v-if='order'>
-			<div class="title">
+		<div class="border-c shop-info-list" v-for='(shopItem,shopIndex) in order' :key='shopIndex' v-if='order'>
+			<div class="f5-bg title">
 				<el-row>
 					<el-col :span='9'>
 						<em style='margin-left:24px;font-weight: 600;'>{{shopItem.date_add*1000|dateStyle}}</em>
@@ -20,43 +20,38 @@
 					</el-col>
 					<el-col :span='10'>
 						<span v-text='shopItem.shop_name'></span>
-						<button  @click='kf(shopItem.kf_qq)'>
+						<button class='border-c'  @click='kf(shopItem.kf_qq)'>
 							<img src="../../../static/commonImg/qq.png" height="14" width="12">联系客服
 						</button>
 					</el-col>
 				</el-row>
 			</div>
-			<div class="list">
-				<div class='listContent'>
-				 	<div class="goodsListBox">
-				 		<div v-for='(item,index) in shopItem.goods' :key='item.goods_id' class="goodsList">
-					 		<dl class="goodsMsg">
+			<div>
+				<div class='list-con'>
+				 	<div class="goods-list-box">
+				 		<div v-for='(item,index) in shopItem.goods' :key='item.goods_id' class="goods-list">
+					 		<dl class="goods-msg">
 								<dt>
 									<img :src="item.image" @click='goodDetail(item.goods_id)'>
 								</dt>
 								<dd>
-									<div class="goodsName" v-text='item.name'></div>
-									<div class="goodsType">
-										<span>规格:{{item.option_name}}</span>
-										<span>套餐:{{item.goods_type}}</span>
+									<div class="goods-name" v-text='item.name'></div>
+									<div class="color-6">
+										<span style='margin-right:10px;'>规格:{{item.option_name}}</span>
+										<span style="margin-right: 10px;">套餐:{{item.goods_type}}</span>
 									</div>
 								</dd>
 							</dl>
-							<div class='goodsPrice'>
-								<!-- <dt style="color:#666;text-decoration: line-through;margin-top: 24px;">
-									{{299.00|currency}}
-								</dt> -->
-								<dd>
-									{{item.price|currency}}
-								</dd>
+							<div class='goods-price'>
+								<div>{{item.price|currency}}</div>
 							</div>
-							<div class="goodsPrice" v-text='item.quantity'></div>
-							<div class="goodsPrice" style='cursor:pointer;' @click='applyRefund(shopItem.order_sn,item.goods_id,item.option_id)' v-show='shopItem.order_state!=="1"&&shopItem.order_state!=="6"'>
+							<div class="goods-price" v-text='item.quantity'></div>
+							<div class="goods-price" style='cursor:pointer;' @click='applyRefund(shopItem.order_sn,item.goods_id,item.option_id)' v-show='shopItem.order_state!=="1"&&shopItem.order_state!=="6"'>
 								申请售后
 							</div>
 						</div>
 				 	</div>
-					<div class="goodsInfo" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":shopItem.goods.length>1}'>
+					<div class="goods-info" :style="{height:130*shopItem.goods.length+'px'}" :class='{"multiple":shopItem.goods.length>1}'>
 						<el-row>
 							<el-col :span='8'>
 								<div style="line-height:26px;font-size:14px;font-weight:600;">{{shopItem.order_amount|currency}}</div>
@@ -156,14 +151,17 @@ import pagination from '../Common/pagination'
 	            console.log(key, keyPath);
 	        },
 	        getOrderList(state,page){
-	        	let _this = this ;
-	        	_this.state = state ;
-		      	state+='';
-		    	let params = {
+	        	let params = {
 		    		access_token: getCookie('access_token'),
-		    		state: state,
 		    		page: page
 		    	};
+		      	if (state==5) {
+		      		params.type = '2';
+		      	}else{
+		      		this.state = state ;
+		      		params.state = state+"";
+		      		params.type = '1';
+		      	}
 		    	getOrders(params).then(res=>{
 		    		let {errcode,message,content} = res ;
 					if(errcode !== 0){
@@ -207,9 +205,8 @@ import pagination from '../Common/pagination'
 	   	 	},
 	   	 	// 取消订单
 	   	 	cancel(order_sn){
-	   	 		let _this = this ;
 	   	 		let msg  = '是否取消订单?'
-	   	 		_this.commonAPI(msg,cancelOrder,order_sn);
+	   	 		this.commonAPI(msg,cancelOrder,order_sn);
 	   	 	},
 	   	 	// 再次购买
 	   	 	buyAgain(id){
@@ -221,18 +218,15 @@ import pagination from '../Common/pagination'
 	   	 	},
 	   	 	// 确认收货
 	   	 	confirmGet(order_sn){
-	   	 		let _this = this ;
 	   	 		let msg  = '确定收货之前确定是否已经收货?'
-	   	 		_this.commonAPI(msg,delivery,order_sn);
+	   	 		this.commonAPI(msg,delivery,order_sn);
 	   	 	},
 	   	 	// 删除订单
 	   	 	del(order_sn){
-	   	 		let _this = this ;
 	   	 		let msg  = '是否确定永久删除订单？'
-	   	 		_this.commonAPI(msg,delOrder,order_sn);
+	   	 		this.commonAPI(msg,delOrder,order_sn);
 	   	 	},
 	   	 	commonAPI(msg,api,order_sn){
-	   	 		let _this = this ;
 	   	 		MessageBox.confirm(msg, '提示', {
 		            confirmButtonText: '确定',
 		            cancelButtonText: '取消',
@@ -251,7 +245,7 @@ import pagination from '../Common/pagination'
 					            message: message,
 					            type: 'success'
 					        });
-					        _this.getOrderList(_this.state,'1');
+					        this.getOrderList(this.state,'1');
 						}
 		   	 		})
 		        }).catch(() => {
@@ -260,8 +254,7 @@ import pagination from '../Common/pagination'
 	   	 	},
 	   	 	// 改变页数
 			changePage(page){
-				let _this = this ;
-				_this.getOrderList(_this.state,page);
+				this.getOrderList(this.state,page);
 			},
 			init(){
 				let hash = location.hash ;
@@ -285,131 +278,109 @@ import pagination from '../Common/pagination'
 	}
 </script>
 <style lang='scss' scoped>
-	$primary:#c71724;
-	$text_color: #666;
-	$border_color: #ddd;
-	$bg_color: #f5f5f5;
-	.wrap{
-		width: 100%;
-		.shopInfoHead{
-			line-height: 40px;
+	.shop-info-head{
+		line-height: 40px;
+		text-align: center;
+		margin: 0px 0px 20px;
+	}
+	.shop-info-list{
+		margin-bottom: 10px;
+	}
+	.title{
+		line-height: 40px;
+		border-bottom: 1px solid #ccc;
+		button{
+			border-radius: 16px;
+			background-color: #fff;
+			img{
+				margin-right: 4px;
+			}
+		}
+	}
+	.list-con{
+		overflow: hidden;
+	}
+	.goods-list-box{
+		width: 674px;
+		float: left;
+		overflow: hidden;
+	}
+	.goods-list{
+		float: left;
+		padding: 20px 0px 20px 20px;
+		overflow: hidden;
+		border-top: 1px solid #ccc;
+		margin-top: -1px;
+	}
+	.goods-msg{
+		float: left;
+		width: 384px;
+		overflow: hidden;
+		dt{
+			float: left;
+			width: 90px;
+			height: 90px;
+			img{
+				width: 100%;
+				height: 100%;
+				cursor: pointer;
+			}
+		}
+		dd{
+			float: left;
+			width: 240px;
+			margin-left: 18px;
+		}
+	}
+	.goods-name{
+		line-height: 18px;
+		margin-bottom: 18px;
+	}
+	.goods-price{
+		float: left;
+		width: 90px;
+		text-align: center;
+		margin-top: 32px;
+		line-height: 20px;
+	}
+	.goods-info{
+		float: left;
+		width: 404px;
+		height: 100%;
+		position: relative;
+		.el-row{
+			width: 100%;
+			height: 66px;
+			position: absolute;
+			right: 0px;
+			top: 0px;
+			bottom: 0px;
+			margin: auto;
 			text-align: center;
-			margin: 0px 0px 20px;
-			border: 1px solid $border_color;
-			background-color: $bg_color;
-		}
-		.shopInfoList{
-			margin-bottom: 10px;
-			border: 1px solid $border_color;
-			.title{
-				line-height: 40px;
-				border-bottom: 1px solid $border_color;
-				background-color: $bg_color;
-				.el-col-10{
-					button{
-						border: 1px solid $border_color;
-						border-radius: 16px;
-						background-color: #fff;
-						img{
-							margin-right: 4px;
-						}
-					}
-				}
-			}
-			.list{
-				.listContent{
-					overflow: hidden;
-					.goodsListBox{
-						width: 674px;
-						float: left;
-						overflow: hidden;
-						.goodsList{
-							float: left;
-							padding: 20px 0px 20px 20px;
-							overflow: hidden;
-							border-top: 1px solid $border_color;
-							margin-top: -1px;
-							.goodsMsg{
-								float: left;
-								width: 384px;
-								overflow: hidden;
-								dt{
-									float: left;
-									width: 90px;
-									height: 90px;
-									img{
-										width: 100%;
-										height: 100%;
-										cursor: pointer;
-									}
-								}
-								dd{
-									float: left;
-									width: 240px;
-									margin-left: 18px;
-									.goodsName{
-										line-height: 18px;
-										margin-bottom: 18px;
-									}
-									.goodsType{
-										color: $text_color;
-										span{
-											margin-right: 10px;
-										}
-									}
-								}
-							}
-							.goodsPrice{
-								float: left;
-								width: 90px;
-								text-align: center;
-								margin-top: 32px;
-								line-height: 20px;
-							}
-						}
-					}
-					.goodsInfo{
-						float: left;
-						width: 404px;
-						height: 100%;
-						position: relative;
-						.el-row{
-							width: 100%;
-							height: 66px;
-							position: absolute;
-							right: 0px;
-							top: 0px;
-							bottom: 0px;
-							margin: auto;
-							text-align: center;
-							.el-button{
-								width: 62px;
-								padding: 6px;
-								color: #000;
-								border: 1px solid $border_color;
-							}
-							.opera{
-								cursor: pointer;
-							}
-							.opera:hover{
-								color: $primary;
-							}
-							.el-col-8{
-								span{
-									line-height: 26px;
-									cursor: pointer;
-								}
-								span:hover{
-									color: $primary;
-								}
-							}
-						}
-					}
-					.multiple{
-						border-left: 1px solid $border_color;
-					}
-				}
+			.el-button{
+				width: 62px;
+				padding: 6px;
+				color: #000;
+				border: 1px solid #ccc;
 			}
 		}
+		.opera{
+			cursor: pointer;
+		}
+		.opera:hover{
+			color: #c71724;
+		}
+		.el-col-8{
+			span{
+				line-height: 26px;
+				cursor: pointer;
+			}
+			span:hover{
+				color: #c71724;
+			}
+		}
+	}
+	.multiple{
+		border-left: 1px solid #ccc;
 	}
 </style>

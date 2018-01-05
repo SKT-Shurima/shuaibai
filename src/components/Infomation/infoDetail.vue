@@ -1,23 +1,23 @@
 <template>
 	<div class="wrap">
-		<div class="title">
+		<div class="color-9 title">
 			<span @click='backInfoHome'>优惠快讯</span>
 			<i>&gt;</i>
 			<span>正文</span>
 		</div>
 		<div class="container" v-if='main'>
 			<h1 v-text='main.name'></h1>
-			<div class="time">{{main.date_add*1000|dateStyle}}&nbsp;{{main.date_add*1000|timeStyle}}</div>
+			<div class="color-9 time">{{main.date_add*1000|dateStyle}}&nbsp;{{main.date_add*1000|timeStyle}}</div>
 			<div class="main" v-html='main.content'>
 			</div>
 			<dl class="page" v-if='infoList.length'>
 				<dt v-if='(index-0)>0' @click='changeMain(0)'>
 				   <i style="transform:rotateZ(180deg)"></i>
 				   <em>上一篇</em>
-				   <span v-text='infoList[index-1].name'></span>
+				   <span class='ellipsis-1' v-text='infoList[index-1].name'></span>
 				</dt>
 				<dd v-if='(index-0)<(infoList.length-1)' @click='changeMain(1)'>
-					<span v-text='infoList[(index-0)+1].name' style="text-align: right;"></span>
+					<span class='ellipsis-1' v-text='infoList[(index-0)+1].name' style="text-align: right;"></span>
 					<em>下一篇</em>
 					<i></i>
 				</dd>
@@ -97,22 +97,19 @@ import {errorInfo,getHashReq} from '../../common/js/common'
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #f1f1f1;
-$text_color: #999;
-.wrap{
-	width: 1250px;
-	margin: 0px auto;
+	.wrap{
+		width: 1250px;
+		margin: 0px auto;
+	}
 	.title{
-		width: 100%;
 		height: 50px;
 		padding: 14px 0px 20px 0px;
-		color: $text_color;
-		border-bottom: 1px solid $border_color;
+		color: #999;
+		border-bottom: 1px solid #f1f1f1;
 		span{
 			cursor: pointer;
 			&:hover{
-				color: $primary;
+				color: #c71724;
 			}
 		}
 	}
@@ -121,7 +118,6 @@ $text_color: #999;
 	}
 	.time{
 		margin-top: 24px;
-		color: $text_color;
 	}
 	.page{
 		margin-top: 100px;
@@ -140,9 +136,6 @@ $text_color: #999;
 		}
 		span{
 			width: 150px;
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
 			color: #005b9a;
 		}
 		dt,dd{
@@ -155,5 +148,4 @@ $text_color: #999;
 			float: right;
 		}
 	}
-}
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip71")'>提现</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip71")'>提现</span></h4>
 		<div class="box">
 			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" label-position='right'>
 				<el-form-item label="提现金额" prop="money">
@@ -138,18 +138,13 @@ import {withdraw} from '../../common/js/api'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$primary:#c71724;
-$text_color: #666;
-$bg_color: #e84848;
 	.wrap{
 		width: 1030px;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
 			margin-bottom: 46px;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
 			span{
 				cursor: pointer;
 			}

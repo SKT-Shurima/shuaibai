@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
-		<div class="bg">
-			<div class="content_layout">
+		<div class="f9-bg bg">
+			<div class="con-layout">
 			    <component :is="currentView" keep-alive @regSuccess='regFn'></component>
 			</div>
 		</div>
@@ -51,17 +51,15 @@
 	.wrap{
 		width: 100%;
 		margin-top: 4px; 
-		.bg{
-		    width: 100%;
-		    overflow: hidden;
-		    background-color: #f9f9f9;
-		    .content_layout{
-			    width: 900px;
-			    margin: 28px auto;
-			    overflow: hidden;
-			    box-shadow: 0px 2px 4px 2px #dfdfdf;
-			   
-			}
-		}
+	}
+	.bg{
+	    width: 100%;
+	    overflow: hidden;
+	}
+    .con-layout{
+	    width: 900px;
+	    margin: 28px auto;
+	    overflow: hidden;
+	    box-shadow: 0px 2px 4px 2px #dfdfdf;
 	}
 </style>

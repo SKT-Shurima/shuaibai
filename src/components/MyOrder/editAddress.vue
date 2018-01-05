@@ -1,9 +1,9 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view100")'>我的收货地址</span>&nbsp;<i>&gt;</i>&nbsp;<span>修改收货地址</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view100")'>我的收货地址</span>&nbsp;<i>&gt;</i>&nbsp;<span>修改收货地址</span></h4>
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" label-position='right'>
 			<div class="reg_box">
-				<div class="title">新增收货地址</div>
+				<div class="color-primary title">新增收货地址</div>
 				<el-form-item label="所在地区" prop='area'>
 					<el-row class="area">
 						<el-col>
@@ -61,23 +61,19 @@
 			    <el-button type="primary" @click="submitForm('ruleForm')" style='width:178px;' :disabled='!(ruleForm.province!==""&&ruleForm.city!==""&&ruleForm.address&&ruleForm.name&&ruleForm.phone)' >保存</el-button>
 			</div>	  
 		</el-form>
-		<div class="addressList" v-if='addressList'>
-			<div class="title" style="margin-bottom:20px;">
+		<div class="address-list" v-if='addressList'>
+			<div class="color-primary title" style="margin-bottom:20px;">
 				已经保存了{{addressList.length}}条地址，还可以保存{{20-addressList.length}}条地址
 			</div>
 			<ul v-if='addressList'>
-				<li v-for= '(item,index) in addressList' :class='{"isDefault":item.status==="1"}' :key='item'>
+				<li v-for= '(item,index) in addressList' class='border-c' :class='{"border-primary":item.status==="1"}' :key='item'>
 					<dl>
 						<dt>
-							<span v-text='item.name'>
-							</span>
-							<strong v-text='item.phone'>
-							</strong>
-							<em v-show='item.status==="1"'>
-								默认地址
-							</em>
+							<span v-text='item.name'></span>
+							<strong v-text='item.phone'></strong>
+							<em  class='color-primary' v-show='item.status==="1"'>默认地址</em>
 						</dt>
-						<dd class="addressInfo">
+						<dd class="ellipsis-1 address-info">
 						    {{item.province===item.city?item.province:item.province+item.city}}{{item.district}}{{item.address}}
 						</dd>
 						<dd>
@@ -184,10 +180,9 @@ import {hex_md5} from '../../common/js/md5'
     mixins: [userInfo],
     methods: {
     	getOneAddressAPI(){
-    		let _this =  this ;
     		let params = {
     			access_token: getCookie('access_token'),
-    			address_id: _this.reqParams.address_id
+    			address_id: this.reqParams.address_id
     		}
     		getOneAddress(params).then(res=>{
     			let {errcode,message,content} = res ;
@@ -206,11 +201,10 @@ import {hex_md5} from '../../common/js/md5'
     		})
     	},
     	initLevel(content){
-    		let _this = this ;
-    		let proArr = _this.proArr ;
+    		let proArr = this.proArr ;
     		for(let i = 0 ; i<proArr.length;i++ ){
     			if (proArr[i].name===content.province) {
-    				_this.ruleForm.province = i ;
+    				this.ruleForm.province = i ;
     				let proParams = {
 		    			pid: proArr[i].zone_id
 		    		}
@@ -221,11 +215,11 @@ import {hex_md5} from '../../common/js/md5'
 		            	if (proErrcode !== 0 ) {
 		            		errorInfo(proErrcode,proMsg) ;
 		            	} else {
-		            		_this.cityArr = proCon ;
-		            		let cityArr = _this.cityArr ;
+		            		this.cityArr = proCon ;
+		            		let cityArr = this.cityArr ;
 		    				for(let j = 0 ;j<cityArr.length;j++){
 		    					if (cityArr[j].name===content.city) {
-		    						_this.ruleForm.city = j ;
+		    						this.ruleForm.city = j ;
 		    						let cityParams = {
 						    			pid: cityArr[j].zone_id
 						    		}
@@ -236,11 +230,11 @@ import {hex_md5} from '../../common/js/md5'
 						            	if (cityErrcode !== 0 ) {
 						            		errorInfo(cityErrcode,cityMsg) ;
 						            	} else {
-						            		_this.areaArr = cityCon ;
-						            		let districtArr = _this.areaArr ;
+						            		this.areaArr = cityCon ;
+						            		let districtArr = this.areaArr ;
 						    				for(let k = 0 ;k<districtArr.length;k++){
 						    					if (districtArr[k].name===content.district) {
-						    						_this.ruleForm.district = k ;
+						    						this.ruleForm.district = k ;
 						    					}
 						    				}
 						            	}
@@ -276,11 +270,10 @@ import {hex_md5} from '../../common/js/md5'
     		})
     	},
     	send_code(){
-	      	let _this = this ;
 	      	let time = parseInt(new Date()/1000) +"";
 	      	let sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=8`;
       		let params = {
-	      		param: _this.ruleForm.phone,
+	      		param: this.ruleForm.phone,
 	      		type: '8',
 	      		time: time,
 	      		sign: hex_md5(sign)
@@ -290,13 +283,13 @@ import {hex_md5} from '../../common/js/md5'
 	      		if (errcode !== 0) {
 	      		   errorInfo(errcode,message) ;
 	      		} else {
-	      			_this.time = _this.total_time ;
+	      			this.time = this.total_time ;
 	      			let timer = setInterval(()=>{
-			      		_this.time--;
-			      		_this.send_btn = _this.time + 's后重新发送';
-			      		if (_this.time < 0) {
-			      			_this.time = -1;
-			      			_this.send_btn = '发送验证码';
+			      		this.time--;
+			      		this.send_btn = this.time + 's后重新发送';
+			      		if (this.time < 0) {
+			      			this.time = -1;
+			      			this.send_btn = '发送验证码';
 			      			clearInterval(timer);
 			      		}
 			      	},1000)
@@ -361,7 +354,6 @@ import {hex_md5} from '../../common/js/md5'
 	            		  this.ruleForm.address='';
 	            		  this.ruleForm.postcode ='';
 	            	      this.ruleForm.tel ='';
-
 	            	}
 	            })
 	          } else {
@@ -392,16 +384,11 @@ import {hex_md5} from '../../common/js/md5'
   }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ccc;
-$text_color: #666;
 	.wrap{
-		width: 100%;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
 			span{
 				cursor: pointer;
 			}
@@ -409,82 +396,69 @@ $text_color: #666;
 				color: #b0b0b0;
 			}
 		}
-		.title{
+	}
+	.title{
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 20px;
+		margin-bottom: 10px;
+	}
+	.el-form{
+		width: 400px;
+		margin-top: 40px;
+	}
+	.area{
+		overflow: hidden;
+		padding-top: 4px;
+		.el-col{
+			float: left;
+			width: 90px;
+		}
+	    select{
+	    	background-color: #fff;
+		    background-image: none;
+		    border-radius: 4px;
+		    border: 1px solid rgb(217, 193, 191);
+		    box-sizing: border-box;
+		    color: rgb(61, 33, 31);
+		    display: block;
+		    font-size: inherit;
+		    height: 30px;
+		    line-height: 1;
+		    outline: none;
+		    padding: 3px 10px;
+		    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+		    width: 100%;
+	    }
+	}
+	.el-form-item{
+		margin-bottom: 16px;
+	}
+	.address-list{
+		ul{
+			overflow: hidden;
+		}
+		li{
+			float: left;
+			width: 490px;
+			padding: 20px;
+			margin-right: 14px;
+			margin-bottom: 16px;
+		}
+		dt{
 			font-size: 14px;
 			font-weight: 600;
-			line-height: 20px;
-			margin-bottom: 10px;
-			color: $primary;
-		}
-		.el-form{
-			width: 400px;
-			margin-top: 40px;
-			.area{
-				overflow: hidden;
-				padding-top: 4px;
-				.el-col{
-					float: left;
-					width: 90px;
-				    select{
-				    	background-color: #fff;
-					    background-image: none;
-					    border-radius: 4px;
-					    border: 1px solid rgb(217, 193, 191);
-					    box-sizing: border-box;
-					    color: rgb(61, 33, 31);
-					    display: block;
-					    font-size: inherit;
-					    height: 30px;
-					    line-height: 1;
-					    outline: none;
-					    padding: 3px 10px;
-					    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-					    width: 100%;
-				    }
-				}
-			}
-			.el-form-item{
-				margin-bottom: 16px;
+			em{
+				float: right;
 			}
 		}
-		.addressList{
-			ul{
-				overflow: hidden;
-				li{
-					float: left;
-					width: 490px;
-					padding: 20px;
-					margin-right: 14px;
-					margin-bottom: 16px;
-					border: 1px solid $border_color;
-					dl{
-						dt{
-							font-size: 14px;
-							font-weight: 600;
-							em{
-								float: right;
-								color: $primary;
-							}
-						}
-						.addressInfo{
-							overflow: hidden;
-							white-space: nowrap;
-							text-overflow: ellipsis;
-							padding: 10px 0px;
-						}
-						dd{
-							.edit{
-								float: right;
-								.el-button{
-									color: #0049b7;
-								}
-							}
-						}
-					}
-				}
-				.isDefault{
-					border: 1px solid $primary;
-				}
+		.address-info{
+			padding: 10px 0px;
+		}
+		.edit{
+			float: right;
+			.el-button{
+				color: #0049b7;
 			}
 		}
 	}

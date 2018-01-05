@@ -24,9 +24,9 @@
 	</ul>
 </template>
 <script>
-import {getShopCoupons,receiveCoupon} from '../../common/js/api'
-import {getRequest,errorInfo,getCookie} from '../../common/js/common'
-import {MessageBox,Message} from  'element-ui'
+import {getShopCoupons,receiveCoupon} from '../../common/js/api';
+import {getRequest,errorInfo,getCookie} from '../../common/js/common';
+import {MessageBox,Message} from  'element-ui';
 	export default {
 		data(){
 			return {
@@ -99,7 +99,6 @@ import {MessageBox,Message} from  'element-ui'
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
 	.coupons{
 		width: 220px;
 		margin-left: 10px;
@@ -116,30 +115,30 @@ $primary:#c71724;
 			padding: 12px 0px;
 			border-bottom: 1px dashed #fff;
 			color: #fff;
-			dt,dd{
-				float: left;
+		}
+		dt,dd{
+			float: left;
+		}
+		dt{
+			i{
+				font-size: 16px;
+				vertical-align: top;
 			}
-			dt{
-				i{
-					font-size: 16px;
-					vertical-align: top;
-				}
-				span{
-					font-size: 36px;
-					line-height: 36px;
-				}
+			span{
+				font-size: 36px;
+				line-height: 36px;
 			}
-			dd{
-				width: 88px;
-				margin-left: 8px;
-				line-height: 26px;
-				text-align: center;
-				.title{
-					font-size: 22px;
-				}
-				.limit{
-					font-size: 16px;
-				}
+		}
+		dd{
+			width: 88px;
+			margin-left: 8px;
+			line-height: 26px;
+			text-align: center;
+			.title{
+				font-size: 22px;
+			}
+			.limit{
+				font-size: 16px;
 			}
 		}
 		.btn{
@@ -152,7 +151,7 @@ $primary:#c71724;
 				font-size: 16px;
 				border-radius: 10px;
 				padding: 0px;
-				color: $primary;
+				color: #c71724;
 				background-color: #fff;
 			}
 		}

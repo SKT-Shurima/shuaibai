@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view12")'>手机绑定</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view12")'>手机绑定</span></h4>
 		<el-row class="bindInfo">
 			<el-col :span='6' :offset='1'>
 				当前绑定号码：
@@ -41,15 +41,12 @@ import {userInfo} from '../../common/js/mixins'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$text_color: #666;
 	.wrap{
 		width: 100%;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
 			span{
 				cursor: pointer;
 			}

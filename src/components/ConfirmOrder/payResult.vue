@@ -1,12 +1,12 @@
 <template>
 	<div class="wrap">
-		<dl v-if='reqParams'>	
+		<dl>	
 			<dt>
 				<img src="../../../static/orderImg/paySuccess.png" height="153" width="153" v-if='reqParams.status=="0"'>
 				<img src="../../../static/orderImg/payFail.png" v-else>
 			</dt>
 			<dd style="font-weight: 600 ;">
-				<div v-show='reqParams.status=="0"'>您已成功付款&nbsp;<em v-text='reqParams.count'></em>&nbsp;元</div>
+				<div v-show='reqParams.status=="0"'>您已成功付款&nbsp;<em class='color-primary' v-text='reqParams.count'></em>&nbsp;元</div>
 				<div v-show='reqParams.status=="1"'>支付失败，请重试</div>
 				<div v-show='reqParams.status=="2"'>您的余额不足，支付失败，请选择其他支付方式</div>
 			</dd>
@@ -23,8 +23,7 @@ import {getOrderPayStatus} from '../../common/js/api'
 	export default {
 		data(){
 			return {
-				payInfo: null,
-				reqParams: null
+				reqParams: {}
 			}
 		},
 		methods:{
@@ -54,39 +53,36 @@ import {getOrderPayStatus} from '../../common/js/api'
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ddd;
 	.wrap{
 		width: 346px;
 		margin: 100px auto;
 		dl{
 			padding-top: 30px;
-			dt{
-				width: 154px;
-				height: 154px;
-				margin: 0px auto 70px;
-				img{
-					width: 100%;
-					height: 100%;
-				}
-			}
-			dd{
+		}
+		dt{
+			width: 154px;
+			height: 154px;
+			margin: 0px auto 70px;
+			img{
 				width: 100%;
-				text-align: center;
-				margin-bottom: 56px;
-				div{
-					font-size: 14px;
-					em{
-						margin:0px auto; 
-						font-size: 28px;
-						color: $primary;
-					}
-				}
-				.el-button{
-					width: 160px;
-					font-size: 20px;
-				}
+				height: 100%;
 			}
+		}
+		dd{
+			width: 100%;
+			text-align: center;
+			margin-bottom: 56px;
+		}
+		div{
+			font-size: 14px;
+		}
+		em{
+			margin:0px auto; 
+			font-size: 28px;
+		}
+		.el-button{
+			width: 160px;
+			font-size: 20px;
 		}
 	}
 </style>

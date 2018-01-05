@@ -1,43 +1,49 @@
 <template>
 	<div class="wrap">
-		<div class="userInfo" v-if='userInfo'>
-			<div class="title">
+		<div class="border-c user-info" v-if='userInfo'>
+			<div class="f5-bg title">
 				<dl>
 					<dt>
 						<img :src="userInfo.avater" v-if='userInfo.avater'>
 						<img src="../../../static/centerImg/avaterDefault.jpg" v-else>
 					</dt>
-					<dd>
-						{{userInfo.nickname}}({{userInfo.real_phone}})
-					</dd>
+					<dd>{{userInfo.nickname}}({{userInfo.real_phone}})</dd>
 				</dl>
 				<ul>
 					<li>
-						<em>余额</em>
-						<span>{{userInfo.account}}</span>
+						<em class='color-6'>余额</em>
+						<span class='color-primary'>{{userInfo.account}}</span>
 					</li>
 					<li>
-						<em>购物积分</em>
-						<span>{{userInfo.shopping_coin}}</span>
+						<em class='color-6'>钱包</em>
+						<span class='color-primary'>{{userInfo.reward_amount}}</span>
 					</li>
 					<li>
-						<em>积分</em>
-						<span>{{userInfo.integration}}</span>
+						<em class='color-6'>购物积分</em>
+						<span class='color-primary'>{{userInfo.shopping_coin}}</span>
+					</li>
+					<li>
+						<em class='color-6'>积分</em>
+						<span class='color-primary'>{{userInfo.integration}}</span>
+					</li>
+					<li>
+						<em class='color-6'>鸿府积分</em>
+						<span class='color-primary'>{{userInfo.hongfu}}</span>
 					</li>
 				</ul>
-				<div class="address" @click='changeView("view100")'>
+				<div class="color-primary address" @click='changeView("view100")'>
 					我的收货地址
 				</div>
 			</div>
-			<div class="shopInfo">
+			<div class="shop-info">
 				 <ul>
-				 	<li @click='getOrders(1)'>待付款<i>{{userInfo.order.wait_pay_count | num_filter}}</i></li>
-				 	<li @click='getOrders(2)'>待发货<i>{{userInfo.order.wait_delivery_count | num_filter}}</i></li>
-				 	<li @click='getOrders(3)'>待收货<i>{{userInfo.order.wait_receive_count | num_filter}}</i></li>
-				 	<li @click='getOrders(4)'>待评价<i>{{userInfo.order.wait_comment_count | num_filter}}</i></li>
+				 	<li @click='getOrders(1)'>待付款<i class='primary-bg'>{{userInfo.order.wait_pay_count | num_filter}}</i></li>
+				 	<li @click='getOrders(2)'>待发货<i class='primary-bg'>{{userInfo.order.wait_delivery_count | num_filter}}</i></li>
+				 	<li @click='getOrders(3)'>待收货<i class='primary-bg'>{{userInfo.order.wait_receive_count | num_filter}}</i></li>
+				 	<li @click='getOrders(4)'>待评价<i class='primary-bg'>{{userInfo.order.wait_comment_count | num_filter}}</i></li>
 				 	<li @click='getOrders(5)'>退款/售后</li>
 				 </ul>
-				 <div class="lastLogin">
+				 <div class="color-6 last-login">
 				 	上次登录时间：{{userInfo.last_check_date|dateStyleCh}}&nbsp;{{userInfo.last_check_date*1000 | timeStyle}}
 				 </div>             
 			</div>
@@ -91,96 +97,81 @@ import {userInfo} from '../../common/js/mixins'
 	}
 </script>
 <style lang='scss' scoped>
-	$primary:#c71724;
-	$text_color: #666;
-	$border_color: #ddd;
-	$bg_color: #f5f5f5;
-	.userInfo{
+	.user-info{
 		width: 100%;
 		margin-bottom: 30px;
-		border: 1px solid $border_color;
-		.title{
-			padding: 14px 40px 16px 22px;
+	}
+	.title{
+		padding: 14px 40px 16px 22px;
+		line-height: 50px;
+		border-bottom: 1px solid #ccc;
+		overflow: hidden;
+		dl{
+			float: left;
+			overflow: hidden;
+		}
+		dt{
+			float: left;
+			width: 50px;
+			height: 50px;
+			img{
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+			}
+		}
+		dd{
+			float: left;
+			margin-left: 26px;
+		}
+		ul{
+			float: left;
+			height: 50px;
 			line-height: 50px;
-			border-bottom: 1px solid $border_color;
-			background-color: $bg_color;
+			margin-left: 38px;
 			overflow: hidden;
-			dl{
-				float: left;
-				overflow: hidden;
-				dt{
-					float: left;
-					width: 50px;
-					height: 50px;
-					img{
-						width: 100%;
-						height: 100%;
-						border-radius: 50%;
-					}
-				}
-				dd{
-					float: left;
-					margin-left: 26px;
-
-				}
+		}
+		li{
+			float: left;
+			width: 126px;
+			em{
+				vertical-align: 1px;
 			}
-			ul{
-				float: left;
-				height: 50px;
-				line-height: 50px;
-				margin-left: 38px;
-				overflow: hidden;
-				li{
-					float: left;
-					width: 126px;
-					em{
-						vertical-align: 1px;
-						color:$text_color;
-					}
-					span{
-						font-size: 16px;
-						font-weight: 600;
-						color:  $primary; 
-					}
-				}
+			span{
+				font-size: 16px;
+				font-weight: 600;
 			}
 		}
-		.shopInfo{
-			padding: 26px 40px 26px 30px;
-			line-height: 20px;
-			text-align: center;
+	}
+	.shop-info{
+		padding: 26px 40px 26px 30px;
+		line-height: 20px;
+		text-align: center;
+		overflow: hidden;
+		ul{
+			float: left;
 			overflow: hidden;
-			ul{
-				float: left;
-				overflow: hidden;
-				li{
-					float: left;
-					width: 130px;
-					cursor: pointer;
-					border-right: 1px solid $border_color; 
-					i{
-						margin-left: 4px;
-						padding: 0px 4px;
-						border-radius: 8px;
-						color: #fff;
-						background-color: $primary;
-					}
-				}
-				li:last-child{
-					border-right: none;
-				}
-			}
-			
 		}
-		.address,.lastLogin{
-			float: right;
-		}
-		.address{
+		li{
+			float: left;
+			width: 130px;
 			cursor: pointer;
-			color: $primary;
+			border-right: 1px solid #ccc; 
+			i{
+				margin-left: 4px;
+				padding: 0px 4px;
+				border-radius: 8px;
+				color: #fff;
+			}
 		}
-		.lastLogin{
-			color: $text_color;
+		li:last-child{
+			border-right: none;
 		}
+	}
+	.address,.last-login{
+		float: right;
+	}
+	.address{
+		cursor: pointer;
 	}
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="wrap">	
+	<div class="after-sale-wrap">	
 		<div class="title">
 			您已选择：申请退款
 		</div>
@@ -10,8 +10,6 @@
 		    <el-form-item label="退款金额" prop='account'>
 		    	<el-input v-model="form.account" style='width:200px;'></el-input>
 		        <span>最多{{goodsInfo.order_amount|currency}}</span>
-		    </el-form-item>
-		        <el-input v-model="form.explain" type='textarea'></el-input>
 		    </el-form-item>
 		    <el-form-item label="退款说明" >
 		        <el-input v-model="form.explain" type='textarea'></el-input>
@@ -30,7 +28,7 @@
 				</el-upload>
 		    </el-form-item>
 		</el-form>
-		<div class="submitBtn">
+		<div class="submit-btn">
 			 <el-button type="primary" @click="submitForm('form')" size='small'>提交申请</el-button>
 		</div>
 	</div>
@@ -59,15 +57,15 @@ export default {
 				license: 'license'
 			},
 			rules: {
-	          reason: [
-	            { required: true, message: '请填写退款原因', trigger: 'blur' }
-	          ],
-	          account: [
-	            { required: true, validator: checkAccount, trigger: 'blur' }
-	          ],
-	          license: [
-	          	{ required: true }
-	          ]
+	          	reason: [
+	            	{ required: true, message: '请填写退款原因', trigger: 'blur' }
+	          	],
+	          	account: [
+	            	{ required: true, validator: checkAccount, trigger: 'blur' }
+	          	],
+	          	license: [
+	          		{ required: true }
+	          	]
 	        },
 	        data: {
 	        	access_token: getCookie('access_token'),
@@ -145,13 +143,12 @@ export default {
 			}
 	    },
 	    handleRemove(file, fileList) {
-	        let _this = this ;
 	        let size = file.size;
-	        let list = _this.fileList;
+	        let list = this.fileList;
 	        for(let i= 0;i<list.length;i++){
 	        	if (list[i].size === size) {
-	        		_this.fileList.splice(i,1);
-	        		return 
+	        		this.fileList.splice(i,1);
+	        		return ;
 	        	}
 	        	
 	        }
@@ -168,11 +165,9 @@ export default {
 		})
 	} 
 }
-	
 </script>
 <style lang='scss' scoped>
-$text_color: #666;
-	.wrap{
+.wrap{
 		.title{
 			font-size: 16px;
 			font-weight: 600;
@@ -181,15 +176,15 @@ $text_color: #666;
 			width: 426px;
 			margin-left: 80px;
 			margin-top: 40px;
-			.el-form-item{
-				margin-bottom: 20px;
-				span{
-					margin-left: 20px;
-					color: $text_color;
-				}
+		}
+		.el-form-item{
+			margin-bottom: 20px;
+			span{
+				margin-left: 20px;
+				color: #666;
 			}
 		}
-		.submitBtn{
+		.submit-btn{
 			margin-left: 170px;
 			.el-button{
 				width: 100px;

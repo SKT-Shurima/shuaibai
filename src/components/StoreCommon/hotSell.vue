@@ -1,32 +1,28 @@
 <template>
 	<!-- 热销排行 -->
-		<div class="hotSell">
-			<div class="title">
-				<div class="slider"></div>
-				<div class="text">热销排行</div>
-				<div class='slider'></div>
-			</div>
-			<ul v-if='hotList'>
-				<li v-for='item in hotList' class="infoList">
-					<dl @click='goodDetail(item.goods_id)'>
-						<dt>
-							<img :src="item.cover">
-						</dt>
-						<dd>
-							<div class="sellInfo" v-text='item.name'></div>
-							<div class="priceInfo">
-								<span>
-									{{item.shop_price|currency}}
-								</span>
-								<em>
-									{{item.sale_count}}人付款
-								</em>
-							</div>
-						</dd>
-					</dl>
-				</li>
-			</ul>
+	<div class="wrap">
+		<div class="title">
+			<div class="slider"></div>
+			<div class="color-6 text">热销排行</div>
+			<div class='slider'></div>
 		</div>
+		<ul class='border-f0 hot-list' v-if='hotList'>
+			<li v-for='item in hotList' class="info-list">
+				<dl @click='goodDetail(item.goods_id)'>
+					<dt>
+						<img :src="item.cover">
+					</dt>
+					<dd>
+						<div class="ellipsis-2 sell-info" v-text='item.name'></div>
+						<div class="price-info">
+							<span class='color-primary'>{{item.shop_price|currency}}</span>
+							<em class='color-9'>{{item.sale_count}}人付款</em>
+						</div>
+					</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
 </template>
 <script>
 import {currency} from '../../common/js/filter'
@@ -70,46 +66,42 @@ import {errorInfo} from '../../common/js/common'
 </script>
 
 <style lang='scss' scoped>
-$text_color: #666;
-$border_color: #f0f0f0;
-$primary:#c71724;
+	.wrap{
+		width: 100%;
+	}
 	/*热销*/
-	.hotSell{
-		.title {
-			width: 192px;
-			overflow: hidden;
-			margin: 72px auto 12px;
-			.slider,.text{
-				float: left;
-			}
-			.slider{
-				width: 46px;
-				height: 1px;
-				margin-top: 12px;
-				background-color: #ccc;
-			}
-			.text{
-				width: 100px;
-				text-align: center;
-				font-size: 16px;
-				color: $text_color;
-			}
+	.hot-list{
+		width: 240px;
+		li{
+			width: 100%;
+			height: 310px;
+			padding: 15px;
+			border-bottom: 1px solid #f0f0f0;
 		}
-		ul{
-			width: 240px;
-			border: 1px solid $border_color;
-			li{
-				width: 100%;
-				height: 310px;
-				padding: 15px;
-				border-bottom: 1px solid $border_color;
-			}
-			li:last-child{
-				   border-bottom: none; 
-			}
+		li:last-child{
+			   border-bottom: none; 
 		}
 	}
-	.infoList{
+	.title {
+		width: 192px;
+		overflow: hidden;
+		margin: 72px auto 12px;
+		.slider,.text{
+			float: left;
+		}
+		.slider{
+			width: 46px;
+			height: 1px;
+			margin-top: 12px;
+			background-color: #ccc;
+		}
+		.text{
+			width: 100px;
+			text-align: center;
+			font-size: 16px;
+		}
+	}
+	.info-list{
 		dl{
 			cursor: pointer;
 		}
@@ -125,23 +117,21 @@ $primary:#c71724;
 		dd{
 			width: 100%;
 			overflow: hidden;
-			.sellInfo{
-				height: 36px;
-				line-height: 18px;
-				margin-top: 10px;
+		}
+		.sell-info{
+			height: 36px;
+			line-height: 18px;
+			margin-top: 10px;
+		}
+		/*价格信息*/
+		.price-info{
+			margin-top: 6px;
+			span{
+				font-size: 18px;
 			}
-			/*价格信息*/
-			.priceInfo{
-				margin-top: 6px;
-				span{
-					font-size: 18px;
-					color: #c71724;
-				}
-				em{
-					margin-top: 4px;
-					float: right;
-					color: #999;
-				}
+			em{
+				margin-top: 4px;
+				float: right;
 			}
 		}
 	}

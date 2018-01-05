@@ -6,8 +6,8 @@
 	</div>
 </template>
 <script>
-import {getHashReq} from '../../common/js/common'
-import {MessageBox} from  'element-ui'
+import {getHashReq} from '../../common/js/common';
+import {MessageBox} from  'element-ui';
 	export default{
 		data(){
 			return {
@@ -18,7 +18,6 @@ import {MessageBox} from  'element-ui'
 		},
 		methods:{
 			chooseType(index){
-				let _this = this ;
 				let type = '';
 				switch (index){
 					case 0 :
@@ -31,30 +30,29 @@ import {MessageBox} from  'element-ui'
 					  type = 'maintain';
 					break ;
 				}
-				location.hash = `${type}?${_this.req}`;
+				location.hash = `${type}?${this.req}`;
 			}
 		}
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ddd;
-	.wrap{
-		width: 100%;
-		ul{
-			width: 320px;
-			margin-left: 200px;
-			margin-top: 106px;
-			li{
-				width: 300px;
-				height: 58px;
-				border: 1px solid $border_color ;
-				text-align: center;
-				line-height: 58px;
-				font-size: 16px;
-				font-weight: 600;
-				margin-bottom: 20px;
-				cursor: pointer;	
-			}
-		}
+.wrap{
+	width: 100%;
+	ul{
+		width: 320px;
+		margin-left: 200px;
+		margin-top: 106px;
 	}
+	li{
+		width: 300px;
+		height: 58px;
+		border: 1px solid #ddd;
+		text-align: center;
+		line-height: 58px;
+		font-size: 16px;
+		font-weight: 600;
+		margin-bottom: 20px;
+		cursor: pointer;	
+	}
+}
 </style>

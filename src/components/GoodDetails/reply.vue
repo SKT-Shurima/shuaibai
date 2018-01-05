@@ -37,11 +37,10 @@ import {Message} from  'element-ui'
 		methods:{
 			// 回复
 			reply(){
-				let _this = this ;
 				let params = {
 					access_token: getCookie('access_token'),
-					content: _this.replyContent,
-					id: _this.replyInfo.replyId
+					content: this.replyContent,
+					id: this.replyInfo.replyId
 				}
 				replyComment(params).then(res=>{
 					let {errcode,message,content} = res ;

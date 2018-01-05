@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-	<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip0")'>个人信息</span></h4>
+	<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip0")'>个人信息</span></h4>
 		<el-row>
 			<el-col :span='2' style='line-height:180px;'>头像</el-col>
 			<el-col :span='6' :offset="1" @click='changeView("vip01")'>
@@ -33,6 +33,15 @@
 	  			<el-radio class="radio" v-model="radio" label="2">女</el-radio>
 			</el-col>
 		</el-row>
+		<el-row>
+			<el-col :span='2' style='line-height:30px;'>邀请码</el-col>
+			<el-col :span='6' :offset="1">
+				<input class='el-input__inner' style="height: 30px;" readonly v-model='shareCode' id='bar'></input>
+			</el-col>
+			<el-col :span='6' :offset='1'>
+				<em style="line-height:30px;cursor: pointer;color: #42a0dd;" data-clipboard-action="copy" data-clipboard-target="#bar" class='copy'>复制</em>
+			</el-col>
+		</el-row>
 		<el-row style="padding-top: 20px;">
 		    <el-col :span='2'>&nbsp;</el-col>
 			<el-col :span='6'>
@@ -42,10 +51,11 @@
 	</div>
 </template>
 <script>
-import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
+import {changeAvater,changeUsername,changeBirthday,changeSex,share_code} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
+import Clipboard from 'clipboard';
  export  default{
  	data(){
  		return{
@@ -67,6 +77,7 @@ import {MessageBox} from  'element-ui'
 		    	cate : 'avater', 
 		    	access_token: getCookie('access_token')
 		    },
+		    shareCode: ''
  		}
  	},
  	watch: {
@@ -84,6 +95,19 @@ import {MessageBox} from  'element-ui'
  	},
  	mixins: [userInfo], 
  	methods:{
+ 		getShareCode(){
+ 			let params = {
+	    		access_token: getCookie('access_token')
+	    	}
+	    	share_code(params).then(res=>{
+	    		let {errcode,message,content} = res;
+	    		if (errcode!==0) {
+	    			errorInfo(errcode,message) ;
+	    		}else{
+	    			this.shareCode = content;
+	    		} 
+	    	});
+ 		},
  		changBirthday(){
  			let birthday = this.userInfo.birthday;
  			if (typeof birthday === 'object') {
@@ -96,24 +120,22 @@ import {MessageBox} from  'element-ui'
 	      },
 	    // 修改用户名
 	    editUserName(){
-	    	let _this = this ;
 	    	let paramsName = {
 	    		access_token: getCookie('access_token'),
-	    		nickname: _this.userInfo.nickname
+	    		nickname: this.userInfo.nickname
 	    	}
 	    	changeUsername(paramsName).then(res=>{
 	    		let {errcode,message,content} = res;
 	    		if (errcode!==0) {
 	    			errorInfo(errcode,message) ;
 	    		}else{
-	    			_this.userInfo.nickname = content ;
-	    			_this.editBirthday();
+	    			this.userInfo.nickname = content ;
+	    			this.editBirthday();
 	    		} 
 	    	});
 	    },
 	    // 修改出生日期
 	    editBirthday(){
-	    	let _this = this ;
 	    	let paramsBirth = {
 	    		access_token: getCookie('access_token'),
 	    		birthday: parseInt(this.birthday/1000)
@@ -123,24 +145,23 @@ import {MessageBox} from  'element-ui'
 	    		if (errcode!==0) {
 	    			errorInfo(errcode,message) ;
 	    		}else{
-	    			_this.userInfo.birthday = content ;
-	    			_this.editSex();
+	    			this.userInfo.birthday = content ;
+	    			this.editSex();
 	    		} 
 	    	});
 	    },
 	    // 修改性别
 	    editSex(){
-	    	let _this = this ;
 	    	let paramsSex = {
 	    		access_token: getCookie('access_token'),
-	    		type: _this.radio
+	    		type: this.radio
 	    	}
 	    	changeSex(paramsSex).then(res=>{
 	    		let {errcode,message,content} = res;
 	    		if (errcode!==0) {
 	    			errorInfo(errcode,message) ;
 	    		}else{
-	    			_this.userInfo.sex = content ;
+	    			this.userInfo.sex = content ;
 	    			MessageBox.alert('信息保存成功', '提示', {
 			          	confirmButtonText: '确定',
 			          	type: 'success',
@@ -152,20 +173,19 @@ import {MessageBox} from  'element-ui'
 	    	})
 	    },
 	    save(){
-	    	let _this = this ;
-	    	if (_this.userInfo.nickname==='') {
+	    	if (this.userInfo.nickname==='') {
 	    		MessageBox.alert('请输入昵称', '提示', {
 		          	confirmButtonText: '确定'
 			    });
-	    	}else if(_this.userInfo.birthday===''){
+	    	}else if(this.userInfo.birthday===''){
 	    		MessageBox.alert('请选择您的出生日期', '提示', {
 		          	confirmButtonText: '确定'
 			    });
 	    	}else {
-	    		if (_this.avater) {
-	    			_this.editAvatar();
+	    		if (this.avater) {
+	    			this.editAvatar();
 	    		}else{
-	    			_this.editUserName();
+	    			this.editUserName();
 	    		}
 	    	} 
 	    }
@@ -176,23 +196,31 @@ import {MessageBox} from  'element-ui'
  			if (!access_token) {
  				location.href = "login.html";
  			}
+ 			this.getShareCode();
+
+		    var clipboard = new Clipboard('.copy');
+
+		    clipboard.on('success', function(e) {
+		        console.log(e);
+		    });
+
+		    clipboard.on('error', function(e) {
+		        console.log(e);
+		    });
+    
  		})
  	}
  	
  }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ccc;
-$text_color: #666;
 .wrap{
 	margin-left: 10px;
 	h4{
 		line-height: 40px;
 		font-weight: 400;
 		margin-bottom: 54px;
-		border-bottom: 1px solid $border_color;
-		color: $text_color;
+		border-bottom: 1px solid #ccc;
 		span{
 			cursor: pointer;
 		}

@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
-	<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip0")'>个人信息</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip01")'>修改头像</span></h4>
-		<div class="uploadWrap">
+	<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip0")'>个人信息</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip01")'>修改头像</span></h4>
+		<div>
 			<div class="upload">
 				<el-upload
 				    class="avatar-uploader"
@@ -14,27 +14,23 @@
 						<img src="../../../static/centerImg/upload.png" height="12" width="12">上传图片
 					</el-button>
 				</el-upload>
-				
 			</div>
-			<div class="tips">
+			<div class="color-9 tips">
 				仅支持JPG、PNG格式，且大小不能超过2MB
 			</div>
-			<div class="showAvater">
-				<div class="defaultAvater">
+			<div class="show-avater">
+				<div class="default-avater">
 					<img :src="userInfo.avater" v-if='userInfo.avater'>
 					<img src="../../../static/centerImg/avaterDefault.jpg" height="250" width="250" v-else>
 				</div>
-				<dl class="bigAvater">
+				<dl class="big-avater">
 					<dt>
 						<img :src="userInfo.avater" v-if='userInfo.avater'>
 						<img src="../../../static/centerImg/avaterBig.jpg" height="150" width="150" v-else>
 					</dt>
-					<dd>
-						150px × 150px
-					</dd>
-					
+					<dd class='color-6'>150px × 150px</dd>
 				</dl>
-				<dl class="smallAvater">
+				<dl class="small-avater">
 					<dt>
 						<img :src="userInfo.avater" v-if='userInfo.avater'>
 						<img src="../../../static/centerImg/avaterSmall.jpg" height="50" width="50" v-else>
@@ -50,7 +46,7 @@
 		    	<el-button type='primary' size="small" @click='save'>保存</el-button>
 		    	</el-col>
 			<el-col :span='12'>
-				 <el-button type='text' size="small" @click='changeView("vip0")' class='esc'>取消</el-button>
+				 <el-button type='text' size="small" @click='changeView("vip0")'>取消</el-button>
 			</el-col>
 		</el-row>
 	</div>
@@ -80,11 +76,10 @@ import {Message} from  'element-ui'
 	      	 location.hash = view ;
 	      },
 	    handleSuccess (res, file, fileList) {
-	    	let _this = this ;
 	    	// 获取图片的url
-	    	_this.userInfo.avater = res.content.url;
+	    	this.userInfo.avater = res.content.url;
 	    	// 获取图片name
-	    	_this.avater = res.content.name ;
+	    	this.avater = res.content.name ;
     	},
         beforeUpload (file) {
       	    const isJPG = file.type === 'image/jpeg'||'image.png';
@@ -99,10 +94,9 @@ import {Message} from  'element-ui'
     	},
 	    // 修改头像
 	    save(){
-	    	let _this = this ;
 	    	let paramAvater = {
 	    		access_token: getCookie('access_token'),
-	    		avater: _this.avater
+	    		avater: this.avater
 	    	}
 	    	changeAvater(paramAvater).then(res=>{
 	    		let {errcode,message,content} = res;
@@ -129,99 +123,89 @@ import {Message} from  'element-ui'
  }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ccc;
-$text_color: #666;
-$tips_color: #999;
-.wrap{
-	margin-left: 10px;
-	h4{
-		line-height: 40px;
-		font-weight: 400;
-		margin-bottom: 54px;
-		border-bottom: 1px solid $border_color;
-		color: $text_color;
-		span{
-			cursor: pointer;
-		}
-		i{
-			color: #b0b0b0;
+	.wrap{
+		margin-left: 10px;
+		h4{
+			line-height: 40px;
+			font-weight: 400;
+			margin-bottom: 54px;
+			border-bottom: 1px solid #ccc;
+			span{
+				cursor: pointer;
+			}
+			i{
+				color: #b0b0b0;
+			}
 		}
 	}
-	.uploadWrap{
-		.upload,.tips{
+	.upload,.tips{
+		width: 250px;
+		text-align: center;
+	}
+	.upload{
+		.el-button{
+			width: 120px;
+			color: #000;
+			border: 1px solid #ccc;
+			img{
+				vertical-align: top;
+				margin-right: 6px;
+			}
+		}
+	}
+	.tips{
+		line-height: 56px;
+		color: #999;
+	}
+	.show-avater{
+		width: 680px;
+		overflow: hidden;
+		div,dl{
+			float: left;
+		}
+		dd{
+			height: 36px;
+			line-height: 36px;
+		}
+	}
+	.default-avater{
+		width: 310px;
+		height: 250px;
+		padding-right: 60px;
+		border-right: 1px solid #ccc;
+		img{
 			width: 250px;
-			text-align: center;
+			height: 250px;
 		}
-		.upload{
-			.el-button{
-				width: 120px;
-				border: 1px solid $border_color;
-				color: #000;
-				img{
-					vertical-align: top;
-					margin-right: 6px;
-				}
-			}
+	}
+	.big-avater{
+		width: 270px;
+		height: 250px;
+		text-align: center;
+		padding-top: 50px;
+		img{
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
 		}
-		.tips{
-			line-height: 56px;
-			color: $tips_color;
-		}
-		.showAvater{
-			width: 680px;
-			overflow: hidden;
-			div,dl{
-				float: left;
-			}
-			dd{
-				height: 36px;
-				line-height: 36px;
-				color: $text_color;
-			}
-			.defaultAvater{
-				width: 310px;
-				height: 250px;
-				padding-right: 60px;
-				border-right: 1px solid $border_color;
-				img{
-					width: 250px;
-					height: 250px;
-				}
-			}
-			.bigAvater{
-				width: 270px;
-				height: 250px;
-				text-align: center;
-				padding-top: 50px;
-				img{
-					width: 150px;
-					height: 150px;
-					border-radius: 50%;
-				}
-			}
-			.smallAvater{
-				width: 90px;
-				height: 250px;
-				text-align: center;
-				padding-top: 100px;
-				img{
-					width: 50px;
-					height: 50px;
-					border-radius: 50%;
-				}
-			}
+	}
+	.small-avater{
+		width: 90px;
+		height: 250px;
+		text-align: center;
+		padding-top: 100px;
+		img{
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
 		}
 	}
 	.el-row{
 		width: 250px;
 		.el-button{
 			width: 94px;
-		}
-		.esc{
-			border: 1px solid $border_color;
-			color: $text_color;
+			border: 1px solid #ccc;
+			color: #666;
 		}
 	}
-}
 </style>

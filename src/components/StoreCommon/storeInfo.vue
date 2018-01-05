@@ -55,95 +55,91 @@ import '../../common/css/storeInfo.scss'
 import {collectionGoods,addFollow,cancelFollow,getShopInfo,getKFInfo} from '../../common/js/api'
 import {errorInfo,getCookie,getRequest} from '../../common/js/common'
 	export default {
-    data(){
-      return {
-        shopInfo: null,
-        reqParams: null,
-        kfInfo: {
-        	qq:"",
-        	weixin: ""
-        }
-      }
-    },
-    methods: {
-        storeDetail(){
-	        let _this = this ;
-	        let id = _this.reqParams.seller_id ;
-	        window.open(`storeDetail.html?seller_id=${id}`) ;
-      	},
-     	kf(){
-	        let _this =this ;
-	        let qq = _this.kfInfo.qq ;
-	        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
-      	},
-		follow(){
-			let _this = this ;
-			let fn ;
-			if(_this.shopInfo.is_follow){
-				fn = cancelFollow;
-			}else {
-				fn = addFollow;
-			}
-			let params ={
-				access_token: getCookie('access_token'),
-				seller_id: _this.reqParams.seller_id
-			}
-			fn(params).then(res=>{
-				let {errcode,message,content} = res ;
-				if(errcode !== 0){
-					errorInfo(errcode,message) ;
+    	data(){
+	      	return {
+	        	shopInfo: null,
+	        	reqParams: null,
+	        	kfInfo: {
+	        		qq:"",
+	        		weixin: ""
+	        	}
+	      	}
+    	},
+   		methods: {
+	        storeDetail(){
+		        let id = this.reqParams.seller_id ;
+		        window.open(`storeDetail.html?seller_id=${id}`) ;
+	      	},
+	     	kf(){
+		        let qq = this.kfInfo.qq ;
+		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
+	      	},
+			follow(){
+				let fn ;
+				if(this.shopInfo.is_follow){
+					fn = cancelFollow;
 				}else {
-					this.initInfo();
+					fn = addFollow;
 				}
-			})
-		},
-		collection(){
-			let _this = this;
-			let params = {
-				access_token: getCookie('access_token'),
-				goods_id: _this.goods.goods_id
-			}
-			collectionGoods(params).then(res=>{
-				let {errcode,message,content} = res ;
-				if(errcode !== 0){
-					errorInfo(errcode,message) ;
-				}else {
-					this.goods.is_collection=!this.goods.is_collection;
-        this.$emit('getCol');
+				let params ={
+					access_token: getCookie('access_token'),
+					seller_id: this.reqParams.seller_id
 				}
-			})
+				fn(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						this.initInfo();
+					}
+				})
+			},
+			collection(){
+				let params = {
+					access_token: getCookie('access_token'),
+					goods_id: this.goods.goods_id
+				}
+				collectionGoods(params).then(res=>{
+					let {errcode,message,content} = res ;
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						this.goods.is_collection=!this.goods.is_collection;
+	        			this.$emit('getCol');
+					}
+				})
+			},
+	      	initInfo(){
+	         	let seller_id = this.reqParams.seller_id ;
+	        	let params = {
+	          		seller_id: seller_id,
+	          		access_token: getCookie('access_token')
+	        	}
+	          	getShopInfo(params).then(res=>{
+	            	let {errcode,message,content} = res ;
+	            	if(errcode !== 0){
+	              		errorInfo(errcode,message) ;
+	            	}else {
+	              		this.shopInfo = content ;
+	           		}
+	        	})
+	      	}
 		},
-      initInfo(){
-         let seller_id = this.reqParams.seller_id ;
-        let params = {
-          seller_id: seller_id,
-          access_token: getCookie('access_token')
-        }
-          getShopInfo(params).then(res=>{
-            let {errcode,message,content} = res ;
-            if(errcode !== 0){
-              errorInfo(errcode,message) ;
-            }else {
-              this.shopInfo = content ;
-            }
-          })
-      }
-		 },
-     created(){
-      this.reqParams = getRequest();
-      this.initInfo();
-      },
-       mounted(){
-      this.$nextTick(()=>{
-        getKFInfo().then(res=>{
-          let {errcode,message,content} = res ;
-          if(errcode !== 0){
-            errorInfo(errcode,message) ;
-          }else {
-            this.kfInfo=content; 
-          }
-        })
-      })
-     }
+	    created(){
+	      	this.reqParams = getRequest();
+	      	this.initInfo();
+	    },
+       	mounted(){
+      		this.$nextTick(()=>{
+        		getKFInfo().then(res=>{
+          			let {errcode,message,content} = res ;
+          			if(errcode !== 0){
+            			errorInfo(errcode,message) ;
+          			}else {
+            			this.kfInfo=content; 
+          			}
+        		})
+      		})
+     	}
 	}
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span></h4>
 		<div v-show='reqParams.status==="101"' class="status">
 			审核中
 		</div>
@@ -52,8 +52,7 @@ import {MessageBox} from  'element-ui'
 	      	 location.hash = view ;
 	    },
 	    payFor(){
-	    	let _this =this ;
-	    	if (!_this.account) {
+	    	if (!this.account) {
 	    		MessageBox.alert('请输入缴纳金额', '提示', {
 		          	confirmButtonText: '确定'
 			    });
@@ -61,21 +60,21 @@ import {MessageBox} from  'element-ui'
 	    	}
 	    	let  params = {
 	    		access_token: getCookie('access_token'),
-	    		type: _this.radio ,
-	    		account: _this.account
+	    		type: this.radio ,
+	    		account: this.account
 	    	}
 	    	bail(params).then(res=>{
 	    		let {errcode,message,content} = res;
 		 		if(errcode!==0) {
 					errorInfo(errcode,message) ;
 				}else{
-					if (_this.radio==='4') {
+					if (this.radio==='4') {
 						document.write(content.html_text);
 					}
-					if (_this.radio==='5') {
+					if (this.radio==='5') {
 						let  code_url = content.code_url ;
 						let  order_number = content.order_number ;
-						let count = _this.account;
+						let count = this.account;
 						code_url = code_url.split("?");
 						code_url = code_url.join("&");
 						location.replace(`myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}&count=${count}`);
@@ -92,17 +91,12 @@ import {MessageBox} from  'element-ui'
   }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ccc;
-$text_color: #666;
-$bg_title: #f5f5f5;
 	.wrap{
 		width: 1030px;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
 			span{
 				cursor: pointer;
 			}

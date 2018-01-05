@@ -1,6 +1,7 @@
 // 获取http传递的参数
 export const getRequest = ()=>{
 	 var url = location.search; //获取url中"?"符后的字串
+     url = decodeURIComponent(url);
 	 var theRequest = new Object();
 	 if (url.indexOf("?") != -1) {
 	  let  str = url.substr(1);

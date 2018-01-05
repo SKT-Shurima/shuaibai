@@ -7,13 +7,13 @@
 		<div class="container">
 			<dl>
 				<dt class="main">
-					<ul class="mainListBox">
-						<li class="mainList" v-for='(item,index) in agents' :key='index'>
-							<div class="mainImg">
+					<ul>
+						<li class="main-list" v-for='(item,index) in agents' :key='index'>
+							<div class="main-img">
 								<img src="../../../static/grandImg/main.jpg" height="322" width="564">
 							</div>
-							<ul class="infoList">
-								<li class="infoTitle">鸿府</li>
+							<ul class="border-d info-list">
+								<li class="info-title">鸿府</li>
 								<li v-text='item.name' class="info"></li>
 								<li class="info">代理人 ：{{item.agent}}</li>
 								<li class="info">TEL ：{{item.tel}}</li>
@@ -33,7 +33,7 @@
 							<p>以打造百亿级品牌为核心目标，终而进入资本市场。</p>
 						</div>
 					</div>
-					<div class="imgShow">
+					<div class="img-show">
 						<img src="../../../static/grandImg/small1.jpg" height="114" width="125">
 						<img src="../../../static/grandImg/small2.jpg" height="114" width="125" style='margin-left: 6px;'>
 					</div>
@@ -43,17 +43,17 @@
 						 	浙江鸿府文化获得国有文化产权交易所独家授权，服务对象从内部会员至社会公众，推行文化资产证券化新理念，定期发行文化金融原始资产包；以原始资产包增值、交易金额佣金返佣、个人艺术品收藏为利润来源，让参与投资的会员获得收益
 						</p>
 					</div>
-					<div class='imgShow'>
+					<div class='img-show'>
 						<img src="../../../static/grandImg/small3.jpg" height="164" width="238" style="margin-left:12px;">
 					</div>
-					<div class="newInfo">
+					<div class="newinfo">
 						<h1>最新相关资讯</h1>
-						<div class="newInfoBox">
-							<ul :style='{top:-timeStep+"px"}' id="newInfoList">
-								<li v-for='(item,index) in newInfos' v-text='item.info'></li>
+						<div class="newinfo-box">
+							<ul :style='{top:-timeStep+"px"}' id="newinfo-list">
+								<li v-for='(item,index) in newinfos' v-text='item.info'></li>
 							</ul>
 							<ul :style='{top:-timeStep+"px"}'>
-								<li v-for='(item,index) in newInfos' v-text='item.info'></li>
+								<li v-for='(item,index) in newinfos' v-text='item.info'></li>
 							</ul>
 						</div>
 						<div style="margin-top:20px;">
@@ -108,7 +108,7 @@ import vNav from '../Head/nav.vue'
 						address: '嘉兴桐乡市振兴东路43号商会大厦B座1205室'
 					}
 				],
-				newInfos:[
+				newinfos:[
 					{info:'恭喜祁**女士签约成为杭州市总代'},
 					{info:'恭喜丁**先生签约成为杭州市余杭区代'},
 					{info:'恭喜汪**女士签约成为杭州市江干区代'},
@@ -127,7 +127,7 @@ import vNav from '../Head/nav.vue'
 		},
 		mounted(){
 			this.$nextTick(()=>{
-				let obj = document.getElementById('newInfoList');
+				let obj = document.getElementById('newinfo-list');
 				let h = document.defaultView.getComputedStyle (obj,null)['height'] ;
 				h = h.slice(0,h.length-2) ;
 				h -= 0;
@@ -143,100 +143,89 @@ import vNav from '../Head/nav.vue'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ddd;
-	.wrap{
+	.title img{
 		width: 100%;
-		.title{
+	}
+	.container{
+		width: 1250px;
+		margin: 0px auto;
+		padding: 0px 20px;
+		dl{
 			width: 100%;
-			img{
-				width: 100%;
+			overflow: hidden;
+		}
+		.main,.slider{
+			float: left
+		}
+		.main{
+			width: 886px;
+			margin-right: 32px;
+		}
+		.main-list{
+			width: 100%;
+			height: 322px;
+			overflow: hidden;
+			margin-bottom: 26px;
+			.main-img{
+				float: left;
+				width: 564px;
+				height: 322px;
+			}
+			.info-list{
+				float: left;
+				width: 320px;
+				height: 322px;
+				padding: 24px 48px;
+				text-align: center;
+				font-weight: 600;
+				border-left: none;
+			}
+			.info-title{
+				font-size: 40px;
+				line-height: 88px;
+				margin: 6px 0px;
+			}
+			.info,.address{
+				font-size: 16px;
+				line-height: 24px;
+			}
+			.address{
+				margin-top: 40px;
 			}
 		}
-		.container{
-			width: 1250px;
-			margin: 0px auto;
-			padding: 0px 20px;
-			dl{
-				width: 100%;
-				overflow: hidden;
-				.main,.slider{
-					float: left
-				}
-				.main{
-					width: 886px;
-					margin-right: 32px;
-				}
-				.mainListBox{
-					.mainList{
-						width: 100%;
-						height: 322px;
-						overflow: hidden;
-						margin-bottom: 26px;
-						.mainImg{
-							float: left;
-							width: 564px;
-							height: 322px;
-						}
-						.infoList{
-							float: left;
-							width: 320px;
-							height: 322px;
-							padding: 24px 48px;
-							text-align: center;
-							font-weight: 600;
-							border-top: 1px solid $border_color;
-							border-right: 1px solid $border_color;
-							border-bottom: 1px solid $border_color;
-							.infoTitle{
-								font-size: 40px;
-								line-height: 88px;
-								margin: 6px 0px;
-							}
-							.info,.address{
-								font-size: 16px;
-								line-height: 24px;
-							}
-							.address{
-								margin-top: 40px;
-							}
-						}
-					}
-				}
-				.slider{
-					width: 290px;
-					padding: 20px 14px;
-					font-weight: 600;
-					color: #fff;
-					background-color: #a40000;
-					.message{
-						textarea,.intro{
-							margin: 10px 0px;
-							font-size: 16px;
-							line-height: 22px;
-							text-indent: 2em;
-						}
-					}
-					.imgShow{
-						margin-bottom: 40px;
-					}
-				}
-				.newInfo{
-					.newInfoBox{
-						position: relative;
-						width: 100%;
-						height: 280px;
-						overflow: hidden;
-						margin-top:10px;
-					}
-					ul{
-						position: relative;
-					}
-					li{ 
-						font-size: 16px;
-						line-height: 22px;
-					}
+		.slider{
+			width: 290px;
+			padding: 20px 14px;
+			font-weight: 600;
+			color: #fff;
+			background-color: #a40000;
+			.message{
+				textarea,.intro{
+					margin: 10px 0px;
+					font-size: 16px;
+					line-height: 22px;
+					text-indent: 2em;
 				}
 			}
+			.img-show{
+				margin-bottom: 40px;
+			}
+		}
+		.newinfo{
+			ul{
+				position: relative;
+			}
+			li{ 
+				font-size: 16px;
+				line-height: 22px;
+			}
+		}
+		.newinfo-box{
+			position: relative;
+			width: 100%;
+			height: 280px;
+			overflow: hidden;
+			margin-top:10px;
 		}
 	}
 </style>

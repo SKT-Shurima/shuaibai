@@ -1,12 +1,12 @@
 <template>
-	<div class="paginationWrap">
-	    <div class="paginationBox">
+	<div class="page-wrap">
+	    <div class="page-box">
 	     	<div>
 	     	     <span style='margin-left:40px;margin-right:12px;'>
 	     	     	共{{pagesize}}页
 	     	     </span>
 	     	     <span style="margin-right:16px;">
-	     	     	前往<input v-model='inputPage'/>页
+	     	     	前往<input class='border-c' v-model='inputPage'/>页
 	     	     </span>
 		    	 <el-button type='text' style='width:82px;height: 36px;' @click='changePage(0)' :disabled='currentPage===pagesize'>
 			    	下一页<i style="margin-left:6px;">&gt;</i>
@@ -47,106 +47,98 @@
 	    },
 	    watch: {
 	    	currentPage(newVal,oldVal){
-	    		let _this = this ;
 	    		if(newVal!==oldVal){
-	    			_this.$emit('changePage',newVal)
+	    			this.$emit('changePage',newVal)
 	    		}
 	    	}
 	    },
-		 methods: {
-	      handleCurrentChange(val) {
-	        let _this = this ;
-	        _this.currentPage = val;
-	        _this.inputPage = val;
-	      },
-	      changePage(mask){
-	      	let _this = this ;
-	      	if (mask) {
-	      		_this.currentPage--;
-	      		if (_this.currentPage<1) {
-	      			_this.currentPage = 1
-	      		} 
-	      	}else {
-	      		_this.currentPage++;
-	      		if(_this.currentPage>_this.pagesize){
-	      			_this.currentPage = _this.pagesize ;
+		methods: {
+	      	handleCurrentChange(val) {
+	        	this.currentPage = val;
+	       		this.inputPage = val;
+	      	},
+	      	changePage(mask){
+	      		if (mask) {
+	      			this.currentPage--;
+	      			if (this.currentPage<1) {
+	      				this.currentPage = 1
+	      			} 
+	      		}else {
+	      			this.currentPage++;
+	      			if(this.currentPage>this.pagesize){
+	      				this.currentPage = this.pagesize ;
+	      			}
 	      		}
+	      	},
+	      	jumpPage(){
+		      	if(this.inputPage-0>this.pagesize){
+		      		this.inputPage=this.pagesize;
+		      		this.currentPage  = this.inputPage;
+		      	}
 	      	}
-	      },
-	      jumpPage(){
-	      	let _this = this;
-	      	if(_this.inputPage-0>_this.pagesize){
-	      		_this.inputPage=_this.pagesize;
-	      		_this.currentPage  = _this.inputPage;
-	      	}
-	      }
 	    }
 	}
 </script>
 <style lang='scss'>
-$primary:#c71724;
-$border_color: #ccc;
-$bg_color: #f5f5f5;
-.paginationWrap {
-    padding: 30px 0 80px;
-    overflow: hidden;
-    text-align: center;
-    .paginationBox{
-    	display: inline-block;
-    	div{
-    		float: right;
-    		span{
-    			input{
-    				width: 36px;
-    				height: 36px;
-    				line-height: 36px;
-    				text-align: center;
-    				border-radius: 4px;
-    				border: 1px solid $border_color;
-    				margin: 0px 6px;
-    			}
-    		}
-    	}
-    	.el-button{
-    		margin-top: 4px;
-			border: 1px solid $border_color;
-			color: #333;
-			background-color: $bg_color;
-			i{
-				margin: 0px 2px;
+	.page-wrap {
+		width: 100%;
+	    padding: 30px 0 80px;
+	    overflow: hidden;
+	    text-align: center;
+	    .page-box{
+	    	display: inline-block;
+	    	div{
+	    		float: right;
+	    	}
+			input{
+				width: 36px;
+				height: 36px;
+				line-height: 36px;
+				text-align: center;
+				border-radius: 4px;
+				border: 1px solid #ccc;
+				margin: 0px 6px;
 			}
-    	}
-    	.el-pagination {
-		    margin-left: 6px;
-		    margin-top: 4px;
-		    .el-pager li {
-		    	width: 36px;
-		    	height: 36px;
-		    	line-height: 36px;
-		    	text-align: center;
-			    margin: 0 6px;
-			    border-right:1px solid rgb(229, 211, 209);
-			    background-color: $bg_color;
+	    	.el-button{
+	    		margin-top: 4px;
+				border: 1px solid #ccc;
+				color: #333;
+				background-color: #f5f5f5;
+				i{
+					margin: 0px 2px;
+				}
+	    	}
+	    	.el-pagination {
+			    margin-left: 6px;
+			    margin-top: 4px;
+			    .el-pager li {
+			    	width: 36px;
+			    	height: 36px;
+			    	line-height: 36px;
+			    	text-align: center;
+				    margin: 0 6px;
+				    border-right:1px solid rgb(229, 211, 209);
+				    background-color: #f5f5f5;
+				}
+				.el-pager li.active+li {
+				    border-left: 1px solid #d1dbe5;
+				}
+				.el-pager li:hover {
+				    color: #c71724;
+				    border-color: #c71724;
+				}
+				.el-pager li.active {
+				    background-color: transparent;
+				    border-color: transparent;
+				    color: #c71724;
+				}
+				.el-pager li.active:hover {
+				    color: #c71724;
+				}
+				.el-pager li.active+li:hover {
+				    border-left: 1px solid #c71724;
+				}
 			}
-			.el-pager li.active+li {
-			    border-left: 1px solid #d1dbe5;
-			}
-			.el-pager li:hover {
-			    color: $primary;
-			    border-color: $primary;
-			}
-			.el-pager li.active {
-			    background-color: transparent;
-			    border-color: transparent;
-			    color: $primary;
-			}
-			.el-pager li.active:hover {
-			    color: $primary;
-			}
-			.el-pager li.active+li:hover {
-			    border-left: 1px solid $primary;
-			}
-		}
-    }
-}
+	    }
+	}
 </style>

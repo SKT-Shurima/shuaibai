@@ -1,0 +1,24 @@
+.after-sale-wrap{
+	.title{
+		font-size: 16px;
+		font-weight: 600;
+	}
+	.el-form{
+		width: 426px;
+		margin-left: 80px;
+		margin-top: 40px;
+	}
+	.el-form-item{
+		margin-bottom: 20px;
+		span{
+			margin-left: 20px;
+			color: #666;
+		}
+	}
+	.submit-btn{
+		margin-left: 170px;
+		.el-button{
+			width: 100px;
+		}
+	}
+}

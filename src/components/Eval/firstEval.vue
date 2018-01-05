@@ -1,9 +1,7 @@
 <template>
-	<div class="wrap">
-		<div class="title">
-			评价
-		</div>
-		<ul class="evalList" v-if='scores.length'>
+	<div class="eval-wrap">
+		<div class="title">评价</div>
+		<ul class="eval-list" v-if='scores.length'>
 			<li v-for='(goodItem,index) in order.goods'>
 				<el-row>
 					<el-col :span="6">
@@ -24,18 +22,18 @@
 						</div>
 						<dl>
 							<dt>
-								<div class="titleCol">
+								<div class="title-col">
 									评价
 								</div>
-								<div class="conCol">
+								<div class="con-col">
 									<el-input type='textarea' v-model='goodItem.comment'></el-input>
 								</div>
 							</dt>
 							<dd>
-								<div class="titleCol">
+								<div class="title-col">
 									上传照片
 								</div>
-								<div class="conCol">
+								<div class="con-col">
 									<ul class="imgList">
 										<li v-for='(imgItem,imgIndex) in uploadList[index].imgList'>
 											<img :src="imgItem.url" class="evalImg">
@@ -53,7 +51,7 @@
 										  <img src="../../../static/evalImg/add.png" height="60" width="60" @click='uploadIndex=index'>
 										</el-upload>
 									</div>
-									<div class="uploadNum">
+									<div class="upload-num">
 										{{uploadList[index].imgList.length}}/5
 									</div>
 								</div>
@@ -63,7 +61,7 @@
 				</el-row>
 			</li>
 		</ul>
-		<div class="seviceRate">
+		<div class="sevice-rate">
 			<ul>
 				<li class="rate">
 					<div>服务满意度</div><el-rate v-model='service_score'></el-rate>
@@ -73,7 +71,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="evalBtn">
+		<div class="eval-btn">
 			<el-button type='primary' @click='sendComment' >发表评论</el-button>
 		</div>
 	</div>
@@ -81,7 +79,8 @@
 <script >
 import {getRequest,errorInfo,getCookie} from '../../common/js/common'
 import {commentGoods} from '../../common/js/api'
-import {MessageBox,Message} from  'element-ui'
+import {MessageBox,Message} from  'element-ui';
+import '../../common/css/eval.scss';
 	export default{
 		data(){
 			return {
@@ -103,8 +102,7 @@ import {MessageBox,Message} from  'element-ui'
 		},
 		methods:{
 			beforeUpload(file) {
-				let _this = this ;
-				let len = _this.uploadList[_this.uploadIndex].imgList.length ;
+				let len = this.uploadList[this.uploadIndex].imgList.length ;
 		        const isJPG = file.type === 'image/jpeg';
 		        const isLt2M = file.size / 1024 / 1024 < 2;
 		        if (len === 5) {
@@ -123,14 +121,13 @@ import {MessageBox,Message} from  'element-ui'
 		        }
 	        },
 			uploadSuccess(res,file,fileList){
-				let _this = this ;
 				let {errcode,message,content} = res ;
 				if(errcode!==0) {
 					errorInfo(errcode,message) ;
 				}else{
-					let len = _this.uploadList[_this.uploadIndex].imgList.length ;
+					let len = this.uploadList[this.uploadIndex].imgList.length ;
 					if (len < 5) {
-						_this.uploadList[_this.uploadIndex].imgList.push(content[0]);
+						this.uploadList[this.uploadIndex].imgList.push(content[0]);
 					}else{
 						MessageBox.alert('最多上传5张照片', '提示', {
 					          confirmButtonText: '确定'
@@ -140,26 +137,24 @@ import {MessageBox,Message} from  'element-ui'
 				}
 			},
 			removeImg(index,imgIndex){
-				let _this = this ;
-				_this.uploadList[index].imgList.splice(imgIndex,1);
+				this.uploadList[index].imgList.splice(imgIndex,1);
 			},
 			sendComment(){
-				let _this = this ;
 				let params = {
 					access_token: getCookie('access_token'),
-					order_sn: _this.reqParams.order_sn,
-					service_score: _this.service_score,
-					logistics_score: _this.logistics_score
+					order_sn: this.reqParams.order_sn,
+					service_score: this.service_score,
+					logistics_score: this.logistics_score
 				}
-				let comments = [];
-				for(let i = 0 ; i <_this.goods.length;i++){
+				let comments = [],goods=this.goods;
+				for(let i = 0 ; i <goods.length;i++){
 					let obj = {} ;
-					obj.goods_id = _this.goods[i].goods_id ;
-					obj.comment = _this.goods[i].comment ;
-					obj.score = _this.scores[i].score;
-					let images = '';
-					for(let j = 0 ; j<_this.uploadList[i].imgList.length ;j++){
-						images += _this.uploadList[i].imgList[j].name ;
+					obj.goods_id = goods[i].goods_id ;
+					obj.comment = goods[i].comment ;
+					obj.score = scores[i].score;
+					let images = '',imgList=this.uploadList[i].imgList;
+					for(let j = 0 ; j<imgList.length ;j++){
+						images += imgList[j].name ;
 					}
 					obj.images = images ;
 					comments.push(obj);
@@ -199,171 +194,3 @@ import {MessageBox,Message} from  'element-ui'
 		}
 	}
 </script>
-<style lang='scss' scoped>
-$primary:#c71624;
-$border_color: #ddd;
-$text_color: #666;
-$bg_color: #f5f5f5;
-	.wrap{
-		width: 100%;
-		.title{
-			height: 40px;
-			line-height: 40px;
-			font-size: 14px;
-			font-weight: 600;
-			border-bottom: 1px solid $border_color;
-		}
-		.evalList{
-			width: 1152px;
-			margin-top: 40px;
-			border-bottom: 1px solid $border_color;
-			li{
-				margin-bottom: 72px;
-				.el-row{
-					.el-col-6{
-						margin-top: 10px;
-						border-right: 1px solid $border_color;
-						dl{
-							width: 130px;
-							margin: 0px auto;
-							dt{
-								height: 130px;
-								margin-bottom: 20px;
-								img{
-									width: 100%;
-									height: 100%;
-								}
-							}
-							.name{
-								margin: 18px auto;
-								line-height: 16px;
-								overflow:hidden; 
-								text-overflow:ellipsis;
-								display:-webkit-box; 
-								-webkit-box-orient:vertical;
-								-webkit-line-clamp:2;
-							}
-							.type{
-								overflow: hidden;
-								color: $text_color;
-								span{
-									float: left;
-								}
-								em{
-									float: right;
-								}
-							}
-						}
-					}
-					.el-col-12{
-						margin-left: 90px;
-						dl{
-							width: 560px;
-							border-top: 1px solid $border_color;
-							border-left: 1px solid $border_color;
-							.titleCol,.conCol{
-								border-right:1px solid $border_color;
-								border-bottom: 1px solid $border_color;
-							}
-							.titleCol{
-								float: left;
-								width: 60px;
-								text-align: center;
-								padding:0px 14px;
-								background-color: $bg_color;
-							}
-							.conCol{
-								width: 499px;
-								float: left;
-								padding: 16px;
-							}
-							dt{
-								height: 118px;
-								overflow: hidden;
-								.titleCol{
-									height: 100%;
-									padding-top: 54px;
-								}
-								.conCol{
-									height: 100%;
-								}
-							}
-							dd{
-								height: 96px;
-								overflow: hidden;
-								.titleCol{
-									height: 100%;
-									padding-top: 26px;
-								}
-								.conCol{
-									height: 100%;
-									overflow: hidden;
-								}
-								.imgList,.upload,.uploadNum{
-									float: left;
-								}
-								.uploadNum{
-									line-height: 60px;
-									margin-left: 20px;
-									color: $text_color;
-								}
-								.imgList{
-									overflow: hidden;
-									li{
-										float: left;
-										position: relative;
-										width: 60px;
-										height: 60px;
-										margin-right: 20px;
-										margin-bottom: 0px;
-										.evalImg{
-											width: 100%;
-											height: 100%;
-										}
-										.remove{
-											position: absolute;
-											top: 0px;
-											right:0px;
-											display: none;
-										}
-									}
-									li:hover{
-										.remove{
-											display: inline-block;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			
-		}
-		.rate{
-			overflow: hidden;
-			div{
-				float: left;
-			}
-			.el-rate{
-				margin-left: 30px;
-			}
-		}
-		.seviceRate{
-			margin-top: 56px;
-			margin-left: 378px;
-			li{
-				margin-bottom: 46px;
-			}
-		}
-		.evalBtn{
-			margin: 100px auto;
-			text-align: center;
-			.el-button{
-				width: 190px;
-				font-size: 20px;
-				font-weight: 600;
-			}
-		}    
-	}
-</style>

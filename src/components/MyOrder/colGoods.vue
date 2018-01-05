@@ -1,29 +1,23 @@
 <template>	
 	 <div class="wrap">
 	 	<div class="box" v-if='colList.length'>
-	 		<ul >
-		 		<li v-for='(item,index) in colList'>
+	 		<ul class='list-box'>
+		 		<li class='border-f0' v-for='(item,index) in colList'>
 		 			<dl>
 						<dt>
-							<div class="imgBox">
+							<div class="img-box">
 								<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 							</div>
-							<div class="editBox">
+							<div class="edit-box">
 								<div @click="delColGood(item.collection_id)">
 								<i class="el-icon-delete"></i>删除</div>
 							</div>
 						</dt>
 						<dd>
-							<div class="sellInfo">
-								{{item.name}}
-							</div>
-							<div class="priceInfo" >
-								<span>
-									{{item.price|currency}}
-								</span>
-								<em>
-									{{item.sale_count}}人付款
-								</em>
+							<div class="sell-info">{{item.name}}</div>
+							<div class="price-info" >
+								<span class='color-primary'>{{item.price|currency}}</span>
+								<em class='color-9'>{{item.sale_count}}人付款</em>
 							</div>
 							<div class="update" v-show='false'>
 								<div>
@@ -91,9 +85,8 @@
 			},
 			// 改变页数
 			changePage(page){
-				let _this = this ;
-				_this.page = page ;
-				_this.initList();
+				this.page = page ;
+				this.initList();
 			},
 			initList(){
 				let params  ={
@@ -119,12 +112,7 @@
 	}
 </script>
 <style lang='scss' scoped>
-$text_color: #666;
-$border_color: #ccc;
-$primary:#c71724;
-.wrap{
-	width: 100%;
-	ul{
+	.list-box{
 		width: 100%;
 		margin-top: 14px;
 		overflow: hidden;
@@ -135,86 +123,80 @@ $primary:#c71724;
 			padding: 14px;
 			margin-right: -1px;
 			margin-top: -1px;
-			border: 1px solid #f0f0f0;
-			dl{
-				dt{
-					position: relative;
-					width: 180px;
-					height: 180px;
-					overflow: hidden;
-					border: 1px solid transparent;
-					.imgBox{
-						width: 100%;
-						height: 100%;
-						img{
-							width: 100%;
-							height: 100%;
-							cursor: pointer; 
-						}
-					}
-					.editBox{
-						position: absolute;
-						bottom: -30px;
-						width: 100%;
-						text-align: center;
-						overflow: hidden;
-						transition: all .3s;
-						color: #fff;
-						background-color: rgba(205,42,44,0.5);
-						div{
-							float: right;
-							width: 50%;
-							line-height: 30px;
-							cursor: pointer;
-							margin: 0px;
-						}
-						.el-icon-delete{
-							margin-right: 10px;
-						}
-					}
-				}
-				dt:hover{
-					border: 1px solid $primary;
-					.editBox{
-						bottom: 0px;
-					}
-				}
-				dd{
-					width: 100%;
-					overflow: hidden;
-					.sellInfo{
-						height: 36px;
-						line-height: 18px;
-						margin: 8px 0px;
-					}
-					.priceInfo{
-						line-height: 18px;
-						span{
-							font-size: 16px;
-							font-weight: 600;
-							color: $primary;
-						}
-						em{
-							margin-top: 4px;
-							float: right;
-							color: #999;
-						}
-					}
-					.update{
-						div{
-							width: 94px;
-							height: 22px;
-							line-height: 22px;
-							margin: 0px auto;
-							text-align: center;
-							border-radius: 2px;
-							background-color: #aaa;
-							color: #fff;
-						}
-					}
-				}	 
+		}
+		dt{
+			position: relative;
+			width: 180px;
+			height: 180px;
+			overflow: hidden;
+			border: 1px solid transparent;
+		}
+		dt:hover{
+			border: 1px solid #c71724;
+			.edit-box{
+				bottom: 0px;
+			}
+		}
+		.img-box{
+			width: 100%;
+			height: 100%;
+			img{
+				width: 100%;
+				height: 100%;
+				cursor: pointer; 
+			}
+		}
+		.edit-box{
+			position: absolute;
+			bottom: -30px;
+			width: 100%;
+			text-align: center;
+			overflow: hidden;
+			transition: all .3s;
+			color: #fff;
+			background-color: rgba(205,42,44,0.5);
+			div{
+				float: right;
+				width: 50%;
+				line-height: 30px;
+				cursor: pointer;
+				margin: 0px;
+			}
+			.el-icon-delete{
+				margin-right: 10px;
+			}
+		}
+		dd{
+			width: 100%;
+			overflow: hidden;
+		}
+		.sell-info{
+			height: 36px;
+			line-height: 18px;
+			margin: 8px 0px;
+		}
+		.price-info{
+			line-height: 18px;
+			span{
+				font-size: 16px;
+				font-weight: 600;
+			}
+			em{
+				margin-top: 4px;
+				float: right;
+			}
+		}
+		.update{
+			div{
+				width: 94px;
+				height: 22px;
+				line-height: 22px;
+				margin: 0px auto;
+				text-align: center;
+				border-radius: 2px;
+				background-color: #aaa;
+				color: #fff;
 			}
 		}
 	}
-}
 </style>

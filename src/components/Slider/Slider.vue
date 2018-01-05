@@ -8,16 +8,14 @@
 						<img src="../../../static/centerImg/avaterDefault.jpg" style="width:100%;height: 100%;" v-else>
 					</div>
 				</li>
-				<li @click='kf'>
-					在线客服
-				</li>
+				<li @click='kf'>在线客服</li>
 				<li @click='check("vip3")'>
 					<dl>
-						<dt class="singleCol">
+						<dt class="single-col">
 							<img src="../../../static/headImg/shopCar.png" height="16" width="16" style="border-radius: 50%;">
 						</dt>
 						<dd>
-							<div class="singleCol">
+							<div class="single-col">
 								购物车
 							</div>
 							<div style="margin-top:10px;">
@@ -29,35 +27,35 @@
 					</dl>
 				</li>
 				<li @click='check("vip5")'>
-					<div class="singleCol">
+					<div class="single-col">
 						<img src="../../../static/headImg/privilege.png" height="16" width="16">
 					</div>
-					<div class="singleCol">
+					<div class="single-col">
 						优惠券
 					</div>
 				</li>
 				<li @click='check("vip2")'>
-					<div class="singleCol">
+					<div class="single-col">
 						<img src="../../../static/headImg/view.png" height="16" width="16">
 					</div>
 					<div>关注</div>
 				</li>
 				<li @click='check("vip1")'>
-					<div class="singleCol">
+					<div class="single-col">
 						<img src="../../../static/headImg/collection.png" height="16" width="16">
 					</div>
 					<div>
 						收藏
 					</div>
 				</li>
-				<li class="codeBox">
-					<div class="singleCol">
+				<li class="code-box">
+					<div class="single-col">
 						<img src="../../../static/headImg/QRcode.png" height="18" width="18">
 					</div>
 					<div>
 						扫码下载APP
 					</div>
-					<dl class="codeImg">
+					<dl class="code-img">
 						<dt>
 							<div class="android"></div>
 							<div>android</div>
@@ -69,11 +67,11 @@
 					</dl>
 				</li>
 			</ul>
-			<dl class="bakcTop" @click='gotoTop'>
+			<dl class="back-top" @click='gotoTop'>
 				<dt>
 					<img src="../../../static/headImg/backTop.png" height="27" width="18">
 				</dt>
-				<dd class="singleCol">
+				<dd class="single-col">
 					回顶部
 				</dd>
 			</dl>
@@ -133,8 +131,7 @@ import {userInfo} from '../../common/js/mixins'
 				window.open(`myOrder.html#${view}`);
 			},
 			kf(){
-		        let _this =this ;
-		        let qq = _this.kfInfo.qq ;
+		        let qq = this.kfInfo.qq ;
 		        window.open(`http://wpa.qq.com/msgrd?v=3&uin=${qq}&site=qq&menu=yes`);
 	      	}
 		},
@@ -163,69 +160,69 @@ import {userInfo} from '../../common/js/mixins'
 		width: 40px;
 		height: 100%;
 		background-color: rgba(0,0,0,0.8);
-		.container{
-			height: 100%;
-			color: #fff;
-			text-align: center;
-			position: relative;
-			top: 18%;
-			.singleCol{
-				width: 20px;
-			}
-			.singleCol,dt,dd{
-				margin: 0px auto;
-			}
-			img{
-				margin-bottom: 12px;
-			}
-			ul{
-				margin:0px 6px ;
-				li{
-					cursor: pointer;
-					padding: 16px 2px;
-					border-bottom: 1px solid #555;
-				}
-			}
-			.bakcTop{
-				width: 40px;
-				height: 110px;
-				padding: 10px 0px;
-				margin-top: 10px;
+	}
+	.container{
+		height: 100%;
+		color: #fff;
+		text-align: center;
+		position: relative;
+		top: 18%;
+		.single-col{
+			width: 20px;
+		}
+		.single-col,dt,dd{
+			margin: 0px auto;
+		}
+		img{
+			margin-bottom: 12px;
+		}
+		ul{
+			margin:0px 6px ;
+			li{
 				cursor: pointer;
-				background-color: #c81623;
+				padding: 16px 2px;
+				border-bottom: 1px solid #555;
 			}
 		}
-		.codeBox{
-			position: relative;
+		.back-top{
+			width: 40px;
+			height: 110px;
+			padding: 10px 0px;
+			margin-top: 10px;
+			cursor: pointer;
+			background-color: #c81623;
 		}
-		.codeBox:hover .codeImg{
-			display: block;
+	}
+	.code-box{
+		position: relative;
+	}
+	.code-box:hover .code-img{
+		display: block;
+	}
+	.code-img{
+		display: none;
+		position: absolute;
+		bottom: 0px;
+		right: 40px;
+		padding: 10px;
+		border: 1px solid #c71724;
+		color: #000;
+		dt{
+			margin-bottom: 10px;
 		}
-		.codeImg{
-			display: none;
-			position: absolute;
-			bottom: 0px;
-			right: 40px;
-			padding: 10px;
-			border: 1px solid #c71724;
-			color: #000;
-			dt{
-				margin-bottom: 10px;
-			}
-			.android,.ios{
-				width: 80px;
-				height: 80px;
-			}
-			.android{
-				background-image: url('../../../static/commonImg/android.png');
-				background-repeat: no-repeat;
-				background-size: 100% 100%;
-			}
-			.ios{
-				background-image: url('../../../static/commonImg/ios.png');
-				background-repeat: no-repeat;
-				background-size: 100% 100%;
-			}
+		.android,.ios{
+			width: 80px;
+			height: 80px;
+		}
+		.android{
+			background-image: url('../../../static/commonImg/android.png');
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
+		}
+		.ios{
+			background-image: url('../../../static/commonImg/ios.png');
+			background-repeat: no-repeat;
+			background-size: 100% 100%;
 		}
 	}
 </style>

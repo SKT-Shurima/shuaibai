@@ -41,8 +41,7 @@ export default {
 			window.history.go(-1);
 		},
 		countStatus(){
-			let _this = this ;
-			let order_sn = _this.reqParams.order_number ;
+			let order_sn = this.reqParams.order_number ;
 			let params = {
 				order_sn: order_sn
 			}
@@ -50,7 +49,7 @@ export default {
 				getOrderPayStatus(params).then(res=>{
 					let {errcode,message,content} =  res ;
 					if (content===1) {
-						let count = _this.reqParams.count ;
+						let count = this.reqParams.count ;
 						clearInterval(timer);
 						location.replace(`myOrder.html?vip7`) ;
 					}

@@ -51,10 +51,9 @@ window.onpopstate = function() {
 		},
 		methods: {
 			init(){
-				let _this = this ;
 				let hash = location.hash.split("?")[0] ;
-				_this.reqParams = getHashReq() ;
-				let order_sn = 	_this.reqParams.order_sn;
+				this.reqParams = getHashReq() ;
+				let order_sn = 	this.reqParams.order_sn;
 				if (order_sn) {
 					let params = {
 						access_token: getCookie('access_token'),
@@ -66,6 +65,7 @@ window.onpopstate = function() {
 							errorInfo(errcode,message) ;
 						}else{
 							let state = content.order.order_state;
+							this.orderInfo = content.order;
 							let view = '';
 							if (hash) {
 								view = hash.slice(1) ;
@@ -132,7 +132,6 @@ window.onpopstate = function() {
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
 	.wrap{
 		width: 1250px;
 		margin: 0px auto;

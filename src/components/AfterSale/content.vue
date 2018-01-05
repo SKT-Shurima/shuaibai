@@ -2,19 +2,19 @@
 	<div class="wrap">
 		<div class="title">
 			<ul>
-				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"isTab":currentIndex===index}' :style='{zIndex:index*10,left: (448-16)*index + "px"}'></li>
+				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"is-tab":currentIndex===index}' :style='{zIndex:index*10,left: (448-16)*index + "px"}'></li>
 			</ul>
 		</div>
 		<div class="container">
 			<dl class="box">
-				<dt class="infoCol conTitle">商品信息</dt>
-				<dd class="conCol conTitle">售后申请</dd>
+				<dt class="info-col con-title">商品信息</dt>
+				<dd class="con-col con-title">售后申请</dd>
 			</dl>
 			<dl class="box">
-				<dt class="infoCol" style="min-height: 600px;">
+				<dt class="info-col" style="min-height: 600px;">
 					<order-info @sendGoodsInfo='getGoodsInfo'></order-info>
 				</dt>
-				<dd class="conCol" style="min-height: 600px;">
+				<dd class="con-col" style="min-height: 600px;">
 					<keep-alive>
 						<component :is='currentView'  :goods-info='goodsInfo'></component>
 					</keep-alive>
@@ -57,30 +57,29 @@ export default {
 			this.goodsInfo = info;
 		},
 		init(){
-			let _this = this;
 	      	let hash = location.hash.split("?")[0] ;
 	      	let view = hash.slice(1) ;
-		    _this.reqParams = getHashReq();
+		    this.reqParams = getHashReq();
 		    switch (view){
 		    	case 'applyType':
-			    	_this.currentIndex = 0 ;
-	 		    	_this.currentView = view ;
+			    	this.currentIndex = 0 ;
+	 		    	this.currentView = view ;
 		    	break;
 		    	case 'moneyReturn':
-			    	_this.currentIndex = 0 ;
-	 		    	_this.currentView = view ;
+			    	this.currentIndex = 0 ;
+	 		    	this.currentView = view ;
 		    	break;
 		    	case 'goodsReturn':
-			    	_this.currentIndex = 0 ;
-	 		    	_this.currentView = view ;
+			    	this.currentIndex = 0 ;
+	 		    	this.currentView = view ;
 		    	break;
 		    	case 'maintain':
-			    	_this.currentIndex = 0 ;
-	 		    	_this.currentView = view ;
+			    	this.currentIndex = 0 ;
+	 		    	this.currentView = view ;
 		    	break;
 		    	default:
-			    	_this.currentIndex = 0 ;
-	 		    	_this.currentView = 'applyType' ;
+			    	this.currentIndex = 0 ;
+	 		    	this.currentView = 'applyType' ;
  		    	break;
 		    }
 	    }
@@ -94,71 +93,67 @@ export default {
 	
 </script>
 <style lang='scss' scoped>
-$primary:#c71624;
-$border_color: #ddd;
-$text_color: #666;
-$bg_color: #f5f5f5;
 	.wrap{
 		width: 1250px;
 		margin: 0px auto;
-		.title{
-			position: relative;
-			width: 100%;
+	}
+	.title{
+		position: relative;
+		width: 100%;
+		height: 60px;
+		overflow: hidden;
+		color: #000;
+		ul{
+			position: absolute;
+			top: 0px;
+			transform: translateX(-30px);
 			height: 60px;
-			overflow: hidden;
-			color: #000;
-			ul{
-				position: absolute;
-				top: 0px;
-				transform: translateX(-30px);
-				height: 60px;
-				line-height: 60px;
-				font-size: 20px;
-				text-align: center;
-				li{
-					position: absolute;
-					top: 0px;
-					width: 448px;
-					text-align: center;
-					background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
-					background-size: 100% 100%;
-				}
-				li:last-child{
-					text-align: left;
-					text-indent: 160px;
-				}
-				.isTab{
-					color: #fff;
-					background: url('../../../static/commonImg/progressThis.png')  100% 100%;
-					background-size: 100% 100%;
-				}
-			}
+			line-height: 60px;
+			font-size: 20px;
+			text-align: center;
 		}
-		.container{
-			margin-top: 6px;
-			margin-bottom: 400px;
-			.box{
-				overflow: hidden;
-				.infoCol.conTitle,.conCol.conTitle{
-					height: 54px;
-					font-size: 14px;
-					font-weight: 600;
-					color: $primary;
-					border: none;
-				}
-				.infoCol,.conCol{
-					float: left;
-					border: 1px solid $border_color;
-				}
-				.infoCol{
-					width: 240px;
-					padding: 20px;
-				}
-				.conCol{
-					width: 1010px;
-					padding: 20px 30px;
-					margin-left: -1px;
-				}
+		li{
+			position: absolute;
+			top: 0px;
+			width: 448px;
+			text-align: center;
+			background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
+			background-size: 100% 100%;
+		}
+		li:last-child{
+			text-align: left;
+			text-indent: 160px;
+		}
+		.is-tab{
+			color: #fff;
+			background: url('../../../static/commonImg/progressThis.png')  100% 100%;
+			background-size: 100% 100%;
+		}
+	}
+	.container{
+		margin-top: 6px;
+		margin-bottom: 400px;
+		.box{
+			overflow: hidden;
+			.info-col.con-title,.con-col.con-title{
+				height: 54px;
+				font-size: 14px;
+				font-weight: 600;
+				color: #c71724;
+				border: none;
+			}
+			.info-col,.con-col{
+				float: left;
+				border: 1px solid #ddd;
+			}
+			.info-col{
+				width: 240px;
+				padding: 20px;
+			}
+			.con-col{
+				width: 1010px;
+				padding: 20px 30px;
+				margin-left: -1px;
 			}
 		}
 	}

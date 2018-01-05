@@ -1,12 +1,12 @@
 <template>
 	<div class="wrap">
-		<div class="navBox">
+		<div class="primary-bg nav-box">
 			<div class="container">
 				<div class="logo" @click='changeView("view10")'>
 					我的帅柏
 				</div>
-				<div class="navTitle">
-					<ul class="navList">
+				<div class="nav-title">
+					<ul class="nav-list">
 						<li><a href="index.html">帅柏首页</a></li>
 						<li>
 							<div @mouseenter='accountListBol=true' @mouseleave='accountListBol=false'>账户安全</div>
@@ -19,25 +19,23 @@
 						<li><div @click='changeView("view20")'>消息<span v-text='msgNum' v-show='msgNum-0' style="margin-left: 6px;"></span></div></li>
 					</ul>
 				</div>
-				<div class="searchBox">
-					<input type="text" name="" v-model='searchInput' @keyup.enter='search'>
-					<button @click='search'>搜索</button> 
+				<div class="search-box">
+					<input class='border-d' type="text" name="" v-model='searchInput' @keyup.enter='search'>
+					<button class='color-6 border-d' @click='search'>搜索</button> 
 				</div>
 			</div>
 		</div>
-		<div class="containerBox">
-			<div class="slider">
-				<div class="title">
-					订单中心
-				</div>
+		<div class="container-box">
+			<div class="border-d slider">
+				<div class="f5-bg title">订单中心</div>
 				<ul>
-					<li @click='getOrder(index)' v-for='(item,index) in orderList' :class='{"isClick":orderIndex===index}'><i></i>{{item.name}}</li>
+					<li @click='getOrder(index)' v-for='(item,index) in orderList' class='color-6' :class='{"is-click":orderIndex===index}'><i></i>{{item.name}}</li>
 				</ul>
-				<div class="title">
+				<div class="f5-bg title">
 					会员中心
 				</div>
 				<ul>
-					<li @click='vipView(index)' :class='{"isClick":vipIndex===index}' v-for='(item,index) in  vipCenterList'>
+					<li @click='vipView(index)' :class='{"is-click":vipIndex===index}' v-for='(item,index) in  vipCenterList'>
 						<i></i>{{item.name}}
 					</li>
 				</ul>
@@ -84,11 +82,18 @@
 	import payFor from './payFor'
 	import withdraw from './withdraw'
 	import shopCoin from './shopCoin'
+	import wallet from './wallet'
+	import walletRecharge from './walletRecharge'
+	import walletWithdraw from './walletWithdraw'
+	import walletTransfer from './walletTransfer'
+	import hongfu from './hongfu';
 	import integral from './integral'
 	import tenants from './tenants'
 	import auditStatus from './auditStatus'
 	import commission from './commission'
 	import commissionWithdraw from './commissionWithdraw'
+	import settingPay from './settingPay'
+	import settingTrans from './settingTrans'
 	import youLike from '../../components/Guess/content'
 
 	//  监测地址栏的变化
@@ -112,7 +117,9 @@
 		        	{name: '我的优惠券'},
 		        	{name: '投诉'},
 		        	{name: '资金'},
-		        	{name: '商家入驻'}
+		        	{name: '商家入驻'},
+		        	{name: '设置支付密码'},
+		        	{name: '设置转账密码'}
 		        ],
 		        orderIndex: '',
 		        orderList: [
@@ -121,6 +128,7 @@
 		        	{name: '待发货订单'},
 		        	{name: '待收货订单'},
 		        	{name: '待评价订单'},
+		        	{name: '线下提货订单'},
 		        	{name: '退款/售后'},
 		        	{name: '充值订单'}
 		        ],
@@ -164,15 +172,21 @@
 			"vip71": withdraw,
 			"vip72": shopCoin,
 			"vip73": integral,
+			"vip74": wallet,
+			"vip740": walletRecharge,
+			"vip741": walletWithdraw,
+			"vip742": walletTransfer,
+			"vip75": hongfu,
 			"vip8": tenants,
 			"vip800": auditStatus,
 			"vip80": commission,
-			"vip81": commissionWithdraw
+			"vip81": commissionWithdraw,
+			"vip9": settingPay,
+			"vip10": settingTrans
 		},
 	    methods: {
 	    	search(){
-	    		let _this = this ;
-	    		let keyword = _this.searchInput ;
+	    		let keyword = this.searchInput ;
 	    		keyword = keyword.trim();
 	    		if (keyword) {
 	    			window.open(`relatedGoods.html?keyword=${keyword}`);
@@ -183,40 +197,36 @@
 	    		}
 	    	},
 	      hasGuess(msg){
-	      	let _this = this ;
-	      	_this.guessBol = msg;
+	      	this.guessBol = msg;
 	      },
 	      changeView(view,hash){
-	      	let _this = this ;
-	      	_this.$store.commit('switchView',view);
+	      	this.$store.commit('switchView',view);
 	      	location.hash = hash ? hash : view ;
 	      },
 	      vipView(index){
-	      	let _this = this ;
-	      	_this.vipIndex = index;
-	      	_this.orderIndex= "";
+	      	this.vipIndex = index;
+	      	this.orderIndex= "";
 	      	let view = 'vip' ;
 	        view += index ;
-	        _this.changeView(view);
+	        this.changeView(view);
 	      },
 	      getOrder(index){
-	      	let _this = this ;
 	      	// 改变点击后的列表效果
-	      	_this.orderIndex = index ;
-	      	_this.vipIndex = '';
-	      	if (index<5) {
-	      		if (_this.currentView === 'view0') {
-	      			_this.$refs.orderList.getOrderList(index,"1");
+	      	this.orderIndex = index ;
+	      	this.vipIndex = '';
+	      	if (index<6) {
+	      		if (this.currentView === 'view0') {
+	      			this.$refs.orderList.getOrderList(index,"1");
 	      		}else{
 	      			// 切换当前视图
-	      			_this.changeView(`view0?orderIndex=${index}`);
+	      			this.changeView(`view0?orderIndex=${index}`);
 	      		}
 	      	}else if(index === 5){
 	      		// 售后
-	      		_this.changeView('view01');
+	      		this.changeView('view01');
 	      	}else if(index===6){
 	      		// 充值订单
-	      		_this.changeView('view02');
+	      		this.changeView('view02');
 	      	}
 	      },
 	      initView(){
@@ -231,7 +241,11 @@
 			}
 			if (view) {
 				if(view.indexOf('vip')>=0){
-					this.vipIndex = view[3] - 0;
+					if (view != 'vip10') {
+						this.vipIndex = view[3] - 0;
+					}else{
+						this.vipIndex = 10;
+					}
 				}else{
 					this.vipIndex = "" ;
 				}
@@ -279,137 +293,122 @@
 	}
 </script>
 <style lang='scss' scoped>
-	$primary:#c71724;
-	$text_color: #666;
-	$border_color: #ddd;
-	$bg_color: #f5f5f5;
-	.wrap{
-		width: 100%;
-		.navBox{
-			width: 100%;
-			height: 60px;
-			line-height: 60px;
-			text-align: center;
-			color: #fff;
-			background-color: $primary;
-			.container{
-				width: 1250px;
-				margin: 0px auto;
-				.logo{
-					float: left;
-					width: 150px;
-					font-size: 28px;
-					cursor: pointer;
-				}
-				.navTitle{
-					float: left;
-					.navList{
-						margin-left: 80px;
-						li{
-							float: left;
-							position: relative;
-							cursor: pointer;
-							font-size: 16px;
-							font-weight: 600;
-							width: 120px;
-							text-align: center;
-							color: #fff;
-							a{
-								color: #fff;
-							}
-							ul{
-								position: absolute;
-								left: 0px; 
-								z-index: 10;
-								overflow: hidden;
-								background-color: #bd2f30;
-								li{
-									height: 40px;
-									line-height: 40px;
-									font-weight: 400;
-								}
-								li:hover{
-									background-color: #fff;
-									color: $primary;
-								}
-							}
-						}
-					}
-				}
-				.searchBox{
-					float: right;
-					width: 310px;
-					height: 28px;
-					line-height: 28px;
-					margin-top: 16px;
-					margin-right: 20px;
-					overflow: hidden;
-					input{
-						float: left;
-						width: 250px;
-						height: 28px;
-						border: 1px solid $border_color;
-					}
-					button{
-						float: left;
-						width: 60px;
-						height: 28px;
-						text-align: center;
-						color: $text_color;
-						border: 1px solid $border_color;
-						background-color: #eee;
-					}
-				}
-			}
-		}
-		.containerBox{
-			width: 1250px;
-			margin: 30px auto;
-			overflow: hidden;
-			.slider{
-				float: left;
-				width: 150px;
-				line-height: 40px;
-				border: 1px solid $border_color;
-				div{
-					font-size: 14px;
-					font-weight: 600;
-					padding-left: 24px;
-					margin-top: -1px;
-					border-top: 1px solid $border_color;
-					border-bottom: 1px solid $border_color;
-					background-color: $bg_color;
-				}
-				li{
-					padding-left: 16px;
-					cursor: pointer;
-					color: $text_color;
-					i{
-						display: inline-block;
-						width: 6px;
-						height: 6px;
-						border-radius: 50%;
-						margin-right: 10px;
-						background-color: #aaa ;
-					}
-				}
-				.isClick{
-					color: $primary;
-					i{
-						background-color: $primary;
-					}
-				}
-			}
-			.container {
-				float: left;
-				width: 1080px;
-				margin-left: 20px;
-				overflow: hidden;
-			}
-		}
-		.guess{
+	.nav-box{
+		height: 60px;
+		line-height: 60px;
+		text-align: center;
+		color: #fff;
+		.container{
 			width: 1250px;
 			margin: 0px auto;
 		}
+		.logo{
+			float: left;
+			width: 150px;
+			font-size: 28px;
+			cursor: pointer;
+		}
+		.nav-title{
+			float: left;
+		}
+		.nav-list{
+			margin-left: 80px;
+			li{
+				float: left;
+				position: relative;
+				cursor: pointer;
+				font-size: 16px;
+				font-weight: 600;
+				width: 120px;
+				text-align: center;
+				color: #fff;
+				a{
+					color: #fff;
+				}
+				ul{
+					position: absolute;
+					left: 0px; 
+					z-index: 10;
+					overflow: hidden;
+					background-color: #bd2f30;
+					li{
+						height: 40px;
+						line-height: 40px;
+						font-weight: 400;
+					}
+					li:hover{
+						background-color: #fff;
+						color: #c71724;
+					}
+				}
+			}
+		}
+		.search-box{
+			float: right;
+			width: 310px;
+			height: 28px;
+			line-height: 28px;
+			margin-top: 16px;
+			margin-right: 20px;
+			overflow: hidden;
+			input{
+				float: left;
+				width: 250px;
+				height: 28px;
+			}
+			button{
+				float: left;
+				width: 60px;
+				height: 28px;
+				text-align: center;
+				background-color: #eee;
+			}
+		}
+	}
+	.container-box{
+		width: 1250px;
+		margin: 30px auto;
+		overflow: hidden;
+		.slider{
+			float: left;
+			width: 150px;
+			line-height: 40px;
+			div{
+				font-size: 14px;
+				font-weight: 600;
+				padding-left: 24px;
+				margin-top: -1px;
+				border-top: 1px solid #ddd;
+				border-bottom: 1px solid #ddd;
+			}
+			li{
+				padding-left: 16px;
+				cursor: pointer;
+				i{
+					display: inline-block;
+					width: 6px;
+					height: 6px;
+					border-radius: 50%;
+					margin-right: 10px;
+					background-color: #aaa ;
+				}
+			}
+			.is-click{
+				color: #c71724;
+				i{
+					background-color: #c71724;
+				}
+			}
+		}
+		.container {
+			float: left;
+			width: 1080px;
+			margin-left: 20px;
+			overflow: hidden;
+		}
+	}
+	.guess{
+		width: 1250px;
+		margin: 0px auto;
 	}
 </style>

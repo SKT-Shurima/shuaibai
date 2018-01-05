@@ -1,19 +1,15 @@
 <template>
 	<ul class="wrap">
-		<li v-for='item in goods' class="infoList">
+		<li v-for='item in goods' class="info-list">
 			<dl @click='goodDetail(item.goods_id)'>
 				<dt>
 					<img :src="item.cover" >
 				</dt>
 				<dd>
-					<div class="sellInfo" v-text='item.name'></div>
-					<div class="priceInfo">
-						<span>
-							{{item.shop_price|currency}}
-						</span>
-						<em>
-							{{item.sale_count}}人付款
-						</em>
+					<div class="ellipsis-2 sell-info" v-text='item.name'></div>
+					<div class="price-info">
+						<span class='color-primary'>{{item.shop_price|currency}}</span>
+						<em class='color-9'>{{item.sale_count}}人付款</em>
 					</div>
 				</dd>
 			</dl>
@@ -41,29 +37,28 @@ import 'common/css/goodsList.scss'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #f0f0f0;
 	.wrap{
 		overflow: hidden;
 		margin-top: 20px;
 		border: {
-			left:1px solid $border_color;
-			top:1px solid $border_color;
+			left:1px solid #f0f0f0;
+			top:1px solid #f0f0f0;
 		}
-		.infoList{
+		.info-list{
 			float: left;
 			width: 25%;
 			padding: 20px;
 			border: {
-  				right:1px solid $border_color;
-  				bottom:1px solid $border_color;
+  				right:1px solid #f0f0f0;
+  				bottom:1px solid #f0f0f0;
   			}
 			dl{
 				cursor: pointer;
 			}
 		}
-		.infoList:hover{
-			border-color: $border_color;
-			box-shadow: 0 0 2px 2px $border_color; 
+		.info-list:hover{
+			border-color: #f0f0f0;
+			box-shadow: 0 0 2px 2px #f0f0f0; 
 		}
 	}
 </style>

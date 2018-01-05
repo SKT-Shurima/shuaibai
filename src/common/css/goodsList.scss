@@ -1,4 +1,4 @@
-.infoList{
+.info-list{
 	dt{
 		width: 269px;
 		height: 269px;
@@ -11,27 +11,20 @@
 	dd{
 		width: 100%;
 		overflow: hidden;
-		.sellInfo{
+		.sell-info{
 			height: 36px;
 			line-height: 18px;
 			margin-top: 10px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-		  	-webkit-line-clamp: 2;
-		  	-webkit-box-orient: vertical;
 		}
 		/*价格信息*/
-		.priceInfo{
+		.price-info{
 			margin-top: 6px;
 			span{
 				font-size: 18px;
-				color: #c71724;
 			}
 			em{
 				margin-top: 4px;
 				float: right;
-				color: #999;
 			}
 		}
 	}

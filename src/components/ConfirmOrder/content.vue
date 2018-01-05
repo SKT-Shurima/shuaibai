@@ -1,7 +1,7 @@
 <template id='container'>
 	<div class="wrap">
 		<div class="title">
-			<ul>
+			<ul class="list-box">
 				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"isTab":currentIndex===index}' :style='{zIndex:index*10,left: (448-16)*index + "px"}'></li>
 			</ul>
 		</div>
@@ -45,7 +45,6 @@ window.onpopstate = function() {
 		},
 		methods: {
 			init(){
-				let _this = this ;
 				let hash = location.hash.split("?")[0] ;
 				let view = '';
 				if (hash) {
@@ -76,7 +75,6 @@ window.onpopstate = function() {
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
 	.wrap{
 		width: 1250px;
 		margin: 0px auto;
@@ -86,31 +84,31 @@ $primary:#c71724;
 			height: 60px;
 			overflow: hidden;
 			color: #000;
-			ul{
+		}
+		.list-box{
+			position: absolute;
+			top: 0px;
+			transform: translateX(-30px);
+			height: 60px;
+			line-height: 60px;
+			font-size: 20px;
+			text-align: center;
+			li{
 				position: absolute;
 				top: 0px;
-				transform: translateX(-30px);
-				height: 60px;
-				line-height: 60px;
-				font-size: 20px;
+				width: 448px;
 				text-align: center;
-				li{
-					position: absolute;
-					top: 0px;
-					width: 448px;
-					text-align: center;
-					background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
-					background-size: 100% 100%;
-				}
-				li:last-child{
-					text-align: left;
-					text-indent: 160px;
-				}
-				.isTab{
-					color: #fff;
-					background: url('../../../static/commonImg/progressThis.png')  100% 100%;
-					background-size: 100% 100%;
-				}
+				background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
+				background-size: 100% 100%;
+			}
+			li:last-child{
+				text-align: left;
+				text-indent: 160px;
+			}
+			.isTab{
+				color: #fff;
+				background: url('../../../static/commonImg/progressThis.png')  100% 100%;
+				background-size: 100% 100%;
 			}
 		}
 	}

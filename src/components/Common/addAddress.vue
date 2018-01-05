@@ -243,48 +243,42 @@ import {MessageBox} from  'element-ui'
   }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ccc;
-$text_color: #666;
-	.wrap{
-		width: 100%;
-		.title{
-		    font-size: 14px;
-		    font-weight: 600;
-		    line-height: 20px;
-		    margin-bottom: 10px;
-		    color: #c71724;
+	.title{
+	    font-size: 14px;
+	    font-weight: 600;
+	    line-height: 20px;
+	    margin-bottom: 10px;
+	    color: #c71724;
+	}
+	.el-form{
+		width: 400px;
+		margin-top: 40px;
+		.area{
+			overflow: hidden;
+			padding-top: 4px;
 		}
-		.el-form{
-			width: 400px;
-			margin-top: 40px;
-			.area{
-				overflow: hidden;
-				padding-top: 4px;
-				.el-col{
-					float: left;
-					width: 90px;
-				    select{
-				    	background-color: #fff;
-					    background-image: none;
-					    border-radius: 4px;
-					    border: 1px solid rgb(217, 193, 191);
-					    box-sizing: border-box;
-					    color: rgb(61, 33, 31);
-					    display: block;
-					    font-size: inherit;
-					    height: 30px;
-					    line-height: 1;
-					    outline: none;
-					    padding: 3px 10px;
-					    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-					    width: 100%;
-				    }
-				}
-			}
-			.el-form-item{
-				margin-bottom: 16px;
-			}
+		.el-col{
+			float: left;
+			width: 90px;
+		    select{
+		    	background-color: #fff;
+			    background-image: none;
+			    border-radius: 4px;
+			    border: 1px solid rgb(217, 193, 191);
+			    box-sizing: border-box;
+			    color: rgb(61, 33, 31);
+			    display: block;
+			    font-size: inherit;
+			    height: 30px;
+			    line-height: 1;
+			    outline: none;
+			    padding: 3px 10px;
+			    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+			    width: 100%;
+		    }
+		}
+		.el-form-item{
+			margin-bottom: 16px;
 		}
 	}
 </style>

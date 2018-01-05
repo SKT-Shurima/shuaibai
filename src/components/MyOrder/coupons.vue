@@ -3,8 +3,8 @@
 		<h4 class="title">
 			我的优惠券
 		</h4>
-		<ul class="couponsListBox" v-if='couponsList.length'>
-			<li v-for='(item,index) in couponsList' :class='{"noMarginRight":(index+1)%3===0}' class="couponsList">
+		<ul class="coupons-list-box" v-if='couponsList.length'>
+			<li v-for='(item,index) in couponsList' :class='{"no-marigin-r":(index+1)%3===0}' class="coupons-list">
 				<div class="info">
 					<div class="limit">
 						<dl>
@@ -21,10 +21,6 @@
 						<li>有效时间：{{(item.date_start-0)*1000|dateStylePoint}}-{{(item.date_end-0)*1000|dateStylePoint}}</li>
 					</ul>
 				</div>
-				<!-- <div class="opera">
-					<button>进店看看</button>
-					<button @click='delCoupons()'>删除优惠券</button>
-				</div> -->
 			</li>
 		</ul>
 		<div v-else style='font-size:16px;'>
@@ -63,81 +59,67 @@ import {errorInfo,getCookie} from '../../common/js/common'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$primary:#c71724;
-$text_color: #666;
-$bg_color: #e84848;
 	.wrap{
 		width: 1080px;
-		.title{
-			font-size: 14px;
-			height: 40px;
-			line-height: 40px;
-			margin-bottom: 16px;
-			border-bottom: 1px solid $border_color;
-		}
-		.couponsListBox{
+	}
+	.title{
+		font-size: 14px;
+		height: 40px;
+		line-height: 40px;
+		margin-bottom: 16px;
+		border-bottom: 1px solid #ccc;
+	}
+	.coupons-list-box{
+		width: 100%;
+		overflow: hidden;
+	}
+	.coupons-list{
+		float: left;
+		width: 350px;
+		margin-right: 15px;
+		margin-top: 24px;
+		color: #fff;
+		.info{
 			width: 100%;
-			overflow: hidden;
-			.couponsList{
+			height: 120px;
+			background-color: #e84848;
+			ul{
 				float: left;
-				width: 350px;
-				margin-right: 15px;
-				margin-top: 24px;
-				color: #fff;
-				.info{
-					width: 100%;
-					height: 120px;
-					background-color: $bg_color;
-					.limit{
-						float: left;
-					    width: 120px;
-					    height: 120px;
-					    padding: 10px;
-					    border-right: 1px dashed #fff;
-					    dl{
-					    	overflow: hidden;
-					    	padding: 10px;
-					    	dt{
-					    		float: left;
-					    		font-size: 14px;
-					    		line-height: 32px;
-					    	}
-					    	dd{
-					    		float: left;
-					    		font-size: 34px;
-					    		font-weight: 600;
-					    	}
-					    }
-					    div{
-					    	text-align: center;
-					    	font-size: 16px;
-					    	font-weight: 600;
-					    }
-					}
-					ul{
-						float: left;
-						width: 230px;
-						padding: 18px;
-						li{
-							line-height: 28px;
-						}
-					}
+				width: 230px;
+				padding: 18px;
+				li{
+					line-height: 28px;
 				}
-				.opera{
-					line-height: 36px;
-					button{
-						border: none;
-						background-color: transparent;
-						outline: none;
-						padding: 0px 14px;
-						color: $text_color;
-					}
-				}
-			}
-			.noMarginRight{
-				margin-right: 0px;
 			}
 		}
+	}
+	.limit{
+		float: left;
+	    width: 120px;
+	    height: 120px;
+	    padding: 10px;
+	    border-right: 1px dashed #fff;
+	    dl{
+	    	overflow: hidden;
+	    	padding: 10px;
+	    }
+    	dt{
+    		float: left;
+    		font-size: 14px;
+    		line-height: 32px;
+    	}
+    	dd{
+    		float: left;
+    		font-size: 34px;
+    		font-weight: 600;
+    	}
+	    div{
+	    	text-align: center;
+	    	font-size: 16px;
+	    	font-weight: 600;
+	    }
+	}
+	.no-marigin-r{
+		margin-right: 0px;
 	}
 </style>

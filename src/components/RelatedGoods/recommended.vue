@@ -1,31 +1,27 @@
 <template>
 	<!-- 热销排行 -->
-		<div class="hotSell">
-		<div class="title">
-	 		<i class="icon"></i>
+	<div class="hot-sell">
+		<div class="color-6 f5-bg title">
+	 		<i class="primary-bg icon"></i>
 	 		<span style="vertical-align: 4px;">精品推荐</span>
 	 	</div>
-			<ul v-if='hightGoods'>
-				<li v-for='(item,index) in hightGoods' class="infoList" :key='index'>
-					<dl  @click='goodDetail(item.goods_id)'>
-						<dt>
-							<img :src="item.cover">
-						</dt>
-						<dd>
-							<div class="sellInfo" v-text='item.name'></div>
-							<div class="priceInfo">
-								<span>
-									{{item.shop_price|currency}}
-								</span>
-								<em>
-									{{item.sale_count}}人付款
-								</em>
-							</div>
-						</dd>
-					</dl>
-				</li>
-			</ul>
-		</div>
+		<ul class='border-f0' v-if='hightGoods'>
+			<li v-for='(item,index) in hightGoods' class="info-list" :key='index'>
+				<dl  @click='goodDetail(item.goods_id)'>
+					<dt>
+						<img :src="item.cover">
+					</dt>
+					<dd>
+						<div class="ellipsis-2 sell-info" v-text='item.name'></div>
+						<div class="price-info">
+							<span class='color-primary'>{{item.shop_price|currency}}</span>
+							<em class='color-6'>{{item.sale_count}}人付款</em>
+						</div>
+					</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
 </template>
 <script>
 import {currency} from '../../common/js/filter'
@@ -67,13 +63,10 @@ import {getHighGoods} from '../../common/js/api'
 </script>
 
 <style lang='scss' scoped>
-$text_color: #666;
-$border_color: #f1f1f1;
-$primary:#c71724;
-$bg_title: #f5f5f5;
-.infoList{
-	dl{
-		cursor: pointer;
+	.info-list{
+		dl{
+			cursor: pointer;
+		}
 		dt{
 			width: 198px;
 			height: 198px;
@@ -85,46 +78,36 @@ $bg_title: #f5f5f5;
 		dd{
 			width: 100%;
 			overflow: hidden;
-			.sellInfo{
-				height: 36px;
-				line-height: 18px;
-				margin-top: 10px;
-			    display: -webkit-box;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				-webkit-line-clamp: 2;
+		}
+		.sell-info{
+			height: 36px;
+			line-height: 18px;
+			margin-top: 10px;
+		}
+		/*价格信息*/
+		.price-info{
+			margin-top: 6px;
+			span{
+				font-size: 18px;
+				font-weight: 600;
 			}
-			/*价格信息*/
-			.priceInfo{
-				margin-top: 6px;
-				span{
-					font-size: 18px;
-					font-weight: 600;
-					color: $primary;
-				}
-				em{
-					margin-top: 4px;
-					float: right;
-					color: #999;
-				}
+			em{
+				margin-top: 4px;
+				float: right;
 			}
-		}	 
+		}
 	}
-}
 	/*热销*/
-	.hotSell{
+	.hot-sell{
 		.title{
 			width: 100%;
 			height: 40px;
 			padding: 10px;
 			line-height: 20px;
-			color: $text_color;
-			background-color: $bg_title;
 			.icon{
 				display: inline-block;
 				width: 8px;
 				height: 20px;
-				background-color: $primary;
 			}
 			span{
 				font-size: 16px;
@@ -133,17 +116,16 @@ $bg_title: #f5f5f5;
 		}
 		ul{
 			width: 230px;
-			border: 1px solid $border_color;
 			margin-top: 10px;
-			li{
-				width: 100%;
-				height: 310px;
-				padding: 15px;
-				border-bottom: 1px solid $border_color;
-			}
-			li:last-child{
-				   border-bottom: none; 
-			}
+		}
+		li{
+			width: 100%;
+			height: 310px;
+			padding: 15px;
+			border-bottom: 1px solid #f0f0f0;
+		}
+		li:last-child{
+			border-bottom: none; 
 		}
 	}
 </style>

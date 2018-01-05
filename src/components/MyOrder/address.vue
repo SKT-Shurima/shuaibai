@@ -1,24 +1,24 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view100")'>我的收货地址</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view100")'>我的收货地址</span></h4>
 		<add-address @initList='initList'></add-address>
-		<div class="addressList" v-if='addressList'>
-			<div class="title" style="margin-bottom:20px;">
+		<div class="address-list" v-if='addressList'>
+			<div class="color-primary title" style="margin-bottom:20px;">
 				已经保存了{{addressList.length}}条地址，还可以保存{{20-addressList.length}}条地址
 			</div>
 			<ul v-if='addressList'>
-				<li v-for= '(item,index) in addressList' :class='{"isDefault":item.status==="1"}' :key='index'>
+				<li class='border-c' v-for= '(item,index) in addressList' :class='{"border-primary":item.status==="1"}' :key='index'>
 					<dl>
 						<dt>
 							<span v-text='item.name'>
 							</span>
 							<strong v-text='item.phone'>
 							</strong>
-							<em v-show='item.status==="1"'>
+							<em class='color-primary' v-show='item.status==="1"'>
 								默认地址
 							</em>
 						</dt>
-						<dd class="addressInfo">
+						<dd class="ellipsis-1 address-info">
 						    {{item.province===item.city?item.province:item.province+item.city}}{{item.district}}{{item.address}}
 						</dd>
 						<dd>
@@ -116,16 +116,12 @@ import addAddress from '../Common/addAddress'
   }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ccc;
-$text_color: #666;
 	.wrap{
 		width: 100%;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
 			span{
 				cursor: pointer;
 			}
@@ -133,51 +129,39 @@ $text_color: #666;
 				color: #b0b0b0;
 			}
 		}
-		.title{
+	}
+	.title{
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 20px;
+		margin-bottom: 10px;
+	}
+	.address-list{
+		ul{
+			overflow: hidden;
+		}
+		li{
+			float: left;
+			width: 490px;
+			padding: 20px;
+			margin-right: 14px;
+			margin-bottom: 16px;
+		}
+		dt{
 			font-size: 14px;
 			font-weight: 600;
-			line-height: 20px;
-			margin-bottom: 10px;
-			color: $primary;
+			em{
+				float: right;
+				color: #c71724;
+			}
 		}
-		.addressList{
-			ul{
-				overflow: hidden;
-				li{
-					float: left;
-					width: 490px;
-					padding: 20px;
-					margin-right: 14px;
-					margin-bottom: 16px;
-					border: 1px solid $border_color;
-					dl{
-						dt{
-							font-size: 14px;
-							font-weight: 600;
-							em{
-								float: right;
-								color: $primary;
-							}
-						}
-						.addressInfo{
-							overflow: hidden;
-							white-space: nowrap;
-							text-overflow: ellipsis;
-							padding: 10px 0px;
-						}
-						dd{
-							.edit{
-								float: right;
-								.el-button{
-									color: #0049b7;
-								}
-							}
-						}
-					}
-				}
-				.isDefault{
-					border: 1px solid $primary;
-				}
+		.address-info{
+			padding: 10px 0px;
+		}
+		.edit{
+			float: right;
+			.el-button{
+				color: #0049b7;
 			}
 		}
 	}

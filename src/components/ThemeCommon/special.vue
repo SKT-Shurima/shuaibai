@@ -1,9 +1,9 @@
 <template>
- <div class="wrap">
+ <div class="special-wrap">
  	<el-carousel height="500px">
-      <el-carousel-item v-for="(item,index) in special" :key="index">
-       	<img :src="item.image" @click='goodDetail(item.params.goods_id)'>
-      </el-carousel-item>
+      	<el-carousel-item v-for="(item,index) in special" :key="index">
+       		<img :src="item.image" @click='goodDetail(item.params.goods_id)'>
+      	</el-carousel-item>
     </el-carousel>
  </div>
 </template>
@@ -22,24 +22,3 @@
 		}
 	}
 </script>
-<style lang='scss'>
-$primary:#c71724;
-.wrap{
-	.el-carousel{
-		.el-carousel__item{
-			img{
-				width: 100%;
-				height: 100%;
-				cursor: pointer;
-			}
-		}
-	}
-	.el-carousel__button{
-		width: 16px;
-		height: 16px;
-		border-radius: 50%;
-		background-color: $primary;
-	}
-}
-	
-</style>

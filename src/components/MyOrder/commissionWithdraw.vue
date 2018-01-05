@@ -138,18 +138,14 @@ import {userInfo} from '../../common/js/mixins'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$primary:#c71724;
-$text_color: #666;
-$bg_color: #e84848;
 	.wrap{
 		width: 1030px;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
 			margin-bottom: 46px;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
+			color: #666;
 			span{
 				cursor: pointer;
 			}

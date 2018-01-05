@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<div class="container" v-if='deliveryInfo.goodsInfo'>
 			<!-- 店铺小信息列表 -->
-			<div class="sliderBox">
+			<div class="slider-box">
 				<!-- 优惠券 -->
 				<coupons :seller_id='deliveryInfo.goodsInfo.goods.seller_id'></coupons>
 				<!-- 分类 -->
@@ -11,16 +11,16 @@
 				<hot-sell :seller-id='deliveryInfo.goodsInfo.goods.seller_id'></hot-sell>
 			</div>
 			<!-- 内容 -->
-			<div class="contentBox">
-				 <dl class="infoBox">
+			<div class="content-box">
+				 <dl class="info-box">
 				 	<dt>
-				 		<button @click='infoTabIndex=1' :class='{"infoTabChecked":infoTabIndex===1}' >商品详情</button>
-				 		<button @click='infoTabIndex=2' :class='{"infoTabChecked":infoTabIndex===2}'>评价（{{deliveryInfo.goodsInfo.goods.comment.total}}）</button>
+				 		<button @click='infoTabIndex=1' :class='{"info-tab-checked":infoTabIndex===1}' >商品详情</button>
+				 		<button @click='infoTabIndex=2' :class='{"info-tab-checked":infoTabIndex===2}'>评价（{{deliveryInfo.goodsInfo.goods.comment.total}}）</button>
 				 	</dt>
 				 	<dd>
 				 		<!-- 产品参数 -->
-				 		<div class="detailsCon" v-show='infoTabIndex===1'>
-				 			<div class="detailTitle">
+				 		<div class="color-9 details-con" v-show='infoTabIndex===1'>
+				 			<div class="details-title">
 					 			产品参数
 					 		</div>
 					 		<ul class="productInfo">
@@ -32,14 +32,14 @@
                                 </li>
 					 		</ul>
 				 		</div>
-				 		<div class="evalCon" v-show='infoTabIndex===2'>
-				 			<div class="evalRate" style="text-align: center;">
+				 		<div class="eval-con" v-show='infoTabIndex===2'>
+				 			<div class="eval-rate" style="text-align: center;">
 				 				好评率
 				 			</div>
-				 			<div style="font-size:60px;font-weight:600;color:#c71724;" class="evalRate">
+				 			<div style="font-size:60px;font-weight:600;color:#c71724;" class="eval-rate">
 				 				{{deliveryInfo.goodsInfo.goods.comment.praise_rate*100}}%
 				 			</div>
-				 			<div class="evalInfo">
+				 			<div class="eval-info">
 		 						<el-row>
 			 				   		<el-col :span='10'>
 			 				   			商品评价（{{(comment.goods_comment-0).toFixed(1)}}）
@@ -80,22 +80,22 @@
 				 		</div>
 				 	</dd>
 				 </dl>
-				 <div class="detailsList" v-show='infoTabIndex===1'>
-				 	<div class="storeImg" v-html='deliveryInfo.goodsInfo.goods.description'>
+				 <div v-show='infoTabIndex===1'>
+				 	<div class="store-img" v-html='deliveryInfo.goodsInfo.goods.description'>
 					 </div>
 				 </div>
 				 <!-- 评论区域 -->
-				 <div class="evalList" v-show='infoTabIndex===2'>
+				 <div class="eval-list" v-show='infoTabIndex===2'>
 				 	<div class="title">
-				 		<button :class='{"evalTabChecked":evalTabIndex===0}' @click='getComment(0)'>全部评论</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===1}' @click='getComment(1)'>好评（{{deliveryInfo.goodsInfo.goods.comment.praise}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===2}' @click='getComment(2)'>中评（{{deliveryInfo.goodsInfo.goods.comment.common}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===3}' @click='getComment(3)'>差评（{{deliveryInfo.goodsInfo.goods.comment.bad}}）</button>
-				 		<button :class='{"evalTabChecked":evalTabIndex===4}' @click='getComment(4)'>有图（{{deliveryInfo.goodsInfo.goods.comment.have_picture}}）</button>
+				 		<button :class='{"eval-tab-checked":evalTabIndex===0}' @click='getComment(0)'>全部评论</button>
+				 		<button :class='{"eval-tab-checked":evalTabIndex===1}' @click='getComment(1)'>好评（{{deliveryInfo.goodsInfo.goods.comment.praise}}）</button>
+				 		<button :class='{"eval-tab-checked":evalTabIndex===2}' @click='getComment(2)'>中评（{{deliveryInfo.goodsInfo.goods.comment.common}}）</button>
+				 		<button :class='{"eval-tab-checked":evalTabIndex===3}' @click='getComment(3)'>差评（{{deliveryInfo.goodsInfo.goods.comment.bad}}）</button>
+				 		<button :class='{"eval-tab-checked":evalTabIndex===4}' @click='getComment(4)'>有图（{{deliveryInfo.goodsInfo.goods.comment.have_picture}}）</button>
 				 	</div>
 				 	<!-- 初次评论列表 -->
-				 	<ul v-if='commentList' class="evalWrap">
-				 		<li v-for='(item,index) in commentList.content' class="evalBox">
+				 	<ul v-if='commentList'>
+				 		<li v-for='(item,index) in commentList.content' class="eval-box">
 				 			<dl>
 				 				<dt>
 				 					<div class="avatar">
@@ -104,16 +104,16 @@
 				 					<div v-text='item.nickname' class="name"></div>
 				 				</dt>
 				 				<dd>
-				 					<p v-text='item.content' class="evalContent"></p>
-				 					<ul class="evalImgList">
-				 						<li v-for='(imgItem,imgIndex) in item.images' @click='item.current_img=imgItem;item.currentIndex=imgIndex;' :class='{"evalImgChecked":item.currentIndex===imgIndex}'>
+				 					<p v-text='item.content' class="eval-container"></p>
+				 					<ul class="eval-img-list">
+				 						<li v-for='(imgItem,imgIndex) in item.images' @click='item.current_img=imgItem;item.currentIndex=imgIndex;' :class='{"eval-img-checked":item.currentIndex===imgIndex}'>
 				 							<img :src="imgItem">
 				 						</li>
 				 					</ul>
-				 					<div class="evalBigImg" v-show='item.current_img'>
+				 					<div class="eval-big-img" v-show='item.current_img'>
 				 						<img :src="item.current_img">
 				 					</div>
-				 					<div class="evalMsg">
+				 					<div class="eval-msg">
 				 						<div class="time">
 				 							<span>
 					 							{{item.date|dateStyleCh}}&nbsp;{{item.date|timeStyle}}
@@ -124,7 +124,7 @@
 					 					</div>
 					 					<!-- 已经登录显示状态 -->
 					 					<div class="more" v-if='hasLogin'>
-					 						<button :class="item.is_useful==='0'?'isUserful':'canscelUserful'" @click='isUseful(item.id)'>{{item.is_useful==='0'?'有用':'取消有用'}}（{{item.useful}}）</button>
+					 						<button :class="item.is_useful==='0'?'is-userful':'canscel-userful'" @click='isUseful(item.id)'>{{item.is_useful==='0'?'有用':'取消有用'}}（{{item.useful}}）</button>
 					 						<button @click='replyInfo.replyId=item.id;replyInfo.replyBol=true;replyInfo.replyIndex=index;'>回复（{{item.reply_count}}）</button>
 					 						<button @click='getAddReply(item.id,index)'>{{replyList[index].bol?'收起':'展开'}}<img src="../../../static/detailImg/replayOpen.png" height="11" width="10" v-show='!replyList[index].bol'><img src="../../../static/detailImg/replayClose.png" v-show='replyList[index].bol'></button>
 					 					</div>
@@ -138,24 +138,24 @@
 					 					<reply :reply-info='replyInfo' @reply-success='refresh'></reply>
 				 					</div>
 				 					<!-- 追加评论列表 -->
-				 					<div class="addEval" v-show='replyList[index].bol'>
+				 					<div class="add-eval" v-show='replyList[index].bol'>
 				 						<ul v-if='replyList[index].replyList'>
 				 							<li v-if='replyList[index].replyList.seller_reply.reply_content'>
-				 								<p class="addContent sellerReply">【店家回复】{{replyList[index].replyList.seller_reply.reply_content}}</p>
-				 								<div class="addTime">
+				 								<p class="add-con seller-reply">【店家回复】{{replyList[index].replyList.seller_reply.reply_content}}</p>
+				 								<div class="add-time">
 				 									{{(replyList[index].replyList.seller_reply.date_content-0)*1000|dateStyleCh}}&nbsp;{{(replyList[index].replyList.seller_reply.date_content-0)|timeStyle}}
 				 								</div>
 				 							</li> 
 					 						<li v-for='replyItem in replyList[index].replyList.reply'>
-					 							<p class="addContent">
+					 							<p class="add-con">
 					 								<span>{{replyItem.nickname}}：</span>{{replyItem.content}}
 					 							</p>
-					 							<div class="addTime">
+					 							<div class="add-time">
 					 								<span>{{(replyItem.reply_date-0)|dateStyleCh}}&nbsp;{{(replyItem.reply_date-0)|timeStyle}}</span>
 					 							</div>
 					 						</li>
 					 					</ul>
-					 					<div class="packUp">
+					 					<div class="pack-up">
 						 					<span @click='replyList[index].bol=false'>
 						 						收起<img src="../../../static/detailImg/replayClose.png" height="11" width="10" alt="">
 						 					</span>
@@ -273,11 +273,10 @@
 			},
 			// 获取评价列表
 			getComment(mask,page){
-				let _this = this ;
 				let access_token = getCookie('access_token') ;
 				let params = {
 					access_token: access_token?access_token:"",
-					goods_id: _this.deliveryInfo.params.goods_id,
+					goods_id: this.deliveryInfo.params.goods_id,
 					type: mask,
 					page: page
 				}
@@ -296,26 +295,24 @@
 						if (this.evalTabIndex!==mask) {
 							this.initAddReply(this.commentList.content.length);
 						}
-						_this.evalTabIndex = mask;
+						this.evalTabIndex = mask;
 					}
 				})
 			},
 			// 格式化追加回复列表
 			initAddReply(len){
-				let _this = this ;
-				_this.replyList = [];
+				this.replyList = [];
 				for (let i = 0; i < len; i++) {
 					let obj = new Object();
 					obj.replyList = null;
 					obj.bol=false;
-					_this.replyList.push(obj);
+					this.replyList.push(obj);
 				}
 			},
 			// 展开对应的追加回复
 			getAddReply(id,index,bol){
-				let _this =this ;
 				if (!bol) {
-					_this.replyList[index].bol = !_this.replyList[index].bol ;
+					this.replyList[index].bol = !this.replyList[index].bol ;
 				}
 				let params = {
 					id: id
@@ -338,23 +335,21 @@
 				}
 				usefulComment(params).then(res=>{
 					let {errcode,message,content} = res ;
-						if(errcode !== 0){
-							errorInfo(errcode,message) ;
-						}else {
-							this.getComment(this.evalTabIndex,1);
-						}
+					if(errcode !== 0){
+						errorInfo(errcode,message) ;
+					}else {
+						this.getComment(this.evalTabIndex,1);
+					}
 				})
 			},
 			// 回复成功之后重新刷新回复列表
 			refresh(mask){
-				let _this = this ;
-				_this.getAddReply(_this.replyInfo.replyId,_this.replyInfo.replyIndex,mask);
-				_this.getComment(_this.evalTabIndex,1);
+				this.getAddReply(this.replyInfo.replyId,this.replyInfo.replyIndex,mask);
+				this.getComment(this.evalTabIndex,1);
 			},
 			// 改变页数
 			changePage(page){
-				let _this = this ;
-				_this.getComment(_this.evalTabIndex,page);
+				this.getComment(this.evalTabIndex,page);
 			}
 		},
 		mounted(){
@@ -365,322 +360,270 @@
 	}
 </script>
 <style lang='scss' scoped>
-$text_color: #999;
-$border_color: #ccc;
-$primary:#c71724;
-$bg_title: #f5f5f5;
 	.wrap{
 		width: 1250px;
 		margin: 0px auto;
 		margin-top: 70px;
-		.container{
-			width: 100%;
-			overflow: hidden;
-			/*商品信息*/
-			.infoList{
-				dl{
-					dt{
-						width: 210px;
-						height: 210px;
-						img{
-							width: 100%;
-							height: 100%; 
-						}
-					}
-					dd{
-						width: 100%;
-						overflow: hidden;
-						.sellInfo{
-							line-height: 18px;
-							font-weight: 600;
-							margin-top: 10px;
-							height: 36px;
-							width: 100%;
-							overflow:hidden; 
-							text-overflow:ellipsis;
-							display:-webkit-box; 
-							-webkit-box-orient:vertical;
-							-webkit-line-clamp:2; 
-						}
-						/*价格信息*/
-						.priceInfo{
-							margin-top: 6px;
-							span{
-								font-size: 18px;
-								font-weight: 600;
-								color: $primary;
-							}
-							em{
-								margin-top: 4px;
-								float: right;
-								color: #999;
-							}
-						}
-					}	 
-				}
-			}
-			/*店铺小信息*/
-			.sliderBox{
-				float: left; 
-				width: 250px;
-			}
+	}
+	.container{
+		width: 100%;
+		overflow: hidden;
+		/*店铺小信息*/
+		.slider-box{
+			float: left; 
+			width: 250px;
 		}
+	}
 	/*内容区域*/
-	.contentBox{
+	.content-box{
 		width: 1000px;
 		float: left;
 		overflow: hidden;
-		.infoBox{
-			width: 100%;
-			border: 1px solid $border_color;
-			dt{
-				line-height: 36px;
-				border-bottom: 1px solid $border_color;
-				background-color: $bg_title;
-				button{
-					width: 100px;
-					height: 36px;
-					text-align: center;
-					color: $text_color;
-					background-color: transparent;
-					border: none;
-					border: 1px solid transparent;
-					outline: none;
-				}
-			   button:first-child{
-			   		border-right: 1px solid $border_color;
-			   }
-				.infoTabChecked{
-					color: $primary;
-					background-color: #fff;
-					border-right: 1px solid $border_color;
-				}
-			}
-			dd{
-				padding: 10px;
-				.detailsCon{
-					color: $text_color;
-					.detailTitle{
-						line-height: 24px;
-						font-weight: 600;
-						padding-left: 12px;
-						margin-bottom: 10px;
-					}
-					ul{
-						width: 672px;
-						padding-left: 12px;
-						overflow: hidden;
-						li {
-							float: left;
-							line-height: 30px;
-							width: 210px;
-							margin-right: 10px;
-							.el-row{
-								margin: 0px;
-
-							}
-						}
-					}
-				}
-				.evalCon{
-					overflow: hidden;
-					.evalRate{
-						float: left;
-						width: 90px;
-						height: 100px;
-						line-height: 100px;
-					}
-					.evalInfo{
-						float: left;
-						width: 240px;
-						padding: 10px 0px;
-						margin-left: 90px;
-						.el-row{
-							line-height: 28px;
-						}
-					}
-				}
-			}
-		}
-		.detailsList{
-			.storeImg{
-				margin-top: 32px;
+	}
+	.info-box{
+		width: 100%;
+		border: 1px solid #ccc;
+		dt{
+			line-height: 36px;
+			border-bottom: 1px solid #ccc;
+			background-color: #f5f5f5;
+			button{
+				width: 100px;
+				height: 36px;
 				text-align: center;
+				color: #999;
+				background-color: transparent;
+				border: none;
+				border: 1px solid transparent;
+				outline: none;
+			}
+		   button:first-child{
+		   		border-right: 1px solid #ccc;
+		   }
+		}
+		.info-tab-checked{
+			color: #c71724;
+			background-color: #fff;
+			border-right: 1px solid #ccc;
+		}
+		dd{
+			padding: 10px;
+		}
+		.details-con{
+			ul{
+				width: 672px;
+				padding-left: 12px;
+				overflow: hidden;
+			}
+			li {
+				float: left;
+				line-height: 30px;
+				width: 210px;
+				margin-right: 10px;
+				.el-row{
+					margin: 0px;
+
+				}
 			}
 		}
-		/*评论列表*/
-		.evalList{
-			margin-top: 10px;
-			.title{
-				width: 100%;
-				height: 34px;
-				border-bottom: 1px solid $border_color;
-				button{
-					width: 100px;
-					height: 32px;
-					text-align: center;
-					margin-top: 2px;
-					border: none;
-					outline: none;
-					border-bottom: 2px solid transparent;
-					background-color: transparent;
-				}
-				.evalTabChecked{
-					color: $primary;
-					border-bottom: 4px solid $primary;
-				}
-			}
-			/*评论*/
-			.evalWrap{
-				.evalBox{
-					padding: 26px 0px;
-					border-bottom: 1px solid $border_color;
-					dl{
-						overflow: hidden;
-						dt{
-							float: left;
-							width: 100px;
-							text-align: center;
-							line-height: 20px;
-							.avatar{
-								width: 50px;
-								height: 50px;
-								margin: 0px auto;
-								img{
-									width: 100%;
-									height: 100%;
-									border-radius: 50%
-								}
-							}
-							.name{
-								margin-top: 4px;
-							}
-						}
-						dd{
-							float: left;
-							width: 870px;
-							.evalContent{
-								font-size: 16px;
-								line-height: 20px;
-								margin-bottom: 18px;
-							}
-							.evalImgList{
-								margin-bottom: 18px;
-								padding-bottom: 10px;
-								overflow: hidden;
-								li{
-									float: left;
-									width: 40px;
-									height: 40px;
-									margin-right: 10px;
-									padding: 0px;
-									cursor: pointer;
-									border: 2px solid transparent;
-									img{
-										width: 100%;
-										height: 100%;
-									}
-								}
-								.evalImgChecked{
-									border: 2px solid $primary;
-								}
-							}
-							.evalBigImg{
-								width: 230px;
-								height: 230px;
-								border: 1px solid  $border_color;
-								margin-bottom: 10px;
-								img{
-									width: 100%;
-									height: 100%;
-								}
-							}
-							.evalMsg{
-								overflow: hidden;
-								color: $text_color;
-								.time{
-									float: left;
-									strong{
-										font-weight: 400;
-										margin-left: 30px;
-									}
-								}
-								.more{
-									float: right;
-									.isUserful{
-										color: $primary;
-										border: 1px solid $primary;
-										border-radius: 4px;
-									}
-									.canscelUserful{
-										color: $text_color;
-										border: 1px solid $text_color;
-										border-radius: 4px;
-									}
-									button{
-										color: #2c82d3;
-										padding: 2px 6px;
-										background-color: transparent;
-										outline: none;
-										border: none;
-										img{
-											vertical-align: -2px;
-										}
-									}
-									button:last-child{
-										color: $text_color;
-									}
-								}
-							}
-							/*追加评论*/
-							.addEval{
-								margin-top: 24px;
-								ul{
-									border-bottom: 1px dashed $border_color;
-									li{
-										padding: 18px 38px 10px 12px;
-										border-top: 1px dashed $border_color;
-										.addContent{
-											font-size: 14px;
-											line-height: 20px;
-											span{
-												color: #0176ac;
-											}
-										}
-										.sellerReply{
-											color: $primary;
-										}
-										.addTime{
-											overflow: hidden;
-											span{
-												float: right;
-												line-height: 36px;
-												color: $text_color;
-											}
-										}
-									}
-								}
-								.packUp{
-									text-align: center;
-									margin-top: 14px;
-									color: $text_color;
-									span{
-										cursor: pointer;
-									}
-									img{
-										margin-left: 12px;
-										vertical-align: -2px;
-									}
-								}
-							}
-						}
-					}
-				}
+		.details-title{
+			line-height: 24px;
+			font-weight: 600;
+			padding-left: 12px;
+			margin-bottom: 10px;
+		}
+		.eval-con{
+			overflow: hidden;
+		}
+		.eval-rate{
+			float: left;
+			width: 90px;
+			height: 100px;
+			line-height: 100px;
+		}
+		.eval-info{
+			float: left;
+			width: 240px;
+			padding: 10px 0px;
+			margin-left: 90px;
+			.el-row{
+				line-height: 28px;
 			}
 		}
 	}
-} 
-.el-dialog .el-dialog--small{
-	width: 360px;
-}
+	.store-img{
+		margin-top: 32px;
+		text-align: center;
+	}
+	/*评论列表*/
+	.eval-list{
+		margin-top: 10px;
+		.title{
+			width: 100%;
+			height: 34px;
+			border-bottom: 1px solid #ccc;
+			button{
+				width: 100px;
+				height: 32px;
+				text-align: center;
+				margin-top: 2px;
+				border: none;
+				outline: none;
+				border-bottom: 2px solid transparent;
+				background-color: transparent;
+			}
+		}
+		.eval-tab-checked{
+			color: #c71724;
+			border-bottom: 4px solid #c71724;
+		}
+	}
+	/*评论*/
+	.eval-box{
+		padding: 26px 0px;
+		border-bottom: 1px solid #ccc;
+		dl{
+			overflow: hidden;
+		}
+		dt{
+			float: left;
+			width: 100px;
+			text-align: center;
+			line-height: 20px;
+			.avatar{
+				width: 50px;
+				height: 50px;
+				margin: 0px auto;
+				img{
+					width: 100%;
+					height: 100%;
+					border-radius: 50%
+				}
+			}
+			.name{
+				margin-top: 4px;
+			}
+		}
+		dd{
+			float: left;
+			width: 870px;
+		}
+	}
+	.eval-container{
+		font-size: 16px;
+		line-height: 20px;
+		margin-bottom: 18px;
+	}
+	.eval-img-list{
+		margin-bottom: 18px;
+		padding-bottom: 10px;
+		overflow: hidden;
+		li{
+			float: left;
+			width: 40px;
+			height: 40px;
+			margin-right: 10px;
+			padding: 0px;
+			cursor: pointer;
+			border: 2px solid transparent;
+		}
+		img{
+			width: 100%;
+			height: 100%;
+		}
+		.eval-img-checked{
+			border: 2px solid #c71724;
+		}
+	}
+	.eval-big-img{
+		width: 230px;
+		height: 230px;
+		border: 1px solid  #ccc;
+		margin-bottom: 10px;
+		img{
+			width: 100%;
+			height: 100%;
+		}
+	}
+	.eval-msg{
+		overflow: hidden;
+		color: #999;
+		.time{
+			float: left;
+			strong{
+				font-weight: 400;
+				margin-left: 30px;
+			}
+		}
+		.more{
+			float: right;
+			button{
+				color: #2c82d3;
+				padding: 2px 6px;
+				background-color: transparent;
+				outline: none;
+				border: none;
+				img{
+					vertical-align: -2px;
+				}
+			}
+			button:last-child{
+				color: #999;
+			}
+		}
+		.is-userful{
+			color: #c71724;
+			border: 1px solid #c71724;
+			border-radius: 4px;
+		}
+		.canscel-userful{
+			color: #999;
+			border: 1px solid #999;
+			border-radius: 4px;
+		}
+	}
+	/*追加评论*/
+	.add-eval{
+		margin-top: 24px;
+		ul{
+			border-bottom: 1px dashed #ccc;
+		}
+		li{
+			padding: 18px 38px 10px 12px;
+			border-top: 1px dashed #ccc;
+		}
+		.add-con{
+			font-size: 14px;
+			line-height: 20px;
+			span{
+				color: #0176ac;
+			}
+		}
+		.seller-reply{
+			color: #c71724;
+		}
+		.add-time{
+			overflow: hidden;
+			span{
+				float: right;
+				line-height: 36px;
+				color: #999;
+			}
+		}
+	}
+	.pack-up{
+		text-align: center;
+		margin-top: 14px;
+		color: #999;
+		span{
+			cursor: pointer;
+		}
+		img{
+			margin-left: 12px;
+			vertical-align: -2px;
+		}
+	}
+	.el-dialog .el-dialog--small{
+		width: 360px;
+	}
 </style>

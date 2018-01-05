@@ -1,12 +1,8 @@
 <template>
 	<div class="wrap">
-		<h4 class="title">
-			商家入驻
-		</h4>
+		<h4 class="title">商家入驻</h4>
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px"  label-position='right'>
-			<div class="addInfo">
-				公司信息
-			</div>
+			<div class="color-primary add-info">公司信息</div>
 		    <el-form-item label="合伙人编号">
 		      	<el-input v-model="ruleForm.num" size='small'></el-input>
 		    </el-form-item>
@@ -71,7 +67,7 @@
 		    	<el-col :span='8' style='line-height:230px;'>示例图片</el-col>
 		    	<el-col :span='16'><img src="../../../static/centerImg/licence.png" width="160" height="230"></el-col>
 		    </el-row>
-		    <div class="addInfo">
+		    <div class="color-primary add-info">
 				联系信息
 			</div>
 			<el-form-item label="姓名" prop='contactName'>
@@ -261,63 +257,54 @@ import {MessageBox,Message} from  'element-ui'
 		      	 location.hash = view ;
 		    },
 			licenseBeforeUpload(){
-				let _this = this ;
-				let len = _this.$refs.license.uploadFiles.length;
+				let len = this.$refs.license.uploadFiles.length;
 				if (len>1) {
-		    		_this.$refs.license.uploadFiles.splice(0,1);
+		    		this.$refs.license.uploadFiles.splice(0,1);
 		    	}
 			},
 			licenseRemove(file, fileList) {
-				let _this = this ;
-		        _this.licenseList = new Array ;
+		        this.licenseList = new Array ;
 		    },
 			licenseSuccess (res, file, fileList) {
-		    	let _this = this ;
-	    		_this.licenseList[0] = new Object ;
+	    		this.licenseList[0] = new Object ;
 		    	// 获取图片的name
-		    	_this.licenseList[0].name = res.content.name;
+		    	this.licenseList[0].name = res.content.name;
 		    	// 获取图片url
-		    	_this.licenseList[0].url = res.content.url;
+		    	this.licenseList[0].url = res.content.url;
 		    	// 获取图片size
-		    	_this.licenseList[0].url = res.content.size; 
+		    	this.licenseList[0].url = res.content.size; 
 	    	},
 	    	idCardBeforeUpload1(){
-				let _this = this ;
-				let len = _this.$refs.idCard1.uploadFiles.length;
+				let len = this.$refs.idCard1.uploadFiles.length;
 				if (len>1) {
-		    		_this.$refs.idCard1.uploadFiles.splice(0,1);
+		    		this.$refs.idCard1.uploadFiles.splice(0,1);
 		    	}
 			},
 			idCardRemove1(file, fileList) {
-				let _this = this ;
-		        _this.fileList1 = new Array ;
+		        this.fileList1 = new Array ;
 		    },
 	    	idCardSuccess1 (res, file, fileList) {
-		    	let _this = this ;
-		    	_this.fileList1[0] = new Object ;
+		    	this.fileList1[0] = new Object ;
 		    	// 获取图片的name
-		    	_this.fileList1[0].name = res.content.name;
+		    	this.fileList1[0].name = res.content.name;
 		    	// 获取图片url
-		    	_this.fileList1[0].url = res.content.url;
+		    	this.fileList1[0].url = res.content.url;
 	    	},
 	    	idCardBeforeUpload2(){
-				let _this = this ;
-				let len = _this.$refs.idCard2.uploadFiles.length;
+				let len = this.$refs.idCard2.uploadFiles.length;
 				if (len>1) {
-		    		_this.$refs.idCard2.uploadFiles.splice(0,1);
+		    		this.$refs.idCard2.uploadFiles.splice(0,1);
 		    	}
 			},
 			idCardRemove2(file, fileList) {
-				let _this = this ;
-		        _this.fileList2 = new Array ;
+		        this.fileList2 = new Array ;
 		    },
 	    	idCardSuccess2 (res, file, fileList) {
-		    	let _this = this ;
-		    	_this.fileList2[0] = new Object ;
+		    	this.fileList2[0] = new Object ;
 		    	// 获取图片的name
-		    	_this.fileList2[0].name = res.content.name;
+		    	this.fileList2[0].name = res.content.name;
 		    	// 获取图片url
-		    	_this.fileList2[0].url = res.content.url;
+		    	this.fileList2[0].url = res.content.url;
 	    	},
 		    setOption(type,event){
 	            if(type === 'proIndex'){
@@ -362,8 +349,7 @@ import {MessageBox,Message} from  'element-ui'
 	    		})
 	    	},
 		    submitForm(formName) {
-		    	let _this = this ;
-		    	if (_this.complete) {
+		    	if (this.complete) {
 		    		this.$refs[formName].validate((valid) => {
 			            if (valid) {
 			                let params = {
@@ -452,60 +438,55 @@ import {MessageBox,Message} from  'element-ui'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$primary:#c71724;
-$text_color: #666;
-$bg_color: #e84848;
 	.wrap{
 		width: 1080px;
-		.title{
-			font-size: 14px;
-			height: 40px;
-			line-height: 40px;
-			margin-bottom: 30px;
-			border-bottom: 1px solid $border_color;
+	}
+	.title{
+		font-size: 14px;
+		height: 40px;
+		line-height: 40px;
+		margin-bottom: 30px;
+		border-bottom: 1px solid #ccc;
+	}
+	.add-info{
+		height: 58px;
+		line-height: 58px;
+		font-weight: 600;
+		font-size: 14px;
+	}
+	.el-form{
+		width: 420px;
+		.el-row{
+			width: 300px;
 		}
-		.addInfo{
-			height: 58px;
-			line-height: 58px;
-			font-weight: 600;
-			font-size: 14px;
-			color: $primary;
+		.el-col-8{
+			padding-right: 12px;
+			color: #666;
+			text-align: right;
 		}
-		.el-form{
-			width: 420px;
-			.el-row{
-				width: 300px;
-				.el-col-8{
-					padding-right: 12px;
-					color: $text_color;
-					text-align: right;
-				}
-			}
-			.area{
-				overflow: hidden;
-				padding-top: 4px;
-				.el-col{
-					float: left;
-					width: 90px;
-				    select{
-				    	background-color: #fff;
-					    background-image: none;
-					    border-radius: 4px;
-					    border: 1px solid rgb(217, 193, 191);
-					    box-sizing: border-box;
-					    color: rgb(61, 33, 31);
-					    display: block;
-					    font-size: inherit;
-					    height: 30px;
-					    line-height: 1;
-					    outline: none;
-					    padding: 3px 10px;
-					    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-					    width: 100%;
-				    }
-				}
-			}
+	}
+	.area{
+		overflow: hidden;
+		padding-top: 4px;
+		.el-col{
+			float: left;
+			width: 90px;
+		    select{
+		    	background-color: #fff;
+			    background-image: none;
+			    border-radius: 4px;
+			    border: 1px solid rgb(217, 193, 191);
+			    box-sizing: border-box;
+			    color: rgb(61, 33, 31);
+			    display: block;
+			    font-size: inherit;
+			    height: 30px;
+			    line-height: 1;
+			    outline: none;
+			    padding: 3px 10px;
+			    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+			    width: 100%;
+		    }
 		}
 	}
 </style>

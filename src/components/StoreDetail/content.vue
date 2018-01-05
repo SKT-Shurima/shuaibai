@@ -7,7 +7,7 @@
 				<classify :sellerCat='seller_cat' @getCat='getCatId' :seller-id='seller_id' style='margin-top: 40px;'></classify>
 				<hot-sell></hot-sell>
 			</div>
-			<div class="listWrap">
+			<div class="list-wrap">
 				<goods-list :goods='goods' @getGoods='initGoods'></goods-list>
 			</div>
 		</div>
@@ -45,8 +45,7 @@ import goodsList from '../storeDetail/goodsList'
 		},
 		methods:{
 			commonAPI(){
-				let _this = this ; 
-				let params = _this.params ;
+				let params = this.params ;
 				getSellerInfo(params).then(res=>{
 					let {errcode,message,content} = res ;
 					if(errcode !== 0){
@@ -67,17 +66,15 @@ import goodsList from '../storeDetail/goodsList'
 				})
 			},
 			getCatId(id){
-				let _this = this ;
-				_this.params.seller_cat_id = id ;
-				_this.commonAPI(); 
+				this.params.seller_cat_id = id ;
+				this.commonAPI(); 
 			},
 			initGoods(params){
-				let _this = this ;
-				_this.params.min_price = params.min_price ;
-				_this.params.max_price = params.max_price ;
-				_this.params['sort'] =params['sort'] ;
-				_this.params.page = params.page ;
-				_this.commonAPI();
+				this.params.min_price = params.min_price ;
+				this.params.max_price = params.max_price ;
+				this.params['sort'] =params['sort'] ;
+				this.params.page = params.page ;
+				this.commonAPI();
 				
 			}
 		},
@@ -98,19 +95,19 @@ import goodsList from '../storeDetail/goodsList'
 <style lang='scss' scoped>
 	.wrap{
 		width: 100%;
-		.container{
-			width: 1250px;
-			margin: 20px auto;
-			overflow: hidden;
-			.slider{
-				float: left;
-				width: 230px;
-				margin-right: 18px;
-			}
-			.listWrap{
-				float: left;
-				width: 1000px;
-			}
-		}
+	}
+	.container{
+		width: 1250px;
+		margin: 20px auto;
+		overflow: hidden;
+	}
+	.slider{
+		float: left;
+		width: 230px;
+		margin-right: 18px;
+	}
+	.list-wrap{
+		float: left;
+		width: 1000px;
 	}
 </style>

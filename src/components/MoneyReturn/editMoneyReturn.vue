@@ -9,7 +9,7 @@
 		    </el-form-item>
 		    <el-form-item label="退款金额" prop='account'>
 		    	<el-input v-model="form.account" style='width:200px;'></el-input>
-		        <span>最多{{goodsInfo.price|currency}}</span>
+		        <span class='color-6'>最多{{goodsInfo.price|currency}}</span>
 		    </el-form-item>
 		    <el-form-item label="退款说明" >
 		        <el-input v-model="form.explain" type='textarea'></el-input>
@@ -28,7 +28,7 @@
 				</el-upload>
 		    </el-form-item>
 		</el-form>
-		<div class="submitBtn">
+		<div class="submit-btn">
 			 <el-button type="primary" @click="submitForm('form')" size='small'>提交申请</el-button>
 		</div>
 	</div>
@@ -144,12 +144,11 @@ export default {
 			}
 	    },
 	    handleRemove(file, fileList) {
-	        let _this = this ;
 	        let size = file.size;
-	        let list = _this.fileList;
+	        let list = this.fileList;
 	        for(let i= 0;i<list.length;i++){
 	        	if (list[i].size === size) {
-	        		_this.fileList.splice(i,1);
+	        		this.fileList.splice(i,1);
 	        		return 
 	        	}
 	        	
@@ -186,29 +185,25 @@ export default {
 	
 </script>
 <style lang='scss' scoped>
-$text_color: #666;
-	.wrap{
-		.title{
-			font-size: 16px;
-			font-weight: 600;
-		}
-		.el-form{
-			width: 426px;
-			margin-left: 80px;
-			margin-top: 40px;
-			.el-form-item{
-				margin-bottom: 20px;
-				span{
-					margin-left: 20px;
-					color: $text_color;
-				}
+	.title{
+		font-size: 16px;
+		font-weight: 600;
+	}
+	.el-form{
+		width: 426px;
+		margin-left: 80px;
+		margin-top: 40px;
+		.el-form-item{
+			margin-bottom: 20px;
+			span{
+				margin-left: 20px;
 			}
 		}
-		.submitBtn{
-			margin-left: 170px;
-			.el-button{
-				width: 100px;
-			}
+	}
+	.submit-btn{
+		margin-left: 170px;
+		.el-button{
+			width: 100px;
 		}
 	}
 </style>

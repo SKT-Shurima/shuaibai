@@ -1,41 +1,41 @@
 <template>
 	<div class="theme" v-if='showBol'>
 		<el-row>
-			<el-col :span='12' class='snapup_left'>
+			<el-col :span='12' class='border-f0 snapup-l'>
 				<dl>
 					<dt style="width:270px;height:270px;">
 						<img :src="theme.goods.goods[0].cover" width="100%" height="100%">
 					</dt>
 					<dd>
-						<div class="show_info" style='margin-top:8px;' v-text='theme.goods.goods[0].name'></div>
-	 					<div class="sell_info">
-	 						<span>￥1.00</span>
-	 						<em>{{theme.goods.goods[0].shop_price|currency}}</em>
+						<div class="ellipsis-2 show-info" style='margin-top:8px;' v-text='theme.goods.goods[0].name'></div>
+	 					<div class="color-primary sell-info">
+	 						<span class="color-primary">￥1.00</span>
+	 						<em class="color-6">{{theme.goods.goods[0].shop_price|currency}}</em>
 	 					</div>
-	 					<div class="snapup_btn_box" :class='theme.goods.goods[0].date_start*1000-nowTime >= 0?"start":theme.goods.goods[0].date_end*1000-nowTime >= 0?"end":"over"'>
+	 					<div class="snapup-btn-box" :class='theme.goods.goods[0].date_start*1000-nowTime >= 0?"start-bg":theme.goods.goods[0].date_end*1000-nowTime >= 0?"end-bg":"over-bg"'>
 		 					<dl v-if='theme.goods.goods[0].date_start*1000-nowTime>=0'>
-		 						<dt class="snapup_time">
+		 						<dt class="snapup-time">
 		 							<span>{{theme.goods.goods[0].date_start*1000-nowTime|countdown}}</span>
 		 							<em>后开始</em>
 		 						</dt>
-		 						<dd class="snapup_btn">
+		 						<dd class="snapup-btn">
 		 							<el-button type='text'  @click='goodDetail(theme.goods.goods[0].goods_id)'>立即前往</el-button>
 		 						</dd>
 	 						</dl>
 	 						<dl v-else-if='theme.goods.goods[0].date_end*1000-nowTime>= 0'>
-	 							<dt class="snapup_time">
+	 							<dt class="snapup-time">
 		 							<span>{{theme.goods.goods[0].date_end*1000-nowTime|countdown}}</span>
 		 							<em>后结束</em>
 		 						</dt>
-		 						<dd class="snapup_btn">
+		 						<dd class="snapup-btn">
 		 							<el-button type='text'  @click='goodDetail(theme.goods.goods[0].goods_id)'>立即抢购</el-button>
 		 						</dd>
 	 						</dl>
 	 						<dl v-else>
-	 							<dt class="snapup_time">
+	 							<dt class="snapup-time">
 		 							<span>已结束</span>
 		 						</dt>
-		 						<dd class="snapup_btn">
+		 						<dd class="snapup-btn">
 		 							<el-button type='text'  @click='goodDetail(theme.goods.goods[0].goods_id)'>立即查看</el-button>
 		 						</dd>
 	 						</dl>
@@ -43,57 +43,45 @@
 					</dd>
 				</dl>
 			</el-col>
-			<el-col :span='12' class='snapup_right'>
+			<el-col :span='12' class='border-f0 snapup-right'>
 			<!-- 主题 一元抢购 -->
 				<ul>
 					<li v-for='(item,index) in theme.goods.goods' v-if='index!==0'>
-						<dl class="goods_info">
+						<dl class="goods-info">
 							<dt>
 								<img :src="item.cover">
 							</dt>
 							<dd>
-								<div class="show_info" v-text='item.name'></div>
-								<div class="sell_info">
-								<span>￥1.00</span>
+								<div class="ellipsis-2 show-info" v-text='item.name'></div>
+								<div class="sell-info">
+									<span class="color-primary">￥1.00</span>
 								</div>
-								<div class="goods_preprice">{{item.shop_price|currency}}</div>
+								<div class="color-6 goods-preprice">{{item.shop_price|currency}}</div>
 							</dd>
 						</dl>
 						<dl class="start" v-if='item.date_start*1000-nowTime>=0'>
 							<dt>
-								<span>
-								{{item.date_start*1000-nowTime|countdown}}
-								</span>
-								<em>
-									后开始
-								</em>
+								<span>{{item.date_start*1000-nowTime|countdown}}</span>
+								<em>后开始</em>
 							</dt>
-							<dd @click='goodDetail(item.goods_id)'>
+							<dd  class="color-primary" @click='goodDetail(item.goods_id)'>
 								立即前往
 							</dd>
 						</dl>
 						<dl class="end" v-else-if='theme.goods.goods[index].date_end*1000-nowTime>=0'>
 							<dt>
-								<span>
-								{{theme.goods.goods[index].date_end*1000-nowTime|countdown}}
-								</span>
-								<em>
-									后结束
-								</em>
+								<span>{{theme.goods.goods[index].date_end*1000-nowTime|countdown}}</span>
+								<em>后结束</em>
 							</dt>
-							<dd @click='goodDetail(item.goods_id)'>
+							<dd class="color-primary" @click='goodDetail(item.goods_id)'>
 								立即抢购
 							</dd>
 						</dl>
-						<dl class="over" v-else>
+						<dl class="over-bg over" v-else>
 							<dt>
-								<span>
-								   已结束
-								</span>
+								<span>已结束</span>
 							</dt>
-							<dd @click='goodDetail(item.goods_id)'>
-								立即查看
-							</dd>
+							<dd class="color-primary" @click='goodDetail(item.goods_id)'>立即查看</dd>
 						</dl>
 					</li>
 				</ul>
@@ -142,190 +130,149 @@
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$start_bg: #00bf8b;
-$end_bg: #f13f4c;
-$over_bg: #aaa;
-$btn_bg: #fff882;
-$text_color: #666;
-$border_list: #f0f0f0;
 	.theme{
 		height: 498px;
-		.start{
-			background-color: $start_bg;
+	}
+	.el-row{
+		width: 100%;
+		height: 498px;
+		margin-top: 10px;
+	}
+	.snapup-l{
+		padding: 18px;
+		height: 498px;
+		border-right: none;
+		dt{
+			img{
+				width: 100%;
+			}
 		}
-		.end{
-			background-color: $end_bg;
+		.show-info{
+			height: 36px;
+			line-height: 18px;
 		}
-		.over{
-			background-color: $over_bg;
-		}
-		.show_info{
+		.sell-info{
 			overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-		  	-webkit-line-clamp: 2;
-	  	 	-webkit-box-orient: vertical;
+			margin: 14px 0px;
+			span{
+				float: left;
+				font-size: 18px;
+			}
+			em{
+				float: right;
+				font-size: 14px;
+				text-decoration: line-through;
+			}
 		}
-		.el-row{
+		.snapup-btn-box{
+			width: 100%;
+			height: 100px;
+			border-radius: 4px;
+			padding: 10px;
+		}
+		.snapup-time{
+			height: 42px;
+			padding-top: 8px;
+			padding-bottom: 14px;
+			text-align: center;
+			color: #fff;
+			span{
+				font-size: 24px;
+			}
+			em{
+				vertical-align: baseline;
+			}
+		}
+		.snapup-btn{
+			width: 100%;
+			height: 32px;
+			line-height: 32px;
+			margin: 4px auto;
+			font-size: 16px;
+			font-weight: 600;
+			text-align: center;
+			.el-button{
+				width: 120px;
+				height: 32px;
+				border-radius: 16px;
+				background-color: #fff882;
+			}
+		}
+	}
+	.snapup-right{
+		border-bottom: none;
+		ul{
 			width: 100%;
 			height: 498px;
-			margin-top: 10px;
-			.snapup_left{
-				padding: 18px;
-				height: 498px;
-				border-left: 1px solid $border_list;
-				border-top: 1px solid $border_list;
-				border-bottom: 1px solid $border_list;
-				dl{
-					width: 100%;
-					dt,dd{
-						width: 100%;
-					}
-					dt{
-						img{
-							width: 100%;
-						}
-					}
-					dd{
-						.show_info{
-							height: 36px;
-							line-height: 18px;
-						}
-						.sell_info{
-							overflow: hidden;
-							margin: 14px 0px;
-							span{
-								float: left;
-								font-size: 18px;
-								color: $primary;
-							}
-							em{
-								float: right;
-								font-size: 14px;
-								text-decoration: line-through;
-								color: $text_color;
-							}
-						}
-	  					.snapup_btn_box{
-	  						width: 100%;
-	  						height: 100px;
-	  						border-radius: 4px;
-	  						padding: 10px;
-	  		 				.snapup_time{
-	  							height: 42px;
-	  							padding-top: 8px;
-	  							padding-bottom: 14px;
-	  							text-align: center;
-	  							color: #fff;
-	  							span{
-	  								font-size: 24px;
-	  							}
-	  							em{
-	  								vertical-align: baseline;
-	  							}
-	  						}
-	  						.snapup_btn{
-	  							width: 100%;
-	  							height: 32px;
-	  							line-height: 32px;
-	  							margin: 4px auto;
-	  							font-size: 16px;
-	  							font-weight: 600;
-	  							text-align: center;
-	  							.el-button{
-	  								width: 120px;
-	  								height: 32px;
-	  								border-radius: 16px;
-	  								background-color: $btn_bg;
-	  							}
-	  						}
-	  					}
-					}
-					
-				}
+		}
+		li{
+			width: 100%;
+			padding: 10px;
+			border-bottom: 1px solid #f0f0f0;
+			height: 166px;
+		}
+	}
+	.goods-info{
+		overflow: hidden;
+		margin-bottom: 12px;
+		dt{
+			float: left;
+			width: 90px;
+			height: 90px;
+			img{
+				width: 100%;
+				height: 100%;
 			}
-			.snapup_right{
-				border-top: 1px solid $border_list;
-				border-left: 1px solid $border_list;
-				border-right: 1px solid $border_list;
-				ul{
-					width: 100%;
-					height: 498px;
-					li{
-						width: 100%;
-						padding: 10px;
-						border-bottom: 1px solid $border_list;
-						height: 166px;
-						.goods_info{
-							overflow: hidden;
-							margin-bottom: 12px;
-							dt{
-								float: left;
-								width: 90px;
-								height: 90px;
-								img{
-									width: 100%;
-									height: 100%;
-								}
-							}
-							dd{
-								float: left;
-								margin-left: 10px;
-								width: 182px;
-								.show_info{
-									width: 100%;
-									height: 36px;
-									line-height: 18px;
-								}
-								.sell_info{
-									margin: 4px 0px;
-									font-size: 18px;
-									color: $primary;
-								}
-								.goods_preprice{
-									font-size: 14px;
-									color: $text_color;
-									text-decoration: line-through;
-								}
-							}
-						}
-						.start,.end,.over{
-							width: 100%;
-							height: 40px;
-							padding-left: 14px;
-							padding-right: 14px;
-							padding-top: 7px;
-							padding-bottom: 7px;
-							overflow: hidden;
-							dt{
-								float: left;
-								color: #fff;
-								span{
-									font-size: 16px;
-									line-height: 28px;
-									font-weight: 600;
-								}
-								em{
-									margin-left: 4px;
-									vertical-align: 2px;
-								}
-							}
-							dd{
-								float: right;
-								width: 76px;
-								height: 26px;
-								line-height: 26px;
-								border-radius: 13px;
-								background-color: $btn_bg;
-								color: $primary;
-								text-align: center;
-								cursor: pointer;
-							}
-						}
-					}
-				}
+		}
+		dd{
+			float: left;
+			margin-left: 10px;
+			width: 182px;
+			.show-info{
+				width: 100%;
+				height: 36px;
+				line-height: 18px;
 			}
+			.sell-info{
+				margin: 4px 0px;
+				font-size: 18px;
+			}
+			.goods-preprice{
+				font-size: 14px;
+				text-decoration: line-through;
+			}
+		}
+	}
+	.start,.end,.over{
+		width: 100%;
+		height: 40px;
+		padding-left: 14px;
+		padding-right: 14px;
+		padding-top: 7px;
+		padding-bottom: 7px;
+		overflow: hidden;
+		dt{
+			float: left;
+			color: #fff;
+			span{
+				font-size: 16px;
+				line-height: 28px;
+				font-weight: 600;
+			}
+			em{
+				margin-left: 4px;
+				vertical-align: 2px;
+			}
+		}
+		dd{
+			float: right;
+			width: 76px;
+			height: 26px;
+			line-height: 26px;
+			border-radius: 13px;
+			background-color: #fff882;
+			text-align: center;
+			cursor: pointer;
 		}
 	}
 </style>

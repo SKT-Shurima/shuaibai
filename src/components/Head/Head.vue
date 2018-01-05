@@ -1,11 +1,11 @@
 <template>
 	<div class="wrap">
-		<div class="head_wrap">
-		    <div class="headTop">
+		<div class="head-wrap">
+		    <div class="head-top">
 		    	<v-headtop></v-headtop>
 		    </div>
 		</div>
-		<div class="headSearch">
+		<div class="head-search">
 			<v-headsearch></v-headsearch>
 		</div>
 	</div>
@@ -26,23 +26,23 @@ import vHeadsearch from './headSearch.vue'
 	.wrap{
 		width: 100%;
 		margin-bottom: 32px;
-		.head_wrap{
-			width: 100%;
-			height: 30px;
-			line-height: 30px;
-			background: #f7f7f7;
-			border-bottom: #eee solid 1px;
-			line-height: 30px;
-			position: relative;
-			z-index: 90;
-			.headTop{
-				width: 1250px;
-				margin: 0px auto;
-			}
-		}
-		.headSearch{
-			width: 1250px;
-			margin: 0px auto;
-		}
+	}
+	.head-wrap{
+		width: 100%;
+		height: 30px;
+		line-height: 30px;
+		background: #f7f7f7;
+		border-bottom: #eee solid 1px;
+		line-height: 30px;
+		position: relative;
+		z-index: 90;
+	}
+	.head-top{
+		width: 1250px;
+		margin: 0px auto;
+	}
+	.head-search{
+		width: 1250px;
+		margin: 0px auto;
 	}
 </style>

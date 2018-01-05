@@ -1,27 +1,21 @@
 <template>
 	<div class="recommend">
-	 	<div class="title">
-	 		<i class="icon"></i>
+	 	<div class="color-6 f5-bg title">
+	 		<i class="primary-bg icon"></i>
 	 		<span>店内推荐</span>
 	 		<strong @click='init'>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
 	 	</div>
 	 	<ul v-if='storeRecommend'>
-	 		<li class="infoList" v-for='item in storeRecommend'>
+	 		<li class="info-list" v-for='item in storeRecommend'>
 	 			<dl @click='goodDetail(item.goods_id)'>
 					<dt>
 						<img :src="item.cover">
 					</dt>
 					<dd>
-						<div class="sellInfo">
-							{{item.name}}
-						</div>
-						<div class="priceInfo">
-							<span>
-								{{item.shop_price|currency}}
-							</span>
-							<em>
-								{{item.sale_count}}人付款
-							</em>
+						<div class="ellipsis-2 sell-info">{{item.name}}</div>
+						<div class="price-info">
+							<span class="color-primary">{{item.shop_price|currency}}</span>
+							<em class="color-9">{{item.sale_count}}人付款</em>
 						</div>
 					</dd>
 				</dl>
@@ -75,10 +69,6 @@ import {currency} from '../../common/js/filter'
 	}
 </script>
 <style lang='scss' scoped>
-$text_color: #666;
-$primary:#c71724;
-$bg_title: #f5f5f5;
-$border_color: #f0f0f0; 
 	 .recommend{
 	 	width: 100%;
 	 	overflow: hidden;
@@ -88,13 +78,10 @@ $border_color: #f0f0f0;
 			height: 40px;
 			padding: 10px;
 			line-height: 20px;
-			color: $text_color;
-			background-color: $bg_title;
 			.icon{
 				display: inline-block;
 				width: 8px;
 				height: 20px;
-				background-color: $primary;
 			}
 			span{
 				font-size: 16px;
@@ -116,35 +103,49 @@ $border_color: #f0f0f0;
 			overflow: hidden;
 			margin-top: 10px;
 			border: {
-				left:1px solid $border_color;
-				top:1px solid $border_color;
-			}
-			.infoList{
-				width: 25%;
-				height: 320px;
-				float: left;
-				padding: 15px;
-				border: {
-	  				right:1px solid $border_color;
-	  				bottom:1px solid $border_color;
-	  			}
-				dl{
-					cursor: pointer;
-				}
-				dt{
-					width: 216px;
-					height: 216px;
-				}
-			}
-			.infoList:hover{
-				border-color: $border_color;
-				box-shadow: 0 0 2px 2px $border_color; 
+				left:1px solid #f0f0f0;
+				top:1px solid #f0f0f0;
 			}
 		}
-		.youLove{
-			width: 100%;
-			overflow: hidden;
+		.info-list{
+			width: 25%;
+			height: 320px;
+			float: left;
+			padding: 15px;
+			border: {
+  				right:1px solid #f0f0f0;
+  				bottom:1px solid #f0f0f0;
+  			}
+			dl{
+				cursor: pointer;
+			}
+			dt{
+				width: 216px;
+				height: 216px;
+			}
+			img{
+				width: 100%;
+				height: 100%;
+			}
+			.sell-info{
+				height: 36px;
+				line-height: 18px;
+				margin-top: 10px;
+			}
+			.price-info{
+				margin-top: 6px;
+				span{
+					font-size: 18px;
+				}
+				em{
+					margin-top: 4px;
+					float: right;
+				}
+			}
 		}
- }
-
+		.info-list:hover{
+			border-color: #f0f0f0;
+			box-shadow: 0 0 2px 2px #f0f0f0; 
+		}
+ 	}
 </style>

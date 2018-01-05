@@ -1,31 +1,32 @@
 <template>
 	<div class="wrap">
-		<div class="update_box">
-			<el-row class="themeTitle">
+		<div class="update-box">
+			<el-row class="theme-title">
 		 		<el-col :span='6' :offset='1'>
 		 			<div class="slider"></div>
 		 		</el-col>
 		 		<el-col :span='10'>
 		 			<div class="text">
-		 				<a href="specialActivities.html" style='color:#656565;'>
-		 				<img src="../../../static/indexImg/newDay.png" height="24" width="24">
-		 				双十二活动</a>
+		 				<a :href="'specialActivities.html?title='+newGoods.nav_title" style='color:#656565;'>
+		 					<img src="../../../static/indexImg/newDay.png" height="24" width="24">
+		 					{{newGoods.nav_title}}
+		 				</a>
 		 			</div>
 		 		</el-col>
 		 		<el-col :span='6' :offset='1'>
 		 			<div class="slider"></div>
 		 		</el-col>
 		 	</el-row>
-		 	<el-row class='update_list' v-if='newGoods'>
+		 	<el-row class='update-list' v-if='newGoods'>
 		 		<el-col :span='4' v-for='item in newGoods.goods' >
 		 			<dl>
 		 				<dt>
 		 					<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 		 				</dt>
 		 				<dd>
-		 					<div class="show_info" v-text='item.name'></div>
-		 					<div class="sell_info">
-		 						<span>{{item.shop_price|currency}}</span>
+		 					<div class="color-3 ellipsis-2 show-info" v-text='item.name'></div>
+		 					<div class="sell-info">
+		 						<span class="color-primary">{{item.shop_price|currency}}</span>
 		 						<em>{{item.sale_count}}人付款</em>
 		 					</div>
 		 				</dd>
@@ -33,22 +34,46 @@
 		 		</el-col>
 		 	</el-row>
 		</div>
-		<ul class="theme_box">
+		<ul class="theme-box">
+			<!-- 一元抢购 -->
 			<li>
-				<div class="title" :style='{backgroundImage: `url(${firstTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%" v-if='firstTheme.img' @click='jump("snap")'></div>
+				<div class="title" :style='{backgroundImage: `url(${firstTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%" @click='jump(firstTheme.img.jump)'></div>
 				<first-theme :theme='firstTheme'></first-theme>
 			</li>
+			<!-- 舌尖美食 -->
 			<li style="margin-left:26px;">
-				<div class="title" :style='{backgroundImage: `url(${secondTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  v-if='secondTheme.img' @click='jump("food")'></div>
+				<div class="title" :style='{backgroundImage: `url(${secondTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(secondTheme.img.jump)'></div>
 				<second-theme :theme='secondTheme'></second-theme>
 			</li>
+			<!-- 中国智造 -->
 			<li>
-				<div class="title" :style='{backgroundImage: `url(${thirdTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%"  v-if='thirdTheme.img' @click='jump("smart")'></div>
+				<div class="title" :style='{backgroundImage: `url(${thirdTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%"  @click='jump(thirdTheme.img.jump)'></div>
 				<third-theme :theme='thirdTheme'></third-theme>
 			</li>
+			<!-- 家居百货 -->
 			<li style="margin-left:26px;">
-				<div class="title" :style='{backgroundImage: `url(${fourthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" v-if='fourthTheme.img' @click='jump("household")'></div>
+				<div class="title" :style='{backgroundImage: `url(${fourthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" @click='jump(fourthTheme.img.jump)'></div>
 				<second-theme :theme='fourthTheme'></second-theme>
+			</li>
+			<!-- 奖励商品 -->
+			<li>
+				<div class="title" :style='{backgroundImage: `url(${fifthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(fifthTheme.img.jump)'></div>
+				<second-theme :theme='fifthTheme'></second-theme>
+			</li>
+			<!-- 积分购买 -->
+			<li style="margin-left:26px;">
+				<div class="title" :style='{backgroundImage: `url(${sixthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(sixthTheme.img.jump)'></div>
+				<second-theme :theme='sixthTheme'></second-theme>
+			</li>
+			<!-- 鸿府购买 -->
+			<li>
+				<div class="title" :style='{backgroundImage: `url(${seventhTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(seventhTheme.img.jump)'></div>
+				<second-theme :theme='seventhTheme'></second-theme>
+			</li>
+			<!-- 线下提货 -->
+			<li style="margin-left:26px;">
+				<div class="title" :style='{backgroundImage: `url(${eightTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" @click='jump(eightTheme.img.jump)'></div>
+				<second-theme :theme='eightTheme'></second-theme>
 			</li>
 		</ul>
 		<recommend></recommend>
@@ -66,20 +91,31 @@ import 'common/css/themeTitle.scss'
 	export default{
 		data(){
 			return {
-				newGoods: null,
-				classArr: null,
+				newGoods: {},
 				firstTheme: {
-					img: null
+					img: {}
 				},
 				secondTheme: {
-					img: null
+					img: {}
 				},
 				thirdTheme: {
-					img: null
+					img: {}
 				},
 				fourthTheme : {
-					img: null
-				}
+					img: {}
+				},
+				fifthTheme : {
+					img: {}
+				},
+				sixthTheme : {
+					img: {}
+				},
+				seventhTheme : {
+					img: {}
+				},
+				eightTheme : {
+					img: {}
+				},
 			}
 		},
 		filters: {
@@ -95,7 +131,7 @@ import 'common/css/themeTitle.scss'
 				window.open(`goodDetail.html?goods_id=${id}`) ;
 			},
 			jump(address){
-				window.open(`${address}.html`) ;
+				window.open(`${address}`) ;
 			},
 			getTheme() {
 				getActivity().then(res=>{
@@ -103,6 +139,10 @@ import 'common/css/themeTitle.scss'
 					this.secondTheme= res[1] ;
 					this.thirdTheme= res[2] ;
 					this.fourthTheme = res[3] ;
+					this.fifthTheme  =res[4];
+					this.sixthTheme  =res[5];
+					this.seventhTheme  =res[6];
+					this.eightTheme  =res[7];
 				})
 			}
 		},
@@ -126,47 +166,31 @@ import 'common/css/themeTitle.scss'
 </script>
 
 <style lang='scss' scoped>
-$border_color: #ccc;
-$border_list: #f0f0f0;
-$primary:#c71724;
-$text_color: #666;
-$red_color: #f24450;
   .wrap{
   	width: 1250px;
   	margin: 20px auto 0px;
-  	.show_info{
+  	.show-info{
 		width: 100%;
 		line-height: 18px;
 		height: 36px;
 		margin: 6px 0px;
-		color: #333;
-		display: -webkit-box;
-		overflow : hidden;
-	  	text-overflow: ellipsis;
-	  	-webkit-line-clamp: 2;
 	  	-webkit-box-orient: vertical !important;
-	  	-moz-box-orient: vertical ;
 	}
-	.sell_info{
+	.sell-info{
 		overflow: hidden;
 		padding: 8px 0px;
 		span{
 			float: left;
-			color: $primary;
 			font-size: 16px;
 			font-weight: 600;
 		}
 		em{
 			line-height: 20px;
 			float: right;
-			color: $text_color;
+			color: #666;
 		}
 	}
-	.goods_preprice{
-		color: $text_color;
-		text-decoration: line-through;
-	}
-	.goods_info{
+	.goods-info{
 		width: 100%;
 		height: 110px;
 		overflow: hidden;
@@ -187,34 +211,34 @@ $red_color: #f24450;
 			float: left;
 		}
 	}
-  	.update_box{
+  	.update-box{
   		width: 1242px;
   		margin: 0px auto;
-	  	.update_list{
-	  		width: 100%;
-	  		margin-top: 10px;
-	  		.el-col-4{
-	  			border-top: 1px solid $border_list;
-	  			border-left: 1px solid $border_list;
-	  			border-bottom: 1px solid $border_list;
-	  			dl{
-	  				padding: 12px;
-	  				dt{
-						width: 180px;
-						height: 180px;
-						img{
-							width: 100%;
-							cursor: pointer;
-						}
-	  				}
-	  			}
-	  		}
-	  		.el-col-4:last-child{
-	  			border-right: 1px solid $border_list;
-	  		}
-	  	}
   	}
-	.theme_box{
+  	.update-list{
+  		width: 100%;
+  		margin-top: 10px;
+  		.el-col-4{
+  			border-top: 1px solid #f0f0f0;
+  			border-left: 1px solid #f0f0f0;
+  			border-bottom: 1px solid #f0f0f0;
+  			dl{
+  				padding: 12px;
+  			}
+  			dt{
+				width: 180px;
+				height: 180px;
+				img{
+					width: 100%;
+					cursor: pointer;
+				}
+			}
+  		}
+  		.el-col-4:last-child{
+  			border-right: 1px solid #f0f0f0;
+  		}
+  	}
+	.theme-box{
 		width: 100%;
 		overflow: hidden;
 		li{

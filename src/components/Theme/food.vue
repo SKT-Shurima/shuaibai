@@ -1,11 +1,11 @@
 <template>
 	<div class="wrap">
 		<div class="box">
-			<div class="theme_img" v-if='special'>
-				<a :href="url"><img :src="special[0].image"></a>
+			<div class="theme-img">
+				<a :href="url"><img :src="specialImg"></a>
 			</div>
-			<div class="theme_box">
-				<el-row class="themeTitle">
+			<div class="theme-box">
+				<el-row class="theme-title">
 			 		<el-col :span='6'>
 			 			<div class="slider"></div>
 			 		</el-col>
@@ -37,7 +37,7 @@ import pagination from '../Common/pagination'
 				currentPage: 1,
 				pagesize: 1,
 				reqParams: null,
-				special: null,
+				specialImg: '',
 				goods: new Array,
 				url: ""
 			}
@@ -47,15 +47,13 @@ import pagination from '../Common/pagination'
 		},
 	   	methods: {
 	      	changePage(page){
-				let _this = this ;
-				_this.currentPage = page ;
-				_this.initList();
+				this.currentPage = page ;
+				this.initList();
 			},
 			initList(){
-				let _this = this ;
 				let params = {
 					type: "2",
-					page: _this.currentPage 
+					page: this.currentPage 
 				}
 				getThematicActivities(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -64,9 +62,9 @@ import pagination from '../Common/pagination'
 					}else{
 						this.goods = content.goods.goods ;
 						this.pagesize = content.goods.pagesize ;
-						this.special = content.special ;
 						let special = content.special ;
-						this.url = `${special[0].web_param}?goods_id=${special[0].params.goods_id}`;
+						this.specialImg = special[0].image;
+						this.url = `${special[0].web_param.slice(1)}?goods_id=${special[0].params.goods_id}`;
 					}
 				})
 			}
@@ -82,20 +80,20 @@ import pagination from '../Common/pagination'
 <style scoped lang='scss'>
 	.wrap{
 		width: 100%;
-		.box{
-			width: 1250px;
-			margin: 0px auto;
-			.theme_img{
-				width: 100%;
-				height: 500px;
-				img{
-					width: 100%;
-					height: 500px;
-				}
-			}
+	}
+	.box{
+		width: 1250px;
+		margin: 0px auto;
+	}
+	.theme-img{
+		width: 100%;
+		height: 500px;
+		img{
+			width: 100%;
+			height: 500px;
 		}
 	}
-	.theme_box{
+	.theme-box{
 		width: 1246px;
 		margin: 20px auto;
 	}

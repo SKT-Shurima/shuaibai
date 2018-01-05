@@ -2,19 +2,19 @@
 	<div class="wrap">
 		<div class="title">
 			<ul>
-				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"isTab":currentIndex===index}' :style='{zIndex:index*10,left: (340-16)*index + "px"}'></li>
+				<li v-for='(item,index) in listTitle' v-text='item.name' :class='{"is-tab":currentIndex===index}' :style='{zIndex:index*10,left: (340-16)*index + "px"}'></li>
 			</ul>
 		</div>
 		<div class="container">
 			<dl class="box">
-				<dt class="infoCol conTitle">商品信息</dt>
-				<dd class="conCol conTitle">售后申请</dd>
+				<dt class="info-col con-title">商品信息</dt>
+				<dd class="con-col con-title">售后申请</dd>
 			</dl>
 			<dl class="box">
-				<dt class="infoCol" style="min-height: 600px;">
+				<dt class="info-col" style="min-height: 600px;">
 					<order-info></order-info>
 				</dt>
-				<dd class="conCol" style="min-height: 600px;">
+				<dd class="con-col" style="min-height: 600px;">
 					<keep-alive>
 						<component :is='currentView'></component>
 					</keep-alive>
@@ -56,30 +56,29 @@ export default {
 			this.orderInfo = info;
 		},
 		init(){
-			let _this = this;
 	      	let hash = location.hash.split("?")[0] ;
 	      	let view = hash.slice(1) ;
-		    _this.reqParams = getHashReq();
+		    this.reqParams = getHashReq();
 		    switch (view){
 		    	case 'seller':
-		    		_this.currentIndex = 1 ;
-	 		    	_this.currentView = view ;
+		    		this.currentIndex = 1 ;
+	 		    	this.currentView = view ;
 		    	break;
 		    	case 'editGoodsReturn':
-		    		_this.currentIndex = 1 ;
-	 		    	_this.currentView = view ;
+		    		this.currentIndex = 1 ;
+	 		    	this.currentView = view ;
 		    	break;
 		    	case 'result':
-		    		_this.currentIndex = 3 ;
-	 		    	_this.currentView = 'seller' ;
+		    		this.currentIndex = 3 ;
+	 		    	this.currentView = 'seller' ;
 		    	break;
 		    	case 'goodsReturn':
-		    		_this.currentIndex = 2 ;
-	 		    	_this.currentView = 'goodsReturn' ;
+		    		this.currentIndex = 2 ;
+	 		    	this.currentView = 'goodsReturn' ;
 		    	break;
 		    	default:
-			    	_this.currentIndex = 0 ;
-	 		    	_this.currentView = 'seller' ;
+			    	this.currentIndex = 0 ;
+	 		    	this.currentView = 'seller' ;
  		    	break;
 		    }
 	    }
@@ -93,10 +92,6 @@ export default {
 	
 </script>
 <style lang='scss' scoped>
-$primary:#c71624;
-$border_color: #ddd;
-$text_color: #666;
-$bg_color: #f5f5f5;
 	.wrap{
 		width: 1250px;
 		margin: 0px auto;
@@ -114,23 +109,23 @@ $bg_color: #f5f5f5;
 				line-height: 60px;
 				font-size: 20px;
 				text-align: center;
-				li{
-					position: absolute;
-					top: 0px;
-					width: 340px;
-					text-align: center;
-					background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
-					background-size: 100% 100%;
-				}
-				li:last-child{
-					text-align: left;
-					text-indent: 96px;
-				}
-				.isTab{
-					color: #fff;
-					background: url('../../../static/commonImg/progressThis.png')  100% 100%;
-					background-size: 100% 100%;
-				}
+			}
+			li{
+				position: absolute;
+				top: 0px;
+				width: 340px;
+				text-align: center;
+				background: url('../../../static/commonImg/progressNone.png')  100% 100% ;
+				background-size: 100% 100%;
+			}
+			li:last-child{
+				text-align: left;
+				text-indent: 96px;
+			}
+			.is-tab{
+				color: #fff;
+				background: url('../../../static/commonImg/progressThis.png')  100% 100%;
+				background-size: 100% 100%;
 			}
 		}
 		.container{
@@ -138,26 +133,26 @@ $bg_color: #f5f5f5;
 			margin-bottom: 400px;
 			.box{
 				overflow: hidden;
-				.infoCol.conTitle,.conCol.conTitle{
-					height: 54px;
-					font-size: 14px;
-					font-weight: 600;
-					color: $primary;
-					border: none;
-				}
-				.infoCol,.conCol{
-					float: left;
-					border: 1px solid $border_color;
-				}
-				.infoCol{
-					width: 240px;
-					padding: 20px;
-				}
-				.conCol{
-					width: 1010px;
-					padding: 20px 30px;
-					margin-left: -1px;
-				}
+			}
+			.info-col.con-title,.con-col.con-title{
+				height: 54px;
+				font-size: 14px;
+				font-weight: 600;
+				color: #c71724;
+				border: none;
+			}
+			.info-col,.con-col{
+				float: left;
+				border: 1px solid #ddd;
+			}
+			.info-col{
+				width: 240px;
+				padding: 20px;
+			}
+			.con-col{
+				width: 1010px;
+				padding: 20px 30px;
+				margin-left: -1px;
 			}
 		}
 	}

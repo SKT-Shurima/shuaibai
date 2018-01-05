@@ -1,12 +1,12 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span>话费/流量充值</span></h4>
-		<div class="title">
-	 		<i class="icon"></i>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span>话费/流量充值</span></h4>
+		<div class="color-6 f5-bg title">
+	 		<i class="primary-bg icon"></i>
 	 		<span style="vertical-align: 4px;">话费/流量充值明细</span>
 	 	</div>
 	 	<table border='1' cellpadding="10" cellspacing="0" class="table">
-	 		<tr class="bg-light">
+	 		<tr class="f5-bg">
 	 			<th>日期</th>
 	 			<th>充值账号</th>
 	 			<th>充值状态</th>
@@ -17,10 +17,10 @@
 	 		<tr  v-for='item in orderList'>
 	 			<td>{{item.date_add*1000 | dateStyle}}</td>
 	 			<td>{{item.mobile}}</td>
-	 			<td :class='{"expent":item.is_success==="2"}'>
+	 			<td :class='{"color-primary":item.is_success==="2"}'>
 	 				{{item.is_success==="2"?"支付失败":"支付成功"}}
  				</td>
-	 			<td :class='{"expent":item.is_success==="2"}'>
+	 			<td :class='{"color-primary":item.is_success==="2"}'>
 	 				{{item.total_fee|currency}}
  				</td>
 	 			<td>{{item.type==="1"?"话费":"流量"}}</td>
@@ -56,9 +56,8 @@ import pagination from '../Common/pagination'
 	    },
 	     // 改变页数
 		changePage(page){
-			let _this = this ;
-			_this.page = page + "" ;
-			_this.initList();
+			this.page = page + "" ;
+			this.initList();
 		},
 		initList(){
 			let params  ={
@@ -86,17 +85,12 @@ import pagination from '../Common/pagination'
   }
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$border_color: #ccc;
-$text_color: #666;
-$bg_title: #f5f5f5;
 	.wrap{
 		width: 1030px;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
 			span{
 				cursor: pointer;
 			}
@@ -104,40 +98,31 @@ $bg_title: #f5f5f5;
 				color: #b0b0b0;
 			}
 		}
-		.title{
-			width: 100%;
-			height: 40px;
-			padding: 10px;
-			line-height: 20px;
-			margin-top: 20px;
-			color: $text_color;
-			background-color: $bg_title;
-			.icon{
-				display: inline-block;
-				width: 8px;
-				height: 20px;
-				background-color: $primary;
-			}
-			span{
-				font-size: 16px;
-				font-weight: 600;
-			}
+	}
+	.title{
+		width: 100%;
+		height: 40px;
+		padding: 10px;
+		line-height: 20px;
+		margin-top: 20px;
+		.icon{
+			display: inline-block;
+			width: 8px;
+			height: 20px;
 		}
-		.expent{
-			color: $primary;
+		span{
+			font-size: 16px;
+			font-weight: 600;
 		}
-		.table {
-              width: 100%;
-              margin-top: 18px;
-              border-collapse:collapse;
-              th,td{
-              	font-size: 14px;
-              	border:1px solid #dfe6ec;
-              	text-align: center;
-              }
-              .bg-light{
-              	background-color: $bg_title;
-              }
-		}
+	}
+	.table {
+          width: 100%;
+          margin-top: 18px;
+          border-collapse:collapse;
+          th,td{
+          	font-size: 14px;
+          	border: 1px solid #dfe6ec;
+          	text-align: center;
+          }
 	}
 </style>

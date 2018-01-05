@@ -9,9 +9,7 @@
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico01.png" height="51" width="56">
 							</dt>
-							<dd>
-								帅柏优选
-							</dd>
+							<dd>帅柏优选</dd>
 						</dl>
 					</li>
 					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===1}'>
@@ -19,9 +17,7 @@
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico02.png" height="51" width="56">
 							</dt>
-							<dd>
-								私人定制
-							</dd>
+							<dd>私人定制</dd>
 						</dl>
 					</li>
 					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===2}'>
@@ -29,9 +25,7 @@
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico03.png" height="51" width="56">
 							</dt>
-							<dd>
-								饮食
-							</dd>
+							<dd>饮食</dd>
 						</dl>
 					</li>
 					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===3}'>
@@ -39,9 +33,7 @@
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico04.png" height="51" width="56">
 							</dt>
-							<dd>
-								服饰
-							</dd>
+							<dd>服饰</dd>
 						</dl>
 					</li>
 					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===4}'>
@@ -49,9 +41,7 @@
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico05.png" height="51" width="56">
 							</dt>
-							<dd>
-								居家
-							</dd>
+							<dd>居家</dd>
 						</dl>
 					</li>
 					<li @mouseenter='index=0' @click='index=0' :class='{"active":index===5}'>
@@ -59,23 +49,21 @@
 							<dt>
 								<img src="../../../static/shopingCoinImg/spico06.png" height="51" width="56">
 							</dt>
-							<dd>
-								出行
-							</dd>
+							<dd>出行</dd>
 						</dl>
 					</li>
 				</ul>
-				<ul class="goodsList">
-					<li v-for='item in goods'>
+				<ul class="goods-list">
+					<li class='f5-bg' v-for='item in goods'>
 						<dl>
 							<dt>
 								<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 							</dt>
 							<dd>
-								<div class="name" v-text='item.name'></div>
-								<div class="priceInfo">
+								<div class="ellipsis-1 name" v-text='item.name'></div>
+								<div class="price-info">
 									<i></i>
-									<span v-text='item.shopping_coin'></span>
+									<span class='color-primary' v-text='item.shopping_coin'></span>
 									<em>原价{{item.shop_price|currency}}</em>
 									<el-button @click='goodDetail(item.goods_id)' type='text'>
 										立即购买
@@ -139,96 +127,83 @@ import special from '../ThemeCommon/special'
   }
 </script>
 <style scoped lang='scss'>
-$primary:#c71724;
-$text_color: #ffd3d8;
-$bg_color: #f5f5f5 ;
-	.wrap{
-		width: 100%;
-		.box{
-			width: 1210px;
-			margin: 0px auto;
+	.box{
+		width: 1210px;
+		margin: 0px auto;
+	}
+	.container{
+		width: 1248px;
+		margin: 0px auto ;
+	}
+	.title,.goods-list{
+		margin-top: 10px;
+		overflow: hidden;
+	}
+	.title{
+		li{
+			float: left;
+			width: 208px;
+			height: 90px;
+			border-bottom: 2px solid transparent;
+			color: #B7B7B7;
+			dl{
+				text-align: center;
+			}
+			dd{
+				font-size: 16px;
+				line-height: 40px;
+			}
 		}
-		.container{
-			width: 1248px;
-			margin: 0px auto ;
+		.active{
+			color: #c71724 ;
+			border-bottom-color: #c71724; 
 		}
-		.title,.goodsList{
-			margin-top: 10px;
+	}
+	.goods-list{
+		li{
+			float: left;
+			width: 312px;
+			padding: 10px;
+		}
+		dt{
+			width: 302px;
+			height: 302px;
+			img{
+				width: 100%;
+				height: 100%;
+				cursor: pointer;
+			}
+		}
+		dd{
+			padding: 0px 6px;
+		}
+		.name{
+			font-size: 14px;
+			line-height: 20px;
+		}
+		.price-info{
+			height: 40px;
 			overflow: hidden;
-		}
-		.title{
-			li{
-				float: left;
-				width: 208px;
-				height: 90px;
-				border-bottom: 2px solid transparent;
-				color: #B7B7B7;
-				dl{
-					text-align: center;
-				}
-				dd{
-					font-size: 16px;
-					line-height: 40px;
-				}
+			i{
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				background: url('../../../static/shopingCoinImg/coin.png') no-repeat ;
 			}
-			.active{
-				color: $primary ;
-				border-bottom-color: $primary; 
+			span{
+				font-size: 30px;
+				line-height: 40px;
 			}
-		}
-		.goodsList{
-			li{
-				float: left;
-				width: 312px;
-				padding: 10px;
-				background-color: $bg_color;
-				dl{
-					dt{
-						width: 302px;
-						height: 302px;
-						img{
-							width: 100%;
-							height: 100%;
-							cursor: pointer;
-						}
-					}
-					dd{
-						padding: 0px 6px;
-						.name{
-							font-size: 14px;
-							line-height: 20px;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-							overflow: hidden;
-						}
-						.priceInfo{
-							height: 40px;
-							overflow: hidden;
-							i{
-								display: inline-block;
-								width: 20px;
-								height: 20px;
-								background: url('../../../static/shopingCoinImg/coin.png') no-repeat ;
-							}
-							span{
-								font-size: 30px;
-								line-height: 40px;
-								color: $primary;
-							}
-							em{
-								font-size: 14px;
-								text-decoration: line-through ;
-								color: #ababab;
-							}
-							.el-button{
-								float: right;
-								font-size: 20px;
-								line-height: 40px;
-								padding: 0px;
-							}
-						}
-					}
-				}
+			em{
+				font-size: 14px;
+				text-decoration: line-through ;
+				color: #ababab;
+			}
+			.el-button{
+				float: right;
+				font-size: 20px;
+				line-height: 40px;
+				padding: 0px;
 			}
 		}
 	}

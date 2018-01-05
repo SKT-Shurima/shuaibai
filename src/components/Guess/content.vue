@@ -1,26 +1,22 @@
 <template>	
 	 <div class="recommend" style="margin-top:60px;">
-	 	<div class="title">
-	 		<i class="icon"></i>
+	 	<div class="f5-bg color-6 title">
+	 		<i class="primary-bg icon"></i>
 	 		<span style="vertical-align: 4px;">猜你喜欢</span>
 	 		<strong @click='init'>换一组<img src="../../../static/commonImg/newGroup.png" height="14" width="14"></strong>
 	 	</div>
-	 	<ul class="youLove" v-if= 'loveList'>
-	 		<li class="infoList" v-for='item in loveList' @click='goodDetail(item.goods_id)'>
+	 	<ul class="you-love" v-if='loveList'>
+	 		<li class="border-f0 info-list" v-for='item in loveList' @click='goodDetail(item.goods_id)'>
 	 			<dl>
 					<dt>
 						<img :src="item.cover">
 					</dt>
 					<dd>
-						<div class="sellInfo" v-text='item.name'>
+						<div class="ellipsis-2 sell-info" v-text='item.name'>
 						</div>
-						<div class="priceInfo">
-							<span>
-								{{item.shop_price|currency}}
-							</span>
-							<em>
-								{{item.sale_count}}人付款
-							</em>
+						<div class="price-info">
+							<span class="color-primary">{{item.shop_price|currency}}</span>
+							<em class="color-9">{{item.sale_count}}人付款</em>
 						</div>
 					</dd>
 				</dl>
@@ -67,83 +63,71 @@
 	}
 </script>
 <style lang='scss' scoped>
-$text_color: #666;
-$border_color: #ccc;
-$primary:#c71724;
-$bg_title: #f5f5f5;
 	 .recommend{
 	 	width: 100%;
 	 	overflow: hidden;
-		.title{
-			width: 100%;
-			height: 40px;
-			padding: 10px;
-			line-height: 20px;
-			color: $text_color;
-			background-color: $bg_title;
-			.icon{
-				display: inline-block;
-				width: 8px;
-				height: 20px;
-				background-color: $primary;
-			}
-			span{
-				font-size: 16px;
-				font-weight: 600;
-			}
-			strong{
-				float: right;
-				font-size: 14px;
-				cursor: pointer;
-			}
+	 }
+	.title{
+		width: 100%;
+		height: 40px;
+		padding: 10px;
+		line-height: 20px;
+		.icon{
+			display: inline-block;
+			width: 8px;
+			height: 20px;
+		}
+		span{
+			font-size: 16px;
+			font-weight: 600;
+		}
+		strong{
+			float: right;
+			font-size: 14px;
+			cursor: pointer;
+		}
+		img{
+			vertical-align: -2px;
+			margin-left: 10px;
+		}
+	}
+	.you-love{
+		width: 100%;
+		margin-top: 14px;
+		overflow: hidden;
+	}
+	.info-list{
+		float: left;
+		width: 209px;
+		padding: 14px;
+		cursor: pointer;
+		margin-right: -1px;
+		dt{
+			width: 180px;
+			height: 180px;
 			img{
-				vertical-align: -2px;
-				margin-left: 10px;
+				width: 100%;
+				height: 100%; 
 			}
 		}
-		.youLove{
+		dd{
 			width: 100%;
-			margin-top: 14px;
 			overflow: hidden;
-			.infoList{
-				float: left;
-				width: 209px;
-				padding: 14px;
-				cursor: pointer;
-				margin-right: -1px;
-				border: 1px solid #f0f0f0;
-				dl{
-					dt{
-						width: 180px;
-						height: 180px;
-						img{
-							width: 100%;
-							height: 100%; 
-						}
-					}
-					dd{
-						width: 100%;
-						overflow: hidden;
-						.sellInfo{
-							height: 36px;
-							line-height: 18px;
-							margin-top: 10px;
-						}
-						.priceInfo{
-							margin-top: 6px;
-							span{
-								font-size: 18px;
-								color: $primary;
-							}
-							em{
-								margin-top: 4px;
-								float: right;
-								color: #999;
-							}
-						}
-					}	 
-				}
+		}
+		.sell-info{
+			height: 36px;
+			line-height: 18px;
+			margin-top: 10px;
+		}
+		.price-info{
+			margin-top: 6px;
+			span{
+				font-size: 18px;
+			}
+			em{
+				margin-top: 4px;
+				float: right;
 			}
 		}
- }
+	}
 </style>

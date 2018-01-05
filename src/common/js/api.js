@@ -1,11 +1,7 @@
 import axios from 'axios'
 
-// 开发
-// let base = '/shuaibo' ;
-// 正式
-// let base = 'http://shuaibo.zertone1.com/web'
-// 线上
-let base = 'http://app.shuaibomall.net/web';
+let base = process.env.API_ROOT;
+export {base};
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -224,6 +220,11 @@ export const mobileOrders = params =>{
 	params =  trans(params);
 	return axios.post(`${base}/orderAction/mobileOrders`,params).then(res=>res.data);
 }
+// 推荐码
+export const share_code = params =>{
+	params = trans(params);
+	return axios.get(`${base}/customerAction/share_code?${params}`).then(res=>res.data);
+}
 
 // 商品收藏列表
 export const collection = params =>{
@@ -291,10 +292,65 @@ export const shoppingCoin = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/shoppingCoin`,params).then(res=>res.data);
 } 
-// 购物积分明细
+// 请求购物积分明细
 export const shoppingCoinDetail = params =>{
-	params = trans(params) ;
+	params = trans(params);
 	return axios.post(`${base}/userAction/shoppingCoinDetail`,params).then(res=>res.data);
+} 
+// 购物积分明细
+export const rewardDetail = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/rewardDetail`,params).then(res=>res.data);
+}
+// 鸿府积分明细
+export const hongfuDetail = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/hongfuDetail`,params).then(res=>res.data);
+}
+// 钱包
+export const rewardAmount = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/rewardAmount`,params).then(res=>res.data);
+}
+// 钱包明细
+export const yuebaoDetail = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/yuebaoDetail`,params).then(res=>res.data);
+}
+// 钱包明细
+export const yuebaoCharge = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/yuebaoCharge`,params).then(res=>res.data);
+}
+// 钱包转账
+export const yuebaoTransfer = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/yuebaoTransfer`,params).then(res=>res.data);
+}
+// 验证转账密码
+export const verifyTransfer = params =>{
+	params = trans(params) ;
+	return axios.get(`${base}/userAction/verifyTransfer?${params}`).then(res=>res.data);
+}
+// 验证转账密码
+export const yuebaoWithdraw = params =>{
+	params = trans(params) ;
+	return axios.get(`${base}/userAction/yuebaoWithdraw?${params}`).then(res=>res.data);
+}
+// 设置支付密码
+export const setPayPasswd = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/customerAction/setPayPasswd`,params).then(res=>res.data);
+}
+// 设置支付密码
+export const setTransferPasswd = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/customerAction/setTransferPasswd`,params).then(res=>res.data);
+}
+// 手续费比例
+export const withdrawServiceFee = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/withdrawServiceFee`,params).then(res=>res.data);
 }
 
 

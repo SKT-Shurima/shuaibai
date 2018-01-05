@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		<v-nav></v-nav>
-		<div class="container" v-html='content'>
+		<div class="footer-link-con" v-html='content'>
 		</div>
 	</div>
 </template>
@@ -39,13 +39,3 @@ import {errorInfo} from '../../common/js/common'
 		}
 	}
 </script>
-<style lang='scss' scoped>
-$border_color: #ddd;
-	.wrap{
-		width: 100%;
-		.container{
-			width: 1250px;
-			margin: 0px auto;
-		}
-	}
-</style>

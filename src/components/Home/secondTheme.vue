@@ -6,7 +6,7 @@
 					<dt>
 						<img :src="item.cover">
 					</dt>
-					<dd class="show_info" v-text='item.name'>
+					<dd class="ellipsis-2" v-text='item.name'>
 					</dd>
 				</dl>
 			</li>
@@ -39,7 +39,6 @@
 	}
 </script>
 <style lang='scss' scoped>
-$border_list: #f0f0f0;
 	.theme{
 		width: 100%;
 		height: 498px;
@@ -49,38 +48,32 @@ $border_list: #f0f0f0;
 		ul{
 			margin-top: 10px;
 			overflow: hidden;
-			border-top: 1px solid $border_list;
-			border-left: 1px solid $border_list;
+			border-top: 1px solid #f0f0f0;
+			border-left: 1px solid #f0f0f0;
 			padding-left: 1px;
-			li{
-				width: 203px;
-				height: 249px;
-				float: left;
-				border-right: 1px solid $border_list;
-				border-bottom: 1px solid $border_list;
-				dl{
+		}
+		li{
+			width: 203px;
+			height: 249px;
+			float: left;
+			border-right: 1px solid #f0f0f0;
+			border-bottom: 1px solid #f0f0f0;
+			dl{
+				width: 100%;
+				padding: 10px;
+			}
+			dt{
+				width: 180px;
+				height: 180px;
+				img{
 					width: 100%;
-					padding: 10px;
-					dt{
-						width: 180px;
-						height: 180px;
-						img{
-							width: 100%;
-							height: 100%;
-						}
-					}
-					dd{
-						width: 100%;
-						margin-top: 8px;
-						line-height: 18px;
-						display: -webkit-box;
-						overflow : hidden;
-					  	text-overflow: ellipsis;
-					  	-webkit-line-clamp: 2;
-					  	-webkit-box-orient: vertical;
-					  	-moz-box-orient: vertical ;
-					}
+					height: 100%;
 				}
+			}
+			dd{
+				width: 100%;
+				margin-top: 8px;
+				line-height: 18px;
 			}
 		}
 	}

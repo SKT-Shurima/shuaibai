@@ -41,46 +41,40 @@ import recommended from './recommended'
 				location.href = `relatedGoods.html?cat=${cat}&category_id=${id}`;
 	     	},
 			getSellerInfo(info){
-				let _this =this ;
-				_this.sellerInfo = info;
+				this.sellerInfo = info;
 			},
 			getLevel(arr){
-				let _this = this ;
-				_this.level = arr;
+				this.level = arr;
 			}
 		}
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-	.wrap{
-		width: 100%;
-		.container{
-			width: 1250px;
-			margin: 20px auto;
-			overflow: hidden;
-			.level{
-				overflow: hidden;
-				line-height: 30px;
-				margin-bottom: 10px;
-				li{
-					float: left;
-					margin-left: 10px;
-					cursor: pointer;
-				}
-				li:hover{
-					color: $primary ;
-				}
-			}
-			.slider{
-				float: left;
-				width: 230px;
-				margin-left: 18px;
-			}
-			.listWrap{
-				float: left;
-				width: 1000px;
-			}
+	.container{
+		width: 1250px;
+		margin: 20px auto;
+		overflow: hidden;
+	}
+	.level{
+		overflow: hidden;
+		line-height: 30px;
+		margin-bottom: 10px;
+		li{
+			float: left;
+			margin-left: 10px;
+			cursor: pointer;
 		}
+		li:hover{
+			color: #c71724 ;
+		}
+	}
+	.slider{
+		float: left;
+		width: 230px;
+		margin-left: 18px;
+	}
+	.listWrap{
+		float: left;
+		width: 1000px;
 	}
 </style>

@@ -1,46 +1,46 @@
 <template>
-	<div class="head_con_wrap">
-		<div class="head_con_box">
+	<div>
+		<div class="head-con-box">
 			<div class="logo">
 				<a href="index.html">
 					<img src="../../../static/headImg/logo.png" height="39" width="269">
 				</a>
 			</div>
-			<div class="search_box">
-				<div class="search_form">
+			<div class="search-box">
+				<div class="search-form">
 					<form id="searchForm" name="searchForm" method="get" action="relatedGoods.html">
-						<input type="text" name="keyword"  autocomplete="off" id="key" accesskey="s" class="search_text" v-model='searchWord'>
-						<input type='submit' class="search_but" value="搜索" />
+						<input type="text" name="keyword"  autocomplete="off" id="key" accesskey="s" class="search-text" v-model='searchWord'>
+						<input type='submit' class="search-btn" value="搜索" />
                     </form>
 				</div>
-				<ul class="hot_words">
+				<ul class="hot-words">
 					<li v-for='(item,index) in keyWordsArr'  :key='index' v-text='item.keyword' @click='relatedGoods(item.keyword)'></li>
 				</ul>
 			</div>
-			 <div class="shopping_cart" @mouseenter='cartBol=true' @mouseleave='cartBol=false'>
+			 <div class="border-primary color-primary shopping-cart" @mouseenter='cartBol=true' @mouseleave='cartBol=false'>
 				<a href="myOrder.html#vip3">
 					<img src="../../../static/headImg/shopCarRed.png" height="14" width="14" style="vertical-align:-2px;">
 					我的购物车
 					<span v-text='userInfo.cart_num-0?userInfo.cart_num:0'  :style='{opacity:userInfo.cart_num?1:0}'></span>
 				</a>
-				<div class="cartBox" v-show='cartBol' @mouseenter='cartBol=true' @mouseleave='cartBol=false'>
-				    <div class="shopListBox" v-if='shopList.length'>
-				    	<ul class="shopList" v-for='shopItem in shopList'>
+				<div class="cart-box" v-show='cartBol' @mouseenter='cartBol=true' @mouseleave='cartBol=false'>
+				    <div class="border-c shop-list-box" v-if='shopList.length'>
+				    	<ul class="shop-list" v-for='shopItem in shopList'>
 							<li v-for='(item,index) in shopItem.goods'>
-								<dl class="goods_info">
+								<dl class="goods-info">
 									<dt>
 										<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 									</dt>
 									<dd>
-										<div class="show_info" v-text='item.name'></div>
-										<div class="sell_info">
+										<div class="ellipsis-2 show-info" v-text='item.name'></div>
+										<div class="sell-info">
 											<span>{{item.shop_price|currency}}*{{item.quantity}}</span><em @click="remove(item.cart_id)">删除</em>
 										</div>
 									</dd>
 								</dl>
 							</li>
 						</ul>
-						<dl class="checkCcart">
+						<dl class="check-cart">
 							<dt>
 								共{{userInfo.cart_num}}件商品&nbsp;共计{{totalPrice|currency}}
 							</dt>
@@ -51,7 +51,7 @@
 							</dd>
 						</dl>
 				    </div>
-					<div class="no_cart" v-else>
+					<div class="border-c no-cart" v-else>
 				   		暂无商品
 				   	</div>
 				</div>
@@ -121,19 +121,18 @@
 				})
 			},
 			countTotalPrice(){
-				let _this  = this ;
 				let totalPrice = 0 ;
 				let totalNum = 0 ;
-				for (let i = 0 ;i < _this.shopList.length; i++){
-					let arr = _this.shopList[i].goods ;
+				for (let i = 0 ;i < this.shopList.length; i++){
+					let arr = this.shopList[i].goods ;
 					for(let j = 0;j< arr.length;j++){
 						let price = arr[j].shop_price*arr[j].quantity ;
 						totalPrice+=price;
 						totalNum++;
 					}
 				}
-				_this.totalPrice = totalPrice ;
-				_this.userInfo.cart_num = totalNum ;
+				this.totalPrice = totalPrice ;
+				this.userInfo.cart_num = totalNum ;
 			},
 			goodDetail(id){
 				window.open(`goodDetail.html?goods_id=${id}`)
@@ -187,176 +186,160 @@
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71724;
-$red_color: #f24450;
-$border_color: #ccc;
-	.head_con_wrap{
+	.head-con-box{
 		width: 100%;
-		.head_con_box{
+		height: 104px;
+	}
+	.logo{
+		width: 270px;
+		margin-top: 32px;
+		float: left;
+		img{
 			width: 100%;
-			height: 104px;
-			.logo{
-				width: 270px;
-				margin-top: 32px;
+		}
+	}
+	.search-box{
+		width: 520px;
+		float: left;
+		margin-top: 32px;
+		margin-left: 120px;
+	}
+	.search-form{
+	    border: 3px solid #e4393c;
+	    height: 44px;
+	    width: 496px;
+	}
+	 #searchForm{
+    	overflow: hidden;
+    	.search-text{
+			float: left;
+			background-color: #fff;
+			background-position: 0 -360px;
+			background-repeat: repeat-x;
+		 	font-family: arial,"宋体";
+			font-size: 14px;
+			padding: 5px;
+			width: 412px;
+			height: 38px;
+			line-height: 38px;
+			border: none;
+			outline: none;
+		}
+		.search-btn{
+			float: left;
+		    color: #fff;
+		    font-size: 14px;
+		    font-weight: 700;
+		    width: 78px;
+		    height: 38px;
+		    border: none;
+		    margin: 0px;
+		    background: none repeat scroll 0 0 #e4393c;
+		}
+    }
+	.hot-words{
+		margin: 0px;
+		padding: 6px 0px;
+		overflow: hidden;
+		li{
+			float: left;
+			padding-left: 10px;
+			cursor: pointer;
+		}
+	}
+	.shopping-cart{
+		position: relative;
+		width: 150px;
+		height: 36px;
+		margin-top: 32px;
+		padding-top: 6px;
+		text-align: center;
+		float: right;
+		.cart-btn{
+			vertical-align: super;
+		    border-radius: 8px;
+		    padding: 0px 4px;
+			color: #fff;
+			background-color: #f24450;
+		}
+	}
+	.cart-box{
+		position: relative;
+		.no-cart,.shop-list{
+			overflow: hidden;
+			width: 240px;
+			padding: 0px 14px;
+			background-color: #fff;
+		}
+		.no-cart{
+			position: absolute;
+			right: -1px;
+			top: 8px;
+			height: 56px;
+			line-height: 56px;
+			text-align: center;
+		}
+	}
+	.shop-list-box{
+		position: absolute;
+		top: 8px;
+		right: -1px;
+		overflow-y: scroll;
+		z-index: 100;
+		.check-cart{
+			height: 72px;
+			line-height: 30px;
+			overflow: hidden;
+			background-color: #fff;
+		}
+	}
+	.shop-list{
+		li{
+			width: 100%;
+			height: 80px;
+			padding: 10px 0px;
+			border-bottom: 1px solid #ccc;
+		}
+		.goods-info{
+			width: 100%;
+			height: 80px;
+			overflow: hidden;
+			dt{
 				float: left;
+				width: 60px;
+				height: 60px;
 				img{
 					width: 100%;
+					height: 100%;
+					cursor: pointer;
 				}
 			}
-			.search_box{
-				width: 520px;
+			dd{
 				float: left;
-				margin-top: 32px;
-				margin-left: 120px;
-				.search_form{
-				    border: 3px solid #e4393c;
-				    height: 44px;
-				    width: 496px;
-				    #searchForm{
-				    	overflow: hidden;
-				    	.search_text{
-							float: left;
-							background-color: #fff;
-							background-position: 0 -360px;
-							background-repeat: repeat-x;
-						 	font-family: arial,"宋体";
-							font-size: 14px;
-							padding: 5px;
-							width: 412px;
-							height: 38px;
-							line-height: 38px;
-							border: none;
-							outline: none;
-						}
-						.search_but{
-							float: left;
-							background: none repeat scroll 0 0 #e4393c;
-						    color: #fff;
-						    font-size: 14px;
-						    font-weight: 700;
-						    width: 78px;
-						    height: 38px;
-						    border: none;
-						    margin: 0px;
-						}
-				    }
-				}
-				.hot_words{
-					margin: 0px;
-					padding: 6px 0px;
-					overflow: hidden;
-					li{
-						float: left;
-						padding-left: 10px;
-						cursor: pointer;
-					}
-				}
+				width: 136px;
+				height: 60px;
+				margin-left: 10px;
+				color: #000;
 			}
-			.shopping_cart{
-				position: relative;
-				width: 150px;
-				height: 36px;
-				margin-top: 32px;
-				padding-top: 6px;
-				color: $primary;
-				text-align: center;
+		}
+		.show-info{
+			line-height: 18px;
+			height: 36px;
+			overflow: hidden;
+		}
+		.sell-info{
+			overflow: hidden;
+			margin-top: 6px;
+			span{
+				float: left;
+			}
+			em{
 				float: right;
-				border: 1px  solid $primary;
-				a{
-					span{
-						vertical-align: super;
-					    border-radius: 8px;
-					    padding: 0px 4px;
-						color: #fff;
-						background-color: $red_color;
-					}
-				}
 			}
-			.cartBox{
-    			position: relative;
-    			.no_cart,.shopList{
-    				overflow: hidden;
-	    			width: 240px;
-	    			padding: 0px 14px;
-	    			background-color: #fff;
-	    		}
-	    		.no_cart{
-	    			position: absolute;
-	    			right: -1px;
-	    			top: 8px;
-	    			height: 56px;
-	    			line-height: 56px;
-	    			text-align: center;
-	    			border: 1px solid $border_color;
-	    		}
-    		}
-    		.shopListBox{
-    			position: absolute;
-    			top: 8px;
-    			right: -1px;
-    			overflow-y: scroll;
-    			border: 1px solid $border_color;
-    			z-index: 100;
-    			.checkCcart{
-    				height: 72px;
-    				line-height: 30px;
-    				overflow: hidden;
-    				background-color: #fff;
-    			}
-    		}
-    		.shopList{
-    			li{
-    				width: 100%;
-    				height: 80px;
-					padding: 10px 0px;
-					border-bottom: 1px solid $border_color;
-					.goods_info{
-						width: 100%;
-						height: 80px;
-						overflow: hidden;
-						dt{
-							float: left;
-							width: 60px;
-							height: 60px;
-							img{
-								width: 100%;
-								height: 100%;
-								cursor: pointer;
-							}
-						}
-						dd{
-							float: left;
-							width: 136px;
-							height: 60px;
-							margin-left: 10px;
-							color: #000;
-						}
-					}
-					.show_info{
-						line-height: 18px;
-						height: 36px;
-						overflow: hidden;
-					    text-overflow: ellipsis;
-					    display: -webkit-box;
-					    -webkit-box-orient: vertical;
-					    -webkit-line-clamp: 2;
-					}
-					.sell_info{
-						overflow: hidden;
-						margin-top: 6px;
-						span{
-							float: left;
-						}
-						em{
-							float: right;
-						}
-						em:hover{
-							cursor: pointer;
-							color: $primary;
-						}
-					}
-    			}
-    		}
+			em:hover{
+				cursor: pointer;
+				color: #c71724;
+			}
 		}
 	}
 </style>

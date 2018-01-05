@@ -1,7 +1,7 @@
 <template>
 	<div class="orderwrap">
 		<div class="box" v-if='refundInfo'>
-			<dl class="goodsInfo">
+			<dl class="goods-info">
 				<dt>
 					<img :src="refundInfo.cover">
 				</dt>
@@ -111,72 +111,68 @@ import {MessageBox} from  'element-ui'
 	}
 </script>
 <style lang='scss' scoped>
-$primary:#c71624;
-$border_color: #ddd;
-$text_color: #666;
 	.orderwrap{
-		width: 100%;
-		.goodsInfo{
-			padding-bottom: 10px;
-			border-bottom: 1px solid $border_color;
-			dt{
-				width: 200px;
-				height: 200px;
-				img{
-					width: 100%;
-					height: 100%;
-				}
-			}
-			.name{
-				margin: 8px 0px;
-				line-height: 18px;
-			}
-			.type{
-				overflow: hidden;
-				line-height: 20px;
-				color: $text_color;
-				span{
-					float: left;
-				}
-				em{
-					float: left;
-					margin-left: 20px;
-				}
-			}
-		}
 		.el-row{
 			margin-top: 16px;
-			.el-col-8{
-				color: $text_color;
+		}
+		.el-col-8{
+			color: #666;
+		}
+		.el-col-16{
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			strong{
+				font-size: 14px;
+				font-weight: 600;
+				color: #c71724;
 			}
-			.el-col-16{
-				overflow: hidden;
-				white-space: nowrap;
-    			text-overflow: ellipsis;
-				strong{
-					font-size: 14px;
-					font-weight: 600;
-					color: $primary;
-				}
-				span{
-					color: #0080ca;
-				}
+			span{
+				color: #0080ca;
 			}
 		}
 		.storeInfo{
 			padding-bottom: 20px;
-			border-bottom: 1px solid $border_color;
-			.storeName{
-				margin-top: 20px;
-				span{
-					line-height: 20px;
-				}
-				button{
-					outline: none;
-					border-radius: 10px;
-					border: 1px solid $border_color;
-					background-color: transparent;
-				}
+			border-bottom: 1px solid #ddd;
+		}
+		.storeName{
+			margin-top: 20px;
+			span{
+				line-height: 20px;
+			}
+			button{
+				outline: none;
+				border-radius: 10px;
+				border: 1px solid #ddd;
+				background-color: transparent;
+			}
+		}
+	}
+	.goods-info{
+		padding-bottom: 10px;
+		border-bottom: 1px solid #ddd;
+		dt{
+			width: 200px;
+			height: 200px;
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.name{
+			margin: 8px 0px;
+			line-height: 18px;
+		}
+		.type{
+			overflow: hidden;
+			line-height: 20px;
+			color: #666;
+			span{
+				float: left;
+			}
+			em{
+				float: left;
+				margin-left: 20px;
 			}
 		}
 	}

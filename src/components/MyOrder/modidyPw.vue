@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view10")'>修改密码</span></h4>
+		<h4 class="color-6"><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("view10")'>修改密码</span></h4>
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" label-position='left'>
 		<div class="reg_box">
 			  <el-form-item label="手机号码" style='padding-left: 17px;'>
@@ -108,11 +108,10 @@ import {hex_md5} from '../../common/js/md5'
     mixins: [userInfo],
     methods: {
     	send_code(){
-	      	let _this = this ;
 	      	let time = parseInt(new Date()/1000) +"";
 	      	let sign = `content=ShuaiBo2017&param=${this.userInfo.real_phone}&time=${time}&type=6`;
       		let params = {
-	      		param: _this.userInfo.real_phone,
+	      		param: this.userInfo.real_phone,
 	      		type: '6',
 	      		time: time,
 	      		sign: hex_md5(sign)
@@ -122,13 +121,13 @@ import {hex_md5} from '../../common/js/md5'
 	      		if (errcode !== 0) {
 	      		    errorInfo(errcode,message) ;
 	      		} else {
-	      			_this.time = _this.total_time ;
+	      			this.time = this.total_time ;
 	      			let timer = setInterval(()=>{
-			      		_this.time--;
-			      		_this.send_btn = _this.time + 's后重新发送';
-			      		if (_this.time < 0) {
-			      			_this.time = -1;
-			      			_this.send_btn = '发送验证码';
+			      		this.time--;
+			      		this.send_btn = this.time + 's后重新发送';
+			      		if (this.time < 0) {
+			      			this.time = -1;
+			      			this.send_btn = '发送验证码';
 			      			clearInterval(timer);
 			      		}
 			      	},1000)
@@ -174,15 +173,11 @@ import {hex_md5} from '../../common/js/md5'
   }
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$text_color: #666;
 	.wrap{
-		width: 100%;
 		h4{
 			line-height: 40px;
 			font-weight: 400;
-			border-bottom: 1px solid $border_color;
-			color: $text_color;
+			border-bottom: 1px solid #ccc;
 			span{
 				cursor: pointer;
 			}

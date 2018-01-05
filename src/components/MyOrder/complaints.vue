@@ -1,11 +1,7 @@
 <template>
 	<div class="wrap">
-		<h4 class="title">
-			投诉
-		</h4>
-		<div class="addInfo">
-			填写投诉信息
-		</div>
+		<h4 class="title">投诉</h4>
+		<div class="color-primary add-info">填写投诉信息</div>
 		<el-row>
 			<el-col :span='4'>
 				投诉类型
@@ -53,11 +49,10 @@ import {Message} from  'element-ui'
 		},
 		methods:{
 			submit(){
-				let _this = this ;
 				let params = {
 					access_token: getCookie('access_token'),
-					title : _this.title,
-					content: _this.content
+					title : this.title,
+					content: this.content
 				}
 				complain(params).then(res=>{
 					let {errcode,message,content} = res ;
@@ -68,8 +63,8 @@ import {Message} from  'element-ui'
 				            message: '投诉成功',
 				            type: 'success'
 				        });
-						 _this.title = "" ;
-						 _this.content = "";
+						 this.title = "" ;
+						 this.content = "";
 					}
 				})
 			}
@@ -77,10 +72,6 @@ import {Message} from  'element-ui'
 	}
 </script>
 <style lang='scss' scoped>
-$border_color: #ccc;
-$primary:#c71724;
-$text_color: #666;
-$bg_color: #e84848;
 	.wrap{
 		width: 1080px;
 		.title{
@@ -88,14 +79,13 @@ $bg_color: #e84848;
 			height: 40px;
 			line-height: 40px;
 			margin-bottom: 30px;
-			border-bottom: 1px solid $border_color;
+			border-bottom: 1px solid #ccc;
 		}
-		.addInfo{
+		.add-info{
 			height: 58px;
 			line-height: 58px;
 			font-weight: 600;
 			font-size: 14px;
-			color: $primary;
 		}
 		.el-row{
 			width: 420px;
