@@ -39,8 +39,8 @@
 										<img :src="item.cover" @click='goodDetail(item.goods_id)'>
 									</dt>
 									<dd>
-										<div class="show_info" v-text='item.name'></div>
-										<div class="sell_info">
+										<div class="show-info" v-text='item.name'></div>
+										<div class="sell-info">
 											<span>{{item.price|currency}}</span><em @click="delColGood(item.collection_id)">取消收藏</em>
 										</div>
 									</dd>

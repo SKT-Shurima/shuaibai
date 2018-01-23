@@ -2,16 +2,12 @@
 	<div class="wrap" v-if='orderInfo'>
 		<h4 class="title">选择收货地址</h4>
 		<ul class="address-list" v-if='addressList.length'>
-			<li v-for= '(item,index) in addressList' :class='{"is-address":addressIndex===index}' :key='index' @click='initExpressFee(index)' v-if='index<entries'>
+			<li v-for= '(item,index) in addressList' :class='{"is-address":addressIndex===index}' :key='index' @click='addressIndex=index;' v-if='index<entries'>
 				<dl>
 					<dt>
-						<span v-text='item.name'>
-						</span>
-						<strong v-text='item.phone'>
-						</strong>
-						<em v-show='item.status==="1"'>
-							默认地址
-						</em>
+						<span v-text='item.name'></span>
+						<strong v-text='item.phone'></strong>
+						<em v-show='item.status==="1"'>默认地址</em>
 					</dt>
 					<dd class="address-info">
 						{{item.province}}{{item.city}}{{item.district}}{{item.address}}
@@ -222,6 +218,11 @@ import addAddress from './addAddress'
 					this.countTotalFee();
  				},
  				deep: true
+			},
+			addressIndex:{
+				handler(newVal,oldVal){
+					this.initExpressFee();
+				}
 			}
 		},
 		methods:{

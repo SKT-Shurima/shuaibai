@@ -4,9 +4,7 @@
 			<div class="footer-box">
 	            <div class="footer-copy">
 	                <ul>
-	                    <li>
-	                      &copy; 2005-2017 帅柏商城 版权所有，并保留所有权利。
-	                    </li>
+	                    <li>&copy; 2005-2017 帅柏商城 版权所有，并保留所有权利。</li>
 	                    <li>浙江 杭州 萧山区北塘路38号</li>
 	                    <li>ICP备案证书号：浙ICP备15014916号</li>
 	                </ul>

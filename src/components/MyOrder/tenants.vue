@@ -362,7 +362,7 @@ import {MessageBox,Message} from  'element-ui'
 								licence: this.licenseList.length?this.licenseList[0].name:"",
 								name: this.ruleForm.contactName,	
 								phone: this.ruleForm.contactTel,	
-								shop_name: this.storeName,
+								shop_name: this.ruleForm.storeName,
 								wx_qq: this.contactType,	
 								card_f: this.fileList1.length?this.fileList1[0].name:"",	
 								card_b: this.fileList2.length?this.fileList2[0].name:""
@@ -376,22 +376,9 @@ import {MessageBox,Message} from  'element-ui'
 							            message: '添加成功',
 							            type: 'success'
 							        });
-				            		this.ruleForm = {
-							            num: '',
-							            companyName: '',
-							            province: '',
-								        city: '',
-								        district: '',
-							            address: '',
-							            companyTel: "",
-							            license: '',
-							            contactName: '',
-								        contactTel: '',
-								        contactType: '',
-								        storeName: '',
-								        IdCardFrontage: '',
-								        IdCardBack: ''
-							        }
+							        setTimeout(()=>{
+							        	window.location.reload();
+							        },3000);
 			            		}
 				            })
 			            } else {

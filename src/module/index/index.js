@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App'
-
+import "babel-polyfill";
 import {Button,Row,Col,Input,Select,Option,Carousel,CarouselItem,Radio,Dialog} from  'element-ui'; 
 
 

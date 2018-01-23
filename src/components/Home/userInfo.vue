@@ -34,8 +34,8 @@
 							<div>购物积分</div>
 						</el-col>
 						<el-col :span='8'>
-							<div class="color-primary" v-text='userInfo.integration'></div>
-							<div>积分</div>
+							<div class="color-primary" v-text='userInfo.reward_amount'></div>
+							<div>钱包</div>
 						</el-col>
 					</el-row>
 				</a>

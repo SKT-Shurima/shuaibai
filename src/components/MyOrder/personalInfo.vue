@@ -34,12 +34,15 @@
 			</el-col>
 		</el-row>
 		<el-row>
-			<el-col :span='2' style='line-height:30px;'>邀请码</el-col>
+			<el-col :span='2' style='line-height:30px;'>交易商账号</el-col>
 			<el-col :span='6' :offset="1">
-				<input class='el-input__inner' style="height: 30px;" readonly v-model='shareCode' id='bar'></input>
+				<el-input v-model='dealer_account' size='small'></el-input>
 			</el-col>
-			<el-col :span='6' :offset='1'>
-				<em style="line-height:30px;cursor: pointer;color: #42a0dd;" data-clipboard-action="copy" data-clipboard-target="#bar" class='copy'>复制</em>
+		</el-row>
+		<el-row>
+			<el-col :span='2' style='line-height:30px;'>上一级联系人</el-col>
+			<el-col :span='6' :offset="1">
+				{{userInfo.recommend_person}}
 			</el-col>
 		</el-row>
 		<el-row style="padding-top: 20px;">
@@ -51,11 +54,10 @@
 	</div>
 </template>
 <script>
-import {changeAvater,changeUsername,changeBirthday,changeSex,share_code} from '../../common/js/api'
+import {changeAvater,changeUsername,changeBirthday,changeSex,changeDealer} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {userInfo} from '../../common/js/mixins'
 import {MessageBox} from  'element-ui'
-import Clipboard from 'clipboard';
  export  default{
  	data(){
  		return{
@@ -73,11 +75,11 @@ import Clipboard from 'clipboard';
  			radio: '',
  			avater: '',
  			birthday: "",
+ 			dealer_account: "",
 		    form: {
 		    	cate : 'avater', 
 		    	access_token: getCookie('access_token')
-		    },
-		    shareCode: ''
+		    }
  		}
  	},
  	watch: {
@@ -89,25 +91,13 @@ import Clipboard from 'clipboard';
 				this.userInfo.birthday = len===10?this.userInfo.birthday:this.userInfo.birthday*1000;
 				this.radio = this.userInfo.sex === ''?'0':this.userInfo.sex === '男'?'1':'2';
 				this.birthday = this.userInfo.birthday ;
+				this.dealer_account = this.userInfo.dealer_account;
  			},
  			// deep: true
  		}
  	},
  	mixins: [userInfo], 
  	methods:{
- 		getShareCode(){
- 			let params = {
-	    		access_token: getCookie('access_token')
-	    	}
-	    	share_code(params).then(res=>{
-	    		let {errcode,message,content} = res;
-	    		if (errcode!==0) {
-	    			errorInfo(errcode,message) ;
-	    		}else{
-	    			this.shareCode = content;
-	    		} 
-	    	});
- 		},
  		changBirthday(){
  			let birthday = this.userInfo.birthday;
  			if (typeof birthday === 'object') {
@@ -129,7 +119,6 @@ import Clipboard from 'clipboard';
 	    		if (errcode!==0) {
 	    			errorInfo(errcode,message) ;
 	    		}else{
-	    			this.userInfo.nickname = content ;
 	    			this.editBirthday();
 	    		} 
 	    	});
@@ -145,7 +134,6 @@ import Clipboard from 'clipboard';
 	    		if (errcode!==0) {
 	    			errorInfo(errcode,message) ;
 	    		}else{
-	    			this.userInfo.birthday = content ;
 	    			this.editSex();
 	    		} 
 	    	});
@@ -161,7 +149,6 @@ import Clipboard from 'clipboard';
 	    		if (errcode!==0) {
 	    			errorInfo(errcode,message) ;
 	    		}else{
-	    			this.userInfo.sex = content ;
 	    			MessageBox.alert('信息保存成功', '提示', {
 			          	confirmButtonText: '确定',
 			          	type: 'success',
@@ -170,6 +157,19 @@ import Clipboard from 'clipboard';
 				        }
 				    });
 	    		} 
+	    	})
+	    },
+	    // 修改交易商账号
+	    editDealer(){
+	    	let paramsSex = {
+	    		access_token: getCookie('access_token'),
+	    		account: this.dealer_account
+	    	}
+	    	changeDealer(paramsSex).then(res=>{
+	    		let {errcode,message,content} = res;
+	    		if (errcode!==0) {
+	    			errorInfo(errcode,message) ;
+	    		}
 	    	})
 	    },
 	    save(){
@@ -187,6 +187,9 @@ import Clipboard from 'clipboard';
 	    		}else{
 	    			this.editUserName();
 	    		}
+	    		if (this.dealer_account!==this.userInfo.dealer_account) {
+	    			this.editDealer()
+	    		}
 	    	} 
 	    }
 	},
@@ -196,18 +199,6 @@ import Clipboard from 'clipboard';
  			if (!access_token) {
  				location.href = "login.html";
  			}
- 			this.getShareCode();
-
-		    var clipboard = new Clipboard('.copy');
-
-		    clipboard.on('success', function(e) {
-		        console.log(e);
-		    });
-
-		    clipboard.on('error', function(e) {
-		        console.log(e);
-		    });
-    
  		})
  	}
  	

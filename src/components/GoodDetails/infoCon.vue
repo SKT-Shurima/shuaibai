@@ -92,7 +92,7 @@
 						<el-row v-for='items in specs'>
 							<el-col :span='4'>{{items.name}}</el-col>
 							<el-col :span='20' class='choose-btn'>
-								<button :index='index' @click='items.select=index' :class='{"border-primary-2": items.select===index}' v-for='(item,index) in items.items'>{{item.name}}
+								<button :index='index' @click='items.select=index' :class='{"is-specs": items.select===index}' v-for='(item,index) in items.items'>{{item.name}}
 									<img src="../../../static/commonImg/checked.png" height="12" width="12" v-show='items.select===index'>
 								</button>
 							</el-col>
@@ -147,6 +147,12 @@
 				    	<el-input v-model="verifyForm.address"></el-input>
 				  	</el-form-item>
 				</el-form>
+				<div style="padding: 0px 24px;">
+					<h1 style="font-size:14px;color:#000;">温馨提示</h1>
+					<p class='color-primary'>
+						未避免损失，交易商注册完账号后必须在APP或者电脑上补全账号信息。
+					</p>
+				</div>
 			  <div slot="footer" class="dialog-footer">
 			    <el-button @click="verifyBol = false">返 回</el-button>
 			    <el-button type="primary" @click="verify('verifyForm')">确 定</el-button>
@@ -174,12 +180,7 @@
     			}else if (value === ''){
 	    	 		callback(new Error('请输入交易商账号,没有填无'));
 	    	 	} else {
-	    	 		let reg = /^079\d{9}$/ ;
-			        if ( !reg.test(value)) {
-			          	callback(new Error('请输入正确交易商账号'));
-			        } else{
-			        	callback();
-			        }
+			        callback();
 	    	 	}
 		      };
 			return {
@@ -211,6 +212,7 @@
 		        stockNum: 0, // 库存
 		        specs: null,  // 类型
 		        check_real_customer_bol: false,
+		        checkVerity: 0,
 		        verifyBol: false, // 实名认证弹框
 		        verifyForm: {
 		        	name: '',
@@ -387,6 +389,9 @@
 					errorInfo(99,"请先登录");
 					return false;
 				}
+				if (!this.goods||this.checkVerity==1) {
+					return ;
+				}
 				// 商品规格
 				if (this.goods.options.length&&!this.option_id) {
 					MessageBox.alert("请选择商品规格", '提示', {
@@ -510,6 +515,7 @@
 						errorInfo(errcode,message) ;
 					}else {
 						this.goods = content.goods ;
+						this.checkVerity = this.goods.is_verify=="1"?1:0;
 						this.special =  content.special;
 						if(this.special){
 							this.initTime();
@@ -529,6 +535,7 @@
 							}
 							check_real_customer(checkParams).then(res=>{
 								let {errcode,message} = res ;
+								this.checkVerity = 2;
 								if (errcode===0) {
 									this.check_real_customer_bol = true;
 								}
@@ -724,6 +731,7 @@
 			padding: 0px 20px;
 			line-height: 26px;
 			margin-right: 10px;
+			margin-bottom: 10px;
 			position: relative;
 		}
 		img{
@@ -731,6 +739,9 @@
 			right: 0px;
 			bottom: 0px;
 		}
+	}
+	.is-specs{
+		border-color: #c71724;
 	}
 	.choose-num{
 		padding-left: 1px;

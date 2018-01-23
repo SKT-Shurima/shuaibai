@@ -108,7 +108,6 @@ import {errorInfo} from '../../common/js/common'
 		},
 		methods: {
 			specialLink(){
-
 			},
 			storeDetail(id){
 				window.open(`storeDetail.html?seller_id=${id}`) ;

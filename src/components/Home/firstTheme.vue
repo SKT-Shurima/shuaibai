@@ -1,5 +1,5 @@
 <template>
-	<div class="theme" v-if='showBol'>
+	<div class="theme">
 		<el-row>
 			<el-col :span='12' class='border-f0 snapup-l'>
 				<dl>
@@ -94,19 +94,13 @@
 	export default{
 		data(){
 			return {
-				nowTime: 0,
-				showBol: false
+				nowTime: 0
 			}
 		},
 		props:{
 			theme: {
 				type: Object,
 				required: true 
-			}
-		},
-		watch: {
-			theme(newVal,oldVal) {
-				this.showBol = true;
 			}
 		},
 		filters: {

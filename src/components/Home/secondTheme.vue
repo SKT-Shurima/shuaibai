@@ -1,5 +1,5 @@
 <template>
-	<div class="theme" v-if='showBol'>
+	<div class="theme">
 		<ul>
 			<li v-for='item in theme.goods.goods' @click='goodDetail(item.goods_id)'>
 				<dl>
@@ -15,20 +15,10 @@
 </template>
 <script>
 	export default {
-		data(){
-			return{
-				showBol: false
-			}
-		},
 		props: {
 			theme: {
 				type: Object,
 				required: true 
-			}
-		},
-		watch:{
-			theme(){
-				this.showBol = true;
 			}
 		},
 		methods:{

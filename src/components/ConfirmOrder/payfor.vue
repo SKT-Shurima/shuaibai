@@ -70,9 +70,10 @@ import {getHashReq,getCookie} from '../../common/js/common'
 							document.write(content.html_text);
 						}
 						if (this.typeIndex==='5') {
-							let  code_url = content.code_url ;
-							let  order_number = content.order_number ;
-							let  coun = content.count ;
+							let code_url = content.code_url ;
+							let order_number = content.order_number ;
+							let count = content.count ;
+							let order_sn = content.order_sn;
 							code_url = code_url.split("?");
 							code_url = code_url.join("&");
 							location.replace(`confirmOrder.html#scode?code_url=${code_url}&order_number=${order_number}&count=${count}&order_sn=${order_sn}`);

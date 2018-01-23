@@ -36,42 +36,42 @@
 		</div>
 		<ul class="theme-box">
 			<!-- 一元抢购 -->
-			<li>
+			<li v-if='firstTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${firstTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%" @click='jump(firstTheme.img.jump)'></div>
 				<first-theme :theme='firstTheme'></first-theme>
 			</li>
 			<!-- 舌尖美食 -->
-			<li style="margin-left:26px;">
+			<li style="margin-left:26px;" v-if='secondTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${secondTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(secondTheme.img.jump)'></div>
 				<second-theme :theme='secondTheme'></second-theme>
 			</li>
 			<!-- 中国智造 -->
-			<li>
+			<li v-if='thirdTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${thirdTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%"  @click='jump(thirdTheme.img.jump)'></div>
 				<third-theme :theme='thirdTheme'></third-theme>
 			</li>
 			<!-- 家居百货 -->
-			<li style="margin-left:26px;">
+			<li style="margin-left:26px;" v-if='fourthTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${fourthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" @click='jump(fourthTheme.img.jump)'></div>
 				<second-theme :theme='fourthTheme'></second-theme>
 			</li>
 			<!-- 奖励商品 -->
-			<li>
+			<li v-if='fifthTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${fifthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(fifthTheme.img.jump)'></div>
 				<second-theme :theme='fifthTheme'></second-theme>
 			</li>
 			<!-- 积分购买 -->
-			<li style="margin-left:26px;">
+			<li style="margin-left:26px;" v-if='sixthTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${sixthTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(sixthTheme.img.jump)'></div>
 				<second-theme :theme='sixthTheme'></second-theme>
 			</li>
 			<!-- 鸿府购买 -->
-			<li>
+			<li v-if='seventhTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${seventhTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;"  @click='jump(seventhTheme.img.jump)'></div>
 				<second-theme :theme='seventhTheme'></second-theme>
 			</li>
 			<!-- 线下提货 -->
-			<li style="margin-left:26px;">
+			<li style="margin-left:26px;" v-if='eightTheme.img.img_web'>
 				<div class="title" :style='{backgroundImage: `url(${eightTheme.img.img_web})`}' style="background-repeat: no-repeat;background-size: 100% 100%;" @click='jump(eightTheme.img.jump)'></div>
 				<second-theme :theme='eightTheme'></second-theme>
 			</li>
@@ -135,14 +135,17 @@ import 'common/css/themeTitle.scss'
 			},
 			getTheme() {
 				getActivity().then(res=>{
-					this.firstTheme = res[0] ;
-					this.secondTheme= res[1] ;
-					this.thirdTheme= res[2] ;
-					this.fourthTheme = res[3] ;
-					this.fifthTheme  =res[4];
-					this.sixthTheme  =res[5];
-					this.seventhTheme  =res[6];
-					this.eightTheme  =res[7];
+					var empty = {
+						img: {}
+					}
+					this.firstTheme = res[0]?res[0]:empty;
+					this.secondTheme = res[1]?res[1]:empty;
+					this.thirdTheme = res[2]?res[2]:empty;
+					this.fourthTheme = res[3]?res[3]:empty;
+					this.fifthTheme = res[4]?res[4]:empty;
+					this.sixthTheme = res[5]?res[5]:empty;
+					this.seventhTheme = res[6]?res[6]:empty;
+					this.eightTheme = res[7]?res[7]:empty;
 				})
 			}
 		},

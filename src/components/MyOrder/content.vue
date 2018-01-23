@@ -94,6 +94,7 @@
 	import commissionWithdraw from './commissionWithdraw'
 	import settingPay from './settingPay'
 	import settingTrans from './settingTrans'
+	import recommend from './recommend'
 	import youLike from '../../components/Guess/content'
 
 	//  监测地址栏的变化
@@ -119,7 +120,8 @@
 		        	{name: '资金'},
 		        	{name: '商家入驻'},
 		        	{name: '设置支付密码'},
-		        	{name: '设置转账密码'}
+		        	{name: '设置转账密码'},
+		        	{name: '我的推广'}
 		        ],
 		        orderIndex: '',
 		        orderList: [
@@ -182,7 +184,8 @@
 			"vip80": commission,
 			"vip81": commissionWithdraw,
 			"vip9": settingPay,
-			"vip10": settingTrans
+			"vip10": settingTrans,
+			"vip11": recommend
 		},
 	    methods: {
 	    	search(){
@@ -241,10 +244,12 @@
 			}
 			if (view) {
 				if(view.indexOf('vip')>=0){
-					if (view != 'vip10') {
-						this.vipIndex = view[3] - 0;
-					}else{
+					if (view == 'vip10') {
 						this.vipIndex = 10;
+					}else if(view == 'vip11'){
+						this.vipIndex = 11;
+					}else{
+						this.vipIndex = view[3] - 0;
 					}
 				}else{
 					this.vipIndex = "" ;

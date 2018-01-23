@@ -119,7 +119,7 @@ import pagination from '../Common/pagination'
 					}
 				}
 				this.markList = dbArr;
-				this.pagesize = parseInt(this.markList /10 ) +1;
+				this.pagesize = parseInt(this.markList.length /10 ) +1;
 			},
 			getList(){
 				let params  ={

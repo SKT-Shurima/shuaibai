@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import "babel-polyfill";
 
 import {Row,Col,Button,Input,Form,FormItem,Checkbox,Radio,DatePicker,Select,Option} from  'element-ui'
 

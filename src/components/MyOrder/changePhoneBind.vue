@@ -145,8 +145,7 @@ import {hex_md5} from '../../common/js/md5'
             	phone: this.userInfo.real_phone,
             	code: this.ruleForm.code,
             	newphone: this.ruleForm.phone,
-            	newcode: this.ruleForm.newcode,
-            	type: "4"
+            	newcode: this.ruleForm.newcode
             };
             changePhoneBind(params).then(res=>{
             	let {errcode,message} = res ;

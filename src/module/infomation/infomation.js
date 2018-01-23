@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import "babel-polyfill";
 import Vuex from 'vuex'
 import store from '../../common/vuex/store.js'
 import {Row,Col,Button,Pagination} from  'element-ui'

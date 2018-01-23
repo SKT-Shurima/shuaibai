@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 let base = process.env.API_ROOT;
+// let base = 'http://app.shuaibomall.net/web';
 export {base};
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -123,12 +124,16 @@ export const  getThematicActivities = params =>{
 	return  axios.get(`${base}/specialAction/getThematicActivities?${params}`).then(res=>res.data) ; 
 }
 
-
 // 个人中心
 // 获取用户信息
 export const getUserInfo = params =>{
 	params = trans(params);
 	return axios.post(`${base}/userAction/getUserInfo`,params).then(res=>res.data);
+}
+// 修改交易商账号
+export const changeDealer = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/changeDealer`,params).then(res=>res.data) ; 
 }
 // 获取未读消息数量
 export const getMessageCount = params =>{
@@ -219,11 +224,6 @@ export const getOrders = params => {
 export const mobileOrders = params =>{
 	params =  trans(params);
 	return axios.post(`${base}/orderAction/mobileOrders`,params).then(res=>res.data);
-}
-// 推荐码
-export const share_code = params =>{
-	params = trans(params);
-	return axios.get(`${base}/customerAction/share_code?${params}`).then(res=>res.data);
 }
 
 // 商品收藏列表
@@ -351,6 +351,12 @@ export const setTransferPasswd = params =>{
 export const withdrawServiceFee = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/userAction/withdrawServiceFee`,params).then(res=>res.data);
+}
+
+// 查看下级
+export const extendPerson = params =>{
+	params = trans(params);
+	return axios.post(`${base}/userAction/extendPerson`,params).then(res=>res.data);
 }
 
 

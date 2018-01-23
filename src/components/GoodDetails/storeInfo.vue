@@ -28,19 +28,16 @@
 			<dl class="online">
 				<dt>在线客服</dt>
 				<dd  @click='kf' class="qqkf">
-          <img src ="../../../static/commonImg/qq.png" height="14" width="12">
-          客服
+          			<img src ="../../../static/commonImg/qq.png" height="14" width="12">客服
 				</dd>
-        <dd>
-          <div  class="wxkf">
-            <img src ="../../../static/commonImg/weixin.png" height="14" width="14">
-          客服
-          </div>
-          <div>
-            <img :src="kfInfo.weixin" style="width:100px;height: 100px;">
-          </div>
-          
-        </dd>
+        		<dd>
+		          	<div  class="wxkf">
+		            	<img src ="../../../static/commonImg/weixin.png" height="14" width="14"> 客服
+		          	</div>
+		          	<div>
+		            	<img :src="kfInfo.weixin" style="width:100px;height: 100px;">
+		          	</div>
+        		</dd>
 			</dl>
 			<div class="collectBtn">
 				<el-button type='text' size='small' @click='follow' :class='{"isView":goods.is_seller_collection}'>

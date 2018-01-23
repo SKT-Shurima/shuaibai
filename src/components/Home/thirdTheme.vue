@@ -1,5 +1,5 @@
 <template>
-	<div class="theme" v-if='showBol'>
+	<div class="theme">
 	    <el-row
 			<el-col :span='12' class='border-f0 make-left'>
 				<dl>
@@ -51,11 +51,6 @@
 <script>
 import {currency} from '../../common/js/filter'
 	export default {
-		data(){
-			return {
-				showBol: false
-			}
-		},
 		filters: {
 			currency
 		},
@@ -63,14 +58,6 @@ import {currency} from '../../common/js/filter'
 			theme: {
 				type: Object,
 				required: true 
-			}
-		},
-		watch: {
-			theme(newVal,oldVal){
-				if (newVal.goods.goods.length) {
-					this.showBol =  true;
-				}
-				
 			}
 		},
 		methods: {

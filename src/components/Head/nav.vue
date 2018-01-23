@@ -7,8 +7,8 @@
 						<div @mouseenter='listConBol=true' @mouseleave='listConBol=false' style="cursor: pointer">全部商品分类<i></i></div>
 						<ul class="con-list" @mouseenter='listBol=true;listConBol=true' @mouseleave='listBol=false;listConBol=false' v-show='listConBol'>
 							<li v-for='(item,index) in category' :key='index'  @mouseenter='listIndex=index;fIndex=index' :class='{"check-unit":listIndex===index}' @click='checkGoods(index,item.category_id)'>
-								<img :src="item.selected_icon" v-show='listConBol&listIndex===index'>
-								<img :src="item.icon" v-show='!(listConBol&listIndex===index)'>
+								<img :src="item.selected_icon" v-show='listConBol&&listIndex===index'>
+								<img :src="item.icon" v-show='!(listConBol&&listIndex===index)'>
 								{{item.name}}
 							</li>
 						</ul>

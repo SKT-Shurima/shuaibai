@@ -269,33 +269,6 @@ import {hex_md5} from '../../common/js/md5'
             	}
     		})
     	},
-    	send_code(){
-	      	let time = parseInt(new Date()/1000) +"";
-	      	let sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=8`;
-      		let params = {
-	      		param: this.ruleForm.phone,
-	      		type: '8',
-	      		time: time,
-	      		sign: hex_md5(sign)
-	      	};
-	      	sendCode(params).then( res=>{
-	      		let {errcode,message} = res ;
-	      		if (errcode !== 0) {
-	      		   errorInfo(errcode,message) ;
-	      		} else {
-	      			this.time = this.total_time ;
-	      			let timer = setInterval(()=>{
-			      		this.time--;
-			      		this.send_btn = this.time + 's后重新发送';
-			      		if (this.time < 0) {
-			      			this.time = -1;
-			      			this.send_btn = '发送验证码';
-			      			clearInterval(timer);
-			      		}
-			      	},1000)
-	      		}
-	      	});
-	    },
 	    changeView(view){
 	      	 this.$store.commit('switchView',view);
 	      	 location.hash = view ;

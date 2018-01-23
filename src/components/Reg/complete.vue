@@ -114,7 +114,7 @@ import {hex_md5} from '../../common/js/md5'
 	      		let sign = `content=ShuaiBo2017&param=${this.ruleForm.phone}&time=${time}&type=0`;
 	      		let params = {
 		      		param: this.ruleForm.phone,
-		      		type: '0',
+		      		type: '3',
 		      		time: time,
 		      		sign: hex_md5(sign)
 		      	};

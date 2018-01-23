@@ -21,7 +21,7 @@
 				<a href="myOrder.html#vip3">
 					<img src="../../../static/headImg/shopCarRed.png" height="14" width="14" style="vertical-align:-2px;">
 					我的购物车
-					<span v-text='userInfo.cart_num-0?userInfo.cart_num:0'  :style='{opacity:userInfo.cart_num?1:0}'></span>
+					<span  class='cart-btn' v-text='userInfo.cart_num-0?userInfo.cart_num:0'  :style='{opacity:userInfo.cart_num?1:0}'></span>
 				</a>
 				<div class="cart-box" v-show='cartBol' @mouseenter='cartBol=true' @mouseleave='cartBol=false'>
 				    <div class="border-c shop-list-box" v-if='shopList.length'>

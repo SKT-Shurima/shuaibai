@@ -110,8 +110,7 @@ import {hex_md5} from '../../common/js/md5'
             let params = {
             	access_token: getCookie('access_token'),
             	phone: this.ruleForm.phone,
-            	code: this.ruleForm.code,
-            	type: "3"
+            	code: this.ruleForm.code
             };
             phoneBind(params).then(res=>{
             	let {errcode,message} = res ;

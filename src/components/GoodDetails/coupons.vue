@@ -7,12 +7,8 @@
 					<span v-text='item.amount-0'></span>
 				</dt>
 				<dd>
-					<div class="title">
-						优惠券
-					</div>
-					<div class="limit">
-						满{{item.limit-0}}使用
-					</div>
+					<div class="title">优惠券</div>
+					<div class="limit">满{{item.limit-0}}使用</div>
 				</dd>
 			</dl>
 			<div class="btn">
