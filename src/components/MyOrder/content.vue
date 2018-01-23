@@ -2,9 +2,7 @@
 	<div class="wrap">
 		<div class="primary-bg nav-box">
 			<div class="container">
-				<div class="logo" @click='changeView("view10")'>
-					我的帅柏
-				</div>
+				<div class="logo" @click='changeView("view10")'>我的帅柏</div>
 				<div class="nav-title">
 					<ul class="nav-list">
 						<li><a href="index.html">帅柏首页</a></li>
