@@ -51,7 +51,7 @@ export default {
 					if (content===1) {
 						let count = this.reqParams.count ;
 						clearInterval(timer);
-						location.replace(`myOrder.html?vip7`) ;
+						location.replace(`myOrder.html?vip9`) ;
 					}
 				})
 			},3000) ;

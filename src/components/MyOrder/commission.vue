@@ -1,11 +1,11 @@
 <template>
 	<div class="wrap">
-		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip80")'>佣金明细</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip100")'>佣金明细</span></h4>
 		<dl class="amount-info">
 			<dt><span>店铺佣金</span><em class='color-primary'>{{commission|currency}}</em>
 			</dt>
 			<dd>
-				<el-button class='border-primary' type='text' size='small' style='width:90px;' @click='changeView("vip81")'>提现</el-button>
+				<el-button class='border-primary' type='text' size='small' style='width:90px;' @click='changeView("vip101")'>提现</el-button>
 			</dd>
 		</dl>
 		<div class="color f5-bg title">

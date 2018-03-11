@@ -220,10 +220,20 @@ export const getOrders = params => {
 	params = trans(params);
 	return axios.post(`${base}/orderAction/getOrders`,params).then(res=>res.data); 
 } 
-// 话费流浪充值列表
+// 话费流量充值列表
 export const mobileOrders = params =>{
 	params =  trans(params);
 	return axios.post(`${base}/orderAction/mobileOrders`,params).then(res=>res.data);
+}
+// 实名认证
+export const verifyRealname = params =>{
+	params =  trans(params);
+	return axios.post(`${base}/userAction/verifyRealname`,params).then(res=>res.data);
+}
+// 实名认证状态
+export const verifyRealnameState = params =>{
+	params =  trans(params);
+	return axios.post(`${base}/userAction/verifyRealnameState`,params).then(res=>res.data);
 }
 
 // 商品收藏列表
@@ -327,11 +337,17 @@ export const yuebaoTransfer = params =>{
 	params = trans(params) ;
 	return axios.post(`${base}/userAction/yuebaoTransfer`,params).then(res=>res.data);
 }
+// 余额和正常金额互转
+export const yuebaoTransferIn = params =>{
+	params = trans(params) ;
+	return axios.post(`${base}/userAction/yuebaoTransferIn`,params).then(res=>res.data);
+}
 // 验证转账密码
 export const verifyTransfer = params =>{
 	params = trans(params) ;
 	return axios.get(`${base}/userAction/verifyTransfer?${params}`).then(res=>res.data);
 }
+
 // 验证转账密码
 export const yuebaoWithdraw = params =>{
 	params = trans(params) ;

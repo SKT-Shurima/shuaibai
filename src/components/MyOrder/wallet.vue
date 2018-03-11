@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip74")'>钱包</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip9")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip94")'>钱包</span></h4>
 		<dl class="amount-info">
 			<dt>
 				<span>钱包余额</span><em class='ellipsis-1 color-primary'>{{reward_amount|currency}}</em>
@@ -8,9 +8,9 @@
 				<span style='margin-left:10px;'>转账余额</span><em class='ellipsis-1 color-primary'>{{transfer_amount|currency}}</em>
 			</dt>
 			<dd>
-				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip740")'>充值</el-button>
-				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip741")'>提现</el-button>
-				<el-button  type='text' size='small' style='width:92px;' @click='changeView("vip742")'>转账</el-button>
+				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip940")'>充值</el-button>
+				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip941")'>提现</el-button>
+				<el-button  type='text' size='small' style='width:92px;' @click='changeView("vip942")'>转账</el-button>
 			</dd>
 		</dl>
 		<div class="color-6 f5-bg title">

@@ -77,7 +77,7 @@ import {MessageBox} from  'element-ui'
 						let count = this.account;
 						code_url = code_url.split("?");
 						code_url = code_url.join("&");
-						location.replace(`myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}&count=${count}`);
+						location.replace(`myOrder.html#vip1000?code_url=${code_url}&order_number=${order_number}&count=${count}`);
 					}
 				}
 	    	})

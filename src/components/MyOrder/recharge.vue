@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip70")'>充值</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip9")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip90")'>充值</span></h4>
 		<el-row>
 			<el-col :span='4'>
 				充值金额
@@ -73,7 +73,7 @@ import {Message,MessageBox} from  'element-ui'
 							let count = this.account;
 							code_url = code_url.split("?");
 							code_url = code_url.join("&");
-							location.replace(`myOrder.html#vip700?code_url=${code_url}&order_number=${order_number}&count=${count}`);
+							location.replace(`myOrder.html#vip900?code_url=${code_url}&order_number=${order_number}&count=${count}`);
 						}
 					}
 		    	}) 

@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip72")'>购物积分</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip9")'>资金管理</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip92")'>购物积分</span></h4>
 		<dl class="amount-info">
 			<dt><span>当前购物积分</span><em class='color-primary' v-text='shopping_coin'></em>
 			</dt>

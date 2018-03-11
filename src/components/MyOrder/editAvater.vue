@@ -52,7 +52,7 @@
 	</div>
 </template>
 <script>
-import {changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
+import {base,changeAvater,changeUsername,changeBirthday,changeSex} from '../../common/js/api'
 import {errorInfo,getCookie} from '../../common/js/common'
 import {userInfo} from '../../common/js/mixins'
 import {Message} from  'element-ui'
@@ -66,7 +66,7 @@ import {Message} from  'element-ui'
 		    form: {
 		    	cate : 'avater', 
 		    	access_token: getCookie('access_token')
-		    },
+		    }
  		}
  	},
  	mixins: [userInfo],

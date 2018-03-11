@@ -69,6 +69,7 @@
 	import message from "./message"
 	import personalInfo from './personalInfo'
 	import editAvater from './editAvater'
+	import verifyRealname from './verifyRealname'
 	import colGoods from './colGoods'
 	import viewStore from "./viewStore"
 	import myShopCar from "./myShopCar"
@@ -109,6 +110,8 @@
 		        vipIndex: '',
 		        vipCenterList: [
 		        	{name: '个人中心'},
+		        	{name: '实名认证'},
+		        	{name: '我的推广'},
 		        	{name: '商品收藏'},
 		        	{name: '店铺关注'},
 		        	{name: '我的购物车'},
@@ -118,8 +121,7 @@
 		        	{name: '资金'},
 		        	{name: '商家入驻'},
 		        	{name: '设置支付密码'},
-		        	{name: '设置转账密码'},
-		        	{name: '我的推广'}
+		        	{name: '设置转账密码'}
 		        ],
 		        orderIndex: '',
 		        orderList: [
@@ -160,30 +162,31 @@
 			"view20": message,
 			"vip0": personalInfo,
 			"vip01": editAvater,
-			"vip1": colGoods,
-			"vip2": viewStore,
-			"vip3": myShopCar,
-			"vip4": footmark,
-			"vip5": coupons,
-			"vip6": complaints,
-			"vip7": money,
-			"vip70": recharge,
-			"vip700": payFor,
-			"vip71": withdraw,
-			"vip72": shopCoin,
-			"vip73": integral,
-			"vip74": wallet,
-			"vip740": walletRecharge,
-			"vip741": walletWithdraw,
-			"vip742": walletTransfer,
-			"vip75": hongfu,
-			"vip8": tenants,
-			"vip800": auditStatus,
-			"vip80": commission,
-			"vip81": commissionWithdraw,
-			"vip9": settingPay,
-			"vip10": settingTrans,
-			"vip11": recommend
+			"vip1": verifyRealname,
+			'vip2': recommend,
+			"vip3": colGoods,
+			"vip4": viewStore,
+			"vip5": myShopCar,
+			"vip6": footmark,
+			"vip7": coupons,
+			"vip8": complaints,
+			"vip9": money,
+			"vip90": recharge,
+			"vip900": payFor,
+			"vip91": withdraw,
+			"vip92": shopCoin,
+			"vip93": integral,
+			"vip94": wallet,
+			"vip940": walletRecharge,
+			"vip941": walletWithdraw,
+			"vip942": walletTransfer,
+			"vip95": hongfu,
+			"vip10": tenants,
+			"vip1000": auditStatus,
+			"vip100": commission,
+			"vip101": commissionWithdraw,
+			"vip11": settingPay,
+			"vip12": settingTrans
 		},
 	    methods: {
 	    	search(){
@@ -238,16 +241,32 @@
 				view = hash.split('?')[0].slice(1)
 				this.reqParams = getHashReq();
 			}else {
-				view = location.hash.slice(1) ;
+				view = location.hash.slice(1);
 			}
 			if (view) {
 				if(view.indexOf('vip')>=0){
-					if (view == 'vip10') {
-						this.vipIndex = 10;
-					}else if(view == 'vip11'){
-						this.vipIndex = 11;
-					}else{
-						this.vipIndex = view[3] - 0;
+					switch (view) {
+						case 'vip10':
+							this.vipIndex = 10;
+							break;
+						case 'vip1000':
+							this.vipIndex = 10;
+							break;
+						case 'vip100':
+							this.vipIndex = 10;
+							break;
+						case 'vip101':
+							this.vipIndex = 10;
+							break;
+						case 'vip11':
+							this.vipIndex = 11;
+							break;
+						case 'vip12':
+							this.vipIndex = 12;
+							break;
+						default:
+							this.vipIndex = view[3] - 0;
+							break;
 					}
 				}else{
 					this.vipIndex = "" ;

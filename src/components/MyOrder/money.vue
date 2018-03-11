@@ -1,16 +1,16 @@
 <template>
 	<div class="wrap">
-		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip7")'>资金管理</span></h4>
+		<h4 class='color-6'><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip9")'>资金管理</span></h4>
 		<dl class="amount-info">
 			<dt><span>账户余额</span><em class='ellipsis-1 color-primary'>{{userInfo.account|currency}}</em>
 			</dt>
 			<dd>
-				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip70")'>充值</el-button>
-				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip71")'>提现</el-button>
-				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip74")'>钱包</el-button>
-				<el-button  type='text' size='small' style='width:108px;' @click='changeView("vip72")'>购物积分</el-button>
-				<el-button  type='text' size='small' style='width:108px;' @click='changeView("vip75")'>鸿府积分</el-button>
-				<el-button  type='text' size='small' style='width:92px;' @click='changeView("vip73")'>积分</el-button>
+				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip90")'>充值</el-button>
+				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip91")'>提现</el-button>
+				<el-button  type='text' size='small' style='width:90px;' @click='changeView("vip94")'>钱包</el-button>
+				<el-button  type='text' size='small' style='width:108px;' @click='changeView("vip92")'>购物积分</el-button>
+				<el-button  type='text' size='small' style='width:108px;' @click='changeView("vip95")'>鸿府积分</el-button>
+				<el-button  type='text' size='small' style='width:92px;' @click='changeView("vip93")'>积分</el-button>
 			</dd>
 		</dl>
 		<div class="color-6 f5-bg title">

@@ -82,7 +82,7 @@
 		    <el-form-item label="店铺名称" prop="storeName">
 		        <el-input v-model="ruleForm.storeName" size='small'></el-input>
 		    </el-form-item>
-		    <el-form-item label="身份证国徽面" prop="companyTel">
+		    <el-form-item label="身份证国徽面" prop="IdCardBack">
 		        <el-upload
 					class="upload-demo"
 					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
@@ -100,9 +100,8 @@
 		    	<el-col :span='8' style='line-height:102px;'>示例图片</el-col>
 		    	<el-col :span='16'><img src="../../../static/centerImg/idCard1.png" width="160" height="102"></el-col>
 		    </el-row>
-		    <el-form-item label="身份证个人面" prop="companyTel">
+		    <el-form-item label="身份证个人面" prop='IdCardFrontage'>
 		       <el-upload
-					class="upload-demo"
 					action="http://shuaibo.zertone1.com/app/uploadAction/upload_image"
 				    :on-success="idCardSuccess2"
 					:before-upload='idCardBeforeUpload2'
@@ -408,13 +407,13 @@ import {MessageBox,Message} from  'element-ui'
 							this.url = content.url ;
 						}
 						if (content.errcode=== -101) {
-							this.changeView("vip800?status=101");
+							this.changeView("vip1000?status=101");
 						}
 						if (content.errcode=== -102) {
-							this.changeView("vip800?status=102");
+							this.changeView("vip1000?status=102");
 						}
 						if (content.errcode===-103) {
-							this.changeView("vip800?status=103");
+							this.changeView("vip1000?status=103");
 						}
 					}
 				})

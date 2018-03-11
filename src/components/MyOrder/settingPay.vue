@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<h4 class="color-6"><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip9")'>设置支付密码</span></h4>
+		<h4 class="color-6"><span @click='changeView("view10")'>我的帅柏</span>&nbsp;<i>&gt;</i>&nbsp;<span @click='changeView("vip10")'>设置支付密码</span></h4>
 		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" label-position='left'>
 		<div class="reg_box">
 			  <el-form-item label="手机号码" style='padding-left: 17px;'>
